@@ -1,0 +1,92 @@
+---
+title: "03_mean-spectra-freq-peaks"
+output: html_notebook
+---
+
+Install necessary librarie
+```{r}
+library(seewave)
+library(warbleR)
+library(tuneR)
+```
+
+
+Exploratory data analysis - Here I will try a few different functions from the seewave package in R to get a better sense of the distribution of frequencies over time
+```{r}
+library(seewave)
+
+# Read a sample .wav file
+a <- tuneR::readWave("C:\\data\\HP37P4B\\20200307_083000.wav")
+
+# Calculate mean frequency spectrum
+# This function returns the mean frequency spectrum (i.e. the mean relative amplitude of the frequency distribution) of a time wave. Results can be expressed either in absolute or dB data.
+mf <- meanspec(a,f=48000,wl=256,norm=F)
+
+# Calculate frequency peaks
+# This function searches for peaks of a frequency spectrum.
+f_peak <- fpeaks(mf, threshold = 0.003)
+
+# Frequency bands plot
+# This graphical function returns a frequency spectrum as a bar plot.
+f_bands <- fbands(mf)
+
+# Soundscape frequency spectrum of a time wave
+# This function returns a kHz binned spectrum as described by Kasten et al. (2012) for the description of a soundscape.
+# This function essentially creates a bar plot of frequencies in kHZ by amplitude values
+s_spectr <- soundscapespec(a)
+
+```
+
+Borrowing a function from the soundecology package in R and modifying it to suite our needs
+```{r}
+# Function that gets the proportion of values over a db value in a specific band of frequencies. Frequency is in Hz
+getscore <- function(spectrum, minf, maxf, db, freq_row){
+		miny<-round((minf)/freq_row)
+		maxy<-round((maxf)/freq_row)
+		
+		subA = spectrum[miny:maxy,]
+		
+		index1 <- length(subA[subA>db]) / length(subA)
+		
+		return(index1)
+	}
+
+# Window length for the spectro and spec functions to keep each row every 10Hz
+# Frequencies and seconds covered by each
+freq_per_row <- 10
+samplingrate <- 48000
+wlen <-  samplingrate/freq_per_row # Window length
+
+# This function returns a two-dimension spectrographic representation of a time wave. The function corresponds to short-term Fourier transform. An amplitude contour plot can be overlaid.
+spec <- spectro(a, f = samplingrate, wl = wlen, plot = FALSE)$amp
+
+# Set the max freqency that can be used
+# This is often the nyquist frequency which is calculated as sampling frequency/2
+max_freq <- samplingrate/2 
+
+# Set an amplitude threshold
+db_threshold <- -50
+
+# Setting freqeuncy steps
+freq_step <- 1000
+
+# A sequence of frequencies
+Freq <- seq(from = 0, to = max_freq - freq_step, by = freq_step)
+
+Score <- rep(NA, length(Freq))
+for (i in 1:length(Freq)) {
+			Score[i] = getscore(spec, Freq[i], (Freq[i] + freq_step), db_threshold, freq_per_row)
+		}
+
+
+```
+
+
+
+
+Campos-Cerqueira et al., 2019 inputs:
+For meanspec: f=44,100, wl = 256, wn = ‘hanning’, norm = FALSE
+Audio waveforms scaled between -1 and 1
+Spectral peaks limited to max. amplitude of 1
+Amplitude threshold = 0.003
+Counted number of recordings with a peak in each of the 128 frequency bins (given amplitude threshold)

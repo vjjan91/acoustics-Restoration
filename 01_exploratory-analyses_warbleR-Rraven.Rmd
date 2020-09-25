@@ -1,0 +1,144 @@
+---
+title: "ExploratoryAnalyses_warbleR"
+output: html_notebook
+---
+
+Loading latest libraries for warbleR and Rraven using devtools
+```{r}
+devtools::install_github("maRce10/warbleR")
+library(warbleR)
+library(dplyr)
+library(Rraven)
+
+```
+
+Importing selection tables and annotations made from Raven
+
+Steps taken to create a selection table using Raven:
+1. Load a given recording using Raven Pro 1.6.1.
+2. Select a given feature and save it within your training data folder
+3. Re-load the file - one at a time 
+2. Create a selection table by dragging and dropping a selection box around the feature of interest.
+3. Press enter to commit the selection table.
+4. Right-click on the tool bar and select 'Choose Measurements'.
+5. Select the following measurements to ensure that a selection table is loaded in R and recognized by the Rraven package: selection, view, channel, beginTime(s), endTime(s), lowFreq(Hz), highFreq(Hz), Begin Path, Begin File, File Offset(s), Beg File Samp (samples)
+6. Click File - Save selection table as - save it in a folder that contains the acoustic data as well (.wav file)
+
+
+
+```{r}
+
+rvn.dat <- imp_raven(all.data=T, sound.file.col = "sound.files", warbler.format =  TRUE, path ="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+
+rvn.dat.st <- selection_table(rvn.dat[1,], path ="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+
+
+trial <- selection_table(basename(a), path="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\" )
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Load recordings from xeno-canto and create a map
+```{r}
+wcb <- quer_xc("Psilopogon viridis",download = F, parallel = 4)
+xcmaps(wcb, img = FALSE) 
+
+```
+
+
+Load the necessary training data and create a selection table
+```{r}
+# Create a vector of all the recordings in the directory
+list.wav.file.names <- list.files("C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\", full.names=T)
+
+# What's the duration of these recordings?
+duration <- wavdur(files=basename(list.wav.file.names), path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+
+# Create long spectrograms with all the training data
+long_spec <- lspec(flist = basename(list.wav.file.names), ovlp = 10, it = "tiff",
+                    path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+
+# Now create selection tables
+data <- duration %>%
+  mutate(start= 0, end = duration, selec = 1)
+data <- data[,-2]  
+colnames(data) <- c("sound.files","start","end","selec")
+
+dat_table <- selection_table(data,path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+
+```
+
+
+Carry out spectrographic cross correlation
+```{r}
+# Load the acoustic data to be matched with
+a <- tuneR::readWave("C:\\Users\\Vijay\\Desktop\\Chapter 3\\HP36P3B\\20200321_090000.wav")
+test <- file.path(tempdir(), "test.wav")
+writeWave(a, test)
+
+trial <- 
+
+
+# make matrix with templates and sound files
+cm <- matrix(c(dat_table[1],test), ncol = 2)
+
+cm <- matrix(c("Phae.long1.wav-1", "Phae.long1.wav"), ncol = 2)
+             
+t <- cbind(dat_table[,1],rep(test,nrow(dat_table)))
+matrix(c(dat_table[,1],test),ncol=2)
+
+
+xc.output <- xcorr(dat_table, bp=c(0,2),
+                   output = "list", path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+
+pks <- find_peaks(xc.output = xc.output, path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+
+```
+
+
+# Create empty list
+list.of.sound.files <-  list()
+
+# Loop to read in all .wav files in directory and add the file names and .wav files to a list 
+for (x in 1:length(list.wav.file.names)) { 
+  tmp.wav <- warbleR::read_wave(basename(list.wav.file.names[x]),
+                                path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+  list.of.sound.files[[x]] <- list(list.wav.file.names[x], tmp.wav) 
+}
+
+# Create a selection table
+
+list.of.sound.files[[1]]
+
+
+trial <- tuneR::readWave(list.wav.file.names[1], header=TRUE)
+
+
+data(list = c("Phae.long1", "Phae.long2", 
+              "Phae.long3", "Phae.long4", "selec.table"))
+
+#write files to disk
+writeWave(Phae.long1,"Phae.long1.wav")
+
+cm <- matrix(c("Phae.long1.wav-1", "Phae.long1.wav"), ncol = 2)
+
+# Run cross correlation
+xc.output <- xcorr(X = lbh_selec_table[1, ], output = "list", 
+compare.matrix = cm, path = tempdir())
+
+```
+

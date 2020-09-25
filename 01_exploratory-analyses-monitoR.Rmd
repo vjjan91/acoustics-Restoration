@@ -1,0 +1,93 @@
+---
+title: "Exploratory Analyses using monitoR"
+output: html_notebook
+---
+
+Loading `monitoR` and `seewave` packages
+```{r}
+library(monitoR)
+library(seewave)
+library(tidyverse)
+```
+
+Loading a list of training features to calculate spectrogram cross correlation
+```{r}
+list.wav.file.names <- list.files("C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\", full.names = T)
+
+# Create empty list
+list.of.sound.files <-  list()
+
+# Loop to read in all .wav files in directory and add the file names and .wav files to a list 
+for (x in 1:length(list.wav.file.names)) { 
+  tmp.wav <- tuneR::readWave(list.wav.file.names[x]) 
+  list.of.sound.files[[x]] <- list(list.wav.file.names[x], tmp.wav) 
+}
+
+# Temporarily remove all associated locations from where a bird species recording was obtained
+
+for(i in 1: length(list.of.sound.files)){
+  a <- basename(list.of.sound.files[[i]][[1]])
+  a <- gsub('_.*','',a) # removing locations
+  list.of.sound.files[[i]][[1]] <- gsub("[0-9]+$", "", a) # Removing numbers 
+}
+
+
+
+```
+
+
+Creating a list of templates to be used for spectrogram cross correlation
+```{r}
+
+list_of_templates <-  list()
+
+for(i in 1:length(list.of.sound.files)){
+  trial <- file.path(tempdir(),paste0(list.of.sound.files[[i]][[1]],".wav",sep=""))
+  writeWave(list.of.sound.files[[i]][[2]],trial)
+  list_of_templates[[i]] <- makeCorTemplate(trial, name = list.of.sound.files[[i]][[1]])
+}
+
+# Combine the list of templates
+x <- NULL
+
+for(i in 1:length(list_of_templates)) {
+  x <- c(x, list_of_templates[[i]]@templates)
+}
+
+templates <- new('corTemplateList', templates=x)
+
+
+```
+
+Loading a recording to obtain correlation scores
+Couple of issues: This is taking far too long for even a single recording
+
+```{r}
+
+a <- tuneR::readWave("C:\\Users\\Vijay\\Desktop\\Chapter 3\\HP36P3B\\20200321_090000.wav")
+test <- file.path(tempdir(), "test.wav")
+writeWave(a, test)
+
+cscores <- corMatch(test,templates)
+cscores
+
+cdetects <- findPeaks(cscores)
+cdetects
+
+# Set template cutoffs (reducing cutoff to test if the correlation of a match increases)
+# But note that the probability of a misclassification also increases
+
+templateCutoff(cdetects) <- c(default=0.2)
+cdetects
+
+getDetections(cdetects)
+
+plot(cdetects)
+```
+
+
+
+
+
+
+

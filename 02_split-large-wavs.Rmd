@@ -1,0 +1,128 @@
+---
+title: "01_splitting-large-wav-files"
+output: html_notebook
+---
+
+#### This script performs the splitting of large .wav files into smaller chunks
+
+```{r}
+# Loading required libraries
+library(warbleR)
+library(seewave)
+library(dplyr)
+library(stringr)
+library(tools)
+
+# Load custom functions---------------------
+
+# Function to start at a random position and extract 3 consecutive integers
+extractRandWindow <- function(x, p){
+    firstIndex = sample(seq(length(x) - p + 1), 1)
+    x[firstIndex:(firstIndex + p -1)]
+}
+
+```
+
+#### Using warbleR::split.wavs() to split a large file
+
+Steps: 1. Load a list of .wav files in a given folder (will have to be done site by site)
+2. Select only files between 6am and 10am (to begin with)
+3. Select only a random consecutive 16 min of data (to begin with)
+3. Split file into chunks of a given duration.
+4. Give unique names to each split file
+
+```{r}
+
+# List the path that contains all folders, which contain the audiomoth data
+path <- "C:\\data\\"
+
+# Listing the folders within which .WAV files are stored
+folders <- dir(path, recursive=F,full.names=T)
+
+# Now get only those files that begin at 6am and end at 9am
+files <- list()
+
+for(i in 1:length(folders)){
+
+setwd(folders[i])
+
+# List the files within each folder and renaming the files with the prefix - SITE_ID
+a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
+file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
+
+# Extract the strings for .wav files between 6am and 10am
+time_str <- list.files(paste0(path,basename(folders)[i],"\\"),full.names = T) %>%
+                    tools::file_path_sans_ext() %>% str_extract('\\d+$')
+time_str <- time_str[time_str>="060000" & time_str <="100000"]
+
+  for(j in 1:length(unique(time_str))){
+    
+    b <- list.files(paste0(path,basename(folders)[i],"\\"),full.names = T,
+                    pattern = time_str[j])
+    files <- c(files,b)
+    }
+}
+
+# These are the list of files we need
+files <- unlist(files)
+
+# Now we choose a random consecutive 16 min of data between 6am and 10am
+# Get a list of unique dates (since we will be generating a random 16min for every date across every site)
+
+site_date <- str_extract(basename(files),'\\w+_\\d+_')
+unique(site_date) # Give you unique date and sites for which we need to generate 16 min of data
+
+subset_files <- list()
+
+for(i in 1:length(unique(site_date))){
+  
+  a <- files[str_detect(files,unique(site_date)[i])]
+  subset_dat <- extractRandWindow(a,4)
+  subset_dat <- na.exclude(subset_dat) # If there are less than 4 files
+  subset_files <- c(subset_files, subset_dat)
+}
+
+final_subset <- unlist(subset_files)
+
+# Subset those files and copy it to a separate folder
+dir.create(paste0(path,"subset"))
+file.copy(from = final_subset, to="C:\\data\\subset\\")
+
+```
+
+
+Split the files and provide unique names to each file
+```{r}
+subset_path <- "C:\\data\\subset\\"
+
+# Split the files into n-second chunks
+split_wavs(path=subset_path, sgmt.dur = 10, parallel=4)
+
+# Get files that need to be renamed
+split_files <- list.files(subset_path, full.names = T, pattern = "-")
+
+# Note the number of chunks will vary as a function of segment duration
+# 240 seconds = 24 chunks each of 10s
+
+setwd(subset_path)
+
+chunks <- c("01-10","10-20","20-30",
+            "30-40","40-50","50-60",
+            "60-70","70-80","80-90",
+            "90-100","100-110","110-120",
+            "120-130","130-140","140-150",
+            "150-160","160-170","170-180",
+            "180-190","190-200","200-210",
+            "210-220","220-230","230-240")
+
+for(i in 1:length(chunks)){
+  c <- split_files[endsWith(split_files,paste0("-",i,".wav"))]
+  d <- str_replace(c,paste0("-",i),paste0("_",chunks[i]))
+  file.rename(from=c, to=d)
+}
+
+# Remove the original files
+orig_files <- list.files(subset_path, full.names = T, pattern = ".WAV$")
+file.remove(orig_files)
+
+```
