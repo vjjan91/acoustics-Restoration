@@ -16,7 +16,7 @@ Exploratory data analysis - Here I will try a few different functions from the s
 library(seewave)
 
 # Read a sample .wav file
-a <- tuneR::readWave("C:\\data\\HP37P4B\\20200307_083000.wav")
+a <- tuneR::readWave("data\\20200307_083000.wav")
 
 # Calculate mean frequency spectrum
 # This function returns the mean frequency spectrum (i.e. the mean relative amplitude of the frequency distribution) of a time wave. Results can be expressed either in absolute or dB data.
