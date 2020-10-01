@@ -1,9 +1,9 @@
 ---
-title: "03_mean-spectra-freq-peaks"
-output: html_notebook
+editor_options: 
+  chunk_output_type: console
 ---
 
-Install necessary librarie
+Install necessary libraries
 ```{r}
 library(seewave)
 library(warbleR)
@@ -13,32 +13,76 @@ library(tuneR)
 
 Exploratory data analysis - Here I will try a few different functions from the seewave package in R to get a better sense of the distribution of frequencies over time
 ```{r}
-library(seewave)
-
 # Read a sample .wav file
 a <- tuneR::readWave("data\\20200307_083000.wav")
-
-# Calculate mean frequency spectrum
-# This function returns the mean frequency spectrum (i.e. the mean relative amplitude of the frequency distribution) of a time wave. Results can be expressed either in absolute or dB data.
-mf <- meanspec(a,f=48000,wl=256,norm=F)
-
-# Calculate frequency peaks
-# This function searches for peaks of a frequency spectrum.
-f_peak <- fpeaks(mf, threshold = 0.003)
 
 # Frequency bands plot
 # This graphical function returns a frequency spectrum as a bar plot.
 f_bands <- fbands(mf)
 
 # Soundscape frequency spectrum of a time wave
+
 # This function returns a kHz binned spectrum as described by Kasten et al. (2012) for the description of a soundscape.
 # This function essentially creates a bar plot of frequencies in kHZ by amplitude values
 s_spectr <- soundscapespec(a)
 
 ```
 
-Borrowing a function from the soundecology package in R and modifying it to suite our needs
+Acoustic Space Use (ASU)
+
+We are interested in creating a three-dimensional matrix of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)
+
+Aide et al. 2017: We aggregated recordings at time scale of hour of day and used a frequency bin size of 86.13 Hz and an amplitude filtering threshold of 0.02. So if the sampling rate is 22000 Hz, that would mean - 22000/86.13 ~ 256 frequency bins to divide up the frequency space. In this paper, there would be 24hr*256 bins = 6144 time/frequency bins
+
+Campos-Cerqueira et al. 2019: We aggregated recordings at the time scale of hour of day (24 h), used a frequency bin size of 172 Hz, and an amplitude filtering threshold of 0.003. So if the sampling rate is 22000 Hz, that would mean - 22000/172 ~ 128 frequency bins. This resulted in a three‐dimensional (x = hour, y = acoustic frequency, z = proportion of all recordings in each time/frequency bin with a frequency peak value > 0.003 amplitude) matrix of acoustic activity with a total of 3,072 time/frequency bins (24 h × 128 frequency bins).
+
+Campos-Cerqueira and Aide 2017: To calculate the amplitude, we used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of
+recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a
+peak in each time/frequency class by the total number of recordings collected during each hourly
+interval.
+
+
+To calculate ASU, we will first get values for the mean frequency spectrum and calculate frequency peaks
 ```{r}
+# Calculate mean frequency spectrum
+# This function returns the mean frequency spectrum (i.e. the mean relative amplitude of the frequency distribution) of a time wave. Results can be expressed either in absolute or dB data.
+mf <- meanspec(a,f=48000,wl=256,norm=F)
+
+# Calculate frequency peaks
+# This function searches for peaks of a frequency spectrum.
+# Setting a threshold of 172, as specified in previous papers
+f_peak <- fpeaks(mf, threshold = 0.003, freq = 172)
+```
+
+
+Space Use calculation
+```{r}
+# Window length for the spectro and spec functions to keep each row every 10Hz
+# Frequencies and seconds covered by each
+freq_per_row <- 172 # This is the frequency bin size in Hz, which corresponds to ~ 140 bins for a nyquist rate of 24000 Hz
+
+# Set an amplitude threshold
+db_threshold <- 0.003
+
+# Set the max freqency that can be used
+# This is often the nyquist frequency which is calculated as sampling frequency/2
+samplingrate <- 48000
+max_freq <- samplingrate/2
+
+# Set the Window length
+wlen <-  samplingrate/freq_per_row # Window length
+
+# This function returns a two-dimension spectrographic representation of a time wave. The function corresponds to short-term Fourier transform. An amplitude contour plot can be overlaid.
+spec <- spectro(a, f = samplingrate, wl = wlen, plot = FALSE)$amp
+
+
+# Setting frequency steps
+freq_step <- 1000
+
+# A sequence of frequencies
+Freq <- seq(from = 0, to = max_freq - freq_step, by = freq_step)
+
+# Borrowing a function from the soundecology package
 # Function that gets the proportion of values over a db value in a specific band of frequencies. Frequency is in Hz
 getscore <- function(spectrum, minf, maxf, db, freq_row){
 		miny<-round((minf)/freq_row)
@@ -49,29 +93,7 @@ getscore <- function(spectrum, minf, maxf, db, freq_row){
 		index1 <- length(subA[subA>db]) / length(subA)
 		
 		return(index1)
-	}
-
-# Window length for the spectro and spec functions to keep each row every 10Hz
-# Frequencies and seconds covered by each
-freq_per_row <- 10
-samplingrate <- 48000
-wlen <-  samplingrate/freq_per_row # Window length
-
-# This function returns a two-dimension spectrographic representation of a time wave. The function corresponds to short-term Fourier transform. An amplitude contour plot can be overlaid.
-spec <- spectro(a, f = samplingrate, wl = wlen, plot = FALSE)$amp
-
-# Set the max freqency that can be used
-# This is often the nyquist frequency which is calculated as sampling frequency/2
-max_freq <- samplingrate/2 
-
-# Set an amplitude threshold
-db_threshold <- -50
-
-# Setting freqeuncy steps
-freq_step <- 1000
-
-# A sequence of frequencies
-Freq <- seq(from = 0, to = max_freq - freq_step, by = freq_step)
+}
 
 Score <- rep(NA, length(Freq))
 for (i in 1:length(Freq)) {
@@ -79,7 +101,9 @@ for (i in 1:length(Freq)) {
 		}
 
 
+
 ```
+
 
 
 
