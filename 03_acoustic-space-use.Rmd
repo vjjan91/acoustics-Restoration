@@ -62,19 +62,21 @@ Space Use calculation
 freq_per_row <- 172 # This is the frequency bin size in Hz, which corresponds to ~ 140 bins for a nyquist rate of 24000 Hz
 
 # Set an amplitude threshold
-db_threshold <- 0.003
+db_threshold <- -50
 
 # Set the max freqency that can be used
 # This is often the nyquist frequency which is calculated as sampling frequency/2
 samplingrate <- 48000
 max_freq <- samplingrate/2
 
-# Set the Window length
-wlen <-  samplingrate/freq_per_row # Window length
+# Set the Window length 
+wlen <- samplingrate/freq_per_row
 
+
+
+  
 # This function returns a two-dimension spectrographic representation of a time wave. The function corresponds to short-term Fourier transform. An amplitude contour plot can be overlaid.
 spec <- spectro(a, f = samplingrate, wl = wlen, plot = FALSE)$amp
-
 
 # Setting frequency steps
 freq_step <- 1000
