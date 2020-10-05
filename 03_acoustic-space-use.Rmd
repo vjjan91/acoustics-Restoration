@@ -8,6 +8,10 @@ Install necessary libraries
 library(seewave)
 library(warbleR)
 library(tuneR)
+remotes::install_github("jeffreyevans/soundscapes")
+library(soundscapes)
+library(stringi)
+library(tidyverse)
 ```
 
 
@@ -71,9 +75,6 @@ max_freq <- samplingrate/2
 # Set the Window length 
 wlen <- samplingrate/freq_per_row
 
-
-
-  
 # This function returns a two-dimension spectrographic representation of a time wave. The function corresponds to short-term Fourier transform. An amplitude contour plot can be overlaid.
 spec <- spectro(a, f = samplingrate, wl = wlen, plot = FALSE)$amp
 
