@@ -16,10 +16,6 @@ Exploratory data analysis - Here I will try a few different functions from the s
 # Read a sample .wav file
 a <- tuneR::readWave("data\\20200307_083000.wav")
 
-# Frequency bands plot
-# This graphical function returns a frequency spectrum as a bar plot.
-f_bands <- fbands(mf)
-
 # Soundscape frequency spectrum of a time wave
 
 # This function returns a kHz binned spectrum as described by Kasten et al. (2012) for the description of a soundscape.
@@ -47,6 +43,9 @@ To calculate ASU, we will first get values for the mean frequency spectrum and c
 # Calculate mean frequency spectrum
 # This function returns the mean frequency spectrum (i.e. the mean relative amplitude of the frequency distribution) of a time wave. Results can be expressed either in absolute or dB data.
 mf <- meanspec(a,f=48000,wl=256,norm=F)
+
+# This graphical function returns a frequency spectrum as a bar plot.
+f_bands <- fbands(mf)
 
 # Calculate frequency peaks
 # This function searches for peaks of a frequency spectrum.
