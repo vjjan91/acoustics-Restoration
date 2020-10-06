@@ -12,6 +12,10 @@ library(tuneR)
 library(soundscapes)
 library(stringi)
 library(tidyverse)
+
+# Source any custom/other internal functions necessary for analysis
+source("code\\01_internal-functions.R")
+
 ```
 
 
@@ -45,8 +49,6 @@ interval.
 To calculate ASU: 
 
 - A. Aggregate recordings for a single day
-
-Load a list of .WAV files in a given folder
 ```{r}
 # List the path that contains all folders, which contain the audiomoth data
 path <- "C:\\data\\"
@@ -81,7 +83,7 @@ site_date <- str_extract(basename(a),'\\w+_\\d+_')
 files <- unlist(files)
 ```
 
-- B. Aggregate recordings for any single day for every unique site
+- B. Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs)
 ```{r}
 # Get the subset of files for each unique site - a random day
 # Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site
@@ -95,7 +97,7 @@ unique(site)
 for (i in 1:length(unique(site))){
   
   # Extract the strings site by site 
-  b <- files[str_detect(files,unique(site)[1])]
+  b <- files[str_detect(files,unique(site)[i])]
   
   # Select any one random site_date combination
   site_date <- str_extract(basename(b),'\\w+_\\d+_')
@@ -105,7 +107,88 @@ for (i in 1:length(unique(site))){
   subset <- c(subset,dat)
 }
 
+subset <- unlist(subset)
 ```
+
+
+- C. 
+```{r}
+
+# Trial using seewave::acoustat()
+
+wave <- a
+f <- 48000
+wl <- 512
+ovlp <- 0
+wn <- "hanning"
+n <- length(wave)
+
+## Short-term Fourier transform (based on a R::seewave internal function)
+m <- sspectro(wave, f = f, wl = wl, ovlp = ovlp, wn = wn)
+
+# frequency selection and frequency axis
+# Here, want only a sequence of numbers that correspond to the length of rows of the
+# short-term fourier transform and we divide it by 1000 to get values in kHz
+freq <- seq(0, (f/2) - (f/wl), length.out = nrow(m))/1000
+
+## TIME AXIS
+## A sequence of numbers that goes from 0 to 240 seconds, for the length of the nyquist frequency ## sampling rate/2
+time <- seq(0, n/f, length.out = ncol(m))
+
+## CONTOURS
+
+t.cont <- apply(m, MARGIN = 2, FUN = sum)
+f.cont <- apply(m, MARGIN = 1, FUN = sum)
+t.cont <- t.cont/sum(t.cont)
+f.cont <- f.cont/sum(f.cont)
+t.cont.cum <- cumsum(t.cont)
+f.cont.cum <- cumsum(f.cont)
+
+
+## STATISTICS
+fraction <-  90
+P <- fraction/100
+proportions <- as.matrix(c((1 - P)/2, 0.5, P + (1 - P)/2))
+t.quantiles <- apply(proportions, MARGIN = 1, function(x) time[length(t.cont.cum[t.cont.cum <= 
+        x]) + 1])
+f.quantiles <- apply(proportions, MARGIN = 1, function(x) freq[length(f.cont.cum[f.cont.cum <= 
+        x]) + 1])
+    time.P1 <- t.quantiles[1]
+    time.M <- t.quantiles[2]
+    time.P2 <- t.quantiles[3]
+    time.IPR <- time.P2 - time.P1
+    freq.P1 <- f.quantiles[1]
+    freq.M <- f.quantiles[2]
+    freq.P2 <- f.quantiles[3]
+    freq.IPR <- freq.P2 - freq.P1
+    results <- list(time.contour = cbind(time = time, contour = t.cont), 
+        freq.contour = cbind(frequency = freq, contour = f.cont), 
+        time.P1 = time.P1, time.M = time.M, time.P2 = time.P2, 
+        time.IPR = time.IPR, freq.P1 = freq.P1, freq.M = freq.M, 
+        freq.P2 = freq.P2, freq.IPR = freq.IPR)
+
+
+
+list_wavs <- list()
+
+for (i in 1:length(subset)){
+  r <- tuneR::readWave(subset[i])
+  list_wavs <- c(list_wavs,r)
+}
+
+trial <- do.call(bind,list_wavs[80:100])
+
+met <- acoustat(trial, f=48000)
+
+
+
+
+
+
+
+
+```
+
 
 
 
