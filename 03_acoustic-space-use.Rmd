@@ -12,6 +12,7 @@ library(tuneR)
 library(soundscapes)
 library(stringi)
 library(tidyverse)
+library(ggplot2)
 
 # Source any custom/other internal functions necessary for analysis
 source("code\\01_internal-functions.R")
@@ -61,17 +62,17 @@ files <- list()
 
 for(i in 1:length(folders)){
 
-setwd(folders[1])
+setwd(folders[i])
   
 # List the files within each folder and renaming the files with the prefix - SITE_ID
-a <- list.files(paste0(path,basename(folders)[1],"\\"), full.names = T)
-file.rename(from = a, to=paste0(basename(folders)[1],"_",basename(a)))
+a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
+file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
 
 site_date <- str_extract(basename(a),'\\w+_\\d+_')
 
 # Choosing all 24 hours of data across every unique site (288 corresponds to 12 files every 1 hour)
-  for(i in 1:length(unique(site_date))){
-    dat <- a[str_detect(a,unique(site_date)[i])]
+  for(j in 1:length(unique(site_date))){
+    dat <- a[str_detect(a,unique(site_date)[j])]
     if((length(a)<288)==TRUE){
       next
     } else {
@@ -115,24 +116,23 @@ subset <- unlist(subset)
 ```{r}
 
 # Trial using seewave::acoustat()
-
 wave <- a
 f <- 48000
-wl <- 512
+wl <- 256 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
 ovlp <- 0
 wn <- "hanning"
 n <- length(wave)
 
-## Short-term Fourier transform (based on a R::seewave internal function)
+## Short-term Fourier transform (using a seewave internal function)
 m <- sspectro(wave, f = f, wl = wl, ovlp = ovlp, wn = wn)
 
-# frequency selection and frequency axis
+# Frequency selection and frequency axis
 # Here, want only a sequence of numbers that correspond to the length of rows of the
-# short-term fourier transform and we divide it by 1000 to get values in kHz
+# short-time fourier transform and we divide it by 1000 to get values in kHz
 freq <- seq(0, (f/2) - (f/wl), length.out = nrow(m))/1000
 
 ## TIME AXIS
-## A sequence of numbers that goes from 0 to 240 seconds, for the length of the nyquist frequency ## sampling rate/2
+## A sequence of numbers that goes from 0 to 240 seconds for n values of the STFT
 time <- seq(0, n/f, length.out = ncol(m))
 
 ## CONTOURS
@@ -153,20 +153,28 @@ t.quantiles <- apply(proportions, MARGIN = 1, function(x) time[length(t.cont.cum
         x]) + 1])
 f.quantiles <- apply(proportions, MARGIN = 1, function(x) freq[length(f.cont.cum[f.cont.cum <= 
         x]) + 1])
-    time.P1 <- t.quantiles[1]
-    time.M <- t.quantiles[2]
-    time.P2 <- t.quantiles[3]
-    time.IPR <- time.P2 - time.P1
-    freq.P1 <- f.quantiles[1]
-    freq.M <- f.quantiles[2]
-    freq.P2 <- f.quantiles[3]
-    freq.IPR <- freq.P2 - freq.P1
-    results <- list(time.contour = cbind(time = time, contour = t.cont), 
+
+
+plot(x = freq, y = f.cont, type = "l", xlab = "Frequency(kHz)", 
+            ylab = "Probability")
+
+
+time.P1 <- t.quantiles[1]
+time.M <- t.quantiles[2]
+time.P2 <- t.quantiles[3]
+time.IPR <- time.P2 - time.P1
+freq.P1 <- f.quantiles[1]
+freq.M <- f.quantiles[2]
+freq.P2 <- f.quantiles[3]
+freq.IPR <- freq.P2 - freq.P1
+results <- list(time.contour = cbind(time = time, contour = t.cont), 
         freq.contour = cbind(frequency = freq, contour = f.cont), 
         time.P1 = time.P1, time.M = time.M, time.P2 = time.P2, 
         time.IPR = time.IPR, freq.P1 = freq.P1, freq.M = freq.M, 
         freq.P2 = freq.P2, freq.IPR = freq.IPR)
 
+length(time)
+length(freq)
 
 
 list_wavs <- list()
@@ -180,7 +188,7 @@ trial <- do.call(bind,list_wavs[80:100])
 
 met <- acoustat(trial, f=48000)
 
-
+acoustat(a,f=48000)
 
 
 
