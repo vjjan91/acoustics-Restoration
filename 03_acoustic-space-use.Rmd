@@ -65,7 +65,7 @@ for(i in 1:length(folders)){
 setwd(folders[i])
   
 # List the files within each folder and renaming the files with the prefix - SITE_ID
-a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
+a <- list.files(paste0(path,basename(folders)[1],"\\"), full.names = T)
 file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
 
 site_date <- str_extract(basename(a),'\\w+_\\d+_')
@@ -73,7 +73,7 @@ site_date <- str_extract(basename(a),'\\w+_\\d+_')
 # Choosing all 24 hours of data across every unique site (288 corresponds to 12 files every 1 hour)
   for(j in 1:length(unique(site_date))){
     dat <- a[str_detect(a,unique(site_date)[j])]
-    if((length(a)<288)==TRUE){
+    if((length(dat)<288)==TRUE){
       next
     } else {
       files <- c(files, dat) 
@@ -98,12 +98,24 @@ unique(site)
 for (i in 1:length(unique(site))){
   
   # Extract the strings site by site 
-  b <- files[str_detect(files,unique(site)[i])]
+  b <- files[str_detect(files,unique(site)[1])]
   
-  # Select any one random site_date combination
+  # Select all the site_date combinations for each unique site
   site_date <- str_extract(basename(b),'\\w+_\\d+_')
+  
+  for (j in length(unique(site_date))){
+    
+    dat <- b[str_detect(b,unique(site_date)[1])] # A unique 24 hours of recording/persite
+    
+    
+    
+    
+  }
+  
+  
+  
   comb <- sample(site_date,1)
-  dat <- b[str_detect(b,comb)]
+  
   
   subset <- c(subset,dat)
 }
@@ -115,8 +127,42 @@ subset <- unlist(subset)
 - C. 
 ```{r}
 
+# For example - let's consider 24 hours of data for a single site
+dat # contains 288 files
+
+# Create a sequence of numbers to combine files by 1 hour
+hour_seq <- seq(from=0,to=288, by=12)
+hour_dat <- list()
+
+for (i in 1:length(dat)){
+  s <- 
+}
+
+n=0
+j=12
+
+trial <- dat[]
+
+
+trial <- dat[1:12]
+
+
+# Combine all 24 hours
+list_wavs <- list()
+
+for (i in 1:length(dat)){
+  r <- tuneR::readWave(dat[i])
+  list_wavs <- c(list_wavs,r)
+}
+
+trial <- sapply(dat, tuneR::readWave)
+
+trial <- do.call(bind,list_wavs)
+
+
+
 # Trial using seewave::acoustat()
-wave <- a
+wave <- trial
 f <- 48000
 wl <- 256 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
 ovlp <- 0
@@ -177,14 +223,8 @@ length(time)
 length(freq)
 
 
-list_wavs <- list()
 
-for (i in 1:length(subset)){
-  r <- tuneR::readWave(subset[i])
-  list_wavs <- c(list_wavs,r)
-}
 
-trial <- do.call(bind,list_wavs[80:100])
 
 met <- acoustat(trial, f=48000)
 
