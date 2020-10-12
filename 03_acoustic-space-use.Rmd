@@ -91,17 +91,19 @@ files <- unlist(files)
 
 subset <- list()
 
+# Select all unique site combinations
 site <- str_extract(basename(files),'^([[:alnum:]])+')
 unique(site)
+
+# Select all the site_date combinations for each unique site
+site_date <- str_extract(basename(files),'\\w+_\\d+_')
+unique(site_date)
 
 # Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site
 for (i in 1:length(unique(site))){
   
-  # Extract the strings site by site 
+  # Extract the strings first by site 
   b <- files[str_detect(files,unique(site)[1])]
-  
-  # Select all the site_date combinations for each unique site
-  site_date <- str_extract(basename(b),'\\w+_\\d+_')
   
   for (j in length(unique(site_date))){
     
@@ -134,35 +136,18 @@ dat # contains 288 files
 hour_seq <- seq(from=0,to=288, by=12)
 hour_dat <- list()
 
-for (i in 1:length(dat)){
-  s <- 
+
+trial <- dat[hour_seq[1]:hour_seq[2]]
+tmp_list <- list()
+for(i in 1:length(trial)){
+   r <- tuneR::readWave(trial[i])
+   tmp_list<- c(tmp_list,r)
 }
-
-n=0
-j=12
-
-trial <- dat[]
-
-
-trial <- dat[1:12]
-
-
-# Combine all 24 hours
-list_wavs <- list()
-
-for (i in 1:length(dat)){
-  r <- tuneR::readWave(dat[i])
-  list_wavs <- c(list_wavs,r)
-}
-
-trial <- sapply(dat, tuneR::readWave)
-
-trial <- do.call(bind,list_wavs)
-
+first_hour <- do.call(bind,tmp_list)
 
 
 # Trial using seewave::acoustat()
-wave <- trial
+wave <- first_hour
 f <- 48000
 wl <- 256 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
 ovlp <- 0
@@ -177,16 +162,37 @@ m <- sspectro(wave, f = f, wl = wl, ovlp = ovlp, wn = wn)
 # short-time fourier transform and we divide it by 1000 to get values in kHz
 freq <- seq(0, (f/2) - (f/wl), length.out = nrow(m))/1000
 
-## TIME AXIS
-## A sequence of numbers that goes from 0 to 240 seconds for n values of the STFT
+## Time Axis
+## A sequence of numbers that goes from 0 to X seconds for n values of the STFT
 time <- seq(0, n/f, length.out = ncol(m))
 
 ## CONTOURS
-
 t.cont <- apply(m, MARGIN = 2, FUN = sum)
 f.cont <- apply(m, MARGIN = 1, FUN = sum)
 t.cont <- t.cont/sum(t.cont)
 f.cont <- f.cont/sum(f.cont)
+
+# ggplot
+spectrogram <- spectro(a, f=f, plot=FALSE)
+
+frequency <- rep(spectrogram$freq, times=ncol(spectrogram$amp))
+time <- rep(spectrogram$time, each=nrow(spectrogram$amp))
+amplitude <- as.vector(spectrogram$amp)
+
+
+df <- data.frame(freq, f.cont)
+
+ggplot(df, aes(x=freq, y=f.cont)) +
+  geom_line()+
+  theme_bw()
+
+## ggplot object
+## note: aes_string to pass R CMD check if not get a NOTE 'no visible global function definition for aes'
+v <- ggplot2::ggplot(df, aes(x="time", y="frequency", z = "amplitude"))
+  
+
+
+
 t.cont.cum <- cumsum(t.cont)
 f.cont.cum <- cumsum(f.cont)
 
@@ -202,7 +208,7 @@ f.quantiles <- apply(proportions, MARGIN = 1, function(x) freq[length(f.cont.cum
 
 
 plot(x = freq, y = f.cont, type = "l", xlab = "Frequency(kHz)", 
-            ylab = "Probability")
+            ylab = "Amplitude")
 
 
 time.P1 <- t.quantiles[1]
