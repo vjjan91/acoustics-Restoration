@@ -13,6 +13,7 @@ library(tidyverse)
 library(dplyr)
 library(stringr)
 library(vegan)
+library(tidyr)
 
 ```
 
@@ -25,14 +26,16 @@ data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acou
 
 
 ```
-#sorting from the main data
 
-#To get the columns I want to consider
+
+#Site-wise (4 minute) sorting 
+
 ```{r}
-a <- data %>%
-  select_if() %>%
-  slice(1:24)
+#Split the Filenames into 4 columns : Site, Date, Time and Splits   
+data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
+data1
   
+
 
 
 ```
