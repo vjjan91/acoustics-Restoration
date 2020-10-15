@@ -22,16 +22,21 @@ First step is to Sort the df from the annotated datasheet for running ordination
 
 #Attach the 2020_summer_annotation data 
 data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acoustics-westernGhats\\data\\2020_Summer_annotation_AR_ver_01.csv")
-setDF <- data
-
-#sorting from the main data
-
-setDF %>%
-  group_by(IP:ISO) %>%
-  slice(1:24)
 
 
 ```
+#sorting from the main data
+
+#To get the columns I want to consider
+```{r}
+a <- data %>%
+  select_if() %>%
+  slice(1:24)
+  
+
+
+```
+
 
 
 
