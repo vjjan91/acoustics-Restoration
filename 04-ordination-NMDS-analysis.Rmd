@@ -2,7 +2,36 @@
 title: "04-ordination-NMDS-analysis"
 output: html_document
 ---
-##Load the 2020_summer_annotation data
+
+This script is for site-wise (Benchmark, Actice and Passive sites) species composition ordination analysis for the 2020_summer_annotated data.
+
+
+##Intsall required packages
 
 ```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+
+```
+
+First step is to Sort the df from the annotated datasheet for running ordination (NMDS) analysis.
+
+```{r}
+
+#Attach the 2020_summer_annotation data 
+data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acoustics-westernGhats\\data\\2020_Summer_annotation_AR_ver_01.csv")
+setDF <- data
+
+#sorting from the main data
+
+setDF %>%
+  group_by(IP:ISO) %>%
+  slice(1:24)
+
+
+```
+
+
 
