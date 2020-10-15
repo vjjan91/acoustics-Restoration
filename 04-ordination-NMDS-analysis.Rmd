@@ -33,10 +33,8 @@ data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acou
 ```{r}
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
-data1
-  
-
-
+data2 <- data1 %>% group_by(Site, Date, Time, Restoration.Type..Benchmark.Active.Passive.) %>% summarise(sum=n())
+data2
 
 ```
 
