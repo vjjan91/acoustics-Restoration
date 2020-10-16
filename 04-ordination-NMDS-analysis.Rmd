@@ -6,30 +6,24 @@ output: html_document
 This script is for site-wise (Benchmark, Actice and Passive sites) species composition ordination analysis for the 2020_summer_annotated data.
 
 
-##Intsall required packages
-
+Install required packages
 ```{r}
 library(tidyverse)
 library(dplyr)
 library(stringr)
 library(vegan)
 library(tidyr)
-
 ```
 
 First step is to Sort the df from the annotated datasheet for running ordination (NMDS) analysis.
 
 ```{r}
-
 #Attach the 2020_summer_annotation data 
-data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acoustics-westernGhats\\data\\2020_Summer_annotation_AR_ver_01.csv")
-
-
+data <- read.csv("data\\2020_Summer_annotation_AR_ver_01.csv")
 ```
 
 
 #Site-wise (4 minute) sorting 
-
 ```{r}
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
@@ -40,6 +34,14 @@ data2
 
 ```
 
+In terms of next steps:
+1. I would say - load in a combined data file that contains all your annotations as well as the latest one that includes Akshay's - let's call it as our working document or something
+2. repeat the steps you did above.
+3. For every column whose value is >1, count it as 1 - that's for species richness right? For example GJ in the first row has a value of 14, which means there were 14 annotations for the first 5 minutes, but species richness should be 1. 
+4. Once that is done, you can do perhaps explore a few metrics:
+- for example, group_by SITEID alone - gives you an overall species richness by SITE alone
+- group by treatment type - gives you species richness by benchmark/restored/unrestored.
 
+5. You can take a look at Priyanka's code to then calculate some other general metrics once the data has been formatted in a way it is needed. 
 
 
