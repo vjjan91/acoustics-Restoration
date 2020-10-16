@@ -41,14 +41,19 @@ data1$site_date_time
 ```
 
 ```{r}
-data2 <-data1 %>%group_by(site_date_time)
+data2 <-data1 %>%group_by(site_date_time)%>%
+summarise_at(.vars = vars(c("IP":"ISO")),
+.funs = sum)%>%transform() 
+as.numeric(data1$GJ>0)
+norm<-function(x)as.numeric(x>0)
 data2
 
 ```
 
 ```{r}
-data3 <- cbind(data2[3], apply(data2[7:112],2, function(x){as.numeric(x>0)}))
+data3 <- cbind(data2[1], apply(data2[2:107],2, function(x){as.numeric(x>0)}))
 data3
+
 ```
 
 
