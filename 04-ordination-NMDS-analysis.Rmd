@@ -34,14 +34,12 @@ data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acou
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 
-a <- c("1")
 
 #sum of species occurence in each 4-minute files
 data2 <- data1 %>% group_by(Site, Date, Time, Restoration.Type..Benchmark.Active.Passive.)
 
-for (i in colnames(data2)){
-data3 <- as.numeric(data2$i>0) 
-}
+
+data3 <- as.numeric(data2$CBS>0) 
 
 data3
 
