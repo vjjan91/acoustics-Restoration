@@ -13,6 +13,8 @@ library(soundscapes)
 library(stringi)
 library(tidyverse)
 library(ggplot2)
+library(RColorBrewer)
+library(cowplot)
 
 # Source any custom/other internal functions necessary for analysis
 source("code\\01_internal-functions.R")
@@ -84,7 +86,6 @@ files <- unlist(files)
 ```{r}
 # Get the subset of files for each unique site - a random day
 # Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site
-
 subset <- list()
 
 # Select all unique site combinations
@@ -149,7 +150,7 @@ for(k in 1:(length(hour_seq)-1)){
 
 
 # Trial using seewave::acoustat()
-wave <- hourlydat[[7]]
+wave <- hourlydat[[23]]
 f <- 48000
 wl <- 256 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
 ovlp <- 0
@@ -170,35 +171,26 @@ f.cont <- f.cont/sum(f.cont)
 
 time_of_day <- c("00:00 to 01:00","01:00 to 02:00","02:00 to 03:00","03:00 to 04:00",
                  "04:00 to 05:00","05:00 to 06:00","06:00 to 07:00","07:00 to 08:00",
-                 "08:00 to 09:00",
-                 "09:00 to 10:00","10:00 to 11:00","11:00 to 12:00","12:00 to 13:00",
-                 "13:00 to 14:00","14:00 to 15:00","15:00 to 16:00","16:00 to 17:00",
-                 "17:00 to 18:00","18:00 to 19:00","19:00 to 20:00","20:00 to 21:00",
-                 "21:00 to 22:00","22:00 to 23:00","23:00 to 24:00")
+                 "08:00 to 09:00","09:00 to 10:00","10:00 to 11:00","11:00 to 12:00", 
+                 "12:00 to 13:00","13:00 to 14:00","14:00 to 15:00","15:00 to 16:00",
+                 "16:00 to 17:00","17:00 to 18:00","18:00 to 19:00","19:00 to 20:00",
+                 "20:00 to 21:00","21:00 to 22:00","22:00 to 23:00","23:00 to 24:00")
 
 plot_dat <- data.frame()
-a <- data.frame(freq, f.cont,time_of_day=rep(time_of_day[7], each=length(f.cont)))
+a <- data.frame(freq, f.cont,time_of_day=rep(time_of_day[23], each=length(f.cont)))
 plot_dat <- rbind(a, plot_dat)
 
-
-g1 <- ggplot(plot_dat, aes(x =time_of_day, y=freq)) +
+colors
+g1 <- ggplot(plot_dat, aes(y=time_of_day, x=freq)) +
   geom_tile(aes(fill = f.cont)) +
-  #geom_text(aes(label = round(f.cont, 3))) +
-  scale_fill_continuous(low = "violetred", high = "aquamarine")+
-  theme_bw()
+  scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
+    theme_bw()
 
 
-# Create a matrix necessary to visualize the data
-data_mat <- plot_dat %>%
-  # Convert long-form to wide-form
-  spread(key = freq, value = f.cont) %>%
-  as.data.frame %>%
-  # Extract column 'Sector' and use it to name rows. 
-  # This is necessary so the final output is a numeric matrix, the input which the heatmap function takes
-  column_to_rownames(var = "time_of_day") %>%
-  as.matrix
-
-
+g2 <- ggplot(plot_dat, aes(y=freq, fill= f.cont, x=time_of_day)) + 
+  geom_density(alpha = 0.5) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+  theme_minimal_hgrid(12)
 
 
 ## Time Axis
@@ -208,18 +200,6 @@ time <- seq(0, n/f, length.out = ncol(m))
 ## CONTOURS
 t.cont <- apply(m, MARGIN = 2, FUN = sum)
 t.cont <- t.cont/sum(t.cont)
-
-
-
-ggplot(df, aes(x=freq, y=f.cont)) +
-  geom_line()+
-  theme_bw()
-
-## ggplot object
-## note: aes_string to pass R CMD check if not get a NOTE 'no visible global function definition for aes'
-v <- ggplot2::ggplot(df, aes(x="time", y="frequency", z = "amplitude"))
-  
-
 
 
 t.cont.cum <- cumsum(t.cont)
@@ -292,54 +272,6 @@ f_bands <- fbands(mf)
 f_peak <- fpeaks(mf, threshold = 0.003, freq = 172)
 ```
 
-
-Space Use calculation
-```{r}
-# Window length for the spectro and spec functions to keep each row every 10Hz
-# Frequencies and seconds covered by each
-freq_per_row <- 172 # This is the frequency bin size in Hz, which corresponds to ~ 140 bins for a nyquist rate of 24000 Hz
-
-# Set an amplitude threshold
-db_threshold <- -50
-
-# Set the max freqency that can be used
-# This is often the nyquist frequency which is calculated as sampling frequency/2
-samplingrate <- 48000
-max_freq <- samplingrate/2
-
-# Set the Window length 
-wlen <- samplingrate/freq_per_row
-
-# This function returns a two-dimension spectrographic representation of a time wave. The function corresponds to short-term Fourier transform. An amplitude contour plot can be overlaid.
-spec <- spectro(a, f = samplingrate, wl = wlen, plot = FALSE)$amp
-
-# Setting frequency steps
-freq_step <- 1000
-
-# A sequence of frequencies
-Freq <- seq(from = 0, to = max_freq - freq_step, by = freq_step)
-
-# Borrowing a function from the soundecology package
-# Function that gets the proportion of values over a db value in a specific band of frequencies. Frequency is in Hz
-getscore <- function(spectrum, minf, maxf, db, freq_row){
-		miny<-round((minf)/freq_row)
-		maxy<-round((maxf)/freq_row)
-		
-		subA = spectrum[miny:maxy,]
-		
-		index1 <- length(subA[subA>db]) / length(subA)
-		
-		return(index1)
-}
-
-Score <- rep(NA, length(Freq))
-for (i in 1:length(Freq)) {
-			Score[i] = getscore(spec, Freq[i], (Freq[i] + freq_step), db_threshold, freq_per_row)
-		}
-
-
-
-```
 
 
 
