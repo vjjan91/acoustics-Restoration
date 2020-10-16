@@ -34,21 +34,38 @@ data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acou
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 
-
-#sum of species occurence in each 4-minute files
-data2 <- data1 %>% group_by(Site, Date, Time, Restoration.Type..Benchmark.Active.Passive.)
-
-
-data3 <- as.numeric(data2$CBS>0) 
-
-data3
+#combine columns before grouping
+data1$site_date_time <- paste(data1$Site, data1$Date, data1$Time, sep="_")
+data1$site_date_time
 
 ```
 
 ```{r}
+data2 <-data1 %>%group_by(site_date_time)
+data2
+
+```
+
+```{r}
+data3 <- cbind(data2[3], apply(data2[7:112],2, function(x){as.numeric(x>0)}))
+data3
+```
+
+
+
+
+```{r}
+#sum of species occurence in each 4-minute files
+data2 <- data1 %>% group_by(Site, Date, Time, Restoration.Type..Benchmark.Active.Passive.)
+
+data3<- cbind(data1[1], apply(data1[2:107],2,function(x){as.numeric(x>0)}))
+
+data3
 
 summarise_at(.vars = vars(c("IP":"ISO")),
 .funs = sum) %>%
   summarise_if()
+
+```
 
 
