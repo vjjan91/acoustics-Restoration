@@ -55,16 +55,7 @@ data3
 
 
 ```{r}
-#sum of species occurence in each 4-minute files
-data2 <- data1 %>% group_by(Site, Date, Time, Restoration.Type..Benchmark.Active.Passive.)
 
-data3<- cbind(data1[1], apply(data1[2:107],2,function(x){as.numeric(x>0)}))
-
-data3
-
-summarise_at(.vars = vars(c("IP":"ISO")),
-.funs = sum) %>%
-  summarise_if()
 
 ```
 
