@@ -19,9 +19,8 @@ First step is to Sort the df from the annotated datasheet for running ordination
 
 ```{r}
 #Attach the 2020_summer_annotation data 
-data <- read.csv("data\\2020-summer-annotation-working document.csv")
+data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\2020-summer-annotation-working document.csv")
 data
-data <- read.csv("data\\2020_Summer_annotation_AR_ver_01.csv")
 ```
 
 
