@@ -22,8 +22,8 @@ First step is to Sort the df from the annotated datasheet for running ordination
 ```{r}
 
 #Attach the 2020_summer_annotation data 
-data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\acoustics-westernGhats\\data\\2020_Summer_annotation_AR_ver_01.csv")
-
+data <- read.csv("data\\2020-summer-annotation-working document.csv")
+data
 
 ```
 
@@ -42,7 +42,7 @@ data1$site_date_time
 
 ```{r}
 data2 <-data1 %>%group_by(site_date_time)%>%
-summarise_at(.vars = vars(c("IP":"ISO")),
+summarise_at(.vars = vars(c("IP":"CR")),
 .funs = sum)%>%transform() 
 as.numeric(data1$GJ>0)
 norm<-function(x)as.numeric(x>0)
@@ -51,11 +51,26 @@ data2
 ```
 
 ```{r}
-data3 <- cbind(data2[1], apply(data2[2:107],2, function(x){as.numeric(x>0)}))
-data3
+dataNMDS <- cbind(data2[1], apply(data2[2:107],2, function(x){as.numeric(x>0)}))
+dataNMDS
 
 ```
 
+
+```{r}
+#subset the sorted dataframe on which to base the ordination
+df1 <- dataNMDS[, 2:107]
+
+## THe column contains the descriptive data
+df2 <- dataNMDS[, 1]
+```
+
+
+```{r}
+NMDS <- metaMDS(df1, distance = "bray", k=2)
+
+
+```
 
 
 
