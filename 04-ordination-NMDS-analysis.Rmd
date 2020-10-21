@@ -6,30 +6,26 @@ output: html_document
 This script is for site-wise (Benchmark, Actice and Passive sites) species composition ordination analysis for the 2020_summer_annotated data.
 
 
-##Intsall required packages
-
+Install required packages
 ```{r}
 library(tidyverse)
 library(dplyr)
 library(stringr)
 library(vegan)
 library(tidyr)
-
 ```
 
 First step is to Sort the df from the annotated datasheet for running ordination (NMDS) analysis.
 
 ```{r}
-
 #Attach the 2020_summer_annotation data 
 data <- read.csv("data\\2020-summer-annotation-working document.csv")
 data
-
+data <- read.csv("data\\2020_Summer_annotation_AR_ver_01.csv")
 ```
 
 
 #Site-wise (4 minute) sorting 
-
 ```{r}
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
@@ -64,7 +60,6 @@ df1 <- dataNMDS[, 2:107]
 ## THe column contains the descriptive data
 df2 <- dataNMDS[, 1]
 ```
-
 
 ```{r}
 NMDS <- metaMDS(df1, distance = "bray", k=2)

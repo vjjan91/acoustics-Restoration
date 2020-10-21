@@ -1,6 +1,6 @@
 ---
-title: "01_splitting-large-wav-files"
-output: html_notebook
+editor_options: 
+  chunk_output_type: console
 ---
 
 #### This script performs the splitting of large .wav files into smaller chunks
@@ -32,14 +32,13 @@ Steps: 1. Load a list of .wav files in a given folder (will have to be done site
 4. Give unique names to each split file
 
 ```{r}
-
 # List the path that contains all folders, which contain the audiomoth data
 path <- "C:\\data\\"
 
 # Listing the folders within which .WAV files are stored
 folders <- dir(path, recursive=F,full.names=T)
 
-# Now get only those files that begin at 6am and end at 9am
+# Now get only those files that begin at 6am and end at 10am
 files <- list()
 
 for(i in 1:length(folders)){

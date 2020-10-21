@@ -8,6 +8,17 @@ Install necessary libraries
 library(seewave)
 library(warbleR)
 library(tuneR)
+# remotes::install_github("jeffreyevans/soundscapes")
+library(soundscapes)
+library(stringi)
+library(tidyverse)
+library(ggplot2)
+library(RColorBrewer)
+library(cowplot)
+
+# Source any custom/other internal functions necessary for analysis
+source("code\\01_internal-functions.R")
+
 ```
 
 
@@ -15,10 +26,6 @@ Exploratory data analysis - Here I will try a few different functions from the s
 ```{r}
 # Read a sample .wav file
 a <- tuneR::readWave("data\\20200307_083000.wav")
-
-# Frequency bands plot
-# This graphical function returns a frequency spectrum as a bar plot.
-f_bands <- fbands(mf)
 
 # Soundscape frequency spectrum of a time wave
 
@@ -36,17 +43,228 @@ Aide et al. 2017: We aggregated recordings at time scale of hour of day and used
 
 Campos-Cerqueira et al. 2019: We aggregated recordings at the time scale of hour of day (24 h), used a frequency bin size of 172 Hz, and an amplitude filtering threshold of 0.003. So if the sampling rate is 22000 Hz, that would mean - 22000/172 ~ 128 frequency bins. This resulted in a three‐dimensional (x = hour, y = acoustic frequency, z = proportion of all recordings in each time/frequency bin with a frequency peak value > 0.003 amplitude) matrix of acoustic activity with a total of 3,072 time/frequency bins (24 h × 128 frequency bins).
 
-Campos-Cerqueira and Aide 2017: To calculate the amplitude, we used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of
-recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a
-peak in each time/frequency class by the total number of recordings collected during each hourly
-interval.
+Campos-Cerqueira and Aide 2017: To calculate the amplitude, we used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a peak in each time/frequency class by the total number of recordings collected during each hourly interval.
+
+To calculate ASU: 
+
+- A. Aggregate recordings for a single day
+```{r}
+# List the path that contains all folders, which contain the audiomoth data
+path <- "C:\\data\\"
+
+# Listing the folders within which .WAV files are stored
+folders <- dir(path, recursive=F,full.names=T)
+
+# Now get only those files for a full 24 hours across every unique site
+files <- list()
+
+for(i in 1:length(folders)){
+
+setwd(folders[i])
+  
+# List the files within each folder and renaming the files with the prefix - SITE_ID
+a <- list.files(paste0(path,basename(folders)[1],"\\"), full.names = T)
+file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
+
+site_date <- str_extract(basename(a),'\\w+_\\d+_')
+
+# Choosing all 24 hours of data across every unique site (288 corresponds to 12 files every 1 hour)
+  for(j in 1:length(unique(site_date))){
+    dat <- a[str_detect(a,unique(site_date)[j])]
+    if((length(dat)<288)==TRUE){
+      next
+    } else {
+      files <- c(files, dat) 
+    }
+  }
+}
+
+files <- unlist(files)
+```
+
+- B. Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs)
+```{r}
+# Get the subset of files for each unique site - a random day
+# Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site
+subset <- list()
+
+# Select all unique site combinations
+site <- str_extract(basename(files),'^([[:alnum:]])+')
+unique(site)
+
+# Select all the site_date combinations for each unique site
+site_date <- str_extract(basename(files),'\\w+_\\d+_')
+unique(site_date)
+
+# Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site
+for (i in 1:length(unique(site))){
+  
+  # Extract the strings first by site 
+  b <- files[str_detect(files,unique(site)[1])]
+  site_date <- unique(str_extract(basename(b),'\\w+_\\d+_'))
+  
+  for (j in length(site_date)){
+    
+    dat <- b[str_detect(b,site_date[1])] # A unique 24 hours of recording/persite
+    
+    
+    
+    
+  }
+  
+  
+  
+  comb <- sample(site_date,1)
+  
+  
+  subset <- c(subset,dat)
+}
+
+subset <- unlist(subset)
+```
 
 
-To calculate ASU, we will first get values for the mean frequency spectrum and calculate frequency peaks
+- C. 
+```{r}
+
+# For example - let's consider 24 hours of data for a single site
+dat # contains 288 files
+
+# Store the each hour of data as a list here
+hourlydat <- list()
+
+# Create a sequence of numbers to combine files by 1 hour
+hour_seq <- seq(from=0,to=288, by=12)
+
+for(k in 1:(length(hour_seq)-1)){
+  d <- dat[hour_seq[k]:hour_seq[k+1]]
+  tmp_list <- list()
+  for(m in 1:length(d)){
+    r <- tuneR::readWave(d[m])
+    tmp_list<- c(tmp_list,r)
+  }
+  data_needed <- do.call(bind,tmp_list)
+  rm(tmp_list)
+  hourlydat <- c(hourlydat,data_needed)
+}
+
+
+# Trial using seewave::acoustat()
+wave <- hourlydat[[23]]
+f <- 48000
+wl <- 256 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
+ovlp <- 0
+wn <- "hanning"
+n <- length(wave)
+
+## Short-term Fourier transform (using a seewave internal function)
+m <- sspectro(wave, f = f, wl = wl, ovlp = ovlp, wn = wn)
+
+# Frequency selection and frequency axis
+# Here, want only a sequence of numbers that correspond to the length of rows of the
+# short-time fourier transform and we divide it by 1000 to get values in kHz
+freq <- seq(0, (f/2) - (f/wl), length.out = nrow(m))/1000
+
+# Contours
+f.cont <- apply(m, MARGIN = 1, FUN = sum)
+f.cont <- f.cont/sum(f.cont)
+
+time_of_day <- c("00:00 to 01:00","01:00 to 02:00","02:00 to 03:00","03:00 to 04:00",
+                 "04:00 to 05:00","05:00 to 06:00","06:00 to 07:00","07:00 to 08:00",
+                 "08:00 to 09:00","09:00 to 10:00","10:00 to 11:00","11:00 to 12:00", 
+                 "12:00 to 13:00","13:00 to 14:00","14:00 to 15:00","15:00 to 16:00",
+                 "16:00 to 17:00","17:00 to 18:00","18:00 to 19:00","19:00 to 20:00",
+                 "20:00 to 21:00","21:00 to 22:00","22:00 to 23:00","23:00 to 24:00")
+
+plot_dat <- data.frame()
+a <- data.frame(freq, f.cont,time_of_day=rep(time_of_day[23], each=length(f.cont)))
+plot_dat <- rbind(a, plot_dat)
+
+colors
+g1 <- ggplot(plot_dat, aes(y=time_of_day, x=freq)) +
+  geom_tile(aes(fill = f.cont)) +
+  scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
+    theme_bw()
+
+
+g2 <- ggplot(plot_dat, aes(y=freq, fill= f.cont, x=time_of_day)) + 
+  geom_density(alpha = 0.5) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+  theme_minimal_hgrid(12)
+
+
+## Time Axis
+## A sequence of numbers that goes from 0 to X seconds for n values of the STFT
+time <- seq(0, n/f, length.out = ncol(m))
+
+## CONTOURS
+t.cont <- apply(m, MARGIN = 2, FUN = sum)
+t.cont <- t.cont/sum(t.cont)
+
+
+t.cont.cum <- cumsum(t.cont)
+f.cont.cum <- cumsum(f.cont)
+
+
+## STATISTICS
+fraction <-  90
+P <- fraction/100
+proportions <- as.matrix(c((1 - P)/2, 0.5, P + (1 - P)/2))
+t.quantiles <- apply(proportions, MARGIN = 1, function(x) time[length(t.cont.cum[t.cont.cum <= 
+        x]) + 1])
+f.quantiles <- apply(proportions, MARGIN = 1, function(x) freq[length(f.cont.cum[f.cont.cum <= 
+        x]) + 1])
+
+
+plot(x = freq, y = f.cont, type = "l", xlab = "Frequency(kHz)", 
+            ylab = "Amplitude")
+
+
+time.P1 <- t.quantiles[1]
+time.M <- t.quantiles[2]
+time.P2 <- t.quantiles[3]
+time.IPR <- time.P2 - time.P1
+freq.P1 <- f.quantiles[1]
+freq.M <- f.quantiles[2]
+freq.P2 <- f.quantiles[3]
+freq.IPR <- freq.P2 - freq.P1
+results <- list(time.contour = cbind(time = time, contour = t.cont), 
+        freq.contour = cbind(frequency = freq, contour = f.cont), 
+        time.P1 = time.P1, time.M = time.M, time.P2 = time.P2, 
+        time.IPR = time.IPR, freq.P1 = freq.P1, freq.M = freq.M, 
+        freq.P2 = freq.P2, freq.IPR = freq.IPR)
+
+length(time)
+length(freq)
+
+
+
+
+
+met <- acoustat(trial, f=48000)
+
+acoustat(a,f=48000)
+
+
+
+
+
+
+```
+
+
+
+
+
+
+we will first get values for the mean frequency spectrum and calculate frequency peaks
 ```{r}
 # Calculate mean frequency spectrum
 # This function returns the mean frequency spectrum (i.e. the mean relative amplitude of the frequency distribution) of a time wave. Results can be expressed either in absolute or dB data.
 mf <- meanspec(a,f=48000,wl=256,norm=F)
+
+# This graphical function returns a frequency spectrum as a bar plot.
+f_bands <- fbands(mf)
 
 # Calculate frequency peaks
 # This function searches for peaks of a frequency spectrum.
@@ -54,57 +272,6 @@ mf <- meanspec(a,f=48000,wl=256,norm=F)
 f_peak <- fpeaks(mf, threshold = 0.003, freq = 172)
 ```
 
-
-Space Use calculation
-```{r}
-# Window length for the spectro and spec functions to keep each row every 10Hz
-# Frequencies and seconds covered by each
-freq_per_row <- 172 # This is the frequency bin size in Hz, which corresponds to ~ 140 bins for a nyquist rate of 24000 Hz
-
-# Set an amplitude threshold
-db_threshold <- -50
-
-# Set the max freqency that can be used
-# This is often the nyquist frequency which is calculated as sampling frequency/2
-samplingrate <- 48000
-max_freq <- samplingrate/2
-
-# Set the Window length 
-wlen <- samplingrate/freq_per_row
-
-
-
-  
-# This function returns a two-dimension spectrographic representation of a time wave. The function corresponds to short-term Fourier transform. An amplitude contour plot can be overlaid.
-spec <- spectro(a, f = samplingrate, wl = wlen, plot = FALSE)$amp
-
-# Setting frequency steps
-freq_step <- 1000
-
-# A sequence of frequencies
-Freq <- seq(from = 0, to = max_freq - freq_step, by = freq_step)
-
-# Borrowing a function from the soundecology package
-# Function that gets the proportion of values over a db value in a specific band of frequencies. Frequency is in Hz
-getscore <- function(spectrum, minf, maxf, db, freq_row){
-		miny<-round((minf)/freq_row)
-		maxy<-round((maxf)/freq_row)
-		
-		subA = spectrum[miny:maxy,]
-		
-		index1 <- length(subA[subA>db]) / length(subA)
-		
-		return(index1)
-}
-
-Score <- rep(NA, length(Freq))
-for (i in 1:length(Freq)) {
-			Score[i] = getscore(spec, Freq[i], (Freq[i] + freq_step), db_threshold, freq_per_row)
-		}
-
-
-
-```
 
 
 
