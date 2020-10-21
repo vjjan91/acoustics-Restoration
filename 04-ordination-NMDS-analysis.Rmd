@@ -19,6 +19,8 @@ First step is to Sort the df from the annotated datasheet for running ordination
 
 ```{r}
 #Attach the 2020_summer_annotation data 
+data <- read.csv("data\\2020-summer-annotation-working document.csv")
+data
 data <- read.csv("data\\2020_Summer_annotation_AR_ver_01.csv")
 ```
 
@@ -28,20 +30,48 @@ data <- read.csv("data\\2020_Summer_annotation_AR_ver_01.csv")
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 
-data2 <- data1 %>% group_by(Site, Date, Time, Restoration.Type..Benchmark.Active.Passive.) %>% summarise_at(.vars = vars(c("IP":"ISO")),
-.funs = sum)
+#combine columns before grouping
+data1$site_date_time <- paste(data1$Site, data1$Date, data1$Time, sep="_")
+data1$site_date_time
+
+```
+
+```{r}
+data2 <-data1 %>%group_by(site_date_time)%>%
+summarise_at(.vars = vars(c("IP":"CR")),
+.funs = sum)%>%transform() 
+as.numeric(data1$GJ>0)
+norm<-function(x)as.numeric(x>0)
 data2
 
 ```
 
-In terms of next steps:
-1. I would say - load in a combined data file that contains all your annotations as well as the latest one that includes Akshay's - let's call it as our working document or something
-2. repeat the steps you did above.
-3. For every column whose value is >1, count it as 1 - that's for species richness right? For example GJ in the first row has a value of 14, which means there were 14 annotations for the first 5 minutes, but species richness should be 1. 
-4. Once that is done, you can do perhaps explore a few metrics:
-- for example, group_by SITEID alone - gives you an overall species richness by SITE alone
-- group by treatment type - gives you species richness by benchmark/restored/unrestored.
+```{r}
+dataNMDS <- cbind(data2[1], apply(data2[2:107],2, function(x){as.numeric(x>0)}))
+dataNMDS
 
-5. You can take a look at Priyanka's code to then calculate some other general metrics once the data has been formatted in a way it is needed. 
+```
+
+
+```{r}
+#subset the sorted dataframe on which to base the ordination
+df1 <- dataNMDS[, 2:107]
+
+## THe column contains the descriptive data
+df2 <- dataNMDS[, 1]
+```
+
+```{r}
+NMDS <- metaMDS(df1, distance = "bray", k=2)
+
+
+```
+
+
+
+```{r}
+
+
+```
 
 
