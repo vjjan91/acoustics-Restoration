@@ -36,7 +36,7 @@ data1$site_date_time
 ```
 
 ```{r}
-data2 <-data1 %>%group_by(site_date_time)%>%
+data2 <-data1 %>%group_by(site_date_time, Restoration.Type..Benchmark.Active.Passive.)%>%
 summarise_at(.vars = vars(c("IP":"CR")),
 .funs = sum)%>%transform() 
 as.numeric(data1$GJ>0)
@@ -46,23 +46,67 @@ data2
 ```
 
 ```{r}
-dataNMDS <- cbind(data2[1], apply(data2[2:107],2, function(x){as.numeric(x>0)}))
+dataNMDS <- cbind(data2[ "Restoration.Type..Benchmark.Active.Passive."], apply(data2[3:108],2, function(x){as.numeric(x>0)}))
+dataNMDS[is.na(dataNMDS)] <- 0
 dataNMDS
-
+##write.csv(dataNMDS, "D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\dataNMDS.csv")
 ```
 
 
 ```{r}
 #subset the sorted dataframe on which to base the ordination
-df1 <- dataNMDS[, 2:107]
+df1 <- dataNMDS[,2:107]
 
 ## THe column contains the descriptive data
-df2 <- dataNMDS[, 1]
+df2 <- dataNMDS[, 1:1]
+df2
 ```
 
 ```{r}
+#Ordination by NMDS
 NMDS <- metaMDS(df1, distance = "bray", k=2)
 
+```
+
+
+
+```{r}
+#Data visualization
+#install.packages("ggplot2")
+library("ggplot2")
+
+```
+
+
+
+```{r}
+
+#Extract the axes (x and Y) scores
+datascores <- as.data.frame(scores(NMDS))
+
+```
+
+
+```{r}
+
+#Add/Calculate spider diagram
+scores <- cbind(as.data.frame(datascores), Restoration = df2["Restoration.Type..Benchmark.Active.Passive."])
+centroids <- aggregate(cbind(NMDS1, NMDS2) ~ Restoration, data = scores, FUN = mean)
+seg <- merge(scores, setNames(centroids, c('REstoration','oNMDS1','oNMDS2')),
+             by = 'Restoration', sort = FALSE)
+
+```
+
+```{r}
+#plot
+ggplot(scores, aes(x=NMDS1, y= NMDS2, colour = Restoration))
+
+```
+
+
+```{r}
+
+
 
 ```
 
@@ -71,6 +115,53 @@ NMDS <- metaMDS(df1, distance = "bray", k=2)
 ```{r}
 
 
+
 ```
 
+
+
+
+```{r}
+
+
+
+```
+
+
+
+
+```{r}
+
+
+
+```
+
+
+
+```{r}
+
+
+
+```
+
+
+
+
+
+
+
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
