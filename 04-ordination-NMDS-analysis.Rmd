@@ -13,6 +13,8 @@ library(dplyr)
 library(stringr)
 library(vegan)
 library(tidyr)
+library("ggplot2")
+library("iNEXT")
 ```
 
 First step is to Sort the df from the annotated datasheet for running ordination (NMDS) analysis.
@@ -30,27 +32,123 @@ data
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 
 #combine columns before grouping
-data1$site_date_time <- paste(data1$Site, data1$Date, data1$Time, sep="_")
-data1$site_date_time
+data1$site_date <- paste(data1$Site, data1$Date, sep="_")
+data1$site_date
 
 ```
 
 ```{r}
-data2 <-data1 %>%group_by(site_date_time, Restoration.Type..Benchmark.Active.Passive.)%>%
+
+data2 <-data1 %>%group_by(site_date, Restoration.Type..Benchmark.Active.Passive.)%>%
 summarise_at(.vars = vars(c("IP":"CR")),
 .funs = sum)%>%transform() 
 as.numeric(data1$GJ>0)
 norm<-function(x)as.numeric(x>0)
+data2 <- as.data.frame(unclass(data2))
 data2
 
 ```
 
 ```{r}
-dataNMDS <- cbind(data2[ "Restoration.Type..Benchmark.Active.Passive."], apply(data2[3:108],2, function(x){as.numeric(x>0)}))
-dataNMDS[is.na(dataNMDS)] <- 0
-dataNMDS
-##write.csv(dataNMDS, "D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\dataNMDS.csv")
+#Species detections per site across multiple visits
+data3 <- separate(data2, col = site_date, into = c("Site", "Date"), sep = "_")
+
+data4 <- cbind(data3["Site"], apply(data3[4:109],2, function(x){as.numeric(x>0)}))
+data4[is.na(data4)] <- 0
+data4
+
 ```
+
+
+```{r}
+#overall species richness 
+#sum up the number of non-zero entries per row 
+#the first column is ignored [, -1] as it is the site name (not a species count)
+
+library(plyr)
+data5 <- ddply(data4, ~Site, function(x) {
+  data.frame(RICHNESS=sum(x[,-1]>0))
+})
+
+data5
+```
+
+```{r}
+#subset the data for species accumulation curve
+df1 <- data3[, 2:107]
+
+spec.accu <- specaccum(df1, "random", permutations = 100)
+plot(spec.accu)
+
+
+#subset each habitat into its own df
+data3 %>% filter (Restoration.Type..Benchmark.Active.Passive. == "Benchmark") -> Benchmark
+data3 %>% filter (Restoration.Type..Benchmark.Active.Passive. == "Passive") -> Passive
+data3 %>% filter (Restoration.Type..Benchmark.Active.Passive. == "Active") -> Active
+
+#calculate spec.accu curve for each habitat
+curve_Benchmark =specaccum(Benchmark[, 2:107], method = "random")
+curve_Passive =specaccum(Passive[, 2:107], method = "random")
+curve_Active =specaccum(Active[, 2:107], method = "random")
+
+
+#plot all spec.accu curve first
+plot(spec.accu)
+#then plot the rest
+plot(curve_Benchmark, add =TRUE, col = "red" )
+plot(curve_Passive, add = TRUE, col = "blue")
+plot(curve_Active, add = TRUE, col = "green")
+```
+
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
+
+```{r}
+
+```
+
+
+```{r}
+
+
+
+```
+
+
+
+```{r}
+
+
+
+```
+
+
+
+
+```{r}
+
+
+
+```
+
+
 
 
 ```{r}
@@ -60,85 +158,15 @@ df1 <- dataNMDS[,2:107]
 ## THe column contains the descriptive data
 df2 <- dataNMDS[, 1:1]
 df2
+
+
 ```
+
+
 
 ```{r}
 #Ordination by NMDS
 NMDS <- metaMDS(df1, distance = "bray", k=2)
-
-```
-
-
-
-```{r}
-#Data visualization
-#install.packages("ggplot2")
-library("ggplot2")
-
-```
-
-
-
-```{r}
-
-#Extract the axes (x and Y) scores
-datascores <- as.data.frame(scores(NMDS))
-
-```
-
-
-```{r}
-
-#Add/Calculate spider diagram
-scores <- cbind(as.data.frame(datascores), Restoration = df2["Restoration.Type..Benchmark.Active.Passive."])
-centroids <- aggregate(cbind(NMDS1, NMDS2) ~ Restoration, data = scores, FUN = mean)
-seg <- merge(scores, setNames(centroids, c('REstoration','oNMDS1','oNMDS2')),
-             by = 'Restoration', sort = FALSE)
-
-```
-
-```{r}
-#plot
-ggplot(scores, aes(x=NMDS1, y= NMDS2, colour = Restoration))
-
-```
-
-
-```{r}
-
-
-
-```
-
-
-
-```{r}
-
-
-
-```
-
-
-
-
-```{r}
-
-
-
-```
-
-
-
-
-```{r}
-
-
-
-```
-
-
-
-```{r}
 
 
 
