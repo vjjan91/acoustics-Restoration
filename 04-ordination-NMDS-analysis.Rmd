@@ -13,15 +13,17 @@ library(dplyr)
 library(stringr)
 library(vegan)
 library(tidyr)
+library("ggplot2")
+library("iNEXT")
+library(rich)
 ```
 
 First step is to Sort the df from the annotated datasheet for running ordination (NMDS) analysis.
 
 ```{r}
 #Attach the 2020_summer_annotation data 
-data <- read.csv("data\\2020-summer-annotation-working document.csv")
+data <- read.csv("D:\\VR-Project\\Annotation\\Ordination(NMDS) Analysis\\2020-summer-annotation-working document.csv")
 data
-data <- read.csv("data\\2020_Summer_annotation_AR_ver_01.csv")
 ```
 
 
@@ -31,38 +33,130 @@ data <- read.csv("data\\2020_Summer_annotation_AR_ver_01.csv")
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 
 #combine columns before grouping
-data1$site_date_time <- paste(data1$Site, data1$Date, data1$Time, sep="_")
-data1$site_date_time
+data1$site_date <- paste(data1$Site, data1$Date, sep="_")
+data1$site_date
 
 ```
 
 ```{r}
-data2 <-data1 %>%group_by(site_date_time)%>%
+
+data2 <-data1 %>%group_by(site_date, Restoration.Type)%>%
 summarise_at(.vars = vars(c("IP":"CR")),
 .funs = sum)%>%transform() 
 as.numeric(data1$GJ>0)
 norm<-function(x)as.numeric(x>0)
+data2 <- as.data.frame(unclass(data2))
 data2
 
 ```
 
 ```{r}
-dataNMDS <- cbind(data2[1], apply(data2[2:107],2, function(x){as.numeric(x>0)}))
-dataNMDS
+#Species detections per site across multiple visits
+data3 <- separate(data2, col = site_date, into = c("Site", "Date"), sep = "_")
+
+data4 <- cbind(data3["Site"], apply(data3[4:109],2, function(x){as.numeric(x>0)}))
+data4[is.na(data4)] <- 0
+head(data4)
+
+```
+
+```{r}
+#sitewise species richness for all species
+pool.data4 <- poolaccum(data4)
+plot(pool.data4)
+
+```
+
+```{r}
+#species accumulation curve
+#build the species accumulation curve & rarefaction curve (expected)
+df1.specaccum <- specaccum(df1,method = "rarefaction")
+#plot the curve with some predefined settings
+plot(df1.specaccum,ci.type="poly", col="blue", lwd=2, ci.lty=0, ci.col="lightblue")
+
+#build a expected curve (randomization for boxplot comparison)
+df1.specaccum.rand <- specaccum(df1, "random")
+#plot both curves ("observed" vs "randomized")
+plot(df1.specaccum,ci.type="poly", col="blue", lwd=2, ci.lty=0, ci.col="lightblue")
+boxplot(df1.specaccum.rand, col="yellow", add=TRUE, pch="+")
+
+```
+
+```{r}
+overall = specaccum(df1, method = "random", permutations = 100)
+
+#subset each habitat into its own df
+data4 %>% filter (Restoration.Type == "Benchmark") -> Benchmark
+data4 %>% filter (Restoration.Type == "Passive") -> Passive
+data4 %>% filter (Restoration.Type== "Active") -> Active
+
+#calculate spec.accu curve for each habitat
+curve_Benchmark =specaccum(Benchmark[, 2:107], method = "random", permutations = 100)
+curve_Passive =specaccum(Passive[, 2:107], method = "random", permutations = 100)
+curve_Active =specaccum(Active[, 2:107], method = "random", permutations = 100)
+
+#plot overall first
+plot(overall, xlab = "Sites", ylab = "species")
+#then plot the rest
+plot(curve_Benchmark, add = TRUE, col = "green")
+legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(1,1,1), col= c("black","green","red", "blue"))
+                                                        #col is COLOUR setting, so change it to something else if you want
+plot(curve_Passive, add = TRUE, col = "red")
+plot(curve_Active, add = TRUE, col = "blue")
+```
+
+
+```{r}
+#species richness in each site 
+data3["specnumber"] <- specnumber(data4, MARGIN = 1)
+data3
+#arranging data as a matrix
+nmds_data <- data3 %>%
+  select(Site, Restoration.Type, Date, specnumber)
+
+nmds_data_matrix <- as.matrix(nmds_data[, 4:ncol(nmds_data) ])
+
+nmds_plot <- vegdist(nmds_data_matrix, method = "bray") %>%
+  metaMDS(nmds_plot, k=6)
+  
+```
+```{r}
+#GEtting NMDS values as a tibble
+ordiplot(nmds_plot)
+
+
+
+```
+
+
+
+```{r}
+#ordination
+NMDS <- metaMDS(data4, distance = "bray")
+stressplot(NMDS)
+ordiplot(data4, display = "sites", type = "text")
+ordipointlabel(data4)
+```
+
+   
+
+
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
 
 ```
 
 
 ```{r}
-#subset the sorted dataframe on which to base the ordination
-df1 <- dataNMDS[, 2:107]
 
-## THe column contains the descriptive data
-df2 <- dataNMDS[, 1]
-```
-
-```{r}
-NMDS <- metaMDS(df1, distance = "bray", k=2)
 
 
 ```
@@ -72,6 +166,52 @@ NMDS <- metaMDS(df1, distance = "bray", k=2)
 ```{r}
 
 
+
 ```
 
+
+
+
+```{r}
+
+
+
+```
+
+
+
+
+```{r}
+
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
