@@ -54,12 +54,11 @@ data2
 #Species detections per site across multiple visits
 data3 <- separate(data2, col = site_date, into = c("Site", "Date"), sep = "_")
 
-data4 <- cbind(data3["Restoration.Type"], apply(data3[4:109],2, function(x){as.numeric(x>0)}))
+data4 <- cbind(data3["Site"], apply(data3[4:109],2, function(x){as.numeric(x>0)}))
 data4[is.na(data4)] <- 0
-data4
-df1 <- data4[, 2:107]
-```
+head(data4)
 
+```
 
 ```{r}
 #sitewise species richness for all species
@@ -108,9 +107,27 @@ plot(curve_Active, add = TRUE, col = "blue")
 
 
 ```{r}
+#species richness in each site 
+data3["specnumber"] <- specnumber(data4, MARGIN = 1)
+data3
+#arranging data as a matrix
+nmds_data <- data3 %>%
+  select(Site, Restoration.Type, Date, specnumber)
+
+nmds_data_matrix <- as.matrix(nmds_data[, 4:ncol(nmds_data) ])
+
+nmds_plot <- vegdist(nmds_data_matrix, method = "bray") %>%
+  metaMDS(nmds_plot, k=6)
+  
+```
+```{r}
+#GEtting NMDS values as a tibble
+ordiplot(nmds_plot)
+
 
 
 ```
+
 
 
 ```{r}
@@ -120,6 +137,17 @@ stressplot(NMDS)
 ordiplot(data4, display = "sites", type = "text")
 ordipointlabel(data4)
 ```
+
+   
+
+
+
+
+```{r}
+
+
+```
+
 
 
 ```{r}
