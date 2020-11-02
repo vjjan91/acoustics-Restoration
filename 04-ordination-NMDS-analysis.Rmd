@@ -91,7 +91,7 @@ seg <- merge(scores, setNames(centroids, c('Restoration.Type','oNMDS1','oNMDS2')
 
 ```{r}
 #plot
-output<- ggplot(scores, aes(x = NMDS1, y = NMDS2, colour = Restoration.Type)) +
+ggplot(scores, aes(x = NMDS1, y = NMDS2, colour = Restoration.Type)) +
   geom_segment(data = seg,
                mapping = aes(xend = oNMDS1, yend = oNMDS2)) + # add spiders
   geom_point(data = centroids, size = 4) +                    # add centroids
@@ -99,8 +99,7 @@ output<- ggplot(scores, aes(x = NMDS1, y = NMDS2, colour = Restoration.Type)) +
   coord_fixed()+                                              
   theme_bw()+ 
   theme(legend.position="right",legend.text=element_text(size=10),legend.direction='vertical')
-output
-
+ggsave("Ordination(NMDS).jpeg")
 
 
 ```
@@ -145,7 +144,7 @@ boxplot(df1.specaccum.rand, col="yellow", add=TRUE, pch="+")
 ```
 
 ```{r}
-#species accumulation curve for the sitewise visits detections
+#species accumulation curve for the sitewise detections
 overall = specaccum(df1, method = "random", permutations = 100)
 
 #subset each habitat into its own df
