@@ -166,6 +166,7 @@ legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(19
                                                         #col is COLOUR setting, so change it to something else if you want
 plot(curve_Passive, add = TRUE, col = "red")
 plot(curve_Active, add = TRUE, col = "blue")
+
 ```
 
 
