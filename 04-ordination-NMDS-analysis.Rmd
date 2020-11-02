@@ -22,7 +22,7 @@ First step is to Sort the df from the annotated datasheet for running ordination
 
 ```{r}
 #Attach the 2020_summer_annotation data 
-data <- read.csv("D:\\VR-Project\\Annotation\\Ordination(NMDS) Analysis\\2020-summer-annotation-working document.csv")
+data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\2020-summer-annotation-working document.csv")
 data
 ```
 
@@ -31,16 +31,16 @@ data
 ```{r}
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
-
+data1
 #combine columns before grouping
-data1$site_date <- paste(data1$Site, data1$Date, sep="_")
-data1$site_date
+#data1$site_date <- paste(data1$Site, data1$Date, sep="_")
+#data1$site_date
 
 ```
 
 ```{r}
 
-data2 <-data1 %>%group_by(site_date, Restoration.Type)%>%
+data2 <-data1 %>%group_by(Site, Restoration.Type)%>%
 summarise_at(.vars = vars(c("IP":"CR")),
 .funs = sum)%>%transform() 
 as.numeric(data1$GJ>0)
@@ -52,13 +52,75 @@ data2
 
 ```{r}
 #Species detections per site across multiple visits
-data3 <- separate(data2, col = site_date, into = c("Site", "Date"), sep = "_")
+#data3 <- separate(data2, col = site_date, into = c("Site", "Date"), sep = "_")
 
-data4 <- cbind(data3["Site"], apply(data3[4:109],2, function(x){as.numeric(x>0)}))
+data3 <- cbind(data2["Site"], apply(data2[3:108],2, function(x){as.numeric(x>0)}))
+data3[is.na(data3)] <- 0
+head(data3)
+
+```
+
+
+```{r}
+#subset the dataframe on which to base the ordination (df1)
+df1 <- data3[, 2:107]
+
+#The columns that contain the descriptive data (df2)
+df2 <- data2[,1:2]
+df2
+#ordination by NMDS
+NMDS <- metaMDS(df1, distance = "bray", k=6)
+
+```
+
+
+
+```{r}
+#data visualization
+#Extract the axes scores
+datascores <- as.data.frame(scores(NMDS))  #extract the site scores
+
+#Add/calculate spider diagram
+scores <- cbind(as.data.frame(datascores), Site = df2["Restoration.Type"])
+centroids <- aggregate(cbind(NMDS1, NMDS2, NMDS3, NMDS4, NMDS5, NMDS6) ~ Restoration.Type, data = scores, FUN = mean)
+seg <- merge(scores, setNames(centroids, c('Restoration.Type','oNMDS1','oNMDS2')),
+             by = 'Restoration.Type', sort = FALSE)
+
+```
+
+
+```{r}
+#plot
+output<- ggplot(scores, aes(x = NMDS1, y = NMDS2, colour = Restoration.Type)) +
+  geom_segment(data = seg,
+               mapping = aes(xend = oNMDS1, yend = oNMDS2)) + # add spiders
+  geom_point(data = centroids, size = 4) +                    # add centroids
+  geom_point() +                                              
+  coord_fixed()+                                              
+  theme_bw()+ 
+  theme(legend.position="right",legend.text=element_text(size=10),legend.direction='vertical')
+output
+
+
+
+```
+
+
+
+```{r}
+data4 <- cbind(data2["Restoration.Type"], apply(data2[3:108],2, function(x){as.numeric(x>0)}))
 data4[is.na(data4)] <- 0
 head(data4)
 
 ```
+
+```{r}
+#species richness in each site 
+#data4["specnumber"] <- specnumber(data3, MARGIN = 1)
+#data4
+```
+
+
 
 ```{r}
 #sitewise species richness for all species
@@ -83,6 +145,7 @@ boxplot(df1.specaccum.rand, col="yellow", add=TRUE, pch="+")
 ```
 
 ```{r}
+#species accumulation curve for the sitewise visits detections
 overall = specaccum(df1, method = "random", permutations = 100)
 
 #subset each habitat into its own df
@@ -99,31 +162,16 @@ curve_Active =specaccum(Active[, 2:107], method = "random", permutations = 100)
 plot(overall, xlab = "Sites", ylab = "species")
 #then plot the rest
 plot(curve_Benchmark, add = TRUE, col = "green")
-legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(1,1,1), col= c("black","green","red", "blue"))
+legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(19,19,19), col= c("black","green","red", "blue"))
                                                         #col is COLOUR setting, so change it to something else if you want
 plot(curve_Passive, add = TRUE, col = "red")
 plot(curve_Active, add = TRUE, col = "blue")
 ```
 
 
+
+
 ```{r}
-#species richness in each site 
-data3["specnumber"] <- specnumber(data4, MARGIN = 1)
-data3
-#arranging data as a matrix
-nmds_data <- data3 %>%
-  select(Site, Restoration.Type, Date, specnumber)
-
-nmds_data_matrix <- as.matrix(nmds_data[, 4:ncol(nmds_data) ])
-
-nmds_plot <- vegdist(nmds_data_matrix, method = "bray") %>%
-  metaMDS(nmds_plot, k=6)
-  
-```
-```{r}
-#GEtting NMDS values as a tibble
-ordiplot(nmds_plot)
-
 
 
 ```
@@ -131,22 +179,10 @@ ordiplot(nmds_plot)
 
 
 ```{r}
-#ordination
-NMDS <- metaMDS(data4, distance = "bray")
-stressplot(NMDS)
-ordiplot(data4, display = "sites", type = "text")
-ordipointlabel(data4)
+
 ```
 
    
-
-
-
-
-```{r}
-
-
-```
 
 
 
