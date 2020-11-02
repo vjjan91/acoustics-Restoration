@@ -22,7 +22,7 @@ First step is to Sort the df from the annotated datasheet for running ordination
 
 ```{r}
 #Attach the 2020_summer_annotation data 
-data <- read.csv("D:\\VR-Project\\Annotation\\Ordination(NMDS) Analysis\\2020-summer-annotation-working document.csv")
+data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\2020-summer-annotation-working document.csv")
 data
 ```
 
@@ -54,7 +54,7 @@ data2
 #Species detections per site across multiple visits
 data3 <- separate(data2, col = site_date, into = c("Site", "Date"), sep = "_")
 
-data4 <- cbind(data3["Site"], apply(data3[4:109],2, function(x){as.numeric(x>0)}))
+data4 <- cbind(data3["Restoration.Type"], apply(data3[4:109],2, function(x){as.numeric(x>0)}))
 data4[is.na(data4)] <- 0
 head(data4)
 
@@ -99,7 +99,7 @@ curve_Active =specaccum(Active[, 2:107], method = "random", permutations = 100)
 plot(overall, xlab = "Sites", ylab = "species")
 #then plot the rest
 plot(curve_Benchmark, add = TRUE, col = "green")
-legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(1,1,1), col= c("black","green","red", "blue"))
+legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(19,19,19), col= c("black","green","red", "blue"))
                                                         #col is COLOUR setting, so change it to something else if you want
 plot(curve_Passive, add = TRUE, col = "red")
 plot(curve_Active, add = TRUE, col = "blue")
