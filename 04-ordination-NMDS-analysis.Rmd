@@ -46,8 +46,8 @@ summarise_at(.vars = vars(c("IP":"CR")),
 as.numeric(data1$GJ>0)
 norm<-function(x)as.numeric(x>0)
 data2 <- as.data.frame(unclass(data2))
+data2[is.na(data2)] <- 0
 data2
-
 ```
 
 ```{r}
@@ -57,8 +57,24 @@ data2
 data3 <- cbind(data2["Site"], apply(data2[3:108],2, function(x){as.numeric(x>0)}))
 data3[is.na(data3)] <- 0
 head(data3)
+  
+```
+
+
+```{r}
+richness <- data2 %>%
+  mutate(Abundance = rowSums(.[3:ncol(.)])) %>% 
+  group_by(Site, Restoration.Type) %>% 
+  summarise_all(sum) %>%
+  ungroup %>% 
+  mutate(Richness = apply(.[3:(ncol(.)-1)] > 0, 1, sum)) %>%
+  #or
+  #mutate(Richness = rowSums(.[4:(ncol(.)-1)] > 0)) %>%
+  select(Site, Restoration.Type, Abundance, Richness)
+richness
 
 ```
+
 
 
 ```{r}
