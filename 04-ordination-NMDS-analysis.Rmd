@@ -69,7 +69,7 @@ richness <- data2 %>%
   ungroup %>% 
   mutate(Richness = apply(.[3:(ncol(.)-1)] > 0, 1, sum)) %>%
   #or
-  #mutate(Richness = rowSums(.[4:(ncol(.)-1)] > 0)) %>%
+  #mutate(Richness = rowSums(.[3:(ncol(.)-1)] > 0)) %>%
   select(Site, Restoration.Type, Abundance, Richness)
 richness
 
