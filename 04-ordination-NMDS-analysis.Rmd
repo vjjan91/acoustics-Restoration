@@ -27,7 +27,7 @@ data
 ```
 
 
-#Site-wise (4 minute) sorting 
+#Site-wise (15 minute) sorting 
 ```{r}
 #Split the Filenames into 4 columns : Site, Date, Time and Splits   
 data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
@@ -60,17 +60,16 @@ head(data3)
   
 ```
 
-
 ```{r}
-richness <- data2 %>%
-  mutate(Abundance = rowSums(.[3:ncol(.)])) %>% 
-  group_by(Site, Restoration.Type) %>% 
+richness <- data3 %>%
+  #mutate(Abundance = rowSums(.[2:ncol(.)])) %>% 
+  group_by(Site) %>% 
   summarise_all(sum) %>%
   ungroup %>% 
-  mutate(Richness = apply(.[3:(ncol(.)-1)] > 0, 1, sum)) %>%
+  mutate(Richness = apply(.[2:(ncol(.)-1)] > 0, 1, sum)) %>%
   #or
-  #mutate(Richness = rowSums(.[4:(ncol(.)-1)] > 0)) %>%
-  select(Site, Restoration.Type, Abundance, Richness)
+  #mutate(Richness = rowSums(.[3:(ncol(.)-1)] > 0)) %>%
+  select(Site, Richness)
 richness
 
 ```
@@ -121,12 +120,37 @@ output
 
 ```
 
+```{r}
+#Bootstrapping and testing the differnces between the groups
+fit <- adonis(df1 ~Restoration.Type, data = df2, permutations = 999, method = "bray")
+fit
 
+```
 
 ```{r}
-data4 <- cbind(data2["Restoration.Type"], apply(data2[3:108],2, function(x){as.numeric(x>0)}))
+#Check assumption of homogeneity of multivariate dispersion
+distances_data <- vegdist(df1)
+anova(betadisper(distances_data, df2$Restoration.Type))
+
+```
+
+```{r}
+#subset data for the species accumulation curve
+data1$site_date <- paste(data1$Site, data1$Date, sep="_")
+data1$site_date
+
+data4 <-data1 %>%group_by(site_date, Restoration.Type)%>%
+summarise_at(.vars = vars(c("IP":"CR")),
+.funs = sum)%>%transform() 
+as.numeric(data1$GJ>0)
+norm<-function(x)as.numeric(x>0)
+data4 <- as.data.frame(unclass(data4))
 data4[is.na(data4)] <- 0
-head(data4)
+data4
+
+data5 <- cbind(data4["site_date"], apply(data4[3:108],2, function(x){as.numeric(x>0)}))
+data5[is.na(data5)] <- 0
+head(data5)
 
 ```
 
@@ -140,8 +164,8 @@ head(data4)
 
 ```{r}
 #sitewise species richness for all species
-pool.data4 <- poolaccum(data4)
-plot(pool.data4)
+pool.data5 <- poolaccum(data5)
+plot(pool.data5)
 
 ```
 
@@ -170,9 +194,9 @@ data4 %>% filter (Restoration.Type == "Passive") -> Passive
 data4 %>% filter (Restoration.Type== "Active") -> Active
 
 #calculate spec.accu curve for each habitat
-curve_Benchmark =specaccum(Benchmark[, 2:107], method = "random", permutations = 100)
-curve_Passive =specaccum(Passive[, 2:107], method = "random", permutations = 100)
-curve_Active =specaccum(Active[, 2:107], method = "random", permutations = 100)
+curve_Benchmark =specaccum(Benchmark[, 3:108], method = "random", permutations = 100)
+curve_Passive =specaccum(Passive[, 3:108], method = "random", permutations = 100)
+curve_Active =specaccum(Active[, 3:108], method = "random", permutations = 100)
 
 #plot overall first
 plot(overall, xlab = "Sites", ylab = "species")
@@ -184,7 +208,6 @@ plot(curve_Passive, add = TRUE, col = "red")
 plot(curve_Active, add = TRUE, col = "blue")
 
 ```
-
 
 
 
