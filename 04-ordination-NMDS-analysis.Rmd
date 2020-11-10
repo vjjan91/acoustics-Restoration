@@ -1,75 +1,66 @@
 ---
-title: "04-ordination-NMDS-analysis"
-output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
-This script is for site-wise (Benchmark, Actice and Passive sites) species composition ordination analysis for the 2020_summer_annotated data.
+In this script, we will calculate:
+a) Site-wise species richness and carry out ordinations to understand if species composition across sites are distinctly different. 
 
 
-Install required packages
+Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
 library(stringr)
 library(vegan)
-library(tidyr)
-library("ggplot2")
+library(ggplot2)
 library("iNEXT")
 library(rich)
 ```
 
-First step is to Sort the df from the annotated datasheet for running ordination (NMDS) analysis.
+To start with, we will compute species richness from 5 consecutive days for each site for each season. 
 
+At the moment, data exists to calculate species richness for one season only (data collected between March 2020 - May 2020)
+
+1. We will use a sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am for annotations and divided into 10s chunks)
 ```{r}
-#Attach the 2020_summer_annotation data 
-data <- read.csv("D:\\VR-Project\\VR_Annotation\\Ordination(NMDS) Analysis\\2020-summer-annotation-working document.csv")
+# Attach the 2020_summer_annotation data 
+data <- read.csv("data/2020-summer-annotation-working document.csv")
 data
-```
 
+# Site-wise sorting of the 16-min of data
 
-#Site-wise (15 minute) sorting 
-```{r}
-#Split the Filenames into 4 columns : Site, Date, Time and Splits   
-data1 <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
-data1
+# Split the file names into 4 columns : Site, Date, Time and Splits   
+data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
+data
+
 #combine columns before grouping
 #data1$site_date <- paste(data1$Site, data1$Date, sep="_")
 #data1$site_date
+```
+
+Now group the data by site and restoration type and sum the number of detections across sites
+```{r}
+# At the moment 2-3 days at each site has been annotated
+nSites_Days <- data %>%
+  select(Site, Date)%>%
+  distinct() %>% arrange(Site)
+
+# Calculate the overall number of detections for each site across 2-3 days of data (translates to 32min to 48min of data per site)
+
+nDetections_Site <- data %>%
+  group_by(Site, Restoration.Type) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
+  transform() %>% replace(is.na(.), 0)
 
 ```
 
+Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site
 ```{r}
-
-data2 <-data1 %>%group_by(Site, Restoration.Type)%>%
-summarise_at(.vars = vars(c("IP":"CR")),
-.funs = sum)%>%transform() 
-as.numeric(data1$GJ>0)
-norm<-function(x)as.numeric(x>0)
-data2 <- as.data.frame(unclass(data2))
-data2[is.na(data2)] <- 0
-data2
-```
-
-```{r}
-#Species detections per site across multiple visits
-#data3 <- separate(data2, col = site_date, into = c("Site", "Date"), sep = "_")
-
-data3 <- cbind(data2["Site"], apply(data2[3:108],2, function(x){as.numeric(x>0)}))
-data3[is.na(data3)] <- 0
-head(data3)
-  
-```
-
-```{r}
-richness <- data3 %>%
-  #mutate(Abundance = rowSums(.[2:ncol(.)])) %>% 
-  group_by(Site) %>% 
-  summarise_all(sum) %>%
-  ungroup %>% 
+richness <- nDetections_Site %>%
+  ungroup()%>%
   mutate(Richness = apply(.[2:(ncol(.)-1)] > 0, 1, sum)) %>%
-  #or
-  #mutate(Richness = rowSums(.[3:(ncol(.)-1)] > 0)) %>%
-  select(Site, Richness)
+  select(Site, Richness) 
 richness
 
 ```
@@ -161,7 +152,6 @@ head(data5)
 ```
 
 
-
 ```{r}
 #sitewise species richness for all species
 pool.data5 <- poolaccum(data5)
@@ -185,15 +175,15 @@ boxplot(df1.specaccum.rand, col="yellow", add=TRUE, pch="+")
 ```
 
 ```{r}
-#species accumulation curve for the sitewise visits detections
+# Species accumulation curve for the sitewise visits detections
 overall = specaccum(df1, method = "random", permutations = 100)
 
-#subset each habitat into its own df
+# Subset each habitat into its own df
 data4 %>% filter (Restoration.Type == "Benchmark") -> Benchmark
 data4 %>% filter (Restoration.Type == "Passive") -> Passive
 data4 %>% filter (Restoration.Type== "Active") -> Active
 
-#calculate spec.accu curve for each habitat
+# Calculate spec.accu curve for each habitat
 curve_Benchmark =specaccum(Benchmark[, 3:108], method = "random", permutations = 100)
 curve_Passive =specaccum(Passive[, 3:108], method = "random", permutations = 100)
 curve_Active =specaccum(Active[, 3:108], method = "random", permutations = 100)
@@ -202,92 +192,9 @@ curve_Active =specaccum(Active[, 3:108], method = "random", permutations = 100)
 plot(overall, xlab = "Sites", ylab = "species")
 #then plot the rest
 plot(curve_Benchmark, add = TRUE, col = "green")
-legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(19,19,19), col= c("black","green","red", "blue"))
-                                                        #col is COLOUR setting, so change it to something else if you want
+legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(19,19,19), col= c("black","green","red", "blue")) #col is COLOUR setting, so change it to something else if you want
 plot(curve_Passive, add = TRUE, col = "red")
 plot(curve_Active, add = TRUE, col = "blue")
 
 ```
-
-
-
-```{r}
-
-
-```
-
-
-
-```{r}
-
-```
-
-   
-
-
-
-```{r}
-
-```
-
-
-```{r}
-
-
-
-```
-
-
-
-```{r}
-
-
-
-```
-
-
-
-
-```{r}
-
-
-
-```
-
-
-
-
-```{r}
-
-
-
-```
-
-
-
-```{r}
-
-
-```
-
-
-
-
-
-
-
-
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
 

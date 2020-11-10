@@ -8,6 +8,12 @@
 # User-specific files
 .Ruserdata
 
+# Ignore excel files
+*.csv
+
+# Ignore acoustic data
+*.wav
+
 # Example code in package build process
 *-Ex.R
 
