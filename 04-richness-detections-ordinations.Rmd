@@ -76,6 +76,13 @@ fig_sumDetections <- ggplot(sum_DetectionsSite, aes(x=Restoration.Type, y=sumDet
 
 ggsave(fig_sumDetections, filename = "figs/fig_sumDetections.png", width=12, height=7,
        device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_sumDetections.png")
+
+# Next steps: 
+# 1. Include species trait data to check if number of detections varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.
+# To visualize the above, imagine two-box plots for each treatment type (rainforest specialist and open country)
+
 ```
 
 Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall number of detections for a 16-min to 48-min window. 
@@ -107,16 +114,17 @@ ggsave(fig_richness, filename = "figs/fig_richness.png", width=12, height=7,
        device = png(), units="in", dpi = 300)
 
 knitr::include_graphics("figs/fig_richness.png")
-
-
-
 ```
+
+
+# Amrutha - can you annotate and work the rest based on the above edits? 
 
 
 
 ```{r}
+# Use the nDetections_Site dataframe to carry out an ordination..
 #subset the dataframe on which to base the ordination (df1)
-df1 <- data3[, 2:107]
+df1 <- nDetections_Site[,3:108]
 
 #The columns that contain the descriptive data (df2)
 df2 <- data2[,1:2]
