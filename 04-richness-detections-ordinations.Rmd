@@ -83,6 +83,12 @@ knitr::include_graphics("figs/fig_sumDetections.png")
 # 1. Include species trait data to check if number of detections varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.
 # To visualize the above, imagine two-box plots for each treatment type (rainforest specialist and open country)
 
+# Potential Idea: Pivot species codes to long and then match by species-trait-dat (RF/OC)
+# trial <- nDetections_Site %>%
+#  pivot_longer(cols=IP:CR, names_to = "Species_Code", values_to = "count")
+
+
+
 ```
 
 Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall number of detections for a 16-min to 48-min window. 
