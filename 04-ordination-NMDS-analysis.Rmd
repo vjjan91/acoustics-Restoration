@@ -18,9 +18,9 @@ library("iNEXT")
 library(rich)
 ```
 
-To start with, we will compute species richness from 5 consecutive days for each site for each season. 
+To start with, we will compute species richness from 5 consecutive days for each site for each season (Ideally, we would want to compute richness for X number of non-consecutive days, following Campos-Cerqueira et al., 2019)
 
-At the moment, data exists to calculate species richness for one season only (data collected between March 2020 - May 2020)
+At the moment, data exists to calculate species richness for one season only (data collected between March 2020 - May 2020) and 3 visits to a site have been completed.
 
 1. We will use a sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am for annotations and divided into 10s chunks)
 ```{r}
@@ -29,39 +29,86 @@ data <- read.csv("data/2020-summer-annotation-working document.csv")
 data
 
 # Site-wise sorting of the 16-min of data
-
 # Split the file names into 4 columns : Site, Date, Time and Splits   
 data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 data
-
-#combine columns before grouping
-#data1$site_date <- paste(data1$Site, data1$Date, sep="_")
-#data1$site_date
 ```
 
 Now group the data by site and restoration type and sum the number of detections across sites
 ```{r}
-# At the moment 2-3 days at each site has been annotated
+# At the moment 1-3 days at each site has been annotated
+# Some sites have only 1 visit. See SEL sites (Selaliparai)
+
 nSites_Days <- data %>%
   select(Site, Date)%>%
-  distinct() %>% arrange(Site)
+  distinct() %>% arrange(Site) %>% count(Site)
 
-# Calculate the overall number of detections for each site across 2-3 days of data (translates to 32min to 48min of data per site)
+# Calculate the overall number of detections for each site across 1-3 days of data (translates to 16min to 48min of data per site)
 
 nDetections_Site <- data %>%
   group_by(Site, Restoration.Type) %>%
   summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
   transform() %>% replace(is.na(.), 0)
 
+# How does the number of detections vary as a function of restoration type? 
+# Since we expect higher species richness in benchmark sites, the number of acoustic detections/vocalizations should be higher in benchmark sites relative to actively restored and passive sites.
+
+sum_DetectionsSite <- nDetections_Site %>%
+  rowwise() %>% 
+  mutate(sumDetections = sum(c_across(IP:CR))) %>%
+  select(Site, Restoration.Type, sumDetections)
+
+# Plotting the above:
+# Note: the cumulative number of detections across all species was obtained by summing every 16-min to 48-min set of detections across each site, including all species.
+
+fig_sumDetections <- ggplot(sum_DetectionsSite, aes(x=Restoration.Type, y=sumDetections, fill=Restoration.Type)) +   geom_boxplot() + 
+    theme_bw() +
+    labs(x="Restoration Type", 
+       y="Cumulative Number of Detections") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+# This plot suggests that Benchmark sites are acoustically more active than Passively restored or Actively restored sites, as expected
+
+ggsave(fig_sumDetections, filename = "figs/fig_sumDetections.png", width=12, height=7,
+       device = png(), units="in", dpi = 300); dev.off()
 ```
 
-Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site
+Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall number of detections for a 16-min to 48-min window. 
 ```{r}
-richness <- nDetections_Site %>%
-  ungroup()%>%
-  mutate(Richness = apply(.[2:(ncol(.)-1)] > 0, 1, sum)) %>%
-  select(Site, Richness) 
+richness <- nDetections_Site  %>% 
+  mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
+  rowwise() %>% 
+  mutate(richness = sum(c_across(IP:CR))) %>%
+  select(Site, Restoration.Type, richness)
+
 richness
+
+# Create a boxplot of species richness by group (Here: group refers to Restoration Type)
+# Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
+
+fig_richness <- ggplot(richness, aes(x=Restoration.Type, y=richness, fill=Restoration.Type)) +
+    geom_boxplot() + 
+    theme_bw() +
+    labs(x="Restoration Type", 
+       y="Species Richness") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+ggsave(fig_richness, filename = "figs/fig_richness.png", width=12, height=7,
+       device = png(), units="in", dpi = 300)
+
+knitr::include_graphics("figs/fig_richness.png")
+
+
 
 ```
 
