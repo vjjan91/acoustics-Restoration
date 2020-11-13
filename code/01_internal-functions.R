@@ -61,3 +61,10 @@ sspectro <- function(
   if(norm) {z <- z/max(z)}
   return(z)
 }
+
+
+#################################################################################
+### Scaling a range of values between 0 and 1 (for the space use analysis)
+#################################################################################
+
+range01 <- function(x){(x-min(x))/(max(x)-min(x))}
