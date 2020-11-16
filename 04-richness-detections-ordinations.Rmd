@@ -122,7 +122,7 @@ To do so: Add an additional column of species-trait data and group data based on
 
 # First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections>0 as 1 else they are 0
 
-richness_Trait <- nDetections_Site %>%
+richness_trait <- nDetections_Site %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
   dplyr::select(-c(scientific_name)) %>%
@@ -131,12 +131,13 @@ richness_Trait <- nDetections_Site %>%
 
 # Calculate overall richness for each site as a function of rainforest species and open-country species
 
-richness_Trait <-  richness_Trait %>%
+richness_trait <-  richness_trait %>%
   dplyr::select(Site, Restoration.Type, Species_Code, Habitat, forRichness) %>%
   group_by(Site, Restoration.Type, Habitat) %>%
   summarise(Richness = sum(forRichness))
 
-fig_richness_trait <- ggplot(richness_Trait, aes(x=Restoration.Type, y=Richness, fill=Habitat)) +
+# Plot the above result
+fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.Type, y=Richness, fill=Habitat)) +
     geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -149,11 +150,50 @@ fig_richness_trait <- ggplot(richness_Trait, aes(x=Restoration.Type, y=Richness,
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(size = 12))
 
-ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.svg", width=12, height=7,
+       device = svg(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_richness_trait.png")
 ```
+
+
+Repeating the above set of calculations for number of detections as a function of whether a species is a rainforest specialist or an open country bird
+
+```{r}
+# First we sum the total number of detections by species trait 
+
+detections_trait <- nDetections_Site %>%
+  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
+  dplyr::select(-c(scientific_name)) 
+
+# Calculate overall number of detections for each site as a function of rainforest species and open-country species
+
+detections_trait <-  detections_trait %>%
+  dplyr::select(Site, Restoration.Type, Species_Code, Habitat, count) %>%
+  group_by(Site, Restoration.Type, Habitat) %>%
+  summarise(sumDetections = sum(count))
+
+fig_detections_trait <- ggplot(detections_trait, aes(x=Restoration.Type, y=sumDetections, fill=Habitat)) +
+    geom_boxplot(alpha=0.7) + 
+    scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="Restoration Type", 
+       y="Cumulative Number of Detections") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+ggsave(fig_detections_trait, filename = "figs/fig_detections_trait.svg", width=12, height=7,
+       device = svg(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_detections_trait.png")
+
+```
+
 
 
 # Amrutha - can you annotate and work the rest based on the above edits? 
