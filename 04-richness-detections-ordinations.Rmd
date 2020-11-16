@@ -16,6 +16,7 @@ library(vegan)
 library(ggplot2)
 library("iNEXT")
 library(rich)
+library(scico)
 ```
 
 To start with, we will compute species richness from 5 consecutive days for each site for each season (Ideally, we would want to compute richness for X number of non-consecutive days, following Campos-Cerqueira et al., 2019)
@@ -26,12 +27,14 @@ At the moment, data exists to calculate species richness for one season only (da
 ```{r}
 # Attach the 2020_summer_annotation data 
 data <- read.csv("data/2020-summer-annotation-working document.csv")
-data
 
 # Site-wise sorting of the 16-min of data
 # Split the file names into 4 columns : Site, Date, Time and Splits   
 data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 data
+
+# Load the species-trait-data
+trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
 
 Now group the data by site and restoration type and sum the number of detections across sites
@@ -40,7 +43,7 @@ Now group the data by site and restoration type and sum the number of detections
 # Some sites have only 1 visit. See SEL sites (Selaliparai)
 
 nSites_Days <- data %>%
-  select(Site, Date)%>%
+  dplyr::select(Site, Date)%>%
   distinct() %>% arrange(Site) %>% count(Site)
 
 # Calculate the overall number of detections for each site across 1-3 days of data (translates to 16min to 48min of data per site)
@@ -56,7 +59,7 @@ nDetections_Site <- data %>%
 sum_DetectionsSite <- nDetections_Site %>%
   rowwise() %>% 
   mutate(sumDetections = sum(c_across(IP:CR))) %>%
-  select(Site, Restoration.Type, sumDetections)
+  dplyr::select(Site, Restoration.Type, sumDetections)
 
 # Plotting the above:
 # Note: the cumulative number of detections across all species was obtained by summing every 16-min to 48-min set of detections across each site, including all species.
@@ -78,17 +81,6 @@ ggsave(fig_sumDetections, filename = "figs/fig_sumDetections.png", width=12, hei
        device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_sumDetections.png")
-
-# Next steps: 
-# 1. Include species trait data to check if number of detections varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.
-# To visualize the above, imagine two-box plots for each treatment type (rainforest specialist and open country)
-
-# Potential Idea: Pivot species codes to long and then match by species-trait-dat (RF/OC)
-# trial <- nDetections_Site %>%
-#  pivot_longer(cols=IP:CR, names_to = "Species_Code", values_to = "count")
-
-
-
 ```
 
 Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall number of detections for a 16-min to 48-min window. 
@@ -97,7 +89,7 @@ richness <- nDetections_Site  %>%
   mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
   rowwise() %>% 
   mutate(richness = sum(c_across(IP:CR))) %>%
-  select(Site, Restoration.Type, richness)
+  dplyr::select(Site, Restoration.Type, richness)
 
 richness
 
@@ -105,7 +97,8 @@ richness
 # Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
 
 fig_richness <- ggplot(richness, aes(x=Restoration.Type, y=richness, fill=Restoration.Type)) +
-    geom_boxplot() + 
+    geom_boxplot(alpha=0.7) + 
+    scale_fill_scico_d(palette = "roma") +
     theme_bw() +
     labs(x="Restoration Type", 
        y="Species Richness") +
@@ -117,15 +110,53 @@ fig_richness <- ggplot(richness, aes(x=Restoration.Type, y=richness, fill=Restor
         legend.text = element_text(size = 12))
 
 ggsave(fig_richness, filename = "figs/fig_richness.png", width=12, height=7,
-       device = png(), units="in", dpi = 300)
+       device = png(), units="in", dpi = 300);dev.off()
 
 knitr::include_graphics("figs/fig_richness.png")
 ```
 
 
+Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.
+To do so: Add an additional column of species-trait data and group data based on the same.
+```{r}
+
+# First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections>0 as 1 else they are 0
+
+richness_Trait <- nDetections_Site %>%
+  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
+  dplyr::select(-c(scientific_name)) %>%
+  mutate(forRichness = case_when(count>0 ~ 1,
+                                 count==0 ~ 0))
+
+# Calculate overall richness for each site as a function of rainforest species and open-country species
+
+richness_Trait <-  richness_Trait %>%
+  dplyr::select(Site, Restoration.Type, Species_Code, Habitat, forRichness) %>%
+  group_by(Site, Restoration.Type, Habitat) %>%
+  summarise(Richness = sum(forRichness))
+
+fig_richness_trait <- ggplot(richness_Trait, aes(x=Restoration.Type, y=Richness, fill=Habitat)) +
+    geom_boxplot(alpha=0.7) + 
+    scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="Restoration Type", 
+       y="Species Richness") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.png", width=12, height=7,
+       device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_richness_trait.png")
+```
+
+
 # Amrutha - can you annotate and work the rest based on the above edits? 
-
-
 
 ```{r}
 # Use the nDetections_Site dataframe to carry out an ordination..
