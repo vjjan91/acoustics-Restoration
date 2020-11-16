@@ -4,7 +4,9 @@ editor_options:
 ---
 
 In this script, we will calculate:
-a) Site-wise species richness and carry out ordinations to understand if species composition across sites are distinctly different. 
+a) Site-wise species richness to understand if species composition across sites are distinctly different. 
+b) Number of detections across sites
+c) Repeat the above as a function of species trait - If a species is a rainforest specialist or an open-country generalist.
 
 
 Install required libraries
@@ -14,8 +16,6 @@ library(dplyr)
 library(stringr)
 library(vegan)
 library(ggplot2)
-library("iNEXT")
-library(rich)
 library(scico)
 ```
 
@@ -195,138 +195,6 @@ knitr::include_graphics("figs/fig_detections_trait.png")
 ```
 
 
+# Save the nDetections_Site file for the next script
 
-# Amrutha - can you annotate and work the rest based on the above edits? 
-
-```{r}
-# Use the nDetections_Site dataframe to carry out an ordination..
-#subset the dataframe on which to base the ordination (df1)
-df1 <- nDetections_Site[,3:108]
-
-#The columns that contain the descriptive data (df2)
-df2 <- data2[,1:2]
-df2
-#ordination by NMDS
-NMDS <- metaMDS(df1, distance = "bray", k=6)
-
-```
-
-
-
-```{r}
-#data visualization
-#Extract the axes scores
-datascores <- as.data.frame(scores(NMDS))  #extract the site scores
-
-#Add/calculate spider diagram
-scores <- cbind(as.data.frame(datascores), Site = df2["Restoration.Type"])
-centroids <- aggregate(cbind(NMDS1, NMDS2, NMDS3, NMDS4, NMDS5, NMDS6) ~ Restoration.Type, data = scores, FUN = mean)
-seg <- merge(scores, setNames(centroids, c('Restoration.Type','oNMDS1','oNMDS2')),
-             by = 'Restoration.Type', sort = FALSE)
-
-```
-
-
-```{r}
-#plot
-output<- ggplot(scores, aes(x = NMDS1, y = NMDS2, colour = Restoration.Type)) +
-  geom_segment(data = seg,
-               mapping = aes(xend = oNMDS1, yend = oNMDS2)) + # add spiders
-  geom_point(data = centroids, size = 4) +                    # add centroids
-  geom_point() +                                              
-  coord_fixed()+                                              
-  theme_bw()+ 
-  theme(legend.position="right",legend.text=element_text(size=10),legend.direction='vertical')
-output
-
-
-
-```
-
-```{r}
-#Bootstrapping and testing the differnces between the groups
-fit <- adonis(df1 ~Restoration.Type, data = df2, permutations = 999, method = "bray")
-fit
-
-```
-
-```{r}
-#Check assumption of homogeneity of multivariate dispersion
-distances_data <- vegdist(df1)
-anova(betadisper(distances_data, df2$Restoration.Type))
-
-```
-
-```{r}
-#subset data for the species accumulation curve
-data1$site_date <- paste(data1$Site, data1$Date, sep="_")
-data1$site_date
-
-data4 <-data1 %>%group_by(site_date, Restoration.Type)%>%
-summarise_at(.vars = vars(c("IP":"CR")),
-.funs = sum)%>%transform() 
-as.numeric(data1$GJ>0)
-norm<-function(x)as.numeric(x>0)
-data4 <- as.data.frame(unclass(data4))
-data4[is.na(data4)] <- 0
-data4
-
-data5 <- cbind(data4["site_date"], apply(data4[3:108],2, function(x){as.numeric(x>0)}))
-data5[is.na(data5)] <- 0
-head(data5)
-
-```
-
-```{r}
-#species richness in each site 
-#data4["specnumber"] <- specnumber(data3, MARGIN = 1)
-#data4
-```
-
-
-```{r}
-#sitewise species richness for all species
-pool.data5 <- poolaccum(data5)
-plot(pool.data5)
-
-```
-
-```{r}
-#species accumulation curve
-#build the species accumulation curve & rarefaction curve (expected)
-df1.specaccum <- specaccum(df1,method = "rarefaction")
-#plot the curve with some predefined settings
-plot(df1.specaccum,ci.type="poly", col="blue", lwd=2, ci.lty=0, ci.col="lightblue")
-
-#build a expected curve (randomization for boxplot comparison)
-df1.specaccum.rand <- specaccum(df1, "random")
-#plot both curves ("observed" vs "randomized")
-plot(df1.specaccum,ci.type="poly", col="blue", lwd=2, ci.lty=0, ci.col="lightblue")
-boxplot(df1.specaccum.rand, col="yellow", add=TRUE, pch="+")
-
-```
-
-```{r}
-# Species accumulation curve for the sitewise visits detections
-overall = specaccum(df1, method = "random", permutations = 100)
-
-# Subset each habitat into its own df
-data4 %>% filter (Restoration.Type == "Benchmark") -> Benchmark
-data4 %>% filter (Restoration.Type == "Passive") -> Passive
-data4 %>% filter (Restoration.Type== "Active") -> Active
-
-# Calculate spec.accu curve for each habitat
-curve_Benchmark =specaccum(Benchmark[, 3:108], method = "random", permutations = 100)
-curve_Passive =specaccum(Passive[, 3:108], method = "random", permutations = 100)
-curve_Active =specaccum(Active[, 3:108], method = "random", permutations = 100)
-
-#plot overall first
-plot(overall, xlab = "Sites", ylab = "species")
-#then plot the rest
-plot(curve_Benchmark, add = TRUE, col = "green")
-legend("bottomright", c("overall", "Benchmark", "Passive", "Active"), pch = c(19,19,19), col= c("black","green","red", "blue")) #col is COLOUR setting, so change it to something else if you want
-plot(curve_Passive, add = TRUE, col = "red")
-plot(curve_Active, add = TRUE, col = "blue")
-
-```
-
+# Amrutha - can you annotate the next script and work the rest based on the above edits? 
