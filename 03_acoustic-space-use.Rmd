@@ -133,7 +133,7 @@ for (i in 1:length(unique(site))){
   site_date <- unique(str_extract(basename(b),'\\w+_\\d+_'))
   
   # For each unique site_date combination for the given site
-  for(j in 1:2){
+  trial <- foreach::foreach(j=1:2, .combine = 'c',.packages = c("seewave")) %dopar% { 
     
     # Store the each hour of data as a list here
     hourlydata <- list()
@@ -141,12 +141,12 @@ for (i in 1:length(unique(site))){
     # Store the acoustic space use data in a data.frame for plotting
     space_use <- data.frame()
 
-    dat <- b[stringr::str_detect(b,site_date[1])] # A unique 24 hours of recording/site
+    dat <- b[stringr::str_detect(b,site_date[j])] # A unique 24 hours of recording/site
     
-    for(k in 1:(length(hour_seq)-1)){
+    for(k in 1:(length(hour_seq)-1)) {
         d <- dat[hour_seq[k]:hour_seq[k+1]]
         tmp_list <- list()
-      for(m in 1:length(d)){
+      for(m in 1:length(d)) {
         r <- tuneR::readWave(d[m])
         tmp_list<- c(tmp_list,r)
       }
@@ -157,7 +157,7 @@ for (i in 1:length(unique(site))){
     }
     
     # Using the above hourlydata list created for a single site_date combination
-    for(t in 1:length(hourlydata)){
+    for(t in 1:length(hourlydata)) {
         wave <- hourlydata[[t]]
         n <- length(wave)
         
@@ -183,8 +183,7 @@ for (i in 1:length(unique(site))){
     rm(hourlydata, space_use); gc()
 }
 stopCluster(cl)
-    
-}
+}    
  
 ```
 
