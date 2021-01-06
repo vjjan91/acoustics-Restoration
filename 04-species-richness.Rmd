@@ -64,6 +64,13 @@ richness <- nDetections_Site  %>%
   mutate(richness = sum(c_across(IP:CR))) %>%
   dplyr::select(Site, Restoration.Type, richness)
 
+# Test if there are significant differences in richness across treatment types
+model <- lm(richness~Restoration.Type, data = richness)
+anova <-  aov(model)
+ 
+# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
+tukey <- TukeyHSD(x=anova, 'Restoration.Type', conf.level=0.95)
+
 # Create a boxplot of species richness by group (Here: group refers to Restoration Type)
 # Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
 
@@ -106,7 +113,7 @@ richness_trait <- nDetections_Site %>%
 richness_trait <-  richness_trait %>%
   dplyr::select(Site, Restoration.Type, Species_Code, Habitat, forRichness) %>%
   group_by(Site, Restoration.Type, Habitat) %>%
-  summarise(Richness = sum(forRichness))
+  summarise(richness = sum(forRichness))
 
 # Plot the above result
 fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.Type, y=Richness, fill=Habitat)) +
