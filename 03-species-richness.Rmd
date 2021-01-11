@@ -3,6 +3,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Species Richness Calculations
+
 In this script, we will calculate:
 
 a) Site-wise species richness to understand if species composition across treatment types are distinctly different. 

@@ -3,6 +3,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Acoustic Detections
+
 In this script, we will calculate:
 
 a) Number of detections across sites (reported for varying time intervals 10s, 30s, 1-min, 2-min, 4-min).
@@ -31,7 +33,6 @@ data
 # Load the species-trait-data
 trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
-
 
 Given the data annotated so far, we will calculate the overall number of detections across different temporal periods, starting from 10s to 30-s, 1-min, 2-min and 4-min. We will first calculate the overall number of detections for the shortest possible temporal duration which could be annotated confidently - 10s. 
 
