@@ -12,6 +12,18 @@ library(Rraven)
 
 ```
 
+Exploratory data analysis - Here I will try a few different functions from the seewave package in R to get a better sense of the distribution of frequencies over time
+```{r}
+# Read a sample .wav file
+a <- tuneR::readWave("data\\20200307_083000.wav")
+
+# Soundscape frequency spectrum of a time wave
+
+# This function returns a kHz binned spectrum as described by Kasten et al. (2012) for the description of a soundscape.
+# This function essentially creates a bar plot of frequencies in kHZ by amplitude values
+s_spectr <- soundscapespec(a)
+```
+
 Importing selection tables and annotations made from Raven
 
 Steps taken to create a selection table using Raven:
@@ -24,8 +36,6 @@ Steps taken to create a selection table using Raven:
 5. Select the following measurements to ensure that a selection table is loaded in R and recognized by the Rraven package: selection, view, channel, beginTime(s), endTime(s), lowFreq(Hz), highFreq(Hz), Begin Path, Begin File, File Offset(s), Beg File Samp (samples)
 6. Click File - Save selection table as - save it in a folder that contains the acoustic data as well (.wav file)
 
-
-
 ```{r}
 
 rvn.dat <- imp_raven(all.data=T, sound.file.col = "sound.files", warbler.format =  TRUE, path ="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
@@ -36,29 +46,6 @@ rvn.dat.st <- selection_table(rvn.dat[1,], path ="C:\\Users\\Vijay\\Desktop\\Cha
 trial <- selection_table(basename(a), path="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\" )
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Load recordings from xeno-canto and create a map
-```{r}
-wcb <- quer_xc("Psilopogon viridis",download = F, parallel = 4)
-xcmaps(wcb, img = FALSE) 
-
-```
-
 
 Load the necessary training data and create a selection table
 ```{r}
@@ -81,7 +68,6 @@ colnames(data) <- c("sound.files","start","end","selec")
 dat_table <- selection_table(data,path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
 
 ```
-
 
 Carry out spectrographic cross correlation
 ```{r}
@@ -108,37 +94,3 @@ xc.output <- xcorr(dat_table, bp=c(0,2),
 pks <- find_peaks(xc.output = xc.output, path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
 
 ```
-
-
-# Create empty list
-list.of.sound.files <-  list()
-
-# Loop to read in all .wav files in directory and add the file names and .wav files to a list 
-for (x in 1:length(list.wav.file.names)) { 
-  tmp.wav <- warbleR::read_wave(basename(list.wav.file.names[x]),
-                                path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
-  list.of.sound.files[[x]] <- list(list.wav.file.names[x], tmp.wav) 
-}
-
-# Create a selection table
-
-list.of.sound.files[[1]]
-
-
-trial <- tuneR::readWave(list.wav.file.names[1], header=TRUE)
-
-
-data(list = c("Phae.long1", "Phae.long2", 
-              "Phae.long3", "Phae.long4", "selec.table"))
-
-#write files to disk
-writeWave(Phae.long1,"Phae.long1.wav")
-
-cm <- matrix(c("Phae.long1.wav-1", "Phae.long1.wav"), ncol = 2)
-
-# Run cross correlation
-xc.output <- xcorr(X = lbh_selec_table[1, ], output = "list", 
-compare.matrix = cm, path = tempdir())
-
-```
-

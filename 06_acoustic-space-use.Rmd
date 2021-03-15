@@ -19,19 +19,6 @@ library(doParallel)
 source("code/01_internal-functions.R")
 ```
 
-
-Exploratory data analysis - Here I will try a few different functions from the seewave package in R to get a better sense of the distribution of frequencies over time
-```{r}
-# Read a sample .wav file
-a <- tuneR::readWave("data\\20200307_083000.wav")
-
-# Soundscape frequency spectrum of a time wave
-
-# This function returns a kHz binned spectrum as described by Kasten et al. (2012) for the description of a soundscape.
-# This function essentially creates a bar plot of frequencies in kHZ by amplitude values
-s_spectr <- soundscapespec(a)
-```
-
 Acoustic Space Use (ASU)
 
 We are interested in creating a three-dimensional matrix of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)
@@ -62,7 +49,6 @@ setwd(folders[i])
 a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
 file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
 }
-
 
 # Now get only those files for a full 24 hours across every unique site
 files <- list()
@@ -118,34 +104,25 @@ wn <- "hanning"
 # Store the 24 hour acoustic space use data in a list and name it by a unique site and date
 site_date_asu <-  list()
 
-# Setup parallel backend to use many processors
-cores <- detectCores()
-cl <- makeCluster(cores[1]-4) #not to overload your computer
-doParallel::registerDoParallel(cl)
-
-# Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site
-for (i in 1:length(unique(site))){
+# Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site-date
+for (i in 1:length(unique(site_date))){ 
   
+  # Store the each hour of data as a list here (raw audio files read by tuneR::readWave())
+  hourlydata <- list()
+  
+  # Store the acoustic space use data in a data.frame for plotting and analysis
+  space_use <- data.frame()
+
   # Extract the strings first by site 
-  b <- files[str_detect(files,unique(site)[4])]
+  dat <- files[stringr::str_detect(files,unique(site_date)[1])]
   
-  # Extract the unique site_date string
-  site_date <- unique(str_extract(basename(b),'\\w+_\\d+_'))
-  
-  # For each unique site_date combination for the given site
-  trial <- foreach::foreach(j=1:2, .combine = 'c',.packages = c("seewave")) %dopar% { 
-    
-    # Store the each hour of data as a list here
-    hourlydata <- list()
-    
-    # Store the acoustic space use data in a data.frame for plotting
-    space_use <- data.frame()
-
-    dat <- b[stringr::str_detect(b,site_date[j])] # A unique 24 hours of recording/site
-    
-    for(k in 1:(length(hour_seq)-1)) {
-        d <- dat[hour_seq[k]:hour_seq[k+1]]
-        tmp_list <- list()
+  for(k in 1:(length(hour_seq)-1)) {
+    if (k==1){
+    d <- dat[hour_seq[k]:hour_seq[k+1]]
+    } else {
+    d <- dat[(hour_seq[k]+1):hour_seq[k+1]]
+    }
+      tmp_list <- list()
       for(m in 1:length(d)) {
         r <- tuneR::readWave(d[m])
         tmp_list<- c(tmp_list,r)
@@ -153,12 +130,22 @@ for (i in 1:length(unique(site))){
       rm(r); gc()
       data_needed <- do.call(c,tmp_list)
       hourlydata <- c(hourlydata,data_needed)
-      rm(data_needed, tmp_list); gc()
+      rm(data_needed, tmp_list, m, d); gc()
+  }
+  
+  
+  for(t in 1:(length(hour_seq)-1)){ # Every 12 files correspond to one hour here
+    if (t==1){
+    e <- hourlydata[hour_seq[t]:hour_seq[t+1]]
+    } else {
+    e <- hourlydata[(hour_seq[t]+1):hour_seq[t+1]]
     }
     
-    # Using the above hourlydata list created for a single site_date combination
-    for(t in 1:length(hourlydata)) {
-        wave <- hourlydata[[t]]
+    # Store every hour's ASU data here
+    data_per_hour <- list()
+    
+    for(z in 1:length(e)){
+        wave <- hourlydata[[z]]
         n <- length(wave)
         
         ## Short-term Fourier transform (using a seewave internal function)
@@ -171,21 +158,44 @@ for (i in 1:length(unique(site))){
         
         # Calculate acoustic space use per frequency bin 
         f.cont <- apply(m, MARGIN = 1, FUN = sum)
-        f.cont <- f.cont/sum(f.cont)
+        # f.cont <- f.cont/sum(f.cont)
         
         # Store the space use data in a dataframe for plotting later
-        a <- data.frame(freq, f.cont,time_of_day=rep(time_of_day[t], each=length(f.cont)))
-        space_use <- rbind(a, space_use)
-        rm(m, wave); gc()
+        a <- data.frame(freq, f.cont)
+        data_per_hour <- rbind(a, data_per_hour)
     }
-    site_date_asu <- c(site_date_asu,list(space_use))
-    names(site_date_asu)[j] <- site_date[j] 
-    rm(hourlydata, space_use); gc()
+  rm(m, wave, a, e, freq, f.cont); gc()
+  
+  data_needed <- do.call(c, data_per_hour)
+    
+  data_per_hour  <- data_per_hour %>%
+  group_by(freq) %>%
+  summarise(f.cont=sum(f.cont)) 
+  
+  data_per_hour$f.cont <- (data_per_hour$f.cont)/12
+  data_per_hour$time_of_day <- time_of_day[t]
+  
+  space_use <- rbind(data_per_hour, space_use)
 }
-stopCluster(cl)
-}    
+  space_use <- as.data.frame(space_use)
+  site_date_asu <- c(site_date_asu,list(space_use))
+  names(site_date_asu)[i] <- unique(site_date)[i] 
+  rm(hourlydata, space_use); gc()
+}
+    
  
 ```
+
+
+# Doubts or to be done:
+
+ASU is being calculated for every one hour period and showcased for a 24 hour period of data.
+
+Values of ASU needs to be extracted from each site per season: But, we shall consider 3-5 continuous days of data at each site for averaging of ASU for that season/month
+
+Since ASU values are being scaled between 0 and 1 for comparison between sites, does it make sense to carry out the averaging across multiple days and then carry out the scaling of data? - which will make it easier for sampling. 
+
+
 
 
 - C. 
@@ -197,10 +207,31 @@ f.cont <- range01(f.cont)
 
 
 colors
-g1 <- ggplot(site_date_asu$SEL107U_20200308_, aes(y=time_of_day, x=freq)) +
+g1 <- ggplot(site_date_asu$HP37P4B_20200308_, aes(x=time_of_day, y=freq)) +
   geom_tile(aes(fill = f.cont)) +
   scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
     theme_bw()
+
+g1 <- ggplot(site_date_asu$HP37P4B_20200308_, aes(x=time_of_day, y=freq)) +  
+  geom_tile(aes(fill = f.cont)) +
+  scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
+    # scale_fill_scico(palette = "lajolla") +
+    theme_bw() +
+    labs(x="Time of Day (in hours)",
+       y="Frequency (in kHz) ") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        axis.text.x = element_text(angle=90, vjust=0.5, hjust=0.5),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
+ggsave(g1, filename = "figs/fig_asu_SEL107R.png", width=12, height=7,
+       device = png(), units="in", dpi = 300); dev.off()
 
 
 
