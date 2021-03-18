@@ -74,12 +74,10 @@ files <- unlist(files)
 
 
 - B. Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs) and then loop it across multiple days
-```{r}
-# Select all unique site combinations
-site <- str_extract(basename(files),'^([[:alnum:]])+')
-unique(site)
 
-# Select all the site_date combinations for each unique site
+ASU is being calculated for every one hour period and showcased for a 24 hour period of data.
+```{r}
+# Select all unique site_date combinations for each unique site
 site_date <- str_extract(basename(files),'\\w+_\\d+_')
 unique(site_date)
 
@@ -104,6 +102,13 @@ wn <- "hanning"
 # Store the 24 hour acoustic space use data in a list and name it by a unique site and date
 site_date_asu <-  list()
 
+# Add a progress bar for the loop
+pb <- txtProgressBar(
+  min = 0,
+  max = length(unique(site_date)),
+  style = 3
+)
+
 # Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site-date
 for (i in 1:length(unique(site_date))){ 
   
@@ -114,25 +119,17 @@ for (i in 1:length(unique(site_date))){
   space_use <- data.frame()
 
   # Extract the strings first by site 
-  dat <- files[stringr::str_detect(files,unique(site_date)[1])]
+  dat <- files[stringr::str_detect(files,unique(site_date)[i])]
   
-  for(k in 1:(length(hour_seq)-1)) {
-    if (k==1){
-    d <- dat[hour_seq[k]:hour_seq[k+1]]
-    } else {
-    d <- dat[(hour_seq[k]+1):hour_seq[k+1]]
+  # Read the files using tuneR::readWave() function and save it in a list
+  tmp_list <- list()
+  for(k in 1:length(dat)){
+    r <- tuneR::readWave(dat[k])
+    tmp_list<- c(tmp_list,r)
     }
-      tmp_list <- list()
-      for(m in 1:length(d)) {
-        r <- tuneR::readWave(d[m])
-        tmp_list<- c(tmp_list,r)
-      }
-      rm(r); gc()
-      data_needed <- do.call(c,tmp_list)
-      hourlydata <- c(hourlydata,data_needed)
-      rm(data_needed, tmp_list, m, d); gc()
-  }
-  
+    rm(r); gc()
+    hourlydata <- do.call(c,tmp_list)
+    rm(tmp_list); gc()
   
   for(t in 1:(length(hour_seq)-1)){ # Every 12 files correspond to one hour here
     if (t==1){
@@ -140,29 +137,29 @@ for (i in 1:length(unique(site_date))){
     } else {
     e <- hourlydata[(hour_seq[t]+1):hour_seq[t+1]]
     }
+  
+  # Store every hour's ASU data here
+  data_per_hour <- list()
     
-    # Store every hour's ASU data here
-    data_per_hour <- list()
-    
-    for(z in 1:length(e)){
-        wave <- hourlydata[[z]]
-        n <- length(wave)
+  for(z in 1:length(e)){
+      wave <- e[[z]] # this needs to be E!
+      n <- length(wave)
         
-        ## Short-term Fourier transform (using a seewave internal function)
-        m <- sspectro(wave, f = f, wl = wl, ovlp = ovlp, wn = wn)
+      ## Short-term Fourier transform (using a seewave internal function)
+      m <- sspectro(wave, f = f, wl = wl, ovlp = ovlp, wn = wn)
 
-        # Frequency selection and frequency axis
-        # Here, want only a sequence of numbers that correspond to the length of rows of the
-        # short-time fourier transform and we divide it by 1000 to get values in kHz
-        freq <- seq(0, (f/2) - (f/wl), length.out = nrow(m))/1000
+      # Frequency selection and frequency axis
+      # Here, want only a sequence of numbers that correspond to the length of rows of the
+      # short-time fourier transform and we divide it by 1000 to get values in kHz
+      freq <- seq(0, (f/2) - (f/wl), length.out = nrow(m))/1000
         
-        # Calculate acoustic space use per frequency bin 
-        f.cont <- apply(m, MARGIN = 1, FUN = sum)
-        # f.cont <- f.cont/sum(f.cont)
+      # Calculate acoustic space use per frequency bin 
+      f.cont <- apply(m, MARGIN = 1, FUN = sum)
+      # f.cont <- f.cont/sum(f.cont)
         
-        # Store the space use data in a dataframe for plotting later
-        a <- data.frame(freq, f.cont)
-        data_per_hour <- rbind(a, data_per_hour)
+      # Store the space use data in a dataframe for plotting later
+      a <- data.frame(freq, f.cont)
+      data_per_hour <- rbind(a, data_per_hour)
     }
   rm(m, wave, a, e, freq, f.cont); gc()
   
@@ -180,25 +177,27 @@ for (i in 1:length(unique(site_date))){
   space_use <- as.data.frame(space_use)
   site_date_asu <- c(site_date_asu,list(space_use))
   names(site_date_asu)[i] <- unique(site_date)[i] 
-  rm(hourlydata, space_use); gc()
+  rm(hourlydata, space_use, data_needed); gc()
+  setTxtProgressBar(pb, i)
 }
-    
+close(pb)    
  
 ```
 
+Other notes (to keep in mind):
 
-# Doubts or to be done:
 
-ASU is being calculated for every one hour period and showcased for a 24 hour period of data.
 
-Values of ASU needs to be extracted from each site per season: But, we shall consider 3-5 continuous days of data at each site for averaging of ASU for that season/month
+To be done: 
+
+Values of ASU needs to be extracted from each site per season: But, we shall consider 3-5 continuous days of data at each site for averaging of ASU for that season. 
+
+Upon averaging, the values can be scaled between 0 and 1 for the sake of comparison across sites (and treatment types)
 
 Since ASU values are being scaled between 0 and 1 for comparison between sites, does it make sense to carry out the averaging across multiple days and then carry out the scaling of data? - which will make it easier for sampling. 
 
 
-
-
-- C. 
+Averaging across sites and days and visualization to be done.
 ```{r}
 
 
@@ -206,16 +205,10 @@ Since ASU values are being scaled between 0 and 1 for comparison between sites, 
 f.cont <- range01(f.cont)
 
 
-colors
-g1 <- ggplot(site_date_asu$HP37P4B_20200308_, aes(x=time_of_day, y=freq)) +
+g1 <- ggplot(site_date_asu$SEL107U_20200309_, aes(x=time_of_day, y=freq)) +  
   geom_tile(aes(fill = f.cont)) +
   scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
-    theme_bw()
-
-g1 <- ggplot(site_date_asu$HP37P4B_20200308_, aes(x=time_of_day, y=freq)) +  
-  geom_tile(aes(fill = f.cont)) +
-  scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
-    # scale_fill_scico(palette = "lajolla") +
+    # scale_fill_scico(palette = "vikO") +
     theme_bw() +
     labs(x="Time of Day (in hours)",
        y="Frequency (in kHz) ") +
@@ -230,7 +223,7 @@ g1 <- ggplot(site_date_asu$HP37P4B_20200308_, aes(x=time_of_day, y=freq)) +
 theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 
-ggsave(g1, filename = "figs/fig_asu_SEL107R.png", width=12, height=7,
+ggsave(g1, filename = "figs/fig_asu_SEL107U.png", width=12, height=7,
        device = png(), units="in", dpi = 300); dev.off()
 
 
@@ -249,30 +242,3 @@ plot(x = freq, y = f.cont, type = "l", xlab = "Frequency(kHz)",
 
 ```
 
-
-we will first get values for the mean frequency spectrum and calculate frequency peaks
-```{r}
-# Calculate mean frequency spectrum
-# This function returns the mean frequency spectrum (i.e. the mean relative amplitude of the frequency distribution) of a time wave. Results can be expressed either in absolute or dB data.
-mf <- meanspec(a,f=48000,wl=256,norm=F)
-
-# This graphical function returns a frequency spectrum as a bar plot.
-f_bands <- fbands(mf)
-
-# Calculate frequency peaks
-# This function searches for peaks of a frequency spectrum.
-# Setting a threshold of 172, as specified in previous papers
-f_peak <- fpeaks(mf, threshold = 0.003, freq = 172)
-```
-
-
-
-
-
-
-Campos-Cerqueira et al., 2019 inputs:
-For meanspec: f=44,100, wl = 256, wn = ‘hanning’, norm = FALSE
-Audio waveforms scaled between -1 and 1
-Spectral peaks limited to max. amplitude of 1
-Amplitude threshold = 0.003
-Counted number of recordings with a peak in each of the 128 frequency bins (given amplitude threshold)
