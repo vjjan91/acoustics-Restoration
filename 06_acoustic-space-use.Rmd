@@ -75,7 +75,7 @@ files <- unlist(files)
 
 - B. Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs) and then loop it across multiple days
 
-ASU is being calculated for every one hour period and showcased for a 24 hour period of data.
+ASU is being calculated for every one hour period and showcased for a 24 hour period of data. ASU here is defined as the overall area occupied by the frequency contour for a given amplitude threshold. 
 ```{r}
 # Select all unique site_date combinations for each unique site
 site_date <- str_extract(basename(files),'\\w+_\\d+_')
@@ -87,7 +87,7 @@ hour_seq <- seq(from=0,to=288, by=12)
 # To name files with a suffix for each hour
 time_of_day <- c("00:00-01:00","01:00-02:00","02:00-03:00","03:00-04:00",
                  "04:00-05:00","05:00-06:00","06:00-07:00","07:00-08:00",
-                 "08:00-09:00","09:00-10:00","10:00-11:00","11:00-12:00", 
+                 "08:00-09:00","09:00-10:00","10:00-11:00","11:00-12:00",
                  "12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00",
                  "16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00",
                  "20:00-21:00","21:00-22:00","22:00-23:00","23:00-24:00")
@@ -95,7 +95,7 @@ time_of_day <- c("00:00-01:00","01:00-02:00","02:00-03:00","03:00-04:00",
 # Loading parameters necessary for the Short-term fourier transform to be performed on
 # hourly aggregates of data for each site_date combination
 f <- 48000
-wl <- 256 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
+wl <- 48 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
 ovlp <- 0
 wn <- "hanning"
 
@@ -119,15 +119,16 @@ for (i in 1:length(unique(site_date))){
   space_use <- data.frame()
 
   # Extract the strings first by site 
-  dat <- files[stringr::str_detect(files,unique(site_date)[i])]
+  dat <- files[stringr::str_detect(files,unique(site_date)[1])]
   
   # Read the files using tuneR::readWave() function and save it in a list
   tmp_list <- list()
   for(k in 1:length(dat)){
     r <- tuneR::readWave(dat[k])
-    tmp_list<- c(tmp_list,r)
+    s <- seewave::afilter(r,threshold = 1, plot = FALSE, output = "Wave")
+    tmp_list<- c(tmp_list,s)
     }
-    rm(r); gc()
+    rm(r,s); gc()
     hourlydata <- do.call(c,tmp_list)
     rm(tmp_list); gc()
   
@@ -155,7 +156,7 @@ for (i in 1:length(unique(site_date))){
         
       # Calculate acoustic space use per frequency bin 
       f.cont <- apply(m, MARGIN = 1, FUN = sum)
-      # f.cont <- f.cont/sum(f.cont)
+      #f.cont <- f.cont/sum(f.cont)
         
       # Store the space use data in a dataframe for plotting later
       a <- data.frame(freq, f.cont)
@@ -200,12 +201,18 @@ Since ASU values are being scaled between 0 and 1 for comparison between sites, 
 Averaging across sites and days and visualization to be done.
 ```{r}
 
+t1<-max(abs(wave))*(threshold/100)
+  wave1 <- ifelse(abs(wave)<=t1,yes=0,no=1)
+  wave2 <- wave[,1]*wave1[,1]
+  wave2 <- outputw(wave=wave2, f=f, format=output)
+
+
 
 
 f.cont <- range01(f.cont)
 
 
-g1 <- ggplot(site_date_asu$SEL107U_20200309_, aes(x=time_of_day, y=freq)) +  
+g1 <- ggplot(site_date_asu$HP37P4B_20200308_, aes(x=time_of_day, y=freq)) +  
   geom_tile(aes(fill = f.cont)) +
   scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
     # scale_fill_scico(palette = "vikO") +
@@ -223,8 +230,8 @@ g1 <- ggplot(site_date_asu$SEL107U_20200309_, aes(x=time_of_day, y=freq)) +
 theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 
-ggsave(g1, filename = "figs/fig_asu_SEL107U.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
+ggsave(g1, filename = "figs/fig_asu_HP37P4B.svg", width=12, height=7,
+       device = svg(), units="in", dpi = 300); dev.off()
 
 
 
