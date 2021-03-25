@@ -23,6 +23,14 @@ Acoustic Space Use (ASU)
 
 We are interested in creating a three-dimensional matrix of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)
 
+Previous papers broadly calculated space use by ascertaining the proportion of recordings in a particular time and frequency bin that is above a certain amplitude. However, this proportion was estimated by counting the number of frequency peaks within a given recording (seewave::fpeaks()) and then scaling it to go from 0 to 1. In our analysis, we want to obtain an understanding of the overall acoustic activity for a given time and frequency bin. In other words, we want the area under the curve for a particular frequency contour. 
+
+*Note* From Sound Analysis and Synthesis with R by Jerome Sueur
+
+The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256=187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.005s. 
+
+Below, we have summarized approaches taken by previous studies: 
+
 Aide et al. 2017: We aggregated recordings at time scale of hour of day and used a frequency bin size of 86.13 Hz and an amplitude filtering threshold of 0.02. So if the sampling rate is 22000 Hz, that would mean - 22000/86.13 ~ 256 frequency bins to divide up the frequency space. In this paper, there would be 24hr*256 bins = 6144 time/frequency bins
 
 Campos-Cerqueira et al. 2019: We aggregated recordings at the time scale of hour of day (24 h), used a frequency bin size of 172 Hz, and an amplitude filtering threshold of 0.003. So if the sampling rate is 22000 Hz, that would mean - 22000/172 ~ 128 frequency bins. This resulted in a three‐dimensional (x = hour, y = acoustic frequency, z = proportion of all recordings in each time/frequency bin with a frequency peak value > 0.003 amplitude) matrix of acoustic activity with a total of 3,072 time/frequency bins (24 h × 128 frequency bins).
@@ -75,7 +83,7 @@ files <- unlist(files)
 
 - B. Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs) and then loop it across multiple days
 
-ASU is being calculated for every one hour period and showcased for a 24 hour period of data. ASU here is defined as the overall area occupied by the frequency contour for a given amplitude threshold. 
+ASU is being calculated for every one hour period and showcased for a 24 hour period of data. ASU here is defined as the overall area occupied by the frequency contour.In our case, the sampling rate of our signal is 48,000 Hz (in future iterations, this value can be changed depending on the range of frequency values for which we would want to estimate acoustic space use)
 ```{r}
 # Select all unique site_date combinations for each unique site
 site_date <- str_extract(basename(files),'\\w+_\\d+_')
@@ -92,11 +100,10 @@ time_of_day <- c("00:00-01:00","01:00-02:00","02:00-03:00","03:00-04:00",
                  "16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00",
                  "20:00-21:00","21:00-22:00","22:00-23:00","23:00-24:00")
 
-# Loading parameters necessary for the Short-term fourier transform to be performed on
-# hourly aggregates of data for each site_date combination
+# Loading parameters necessary for the Short-term fourier transform to be performed on hourly aggregates of data for each site_date combination
 f <- 48000
-wl <- 48 # Changing this to 256 to match Campos-Cerqueira et al. 2017 which results in 128 frequency bins
-ovlp <- 0
+wl <- 48 # This window length should be changed as a function of the frequency resolution (ie. bin size) and temporal resolution (ie. time)
+ovlp <- 50
 wn <- "hanning"
 
 # Store the 24 hour acoustic space use data in a list and name it by a unique site and date
@@ -110,7 +117,9 @@ pb <- txtProgressBar(
 )
 
 # Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site-date
-for (i in 1:length(unique(site_date))){ 
+
+length(unique(site_date))
+for (i in 1:3){ 
   
   # Store the each hour of data as a list here (raw audio files read by tuneR::readWave())
   hourlydata <- list()
@@ -119,16 +128,15 @@ for (i in 1:length(unique(site_date))){
   space_use <- data.frame()
 
   # Extract the strings first by site 
-  dat <- files[stringr::str_detect(files,unique(site_date)[1])]
+  dat <- files[stringr::str_detect(files,unique(site_date)[i])]
   
   # Read the files using tuneR::readWave() function and save it in a list
   tmp_list <- list()
   for(k in 1:length(dat)){
     r <- tuneR::readWave(dat[k])
-    s <- seewave::afilter(r,threshold = 1, plot = FALSE, output = "Wave")
-    tmp_list<- c(tmp_list,s)
+    tmp_list<- c(tmp_list,r)
     }
-    rm(r,s); gc()
+    rm(r); gc()
     hourlydata <- do.call(c,tmp_list)
     rm(tmp_list); gc()
   
@@ -185,6 +193,41 @@ close(pb)
  
 ```
 
+
+Now that we have calculated acoustic space use values for a given frequency bin size and time resolution for every unique site-date combination, we would like to obtain a single set of space use values for every unique site. In other words, we would like to average space use values across all frequency bins for seven days (a week approximately)
+
+```{r}
+# All unique sites
+site <- str_extract(basename(files),'^([[:alnum:]])+')
+unique(site)
+
+# Store the site-wise ASU values
+site_asu <- list()
+
+# Loop through site-wise data and average data for each site
+for(i in 1:length(unique(site))) {
+  
+  # Extract data needed for every unique site
+  dat <- site_date_asu[stringr::str_detect(names(site_date_asu),unique(site)[i])]
+  
+  # Sum up values of acoustic space use across X no. of days for every unique site
+  asu_sum <-  dat %>%
+    bind_rows(.id="names") %>% 
+    group_by(freq, time_of_day) %>% 
+    summarize(f.cont.sum=sum(f.cont))
+  
+  # Averaging data as a function of number of days for a given site over which data was summed
+  asu_sum$f.cont.sum <- (asu_sum$f.cont.sum)/length(dat)
+  
+  # Scaling the data between 0 to 1 for the sake of comparison across sites
+  asu_sum$f.cont.sum <- range01(asu_sum$f.cont.sum)
+  
+  site_asu <- c(site_asu, list(asu_sum))
+  names(site_asu)[i] <- unique(site)[i] 
+}
+```
+
+
 Other notes (to keep in mind):
 
 
@@ -201,6 +244,12 @@ Since ASU values are being scaled between 0 and 1 for comparison between sites, 
 Averaging across sites and days and visualization to be done.
 ```{r}
 
+library(rpanel)
+data(sheep)
+dynspec(sheep, wl = 512, osc = T)
+dynspec(r, wl = 279.0698, osc = T)
+
+
 t1<-max(abs(wave))*(threshold/100)
   wave1 <- ifelse(abs(wave)<=t1,yes=0,no=1)
   wave2 <- wave[,1]*wave1[,1]
@@ -212,8 +261,8 @@ t1<-max(abs(wave))*(threshold/100)
 f.cont <- range01(f.cont)
 
 
-g1 <- ggplot(site_date_asu$HP37P4B_20200308_, aes(x=time_of_day, y=freq)) +  
-  geom_tile(aes(fill = f.cont)) +
+g1 <- ggplot(trial, aes(x=time_of_day, y=freq)) +  
+  geom_tile(aes(fill = f.cont.sum)) +
   scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
     # scale_fill_scico(palette = "vikO") +
     theme_bw() +
