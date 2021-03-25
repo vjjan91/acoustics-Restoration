@@ -212,7 +212,7 @@ for(i in 1:length(unique(site))) {
   
   # Sum up values of acoustic space use across X no. of days for every unique site
   asu_sum <-  dat %>%
-    bind_rows(.id="names") %>% 
+    bind_rows(.id="data") %>% 
     group_by(freq, time_of_day) %>% 
     summarize(f.cont.sum=sum(f.cont))
   
@@ -224,44 +224,54 @@ for(i in 1:length(unique(site))) {
   
   site_asu <- c(site_asu, list(asu_sum))
   names(site_asu)[i] <- unique(site)[i] 
+  rm(dat,asu_sum)
 }
+
 ```
 
 
-Other notes (to keep in mind):
+Visualization of data
 
-
-
-To be done: 
-
-Values of ASU needs to be extracted from each site per season: But, we shall consider 3-5 continuous days of data at each site for averaging of ASU for that season. 
-
-Upon averaging, the values can be scaled between 0 and 1 for the sake of comparison across sites (and treatment types)
-
-Since ASU values are being scaled between 0 and 1 for comparison between sites, does it make sense to carry out the averaging across multiple days and then carry out the scaling of data? - which will make it easier for sampling. 
-
-
-Averaging across sites and days and visualization to be done.
+We will use ggplot2 to plot and save individual ASU plots for each unique site-date combination. This will then be repeated for each unique site (calculated in the previous chunk of code) 
 ```{r}
+# Saving the ggplots to a folder for every unique site-date combination
+for(i in 1:length(site_date_asu)){
+  
+  # Get the data out from a list to a .dataframe (else ggplot won't accept it)
+  dat <- data.frame(site_date_asu[i])
+  names(dat) <- c("freq","f.cont","time_of_day")
+  
+  # Plot the data
+  g1 <- ggplot(dat, aes(x=time_of_day, y=freq)) +  
+  geom_tile(aes(fill = f.cont)) +
+  scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
+    # scale_fill_scico(palette = "vikO") +
+    theme_bw() +
+    labs(x="Time of Day (in hours)",
+       y="Frequency (in kHz) ") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        axis.text.x = element_text(angle=90, vjust=0.5, hjust=0.5),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+  
+  # Save the data to a folder
+  ggsave(filename="",width=12, height=7, units="in", dpi = 300, 
+         plot=g1, device="png", path = paste("figs/site_date_asu/",  paste(names(site_date_asu)[i], ".png", sep=""), sep=""))
+}
 
-library(rpanel)
-data(sheep)
-dynspec(sheep, wl = 512, osc = T)
-dynspec(r, wl = 279.0698, osc = T)
 
-
-t1<-max(abs(wave))*(threshold/100)
-  wave1 <- ifelse(abs(wave)<=t1,yes=0,no=1)
-  wave2 <- wave[,1]*wave1[,1]
-  wave2 <- outputw(wave=wave2, f=f, format=output)
-
-
-
-
-f.cont <- range01(f.cont)
-
-
-g1 <- ggplot(trial, aes(x=time_of_day, y=freq)) +  
+# Saving the ggplots to a folder for every unique site
+for(j in 1:length(site_asu)){
+  
+  # Get the data out from a list to a .dataframe (else ggplot won't accept it)
+  dat <- data.frame(site_asu[j])
+  names(dat) <- c("freq","time_of_day","f.cont.sum")
+  
+  # Plot the data
+  g1 <- ggplot(dat, aes(x=time_of_day, y=freq)) +  
   geom_tile(aes(fill = f.cont.sum)) +
   scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
     # scale_fill_scico(palette = "vikO") +
@@ -275,24 +285,15 @@ g1 <- ggplot(trial, aes(x=time_of_day, y=freq)) +
         legend.title = element_blank(),
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(size = 12))
-
-theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  
+  # Save the data to a folder
+  ggsave(filename="",width=12, height=7, units="in", dpi = 300, 
+         plot=g1, device="png", path = paste("figs/site_asu/",  paste(names(site_asu)[j], ".png", sep=""), sep=""))
+}
 
 
 ggsave(g1, filename = "figs/fig_asu_HP37P4B.svg", width=12, height=7,
        device = svg(), units="in", dpi = 300); dev.off()
-
-
-
-g2 <- ggplot(plot_dat, aes(y=freq, fill= f.cont, x=time_of_day)) + 
-  geom_density(alpha = 0.5) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
-  theme_minimal_hgrid(12)
-
-
-plot(x = freq, y = f.cont, type = "l", xlab = "Frequency(kHz)", 
-            ylab = "Amplitude")
-
 
 
 
