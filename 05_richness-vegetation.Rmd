@@ -1,0 +1,56 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Associations between bird species richness, detections and Vegetation data
+
+Previously, we calculated species richness and number of detections for every 16-min duration across sites and treatment types. Here, we ask if there is a statistically significant association between bird species richness and/or detections and vegetation measurements
+
+Install required libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+
+Load the vegetation data
+```{r}
+veg <- read.csv("data/2020-vegetation-data.csv")
+veg$Site_ID <- str_remove(veg$Site_ID,"_")
+
+# Subset data to include only sites that are present in our study
+# To do so, we load the 2020-annotation-data and extract the unique sites
+data <- read.csv("data/2020-summer-annotation-working document.csv")
+
+# Split the file names into 4 columns : Site, Date, Time and Splits   
+data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
+sites_needed <- data.frame(unique(data$Site))
+names(sites_needed) <- "Site_ID"
+
+# Obtain a subset of the data which have the sites visited (Note: 44/69 sites were visited)
+veg <- merge(veg, sites_needed, by.x = "Site_ID", by.y="Site_ID")
+  
+
+# Counting number of tree species and unique species per plot
+treerich <- veg %>% 
+  group_by (Site_ID) %>% 
+  summarise (count = n(), richness = n_distinct(tree_species))
+ 
+
+```
+
+
+Carry out exploratory analysis
+```{r}
+
+```
+
+
