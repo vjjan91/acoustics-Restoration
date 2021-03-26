@@ -76,8 +76,7 @@ tukey <- TukeyHSD(x=anova, 'Restoration.Type', conf.level=0.95)
 # Create a boxplot of species richness by group (Here: group refers to Restoration Type)
 # Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
 
-fig_richness <- ggplot(richness, aes(x=Restoration.Type, y=richness, fill=Restoration.Type)) +
-    geom_boxplot(alpha=0.7) + 
+fig_richness <- ggplot(richness, aes(x=Restoration.Type, y=richness, fill=Restoration.Type)) +  geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
     labs(x="Restoration Type", 
