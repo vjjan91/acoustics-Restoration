@@ -37,20 +37,34 @@ names(sites_needed) <- "Site_ID"
 
 # Obtain a subset of the data which have the sites visited (Note: 44/69 sites were visited)
 veg <- merge(veg, sites_needed, by.x = "Site_ID", by.y="Site_ID")
-  
-
-# Counting number of tree species and unique species per plot
-treerich <- veg %>% 
-  group_by (Site_ID) %>% 
-  summarise (count = n(), richness = n_distinct(tree_species))
- 
-
 ```
 
 
-Carry out exploratory analysis
+Carrying out exploratory analysis and preparing a dataframe for further steps
 ```{r}
+# Counting number of tree species and unique species per plot
+treerich <- veg %>% 
+  group_by(Site_ID) %>% 
+  summarise (count = n(), richness = n_distinct(tree_species))
 
+# Calculate average tree height across each unique site
+treeheight <- veg %>% 
+  drop_na(height) %>% 
+  group_by(Site_ID) %>% 
+  summarise(height = mean(height))
+
+# Calculate basal area and left join with other data
+all_veg <- veg %>% 
+  mutate(basal_sum = rowSums(veg[,c(5:15)]^2)/(4*pi)) %>%     group_by(Site_ID, Site_type) %>% 
+  summarise(basal_area = sum(basal_sum)) %>% 
+  left_join(treerich) %>% 
+  left_join(treeheight)
+
+# Creating a final dataframe for further analysis
+all_veg <- left_join (all_veg, veg) 
+
+%>% 
+  rename (Density = "count", Richness = "richness", Height = "height", BasalArea = "basal_area", VerticalStratification = "Foliage_score", CanopyCover = "Canopy_cover")
 ```
 
 
