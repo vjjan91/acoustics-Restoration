@@ -50,14 +50,7 @@ nDetections_10s <- data %>%
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 30s clip (In this case, every third row is chosen after grouping by Site, Date and Time)
 
 nDetections_30s <- data %>%
-  mutate(Splits = case_when((Splits == "01-10" | Splits=="10-20" | Splits =="20-30") ~ "1",
-                         (Splits == "30-40" | Splits=="40-50" | Splits =="50-60") ~ "2",
-                         (Splits == "60-70" | Splits=="70-80" | Splits =="80-90") ~ "3",
-                         (Splits == "90-100" | Splits=="100-110" | Splits =="110-120") ~ "4",
-                         (Splits == "120-130" | Splits=="130-140" | Splits =="140-150") ~ "5",
-                         (Splits == "150-160" | Splits=="160-170" | Splits =="170-180") ~ "6",
-                         (Splits == "180-190" | Splits=="190-200" | Splits =="200-210") ~ "7",
-                         (Splits == "210-220" | Splits=="220-230" | Splits =="230-240") ~"8")) %>% group_by(Site, Date, Time, Splits, Restoration.Type) %>%
+  mutate(Splits = case_when((Splits == "01-10" | Splits=="10-20" | Splits =="20-30") ~ "1",(Splits == "30-40" | Splits=="40-50" | Splits =="50-60") ~ "2",(Splits == "60-70" | Splits=="70-80" | Splits =="80-90") ~ "3",            (Splits == "90-100" | Splits=="100-110" | Splits =="110-120") ~ "4",             (Splits == "120-130" | Splits=="130-140" | Splits =="140-150") ~ "5",            (Splits == "150-160" | Splits=="160-170" | Splits =="170-180") ~ "6",           (Splits == "180-190" | Splits=="190-200" | Splits =="200-210") ~ "7",           (Splits == "210-220" | Splits=="220-230" | Splits =="230-240") ~"8")) %>% group_by(Site, Date, Time, Splits, Restoration.Type) %>%
   summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
 
 # Convert nDetections>1 within a 30s period to 1 (since your temporal unit here is 30s)
