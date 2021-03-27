@@ -54,17 +54,32 @@ treeheight <- veg %>%
   summarise(height = mean(height))
 
 # Calculate basal area and left join with other data
-all_veg <- veg %>% 
-  mutate(basal_sum = rowSums(veg[,c(5:15)]^2)/(4*pi)) %>%     group_by(Site_ID, Site_type) %>% 
-  summarise(basal_area = sum(basal_sum)) %>% 
-  left_join(treerich) %>% 
-  left_join(treeheight)
+basal_area <- veg %>% 
+  mutate(basal_sum = rowSums(veg[,c(5:15)]^2)/(4*pi)) %>% group_by(Site_ID, Site_type) %>% 
+  summarise(basal_area = sum(basal_sum)) 
+
+# Calculate average canopy height
+canopy_height <- veg %>%
+  group_by(Site_ID) %>%
+  summarise(canopy_cover = mean(Canopy_cover))
+
+# Calculate average leaf litter
+leaf_litter <- veg %>%
+  group_by(Site_ID) %>%
+  summarise(leaf_litter = mean(Leaf_litter))
+
+# Calculate average vertical stratification
+vert_strat <- veg %>%
+  group_by(Site_ID) %>%
+  summarise(vert_strat = mean(Foliage_score))
 
 # Creating a final dataframe for further analysis
-all_veg <- left_join (all_veg, veg) 
-
-%>% 
-  rename (Density = "count", Richness = "richness", Height = "height", BasalArea = "basal_area", VerticalStratification = "Foliage_score", CanopyCover = "Canopy_cover")
+all_veg <- basal_area %>% 
+  left_join(treeheight) %>%
+  left_join(treerich) %>%
+  left_join(canopy_height) %>%
+  left_join(leaf_litter) %>%
+  left_join(vert_strat)
 ```
 
 
