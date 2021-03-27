@@ -82,4 +82,11 @@ all_veg <- basal_area %>%
   left_join(vert_strat)
 ```
 
+Running a PCA of the vegetation data
+```{r}
+library(psych)
+
+```
+
+
 
