@@ -15,6 +15,7 @@ library(stringr)
 library(vegan)
 library(ggplot2)
 library(scico)
+library(psych)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -84,7 +85,25 @@ all_veg <- basal_area %>%
 
 Running a PCA of the vegetation data
 ```{r}
-library(psych)
+# Check for correlations among vegetation predictors
+pairs.panels(all_veg[,3:9])
+
+# The above panel suggests that richness is highly correlated with a number of predictors including canopy cover, count and basal area. We will calculate a PCA and keep the top two explanatory axes
+
+veg_pca <- prcomp(all_veg[, 3:9], scale=TRUE, center = TRUE, retx=TRUE)
+summary(veg_pca)
+
+# The proportion of variance explained by the first two axes account for ~72.67%
+
+# Plotting the first two axes
+
+plot_data <- data.frame('Site_type' = all_veg$Site_type, veg_pca$x[,1:2]) # the first two components are selected 
+pca_plot <- ggplot(data = plot_data) + 
+       geom_point(aes(x = PC1, y = PC2, col = Site_type), size=2) + 
+  scale_color_manual(values = scico(3, begin = 0.3, palette = "vik")) +
+  theme_bw()
+  
+
 
 ```
 
