@@ -38,6 +38,9 @@ names(sites_needed) <- "Site_ID"
 
 # Obtain a subset of the data which have the sites visited (Note: 44/69 sites were visited)
 veg <- merge(veg, sites_needed, by.x = "Site_ID", by.y="Site_ID")
+
+# Load species-trait data to essentially run GLMs
+trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
 
 
@@ -102,10 +105,19 @@ pca_plot <- ggplot(data = plot_data) +
        geom_point(aes(x = PC1, y = PC2, col = Site_type), size=2) + 
   scale_color_manual(values = scico(3, begin = 0.3, palette = "vik")) +
   theme_bw()
-  
-
-
 ```
 
+
+Running a GLMM that compares avian species and vegetation
+```{r}
+# To run a GLMM, we need to first extract necessary predictors that will be use in the mixed-effects model. 
+# 1. Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site)
+
+nDetections_Site <- data %>%
+  group_by(Site, Restoration.Type) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
+  transform() %>% replace(is.na(.), 0)
+
+```
 
 
