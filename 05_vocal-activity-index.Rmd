@@ -103,6 +103,8 @@ sumDet_Benchmark <- nDetections %>%
 
 # Measures of vocal activity
 
+# Note: Based on discussion with Akshay, scale the pproportion of clips in which a species was detected to ensure that we could compare vocal activity for multiple species across treatment types
+
 vocal_Benchmark <- sumDet_Benchmark %>%
   mutate(propDetected = Count/n_clips_benchmark) %>%
   # mutate(propDetected=range01(propDetected)) %>% 
