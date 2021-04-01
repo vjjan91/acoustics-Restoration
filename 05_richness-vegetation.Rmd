@@ -86,6 +86,7 @@ all_veg <- basal_area %>%
   left_join(vert_strat)
 ```
 
+
 Running a PCA of the vegetation data
 ```{r}
 # Check for correlations among vegetation predictors
@@ -99,24 +100,52 @@ summary(veg_pca)
 # The proportion of variance explained by the first two axes account for ~72.67%
 
 # Plotting the first two axes
-
 plot_data <- data.frame('Site_type' = all_veg$Site_type, veg_pca$x[,1:2]) # the first two components are selected 
 pca_plot <- ggplot(data = plot_data) + 
        geom_point(aes(x = PC1, y = PC2, col = Site_type), size=2) + 
-  scale_color_manual(values = scico(3, begin = 0.3, palette = "vik")) +
-  theme_bw()
+  scale_color_manual(values = scico(3, begin = 0.3, palette = "vik")) + theme_bw()
 ```
 
 
-Running a GLMM that compares avian species and vegetation
+Running a GLMM that compares avian species and vegetation specific
 ```{r}
 # To run a GLMM, we need to first extract necessary predictors that will be use in the mixed-effects model. 
-# 1. Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site)
 
-nDetections_Site <- data %>%
-  group_by(Site, Restoration.Type) %>%
+# 1. Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10seconds). Here, we 
+
+nDetections_site_date <- data %>%
+  group_by(Site, Restoration.Type, Date) %>%
   summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
   transform() %>% replace(is.na(.), 0)
+
+# 2. Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates
+
+nDetections_trait <- nDetections_site_date %>%
+  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
+  dplyr::select(-c(scientific_name)) %>%
+  mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
+  rename(., nDetections = count)
+
+nSites_Days <- data %>%
+  dplyr::select(Site, Date)%>%
+  distinct() %>% arrange(Site) %>% count(Site)
+
+
+
+
+ filt_data %>% 
+  group_by(Site_type) %>%
+  summarise (
+    detections = n(), 
+    species = n_distinct(Species), 
+    abundance = sum(Number),
+    visits = n_distinct(Site_ID, Date))
+
+
+
+ 
+ 
 
 ```
 
