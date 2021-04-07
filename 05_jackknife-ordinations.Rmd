@@ -26,7 +26,7 @@ Load the necessary data to calculate Jackknife scores
 ```{r}
 # Subset data to include only sites that are present in our study
 # To do so, we load the 2020-annotation-data and extract the unique sites
-data <- read.csv("data/2020-summer-annotation-working document.csv")
+data <- read.csv("data/2020-summer-annotation-working-document.csv")
 
 # Split the file names into 4 columns : Site, Date, Time and Splits   
 data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
