@@ -27,7 +27,7 @@ At the moment, data exists to calculate species richness for one season only (da
 We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations)
 ```{r}
 # Attach the 2020_summer_annotation data 
-data <- read.csv("data/2020-summer-annotation-working document.csv")
+data <- read.csv("data/2020-summer-annotation-working-document.csv")
 
 # Site-wise sorting of the 16-min of data
 # Split the file names into 4 columns : Site, Date, Time and Splits   
@@ -42,7 +42,6 @@ How many visits (counted as number of unique days) to a site has been annotated?
 ```{r}
 # At the moment 1-3 days at each site has been annotated
 # Some sites have only 1 visit. See SEL sites (Selaliparai)
-
 nSites_Days <- data %>%
   dplyr::select(Site, Date)%>%
   distinct() %>% arrange(Site) %>% count(Site)
@@ -51,6 +50,21 @@ nSites_Days <- data %>%
 Now group the data by site and restoration type and sum the number of detections across sites. At the moment, we will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness. 
 ```{r}
 # Calculate the overall number of detections for each site across 1-3 days of data (translates to 16min to 48min of data per site)
+# We would like to obtain a max of 3 visits to a site only (some sites have 4 visits)
+
+# Add nVisits as a column
+data <- data %>%
+  group_by(Site, Restoration.Type) %>%
+  mutate(nVisits = n_distinct(Site,Date))
+
+trial <- data %>%
+  dplyr::select(Site, Date)%>%
+  distinct() 
+
+%>%
+  filter(Date,n=2)
+
+%>% sample_n(2)
 
 nDetections_Site <- data %>%
   group_by(Site, Restoration.Type) %>%
