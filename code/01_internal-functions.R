@@ -136,3 +136,11 @@ stratified <- function(df, group, size, select = NULL,
   }
 }
 
+###############################################################################################################
+### extractRandWindow - function that starts at a random position and extracts n Number of consecutive integers
+###############################################################################################################
+
+extractRandWindow <- function(x, p){
+  firstIndex = sample(seq(length(x) - p + 1), 1)
+  x[firstIndex:(firstIndex + p -1)]
+}
