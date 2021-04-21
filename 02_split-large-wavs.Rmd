@@ -13,14 +13,8 @@ library(dplyr)
 library(stringr)
 library(tools)
 
-# Load custom functions---------------------
-
-# Function to start at a random position and extract 3 consecutive integers
-extractRandWindow <- function(x, p){
-    firstIndex = sample(seq(length(x) - p + 1), 1)
-    x[firstIndex:(firstIndex + p -1)]
-}
-
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
 ```
 
 #### Using warbleR::split.wavs() to split a large file
