@@ -20,15 +20,10 @@ library(ggplot2)
 library(scico)
 ```
 
-We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations)
+We will use the data that was subset previously for further analysis (This contains three non-consecutive visits to each site)
 ```{r}
 # Attach the 2020_summer_annotation data 
-data <- read.csv("data/2020-summer-annotation-working document.csv")
-
-# Site-wise sorting of the 16-min of data
-# Split the file names into 4 columns : Site, Date, Time and Splits   
-data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
-data
+datSubset <- read.csv("data/datSubset.csv")
 
 # Load the species-trait-data
 trait_dat <- read.csv("data/species-trait-dat.csv")
