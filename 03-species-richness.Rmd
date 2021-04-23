@@ -85,16 +85,14 @@ nonConVisits$Date <- str_remove_all(as.character(nonConVisits$Date),"-")
 # Left-join with the original dataframe to subset the data for analysis
 datSubset <- left_join(nonConVisits,data)
 
+# Save this data as a .csv for future analysis (later scripts)
+write.csv(datSubset,"data/datSubset.csv", row.names = F)
 ```
 
 Now group the data by site and restoration type and sum the number of detections across sites. At the moment, we will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness. 
 ```{r}
 # Calculate the overall number of detections for each site across 1-3 days of data (translates to 16min to 48min of data per site)
 # We would like to obtain a max of 3 visits to a site only (some sites have 4 visits)
-
-
-
-
 
 nDetections_Site <- data %>%
   group_by(Site, Restoration.Type) %>%
