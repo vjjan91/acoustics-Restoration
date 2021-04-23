@@ -3,8 +3,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-#### This script performs the splitting of large .wav files into smaller chunks
+# Splitting large .wav files into smaller chunks
 
+Here, we will first split the raw data which was collected for 24 hours at a site, for 7 days at a stretch. Deployment schedule was set to record for 4-minutes and switched off for 1-min. For the sake of analysis and future work, I will split the data into 10s chunks, which will be annotated manually using Raven Pro. 
 ```{r}
 # Loading required libraries
 library(warbleR)
@@ -17,7 +18,7 @@ library(tools)
 source("code/01_internal-functions.R")
 ```
 
-#### Using warbleR::split.wavs() to split a large file
+Now, we will use warbleR::split.wavs() to split a large file
 
 Steps: 1. Load a list of .wav files in a given folder (will have to be done site by site)
 2. Select only files between 6am and 10am (to begin with)
@@ -83,9 +84,9 @@ file.copy(from = final_subset, to="C:\\data\\subset\\")
 
 ```
 
-
 Split the files and provide unique names to each file
 ```{r}
+# Note: the path you choose to store data is upto the user.
 subset_path <- "C:\\data\\subset\\"
 
 # Split the files into n-second chunks
@@ -117,5 +118,4 @@ for(i in 1:length(chunks)){
 # Remove the original files
 orig_files <- list.files(subset_path, full.names = T, pattern = ".WAV$")
 file.remove(orig_files)
-
 ```
