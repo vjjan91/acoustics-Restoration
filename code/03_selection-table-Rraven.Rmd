@@ -1,7 +1,9 @@
 ---
-title: "ExploratoryAnalyses_warbleR"
-output: html_notebook
+editor_options: 
+  chunk_output_type: console
 ---
+
+# Creation of selection tables using Raven Pro and Rraven
 
 Loading latest libraries for warbleR and Rraven using devtools
 ```{r}
@@ -15,7 +17,7 @@ library(Rraven)
 Exploratory data analysis - Here I will try a few different functions from the seewave package in R to get a better sense of the distribution of frequencies over time
 ```{r}
 # Read a sample .wav file
-a <- tuneR::readWave("data\\20200307_083000.wav")
+a <- tuneR::readWave("data\HP37P4B_20200307_083000.wav")
 
 # Soundscape frequency spectrum of a time wave
 
@@ -27,6 +29,7 @@ s_spectr <- soundscapespec(a)
 Importing selection tables and annotations made from Raven
 
 Steps taken to create a selection table using Raven:
+
 1. Load a given recording using Raven Pro 1.6.1.
 2. Select a given feature and save it within your training data folder
 3. Re-load the file - one at a time 
@@ -36,28 +39,24 @@ Steps taken to create a selection table using Raven:
 5. Select the following measurements to ensure that a selection table is loaded in R and recognized by the Rraven package: selection, view, channel, beginTime(s), endTime(s), lowFreq(Hz), highFreq(Hz), Begin Path, Begin File, File Offset(s), Beg File Samp (samples)
 6. Click File - Save selection table as - save it in a folder that contains the acoustic data as well (.wav file)
 
+Below we can import the selection table that was created in Raven
 ```{r}
+rvn.dat <- imp_raven(all.data=T, sound.file.col = "sound.files", warbler.format =  TRUE, path ="path-to-selection-table")
 
-rvn.dat <- imp_raven(all.data=T, sound.file.col = "sound.files", warbler.format =  TRUE, path ="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
-
-rvn.dat.st <- selection_table(rvn.dat[1,], path ="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
-
-
-trial <- selection_table(basename(a), path="C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\" )
-
+rvn.dat.st <- selection_table(rvn.dat[1,], path ="path-to-selection-table")
 ```
 
 Load the necessary training data and create a selection table
 ```{r}
 # Create a vector of all the recordings in the directory
-list.wav.file.names <- list.files("C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\", full.names=T)
+list.wav.file.names <- list.files("file-path", full.names=T)
 
 # What's the duration of these recordings?
-duration <- wavdur(files=basename(list.wav.file.names), path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+duration <- wavdur(files=basename(list.wav.file.names), path = "file-path")
 
 # Create long spectrograms with all the training data
 long_spec <- lspec(flist = basename(list.wav.file.names), ovlp = 10, it = "tiff",
-                    path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
+      path = "file-path")
 
 # Now create selection tables
 data <- duration %>%
@@ -65,32 +64,6 @@ data <- duration %>%
 data <- data[,-2]  
 colnames(data) <- c("sound.files","start","end","selec")
 
-dat_table <- selection_table(data,path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
-
+dat_table <- selection_table(data,path = "file-path")
 ```
 
-Carry out spectrographic cross correlation
-```{r}
-# Load the acoustic data to be matched with
-a <- tuneR::readWave("C:\\Users\\Vijay\\Desktop\\Chapter 3\\HP36P3B\\20200321_090000.wav")
-test <- file.path(tempdir(), "test.wav")
-writeWave(a, test)
-
-trial <- 
-
-
-# make matrix with templates and sound files
-cm <- matrix(c(dat_table[1],test), ncol = 2)
-
-cm <- matrix(c("Phae.long1.wav-1", "Phae.long1.wav"), ncol = 2)
-             
-t <- cbind(dat_table[,1],rep(test,nrow(dat_table)))
-matrix(c(dat_table[,1],test),ncol=2)
-
-
-xc.output <- xcorr(dat_table, bp=c(0,2),
-                   output = "list", path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
-
-pks <- find_peaks(xc.output = xc.output, path = "C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\")
-
-```
