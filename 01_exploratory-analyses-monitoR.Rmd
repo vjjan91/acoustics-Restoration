@@ -1,7 +1,11 @@
 ---
-title: "Exploratory Analyses using monitoR"
-output: html_notebook
+editor_options: 
+  chunk_output_type: console
 ---
+
+# Exploratory analysis using the monitoR and seewave package
+
+In this script, I estimate spectrogrpahic cross correlation and calculate correlation scores.
 
 Loading `monitoR` and `seewave` packages
 ```{r}
@@ -12,7 +16,7 @@ library(tidyverse)
 
 Loading a list of training features to calculate spectrogram cross correlation
 ```{r}
-list.wav.file.names <- list.files("C:\\Users\\Vijay\\Desktop\\Chapter 3\\Data\\Summer 2020\\wcb\\", full.names = T)
+list.wav.file.names <- list.files("-insert-file-path-here", full.names = T)
 
 # Create empty list
 list.of.sound.files <-  list()
@@ -24,21 +28,15 @@ for (x in 1:length(list.wav.file.names)) {
 }
 
 # Temporarily remove all associated locations from where a bird species recording was obtained
-
 for(i in 1: length(list.of.sound.files)){
   a <- basename(list.of.sound.files[[i]][[1]])
   a <- gsub('_.*','',a) # removing locations
   list.of.sound.files[[i]][[1]] <- gsub("[0-9]+$", "", a) # Removing numbers 
 }
-
-
-
 ```
-
 
 Creating a list of templates to be used for spectrogram cross correlation
 ```{r}
-
 list_of_templates <-  list()
 
 for(i in 1:length(list.of.sound.files)){
@@ -55,16 +53,12 @@ for(i in 1:length(list_of_templates)) {
 }
 
 templates <- new('corTemplateList', templates=x)
-
-
 ```
 
 Loading a recording to obtain correlation scores
 Couple of issues: This is taking far too long for even a single recording
-
 ```{r}
-
-a <- tuneR::readWave("C:\\Users\\Vijay\\Desktop\\Chapter 3\\HP36P3B\\20200321_090000.wav")
+a <- tuneR::readWave("data/HP37P4B_20200307_083000.wav")
 test <- file.path(tempdir(), "test.wav")
 writeWave(a, test)
 
@@ -84,10 +78,3 @@ getDetections(cdetects)
 
 plot(cdetects)
 ```
-
-
-
-
-
-
-
