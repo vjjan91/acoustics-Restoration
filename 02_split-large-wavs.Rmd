@@ -119,3 +119,5 @@ for(i in 1:length(chunks)){
 orig_files <- list.files(subset_path, full.names = T, pattern = ".WAV$")
 file.remove(orig_files)
 ```
+
+Now, go ahead and begin the process of manual annotation :)
