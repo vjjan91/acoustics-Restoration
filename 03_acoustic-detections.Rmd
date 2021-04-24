@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we will calculate:
 
-a) Number of detections across sites (reported for varying time intervals 10s, 30s, 1-min, 2-min, 4-min).
+a) Total Number of detections across sites (reported for varying time intervals 10s, 30s, 1-min, 2-min, 4-min). In the previous script, we essentially calculated overall species richness with a temporal unit of 16-min. However, it is important to identify the total number of detections of a particular species for a given temporal duration, which can inform levels of vocal activity (future scripts). 
 b) Repeat the above three calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.
 
 Install required libraries
