@@ -24,14 +24,8 @@ source("code/01_internal-functions.R")
 
 Load the necessary data to calculate Jackknife scores
 ```{r}
-# Subset data to include only sites that are present in our study
-# To do so, we load the 2020-annotation-data and extract the unique sites
-data <- read.csv("data/2020-summer-annotation-working-document.csv")
-
-# Split the file names into 4 columns : Site, Date, Time and Splits   
-data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
-sites_needed <- data.frame(unique(data$Site))
-names(sites_needed) <- "Site_ID"
+# We load the subset data
+datSubset <- read.csv("data/datSubset.csv")
 
 # Load species-trait data to essentially check for associations by habitat type
 trait_dat <- read.csv("data/species-trait-dat.csv")
@@ -40,15 +34,15 @@ trait_dat <- read.csv("data/species-trait-dat.csv")
 
 Extracting jacknife scores
 ```{r}
+# Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
 
-# 1. Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
-
-nDetections_site_date <- data %>%
+nDetections_site_date <- datSubset %>%
   group_by(Site, Restoration.Type, Date) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
-  transform() %>% replace(is.na(.), 0)
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+  
 
-# 2. Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates
+# Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates
 
 nDetections_trait <- nDetections_site_date %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
@@ -57,7 +51,7 @@ nDetections_trait <- nDetections_site_date %>%
   mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
   rename(., nDetections = count)
 
-# 3. Extract jackknife scores
+# Extract jackknife scores
 
 
 ```
