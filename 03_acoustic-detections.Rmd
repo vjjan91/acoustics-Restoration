@@ -72,10 +72,10 @@ nDetections_1min <- datSubset %>%
 
 nDetections_1min <- nDetections_1min %>%
   group_by(Site, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
   mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
-  transform() %>% replace(is.na(.), 0)
-
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) 
+  
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 120s clip (In this case, every twelfth row is chosen after grouping by Site, Date and Time)
 
 nDetections_2min <- datSubset %>%
@@ -93,10 +93,10 @@ nDetections_2min <- datSubset %>%
 
 nDetections_2min <- nDetections_2min %>%
   group_by(Site, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
   mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
-  transform() %>% replace(is.na(.), 0)
-
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) 
+  
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 240s clip (In this case, every twentyfourth row is chosen after grouping by Site, Date and Time)
 
 nDetections_4min <- datSubset %>%
@@ -107,19 +107,29 @@ nDetections_4min <- datSubset %>%
 
 nDetections_4min <- nDetections_4min %>%
   group_by(Site, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
   mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
-  transform() %>% replace(is.na(.), 0)
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+  
 ```
 
 
 How does the number of detections vary as a function of restoration type? (tested across different temporal durations)?
-
 ```{r}
+# Testing if there is significant differences in overall number of detections across treatment types (this has been done only for the smallest temporal duration ~10s, while total number of detections have been estimated for different temporal durations)
+
 sum_Detections10s <- nDetections_10s %>%
   rowwise() %>% 
   mutate(sumDetections = sum(c_across(IP:CR))) %>%
   dplyr::select(Site, Restoration.Type, sumDetections)
+
+# Test if there are significant differences in detections across treatment types
+anovaAllDetect <- aov(sumDetections~Restoration.Type, data = sum_Detections10s)
+
+# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
+tukeyAllDetect <- TukeyHSD(anovaAllDetect)
+
+# Estimating total number of detections for different temporal durations
 
 sum_Detections30s <- nDetections_30s %>%
   rowwise() %>% 
@@ -157,76 +167,11 @@ fig_sumDetections10s <- ggplot(sum_Detections10s, aes(x=Restoration.Type, y=sumD
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(size = 12))
   
-fig_sumDetections30s <- ggplot(sum_Detections30s, aes(x=Restoration.Type, y=sumDetections, fill=Restoration.Type)) +  
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
-fig_sumDetections1min <- ggplot(sum_Detections1min, aes(x=Restoration.Type, y=sumDetections, fill=Restoration.Type)) +  
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
-fig_sumDetections2min <- ggplot(sum_Detections2min, aes(x=Restoration.Type, y=sumDetections, fill=Restoration.Type)) +  
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
-fig_sumDetections4min <- ggplot(sum_Detections4min, aes(x=Restoration.Type, y=sumDetections, fill=Restoration.Type)) +  
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
 # This plot suggests that Benchmark sites are acoustically more active than Passively restored or Actively restored sites, as expected
 
-ggsave(fig_sumDetections10s, filename = "figs/fig_sumDetections10s.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_sumDetections30s, filename = "figs/fig_sumDetections30s.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_sumDetections1min, filename = "figs/fig_sumDetections1min.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_sumDetections2min, filename = "figs/fig_sumDetections2min.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_sumDetections4min, filename = "figs/fig_sumDetections4min.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_sumDetections10s, filename = "figs/fig_sumDetections10s.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_sumDetections10s.png")
-knitr::include_graphics("figs/fig_sumDetections30s.png")
-knitr::include_graphics("figs/fig_sumDetections1min.png")
-knitr::include_graphics("figs/fig_sumDetections2min.png")
-knitr::include_graphics("figs/fig_sumDetections4min.png")
 ```
 
 How does the cumulative number of detections vary by treatment type, as a function of whether a species is a rainforest specialist or an open country generalist? (These calculations are repeated for different temporal durations to assess differences, if any)
@@ -259,13 +204,28 @@ detections_trait4min <- nDetections_4min %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
   dplyr::select(-c(scientific_name)) 
 
-# Calculate overall number of detections for each site as a function of rainforest species and open-country species
+# Calculate overall number of detections for each site as a function of rainforest species and open-country species and test for differences across treatment types (Calculated only for the smallest temporal duration - 10s)
 
 detections_trait10s <-  detections_trait10s %>%
   dplyr::select(Site, Restoration.Type, Species_Code, Habitat, count) %>%
   group_by(Site, Restoration.Type, Habitat) %>%
   summarise(sumDetections = sum(count))
 
+# Split the above data into rainforest species and open country
+detections_10s_rainforest <- detections_trait10s %>%
+  filter(Habitat=="RF")
+detections_10s_openCountry <- detections_trait10s %>% 
+  filter(Habitat=="OC")
+
+# Test if there are significant differences in detections across treatment types as a function of species trait
+anova_rainforestDet <- aov(sumDetections~Restoration.Type, data = detections_10s_rainforest)
+anova_opencountryDet <- aov(sumDetections~Restoration.Type, data = detections_10s_openCountry)
+
+# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
+tukey_rainforestDet <- TukeyHSD(anova_rainforestDet)
+tukey_opencountryDet <- TukeyHSD(anova_opencountryDet)
+
+# Calculating overall number of detections for other temporal durations as a function of species trait
 detections_trait30s <-  detections_trait30s %>%
   dplyr::select(Site, Restoration.Type, Species_Code, Habitat, count) %>%
   group_by(Site, Restoration.Type, Habitat) %>%
@@ -286,8 +246,7 @@ detections_trait4min <-  detections_trait4min %>%
   group_by(Site, Restoration.Type, Habitat) %>%
   summarise(sumDetections = sum(count))
 
-# Plot the figures for different temporal durations
-
+# Plot the figures
 fig_detections_trait10s <- ggplot(detections_trait10s, aes(x=Restoration.Type, y=sumDetections, fill=Habitat)) +
     geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
@@ -301,69 +260,9 @@ fig_detections_trait10s <- ggplot(detections_trait10s, aes(x=Restoration.Type, y
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(size = 12))
 
-fig_detections_trait30s <- ggplot(detections_trait30s, aes(x=Restoration.Type, y=sumDetections, fill=Habitat)) +
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
 
-fig_detections_trait1min <- ggplot(detections_trait1min, aes(x=Restoration.Type, y=sumDetections, fill=Habitat)) +
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
-fig_detections_trait2min <- ggplot(detections_trait2min, aes(x=Restoration.Type, y=sumDetections, fill=Habitat)) +
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
-fig_detections_trait4min <- ggplot(detections_trait4min, aes(x=Restoration.Type, y=sumDetections, fill=Habitat)) +
-    geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
-# Save the above plots
-
+# Save the above plot
 ggsave(fig_detections_trait10s, filename = "figs/fig_detections_trait10s.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_detections_trait30s, filename = "figs/fig_detections_trait30s.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_detections_trait1min, filename = "figs/fig_detections_trait1min.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_detections_trait2min, filename = "figs/fig_detections_trait2min.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_detections_trait4min, filename = "figs/fig_detections_trait4min.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-
 knitr::include_graphics("figs/fig_detections_trait10s.png")
-knitr::include_graphics("figs/fig_detections_trait30s.png")
-knitr::include_graphics("figs/fig_detections_trait1min.png")
-knitr::include_graphics("figs/fig_detections_trait2min.png")
-knitr::include_graphics("figs/fig_detections_trait4min.png")
 ```
+
