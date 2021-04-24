@@ -19,6 +19,7 @@ library(vegan)
 library(ggplot2)
 library(scico)
 library(data.table)
+library(ggpubr)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -89,15 +90,16 @@ datSubset <- left_join(nonConVisits,data)
 write.csv(datSubset,"data/datSubset.csv", row.names = F)
 ```
 
-Now group the data by site and restoration type and sum the number of detections across sites. At the moment, we will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness. 
+Now group the data by site and restoration type and sum the number of detections across sites. At the moment, we will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness below.
 ```{r}
 # Calculate the overall number of detections for each site across 1-3 days of data (translates to 16min to 48min of data per site)
 # We would like to obtain a max of 3 visits to a site only (some sites have 4 visits)
 
-nDetections_Site <- data %>%
+nDetections_Site <- datSubset %>%
   group_by(Site, Restoration.Type) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
-  transform() %>% replace(is.na(.), 0)
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) 
+  
 ```
 
 Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall species richness for a 16-min to 48-min window.
@@ -109,11 +111,12 @@ richness <- nDetections_Site  %>%
   dplyr::select(Site, Restoration.Type, richness)
 
 # Test if there are significant differences in richness across treatment types
-model <- lm(richness~Restoration.Type, data = richness)
-anova <-  aov(model)
- 
+anovaAll <- aov(richness~Restoration.Type, data = richness)
+
 # Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
-tukey <- TukeyHSD(x=anova, 'Restoration.Type', conf.level=0.95)
+tukeyAll <- TukeyHSD(anovaAll)
+
+# The above result suggests that there are no differences in overall species richness across treatment types
 
 # Create a boxplot of species richness by group (Here: group refers to Restoration Type)
 # Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
@@ -135,13 +138,12 @@ ggsave(fig_richness, filename = "figs/fig_richness.png", width=12, height=7,
 
 knitr::include_graphics("figs/fig_richness.png")
 
-# We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches
+# We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches (But these differences are not significant)
 ```
 
 Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.
 To do so: Add an additional column of species-trait data and group data based on the same.
 ```{r}
-
 # First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections>0 as 1 else they are 0
 
 richness_trait <- nDetections_Site %>%
@@ -158,8 +160,23 @@ richness_trait <-  richness_trait %>%
   group_by(Site, Restoration.Type, Habitat) %>%
   summarise(richness = sum(forRichness))
 
+# Let's subset data for richness as a function of rainforest specialists and open-country generalists and test for significant differences (if any)
+richness_rainforest <- richness_trait %>%
+  filter(Habitat=="RF")
+
+richness_opencountry <- richness_trait %>%
+  filter(Habitat=="OC")
+
+# Test if there are significant differences in richness across treatment types as a function of species trait
+anova_rainforest <- aov(richness~Restoration.Type, data = richness_rainforest)
+anova_opencountry <- aov(richness~Restoration.Type, data = richness_opencountry)
+
+# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
+tukey_rainforest <- TukeyHSD(anova_rainforest)
+tukey_opencountry <- TukeyHSD(anova_opencountry)
+
 # Plot the above result
-fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.Type, y=Richness, fill=Habitat)) +
+fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.Type, y=richness, fill=Habitat)) +
     geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -172,9 +189,25 @@ fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.Type, y=Richness,
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(size = 12))
 
-ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_richness_trait.png")
+```
+
+To make final plots, please use a combination of ggpubr and cowplot (TO BE DONE)
+```{r}
+mycolours <- c("#440154FF", "#21908CFF", "orange")
+
+trial <- ggplot(richness_rainforest, aes(x=Restoration.Type, y=richness, fill = Restoration.Type)) + 
+  geom_boxplot(alpha = 0.75) + 
+  theme_bw() +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+  rremove("x.text") +
+  rremove("ylab") +
+  rremove("xlab") +
+  ylim (NA, 52) +
+  labs (x = "Rainforest species") +
+  scale_fill_manual(values = mycolours, name = "Strata", labels = c('BM','AR','NR')) + stat_summary(geom = 'text', label = c("a", "b", "b"), fun = max, vjust = -1)
+
 ```
 
