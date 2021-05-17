@@ -190,3 +190,29 @@ ggsave(fig_jack_openCountry, filename = "figs/fig_jack_openCountry.png", width=1
 knitr::include_graphics("figs/fig_jack_openCountry.png")
 ```
 
+
+Preparing a dataframe to run ordinations
+```{r}
+# We will prepare a community matrix data that can be used to run dissimilarity indices
+
+nmdsDat <- nDetections_trait %>% 
+  select(Site, Species_Code, nDetections, Restoration.Type) %>% 
+  group_by(Species_Code, Site, Restoration.Type) %>% 
+  summarise (totDetections = sum(nDetections)) %>% 
+  arrange(Restoration.Type) %>%
+  pivot_wider (names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
+
+nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
+
+# Run a bray-curtis dissimilarity index
+disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
+
+
+# NMDS figure, after Bray-Curtis
+nmds_plot <- vegdist (nmds_data_matrix, method = "bray") %>% 
+  metaMDS (nmds_plot, k=6)
+```
+
+
+
+
