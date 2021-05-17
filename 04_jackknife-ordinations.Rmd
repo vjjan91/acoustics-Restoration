@@ -89,10 +89,109 @@ Extract jacknife scores
 jackAllScore <- specpool(jacknifeAll[,4:ncol(jacknifeAll)],
                        pool = jacknifeAll$Site) %>%
   rownames_to_column("Site") %>%
-  add_column (Restoration.Type = nDetections_trait$Restoration.Type)
+  add_column (Restoration.Type = datSummary$Restoration.Type)
 
+jack_rainForestScore <- specpool(jacknife_rainForest[,4:ncol(jacknife_rainForest)],
+                       pool = jacknife_rainForest$Site) %>%
+  rownames_to_column("Site") %>%
+  add_column (Restoration.Type = datSummary$Restoration.Type)
 
+jack_openCountryScore <-specpool(jacknife_openCountry[,4:ncol(jacknife_openCountry)],
+                       pool = jacknife_openCountry$Site) %>%
+  rownames_to_column("Site") %>%
+  add_column (Restoration.Type = datSummary$Restoration.Type)
 ```
+
+Looking at correlations between jacknife scores and bootstrap estimates
+```{r}
+# This plot suggests an almost 1:1 correlation between jacknife estimates and bootstrap scores
+plot(jackAllScore$jack1, jackAllScore$boot)
+```
+
+Plotting jacknife estimates and testing for any significant differences between treatment types
+```{r}
+# Test if there are significant differences in jacknife estimates across treatment types
+anovaJackAll <- aov(jack1~Restoration.Type, data = jackAllScore)
+
+# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
+tukeyJackAll <- TukeyHSD(anovaJackAll)
+
+# The above result suggests that there are no differences in overall jacknife estimates across treatment types
+
+# Create a boxplot of jacknife estimates by group (Here: group refers to Restoration Type)
+# Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
+
+fig_jackAll <- ggplot(jackAllScore, aes(x=Restoration.Type, y=jack1, fill=Restoration.Type)) +  geom_boxplot(alpha=0.7) + 
+    scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="Restoration Type", 
+       y="Jacknife scores") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+ggsave(fig_jackAll, filename = "figs/fig_jackAll.png", width=12, height=7,
+       device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_jackAll.png")
+
+# We observe that the overall jacknife estimates is similar across passively restored forest patches and benchmark (protected area) forest patches while actively restored forest patches have lower jacknife estimates(But these differences are not significant)
+```
+
+Let's test for significant differences in jacknife estimates as a function of species trait
+```{r}
+anovaJack_rainForest <- aov(jack1~Restoration.Type, data = jack_rainForestScore)
+anovaJack_openCountry <- aov(jack1~Restoration.Type, data = jack_openCountryScore)
+
+# Tukey test to study each pair of treatment 
+tukeyJack_rainForest <- TukeyHSD(anovaJack_rainForest)
+tukeyJack_openCountry <- TukeyHSD(anovaJack_openCountry)
+
+# (At the moment, given unequal visits), for rainforest species - there is a significant difference in jacknife estimates between benchmark and active sites, while there is no difference in jacknife estimates across strata for open country species of birds
+
+# Plot the above results
+# Rainforest species
+fig_jack_rainForest <- ggplot(jack_rainForestScore, aes(x=Restoration.Type, y=jack1, fill=Restoration.Type)) +
+    geom_boxplot(alpha=0.7) + 
+    scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="Restoration Type", 
+       y="Jacknife estimates for Rainforest species") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+ggsave(fig_jack_rainForest, filename = "figs/fig_jack_rainForest.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_jack_rainForest.png")
+
+# Opencountry species
+fig_jack_openCountry <- ggplot(jack_openCountryScore, aes(x=Restoration.Type, y=jack1, fill=Restoration.Type)) +
+    geom_boxplot(alpha=0.7) + 
+    scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="Restoration Type", 
+       y="Jacknife estimates for Opencountry species") +
+    theme(axis.title = element_text(size = 16, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+
+ggsave(fig_jack_openCountry, filename = "figs/fig_jack_openCountry.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_jack_openCountry.png")
+```
+
+
+
 
 
 
