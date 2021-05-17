@@ -190,9 +190,3 @@ ggsave(fig_jack_openCountry, filename = "figs/fig_jack_openCountry.png", width=1
 knitr::include_graphics("figs/fig_jack_openCountry.png")
 ```
 
-
-
-
-
-
-
