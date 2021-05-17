@@ -29,10 +29,16 @@ datSubset <- read.csv("data/datSubset.csv")
 
 # Load species-trait data to essentially check for associations by habitat type
 trait_dat <- read.csv("data/species-trait-dat.csv")
+
+# Site-summary (Number of detections across all sites)
+datSummary <- datSubset %>%
+  group_by(Site, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
 ```
 
 
-Extracting jacknife scores
+Preparing dataframe for jacknifing and extracting jacknife scores
 ```{r}
 # Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
 
@@ -41,7 +47,6 @@ nDetections_site_date <- datSubset %>%
   transform() %>% replace(is.na(.), 0) %>%
   summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
   
-
 # Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates
 
 nDetections_trait <- nDetections_site_date %>%
@@ -52,7 +57,43 @@ nDetections_trait <- nDetections_site_date %>%
   rename(., nDetections = count)
 
 # Extract jackknife scores
+# To do the same, we first prepare the dataframe in a manner where we have a matrix of Site by Date by Species name
+
+jacknifeAll <- nDetections_trait %>%
+  select(Site, Date, Species_Code, nDetections, Restoration.Type) %>%
+  group_by(Site, Date, Restoration.Type, Species_Code) %>%
+  summarise(totDetections = sum(nDetections)) %>%
+  pivot_wider(names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
+
+# Prepare a dataframe of rainforest species for jacknifing
+
+jacknife_rainForest <- nDetections_trait %>%
+  filter(Habitat=="RF") %>%
+  select(Site, Date, Species_Code, nDetections, Restoration.Type) %>%
+  group_by(Site, Date, Restoration.Type, Species_Code) %>%
+  summarise(totDetections = sum(nDetections)) %>%
+  pivot_wider(names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
+
+# Prepare a dataframe of open-country species for jacknifing
+
+jacknife_openCountry <- nDetections_trait %>%
+  filter(Habitat=="OC") %>%
+  select(Site, Date, Species_Code, nDetections, Restoration.Type) %>%
+  group_by(Site, Date, Restoration.Type, Species_Code) %>%
+  summarise(totDetections = sum(nDetections)) %>%
+  pivot_wider(names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
+```
+
+Extract jacknife scores
+```{r}
+jackAllScore <- specpool(jacknifeAll[,4:ncol(jacknifeAll)],
+                       pool = jacknifeAll$Site) %>%
+  rownames_to_column("Site") %>%
+  add_column (Restoration.Type = nDetections_trait$Restoration.Type)
 
 
 ```
+
+
+
 
