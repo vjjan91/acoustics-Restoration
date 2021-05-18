@@ -1,0 +1,39 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Non-metric multidimensional scaling
+
+Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.
+
+One common tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data.
+
+Preparing a dataframe of detections to run ordinations
+```{r}
+# We will prepare a community matrix data that can be used to run dissimilarity indices
+
+nmdsDat <- nDetections_trait %>% 
+  select(Site, Species_Code, nDetections, Restoration.Type) %>% 
+  group_by(Species_Code, Site, Restoration.Type) %>% 
+  summarise (totDetections = sum(nDetections)) %>% 
+  arrange(Restoration.Type) %>%
+  pivot_wider (names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
+
+nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
+
+# Run a bray-curtis dissimilarity index
+disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
+
+
+# NMDS figure, after Bray-Curtis
+nmds_plot <- vegdist (nmds_data_matrix, method = "bray") %>% 
+  metaMDS (nmds_plot, k=6)
+```
+
+
+
+
+
+```
+

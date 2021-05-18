@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Jackknife estimates and ordination plots
+# Jackknife estimates
 
 In this script, we will extract jackknife scores, which essentially extrapolates species richness for a given species pool. This calculation is based on the number of sites and the number of visits to each site and the number of singletons/doubletons (detecting a species only once/site and twice/site respectively).
 
@@ -189,30 +189,4 @@ ggsave(fig_jack_openCountry, filename = "figs/fig_jack_openCountry.png", width=1
 
 knitr::include_graphics("figs/fig_jack_openCountry.png")
 ```
-
-
-Preparing a dataframe to run ordinations
-```{r}
-# We will prepare a community matrix data that can be used to run dissimilarity indices
-
-nmdsDat <- nDetections_trait %>% 
-  select(Site, Species_Code, nDetections, Restoration.Type) %>% 
-  group_by(Species_Code, Site, Restoration.Type) %>% 
-  summarise (totDetections = sum(nDetections)) %>% 
-  arrange(Restoration.Type) %>%
-  pivot_wider (names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
-
-nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
-
-# Run a bray-curtis dissimilarity index
-disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
-
-
-# NMDS figure, after Bray-Curtis
-nmds_plot <- vegdist (nmds_data_matrix, method = "bray") %>% 
-  metaMDS (nmds_plot, k=6)
-```
-
-
-
 
