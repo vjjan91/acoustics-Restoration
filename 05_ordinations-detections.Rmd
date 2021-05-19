@@ -7,7 +7,65 @@ editor_options:
 
 Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.
 
-One common tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data.
+One common tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below). 
+
+A wonderful tutorial is presented in this link: https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/
+
+
+Install required libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(psych)
+library(ecodist)
+library(RColorBrewer)
+library(ggforce)
+library(ggalt)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+
+Load the necessary data for NMDS calculations
+```{r}
+# We load the subset data
+datSubset <- read.csv("data/datSubset.csv")
+
+# Load species-trait data to essentially check for associations by habitat type
+trait_dat <- read.csv("data/species-trait-dat.csv")
+
+# Site-summary (Number of detections across all sites)
+datSummary <- datSubset %>%
+  group_by(Site, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+```
+
+
+Preparing dataframe of traits and species to be used for NMDS later on
+```{r}
+# Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
+
+nDetections_site_date <- datSubset %>%
+  group_by(Site, Restoration.Type, Date) %>%
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+  
+# Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates
+
+nDetections_trait <- nDetections_site_date %>%
+  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
+  dplyr::select(-c(scientific_name)) %>%
+  mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
+  rename(., nDetections = count)
+```
+
 
 Preparing a dataframe of detections to run ordinations
 ```{r}
@@ -20,20 +78,112 @@ nmdsDat <- nDetections_trait %>%
   arrange(Restoration.Type) %>%
   pivot_wider (names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
 
+# Convert to matrix form
 nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
 
-# Run a bray-curtis dissimilarity index
-disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
+```
 
 
-# NMDS figure, after Bray-Curtis
-nmds_plot <- vegdist (nmds_data_matrix, method = "bray") %>% 
-  metaMDS (nmds_plot, k=6)
+Run a bray-curtis dissimilarity matrix and identify least stressed configuration for the ordinations
+```{r}
+# Run a bray-curtis dissimilarity index using the ecodist::distance function
+disBrayCurtis <- distance(nmdsDatMatrix, method="bray-curtis")
+
+# Run nmds using the ecodist::nmds() function that examines x number of dimensions 
+# Please note this function is a time-consuming process
+nmdsBrayCurtis <- nmds(disBrayCurtis, nits=100, mindim=1, maxdim=6)
+
+# Pulling out the stress values into a 6x100 matrix
+nmdsStress <- matrix(nmdsBrayCurtis$stress, nrow=6, byrow=T)
+(nmdsStressMean <- apply(nmdsStress, 1, "mean"))
+(nmdsStressMin <- apply(nmdsStress, 1, "min"))
+(nmdsStressMax <- apply(nmdsStress, 1, "max"))
+
+# Scree plot of the stresses
+plot(1:6, nmdsStressMean, type="b", pch=19, lwd=2, xlab="Dimensions",xlim = c(0,6), ylim=c(0, 1), ylab="Stress")
+lines(1:6, nmdsStressMin, type="l", lty=2)
+lines(1:6, nmdsStressMax, type="l", lty=2)
+title("NMDS Stepdown Stress Plot")
+
+# The above plot suggests that stress values more or less plateau around 4 dimensions and with k=6, we are achieving very low values of stress.
+
+# Pulling out the r2 values
+nmdsR2 <- matrix(nmdsBrayCurtis$r2, nrow=6, byrow=T)
+(nmdsR2mean <- apply(nmdsR2, 1, "mean"))
+(nmdsR2min <- apply(nmdsR2, 1, "min"))
+(nmdsR2max <- apply(nmdsR2, 1, "max")) 
+
+# Screeplot for r2 values
+plot(1:6, nmdsR2mean, type="b", pch=19, lwd=2, xlab="Dimensions", ylim=c(0, 1.0), ylab="R-squared")
+lines(1:6, nmdsR2min, type="l", lty=2)
+lines(1:6, nmdsR2max, type="l", lty=2)
+title("NMDS Stepdown Explanatory Power Plot")
+
+# With the above analysis, we note that the highest increase in r2 and biggest drop in stress as at 2 dimensions (from meanR2 = 0.06 to 0.65 at 2 dimensions and drop in mean stress from 0.53 to 0.23 at 2 dimensions). However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+```
+
+
+Final NMDS run with a fixed number of dimensions
+```{r}
+# Final NMDS run with 6 dimensions 
+nmdsBrayCurtis <- nmds(disBrayCurtis, mindim=6,maxdim=6, nits=100)
+
+# Minimum stress is 0.09304276 and r^2 for minimum stress configuration:  0.8256243 
+nmdsPower <- nmds.min(nmdsBrayCurtis, dims=6)
+
+# Shepard diagram to check for saturation:
+disShep <- dist(nmdsPower)
+plot(disShep,disBrayCurtis ,pch="*",xlab="Ordination Distance", ylab="Bray-Curtis distance")
+abline(0,1,col="red") # put in the 1:1 line (intercept=0, slope=1)
+title("Shepard Diagram")
+# monotonic increase indicating no saturation
+
+# Getting the explanatory powers of the NMS axes
+nmdsAxis1 <- dist(nmdsPower[,1]) 
+nmdsAxis2 <- dist(nmdsPower[,2])
+nmdsAxis3 <- dist(nmdsPower[,3])
+nmdsAxis4 <- dist(nmdsPower[,4])
+nmdsAxis5 <- dist(nmdsPower[,5])
+nmdsAxis6 <- dist(nmdsPower[,6])
+
+# X1 and X2 have highest explantaroy power
+r1 <- cor(disBrayCurtis, nmdsAxis1)
+r2 <-cor(disBrayCurtis, nmdsAxis2)
+r3 <-cor(disBrayCurtis, nmdsAxis3)
+r4 <-cor(disBrayCurtis, nmdsAxis4)
+r5 <-cor(disBrayCurtis, nmdsAxis5)
+r6 <-cor(disBrayCurtis, nmdsAxis6)
+
+r2Axis1 <-r1^2
+r2Axis2 <-r2^2 
+r2Axis3 <-r3^2 
+r2Axis4 <-r4^2 
+r2Axis5 <-r5^2 
+r2Axis6 <-r6^2 
+```
+
+
+Plotting the NMDS scores using ggplot2
+```{r}
+# First let's add the treatment type back to the nmds scores
+nmdsPower$Restoration.Type <- nmdsDat$Restoration.Type
+
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+
+# figure below
+fig_nmds <- ggplot(data=nmdsPower,aes(x=X1,y=X2, color=Restoration.Type, shape=Restoration.Type)) + geom_point(size=4) +
+  theme_bw() + 
+  scale_x_continuous(name="NMDS 1") + 
+  scale_y_continuous(name="NMDS 2") +
+  scale_shape_manual(values= 1:length(unique(nmdsPower$Restoration.Type)))+
+  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+
+ggsave(fig_nmds, filename = "figs/fig_nmds.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_nmds.png")
 ```
 
 
 
-
-
-```
 
