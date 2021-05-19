@@ -162,6 +162,22 @@ r2Axis5 <-r5^2
 r2Axis6 <-r6^2 
 ```
 
+Testing multivariate homogeneity of group dispersions
+
+One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median (both referred to as 'centroid' from now on unless stated otherwise) in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.
+```{r}
+nmdsVariance <- betadisper(disBrayCurtis, group = nmdsDat$Restoration.Type)
+nmdsVariance
+
+anova(nmdsVariance)
+permutest(nmdsVariance, pairwise = TRUE, permutations = 999)
+TukeyHSD(nmdsVariance)
+
+# These results suggest that there is no difference in variance between one group and another
+```
+
+
+
 
 Plotting the NMDS scores using ggplot2
 ```{r}
@@ -183,5 +199,7 @@ ggsave(fig_nmds, filename = "figs/fig_nmds.png", width=12, height=7,device = png
 
 knitr::include_graphics("figs/fig_nmds.png")
 ```
+
+
 
 
