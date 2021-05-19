@@ -185,5 +185,3 @@ knitr::include_graphics("figs/fig_nmds.png")
 ```
 
 
-
-
