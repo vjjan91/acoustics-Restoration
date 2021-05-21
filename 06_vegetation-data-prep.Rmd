@@ -5,7 +5,7 @@ editor_options:
 
 # Preparing vegetation data for GLMs
 
-Previously, we calculated species richness and number of detections for every 16-min duration across sites and treatment types. Here, we prepare the vegetation data to run GLMs in the next series of scripts. 
+Here, we prepare the vegetation data to run GLMs in the next series of scripts. 
 
 Install required libraries
 ```{r}
@@ -27,17 +27,17 @@ Load the vegetation data
 veg <- read.csv("data/2020-vegetation-data.csv")
 veg$Site_ID <- str_remove(veg$Site_ID,"_")
 
-# Subset data to include only sites that are present in our study
-# To do so, we load the 2020-annotation-data and extract the unique sites
-data <- read.csv("data/2020-summer-annotation-working document.csv")
-
-# Split the file names into 4 columns : Site, Date, Time and Splits   
-data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
-sites_needed <- data.frame(unique(data$Site))
+# We load the subset data
+datSubset <- read.csv("data/datSubset.csv")
+sites_needed <- data.frame(unique(datSubset$Site))
 names(sites_needed) <- "Site_ID"
 
-# Obtain a subset of the data which have the sites visited (Note: 44/69 sites were visited)
+# Obtain a subset of the data which have the sites visited 
 veg <- merge(veg, sites_needed, by.x = "Site_ID", by.y="Site_ID")
+
+# renaming restoration type
+veg$Site_type[veg$Site_type=="Unrestored"] <- "Passive"
+veg$Site_type[trial$Site_type=="Restored"] <- "Active"
 
 # Load species-trait data to essentially run GLMs
 trait_dat <- read.csv("data/species-trait-dat.csv")
