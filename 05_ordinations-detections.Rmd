@@ -210,6 +210,8 @@ TukeyHSD(nmdsVariance)
 
 
 Visualizing the multivariate homogeneity of group dispersions
+
+The below lines of code have been adapted from: https://chrischizinski.github.io/rstats/adonis/
 ```{r}
 # extract the centroids and the site points in multivariate space.  
 centroids <-data.frame(grps=rownames(nmdsVariance$centroids),
