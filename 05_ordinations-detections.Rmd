@@ -9,6 +9,8 @@ Here, we are interested not only in comparing univariate descriptors of communit
 
 One common tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below). 
 
+NMDS does not use the absolute abundances of species in communities, but rather their rank orders. The use of ranks omits some of the issues associated with using absolute distance (e.g., sensitivity to transformation), and as a result is much more flexible technique that accepts a variety of types of data. (It’s also where the “non-metric” part of the name comes from).
+
 A wonderful tutorial is presented in this link: https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/
 
 
@@ -80,11 +82,16 @@ nmdsDat <- nDetections_trait %>%
 
 # Convert to matrix form
 nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
-
 ```
 
 
-Run a bray-curtis dissimilarity matrix and identify least stressed configuration for the ordinations
+Run a bray-curtis dissimilarity matrix and identify least stressed configuration for the ordinations. Bray-curtis is a statistic used to quantify the compositional dissimilarity between two different sites, based on counts at each site. Ecologists use the Bray-Curtis dissimilarity calculation, which has a number of ideal properties:
+1. It is invariant to changes in units.
+2. It is unaffected by additions/removals of species that are not present in two communities.
+3. It is unaffected by the addition of a new community.
+4. It can recognize differences in total abundances when relative abundances are the same. 
+
+Please note that this link provides more information on NMDS: http://strata.uga.edu/8370/lecturenotes/multidimensionalScaling.html
 ```{r}
 # Run a bray-curtis dissimilarity index using the ecodist::distance function
 disBrayCurtis <- distance(nmdsDatMatrix, method="bray-curtis")
@@ -146,7 +153,7 @@ nmdsAxis4 <- dist(nmdsPower[,4])
 nmdsAxis5 <- dist(nmdsPower[,5])
 nmdsAxis6 <- dist(nmdsPower[,6])
 
-# X1 and X2 have highest explantaroy power
+# X1 and X2 have highest explanatory power
 r1 <- cor(disBrayCurtis, nmdsAxis1)
 r2 <-cor(disBrayCurtis, nmdsAxis2)
 r3 <-cor(disBrayCurtis, nmdsAxis3)
@@ -162,9 +169,34 @@ r2Axis5 <-r5^2
 r2Axis6 <-r6^2 
 ```
 
+
+Plotting the NMDS scores using ggplot2
+```{r}
+# First let's add the treatment type back to the nmds scores
+nmdsPower$Restoration.Type <- nmdsDat$Restoration.Type
+
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+
+fig_nmds <- ggplot(data=nmdsPower) + 
+  stat_ellipse(aes(x=X1,y=X5,colour=Restoration.Type),level = 0.50) +
+  geom_point(aes(x=X1,y=X5,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
+  theme_bw() +
+  scale_x_continuous(name="NMDS 1") + 
+  scale_y_continuous(name="NMDS 2") +
+  scale_shape_manual(values= 1:length(unique(nmdsPower$Restoration.Type)))+
+  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+
+ggsave(fig_nmds, filename = "figs/fig_nmds.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_nmds.png")
+```
+
 Testing multivariate homogeneity of group dispersions
 
 One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median (both referred to as 'centroid' from now on unless stated otherwise) in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.
+
+Betadisper tests whether two or more groups (for example, restored and unrestored sites) are homogeneously dispersed in relation to their species in studied samples. This test can be done to see if one group has more compositional variance than another. Moreover, homogeneity of dispersion among groups is very advisable to have if you want to test if two or more groups have different compositions, which is tested by adonis. 
 ```{r}
 nmdsVariance <- betadisper(disBrayCurtis, group = nmdsDat$Restoration.Type)
 nmdsVariance
@@ -177,29 +209,48 @@ TukeyHSD(nmdsVariance)
 ```
 
 
-
-
-Plotting the NMDS scores using ggplot2
+Visualizing the multivariate homogeneity of group dispersions
 ```{r}
-# First let's add the treatment type back to the nmds scores
-nmdsPower$Restoration.Type <- nmdsDat$Restoration.Type
+# extract the centroids and the site points in multivariate space.  
+centroids <-data.frame(grps=rownames(nmdsVariance$centroids),
+                       data.frame(nmdsVariance$centroids))
+vectors <- data.frame(group=nmdsVariance$group,
+                      data.frame(nmdsVariance$vectors))
 
-# Add a custom set of colors
-mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+# to create the lines from the centroids to each point we will put it in a format that ggplot can handle
+seg.data<-cbind(vectors[,1:3],centroids[rep(1:nrow(centroids),as.data.frame(table(vectors$group))$Freq),2:3])
+names(seg.data)<-c("group","v.PCoA1","v.PCoA2","PCoA1","PCoA2")
 
-# figure below
-fig_nmds <- ggplot(data=nmdsPower,aes(x=X1,y=X2, color=Restoration.Type, shape=Restoration.Type)) + geom_point(size=4) +
+# create the convex hulls of the outermost points
+grp1.hull <- seg.data[seg.data$group=="Active",1:3][chull(seg.data[seg.data$group=="Active",2:3]),]
+grp2.hull <- seg.data[seg.data$group=="Benchmark",1:3][chull(seg.data[seg.data$group=="Benchmark",2:3]),]
+grp3.hull <- seg.data[seg.data$group=="Passive",1:3][chull(seg.data[seg.data$group=="Passive",2:3]),]
+all.hull <- rbind(grp1.hull,grp2.hull,grp3.hull)
+
+# plot the panel and convex hulls
+fig_hull <- ggplot() + 
+  geom_polygon(data= all.hull,aes(x=v.PCoA1,y=v.PCoA2),colour="black",alpha=0,linetype="dashed") +
+  geom_segment(data=seg.data,aes(x=v.PCoA1,xend=PCoA1,y=v.PCoA2,yend=PCoA2),alpha=0.30) + 
+  geom_point(data=centroids[,1:3], aes(x=PCoA1,y=PCoA2,shape=grps),size=4,colour="red") + 
+  geom_point(data=seg.data, aes(x=v.PCoA1,y=v.PCoA2,shape=group),size=2) +
+  labs(title="All",x="",y="") +
+  #coord_cartesian(xlim = c(-0.2,0.2), ylim = c(-0.25,0.2)) +
   theme_bw() + 
-  scale_x_continuous(name="NMDS 1") + 
-  scale_y_continuous(name="NMDS 2") +
-  scale_shape_manual(values= 1:length(unique(nmdsPower$Restoration.Type)))+
-  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
-
-ggsave(fig_nmds, filename = "figs/fig_nmds.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig_nmds.png")
+  theme(legend.position="none")
 ```
 
 
+Testing compositional dissimilarity between groups
 
+We will do this by using the vegan::adonis() function which allows you to do permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be seen as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.
+
+```{r}
+# We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
+groups <- nmdsPower$Restoration.Type
+
+adonisNMDS <- adonis(nmdsDatMatrix ~ groups, method="bray",perm=999)
+adonisNMDS
+
+# The results suggest that there are significant compositional differences between groups.
+```
 
