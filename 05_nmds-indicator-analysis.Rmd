@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Non-metric multidimensional scaling
+# Non-metric multidimensional scaling and indicator-species analysis
 
 Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.
 
@@ -27,6 +27,7 @@ library(ecodist)
 library(RColorBrewer)
 library(ggforce)
 library(ggalt)
+library(indicspecies)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -255,4 +256,44 @@ adonisNMDS
 
 # The results suggest that there are significant compositional differences between groups.
 ```
+
+
+Indicator species analysis
+
+This analysis aims to identify what species are “indicators” of groups of samples or treatment type. For instance: 
+
+• A perfect indicator species will only occur in one group.
+• Generalist species will occur across multiple groups and
+therefore not a good indicator.
+• Rare species are not sampled often, also not a good
+indicator.
+• Indicator values range from 0 to 1 but may also be
+expressed as a percentage.
+• Each species is assigned an indicator value for each
+group and the significance of values can be assessed through permutations
+
+For more information, visit this link: https://ichthyology.usm.edu/courses/multivariate/apr_11.pdf
+
+Please note that when the aim is to determine which species can be used as indicators of certain site group, an approach commonly used in ecology is the Indicator
+Value [Dufrˆene and Legendre, 1997]. These authors defined an Indicator
+Value (IndVal) index to measure the association between a species and a
+site group. The method of Dufrˆene and Legendre [1997] calculates the IndVal index between the species and each site group and then looks for the
+group corresponding to the highest association value. Finally, the statistical
+significance of this relationship is tested using a permutation test.
+
+Diagnostic (or indicator) species are an important tool in vegetation science, because these species can be used to characterize and indicate specific plant community types. A statistic commonly used to determine the association (also known
+as fidelity, not to be confounded with the indicator value component) between species and vegetation types is Pearson’s phi coefficient of association
+[Chytr´y et al., 2002]. This coefficient is a measure of the correlation between two binary vectors. The abundance-based counterpart of the phi coefficient is called the point biserial correlation coefficient (which is defined as "r.g")
+
+See: https://cran.r-project.org/web/packages/indicspecies/vignettes/indicspeciesTutorial.pdf
+
+```{r}
+# Running the multi-pattern analysis across combinations of groups
+indicSpec <- multipatt(nmdsDat[, 3:ncol(nmdsDat)], nmdsDat$Restoration.Type, func = "r.g", control = how(nperm=999))
+
+# looking at associations with stratum/pairs of strata
+summary(indicSpec)
+
+```
+
 
