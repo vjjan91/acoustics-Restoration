@@ -179,8 +179,8 @@ nmdsPower$Restoration.Type <- nmdsDat$Restoration.Type
 mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_nmds <- ggplot(data=nmdsPower) + 
-  stat_ellipse(aes(x=X1,y=X5,colour=Restoration.Type),level = 0.50) +
-  geom_point(aes(x=X1,y=X5,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
+  stat_ellipse(aes(x=X1,y=X2,colour=Restoration.Type),level = 0.50) +
+  geom_point(aes(x=X1,y=X2,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
   theme_bw() +
   scale_x_continuous(name="NMDS 1") + 
   scale_y_continuous(name="NMDS 2") +
