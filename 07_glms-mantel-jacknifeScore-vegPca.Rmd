@@ -58,6 +58,22 @@ datSummary <- totalDetections %>%
   left_join(nVisits) %>%
   mutate(pointDetections = totalDetections/nVisits)
 
+# combine the nDetections dataframe with the trait dataset
+nDetectionsTrait <- datSubset %>%
+  group_by(Site, Restoration.Type, Date) %>%
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
+  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
+  dplyr::select(-c(scientific_name)) %>%
+  rename(., nDetections = count)
+
+# Load data from previous scripts for use in a GLM
+vegData <-  read.csv("data/summaryVeg.csv")
+vegPcaScores <- read.csv("data/pcaVeg.csv")
+jackAll <- read.csv("data/jackAll.csv")
+jackRainforest <- read.csv("data/jackRainforest.csv")
+jackOpencountry <- read.csv("data/jackOpencountry.csv")
 ```
 
 
