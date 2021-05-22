@@ -66,6 +66,7 @@ nDetectionsTrait <- datSubset %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
   dplyr::select(-c(scientific_name)) %>%
+  mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
   rename(., nDetections = count)
 
 # Load data from previous scripts for use in a GLM
@@ -76,6 +77,38 @@ jackRainforest <- read.csv("data/jackRainforest.csv")
 jackOpencountry <- read.csv("data/jackOpencountry.csv")
 ```
 
+Getting data ready in a format for generalized linear modeling
+```{r}
+# All birds
+modelDataAll <- vegPcaScores %>% 
+  add_column (Site = vegData$Site_ID,
+              Restoration.Type = as.factor(datSummary$Restoration.Type),
+              jackknife = jackAll$jack1,
+              nSpecies = jackAll$Species,
+              totalDetections = datSummary$totalDetections,
+              pointDetections = datSummary$pointDetections, 
+              plantingYear = vegData$plantingYear) %>% 
+  mutate ("roundjk" = round(jackknife))
 
+# rainforest birds
+modelData_rainForest <- vegPcaScores %>% 
+  add_column (Site = vegData$Site_ID,
+              Restoration.Type = as.factor(datSummary$Restoration.Type),
+              jackknife = jackRainforest$jack1,
+              nSpecies =  jackRainforest$Species,
+              plantingYear = vegData$plantingYear) %>% 
+  mutate ("roundjk" = round(jackknife))
+
+# open country birds
+modelData_openCountry <- vegPcaScores %>% 
+  add_column (Site = vegData$Site_ID,
+              Restoration.Type = as.factor(datSummary$Restoration.Type),
+              jackknife = jackOpencountry$jack1,
+              nSpecies =  jackOpencountry$Species,
+              plantingYear = vegData$plantingYear) %>% 
+  mutate ("roundjk" = round(jackknife))
+
+
+```
 
 
