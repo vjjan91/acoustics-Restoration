@@ -91,15 +91,24 @@ jackAllScore <- specpool(jacknifeAll[,4:ncol(jacknifeAll)],
   rownames_to_column("Site") %>%
   add_column (Restoration.Type = datSummary$Restoration.Type)
 
+# write out results
+write.csv(jackAllScore, "data/jackAll.csv", row.names=F)
+
 jack_rainForestScore <- specpool(jacknife_rainForest[,4:ncol(jacknife_rainForest)],
                        pool = jacknife_rainForest$Site) %>%
   rownames_to_column("Site") %>%
   add_column (Restoration.Type = datSummary$Restoration.Type)
 
+# write out results
+write.csv(jack_rainForestScore,"data/jackRainforest.csv", row.names = F)
+
 jack_openCountryScore <-specpool(jacknife_openCountry[,4:ncol(jacknife_openCountry)],
                        pool = jacknife_openCountry$Site) %>%
   rownames_to_column("Site") %>%
   add_column (Restoration.Type = datSummary$Restoration.Type)
+
+# write out results
+write.csv(jack_openCountryScore, "data/jackOpencountry.csv", row.names = F)
 ```
 
 Looking at correlations between jacknife scores and bootstrap estimates
