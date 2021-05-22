@@ -77,13 +77,21 @@ vert_strat <- veg %>%
   group_by(Site_ID) %>%
   summarise(vert_strat = mean(Foliage_score))
 
+# Year of planting
+plantingYear <- veg %>%
+  group_by(Site_ID) %>%
+  summarise(plantingYear = unique(Year.of.planting))
+
 # Creating a final dataframe for further analysis
 allVeg <- basal_area %>% 
   left_join(treeheight) %>%
   left_join(treerich) %>%
   left_join(canopy_height) %>%
   left_join(leaf_litter) %>%
-  left_join(vert_strat)
+  left_join(vert_strat) %>%
+  left_join(plantingYear)
+
+write.csv(allVeg, "data/summaryVeg.csv", row.names = F)
 ```
 
 
@@ -96,6 +104,9 @@ pairs.panels(allVeg[,3:9])
 
 vegPca <- prcomp(allVeg[, 3:9], scale=TRUE, center = TRUE, retx=TRUE)
 summary(vegPca)
+
+# save the data for use in a GLM later
+write.csv(as.tibble(vegPca$x[,1:2]),"data/pcaVeg.csv", row.names = F)
 
 # The proportion of variance explained by the first two axes account for ~72.67%
 
