@@ -78,7 +78,7 @@ vert_strat <- veg %>%
   summarise(vert_strat = mean(Foliage_score))
 
 # Creating a final dataframe for further analysis
-all_veg <- basal_area %>% 
+allVeg <- basal_area %>% 
   left_join(treeheight) %>%
   left_join(treerich) %>%
   left_join(canopy_height) %>%
@@ -90,20 +90,36 @@ all_veg <- basal_area %>%
 Running a PCA of the vegetation data
 ```{r}
 # Check for correlations among vegetation predictors
-pairs.panels(all_veg[,3:9])
+pairs.panels(allVeg[,3:9])
 
 # The above panel suggests that richness is highly correlated with a number of predictors including canopy cover, count and basal area. We will calculate a PCA and keep the top two explanatory axes
 
-veg_pca <- prcomp(all_veg[, 3:9], scale=TRUE, center = TRUE, retx=TRUE)
-summary(veg_pca)
+vegPca <- prcomp(allVeg[, 3:9], scale=TRUE, center = TRUE, retx=TRUE)
+summary(vegPca)
 
 # The proportion of variance explained by the first two axes account for ~72.67%
 
-# Plotting the first two axes
-plot_data <- data.frame('Site_type' = all_veg$Site_type, veg_pca$x[,1:2]) # the first two components are selected 
-pca_plot <- ggplot(data = plot_data) + 
-       geom_point(aes(x = PC1, y = PC2, col = Site_type), size=2) + 
-  scale_color_manual(values = scico(3, begin = 0.3, palette = "vik")) + theme_bw()
+# Extract PCA values
+PCAvalues <- data.frame('Site_type' = allVeg$Site_type, vegPca$x[,1:2]) # the first two components are selected 
+
+# Extract loadings of the variables
+PCAloadings <- data.frame(variables = rownames(vegPca$rotation), vegPca$rotation)
+
+# figure below, includes loadings (edit plot later on)
+
+fig_pca <- ggplot(PCAvalues, aes(x = PC1, y = PC2, col = Site_type)) + 
+       geom_segment(data = PCAloadings, aes(x = 0, y = 0, xend = (PC1*5),
+     yend = (PC2*5)), arrow = arrow(length = unit(1/2, "picas")),
+     color = "black") +
+     geom_point(aes(x=PC1, y=PC2, shape= Site_type, colour = Site_type),size=4) +    annotate("text", x = (PCAloadings$PC1*3), y = (PCAloadings$PC2*3),
+     label = PCAloadings$variables) + 
+     scale_color_manual(values = scico(3, begin = 0.3, palette = "vik")) + 
+     scale_shape_manual(values= 1:length(unique(PCAvalues$Site_type)))+
+     theme(legend.key = element_blank(), legend.text = element_text(face = "italic")) +    theme_bw()
+
+ggsave(fig_pca, filename = "figs/fig_pca.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_pca.png")
 ```
 
 
