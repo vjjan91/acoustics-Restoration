@@ -1,0 +1,65 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Generalized linear models and Mantel's tests
+
+Install required libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(psych)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+
+Load the necessary data for statistical modeling
+```{r}
+# We load the subset data
+datSubset <- read.csv("data/datSubset.csv")
+
+# Load species-trait data to essentially check for associations by habitat type
+trait_dat <- read.csv("data/species-trait-dat.csv")
+
+# Total number of detections
+totalDetections <- datSubset %>%
+  group_by(Site, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
+  summarise(totalDetections = sum(c_across("IP":"CR")))
+
+# richness
+richness <- datSubset %>%
+  group_by(Site, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
+  mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
+  rowwise() %>% 
+  mutate(richness = sum(c_across(IP:CR))) %>%
+  dplyr::select(Site, Restoration.Type, richness)
+
+# number of visits per site
+nVisits <- datSubset %>%
+  dplyr::select(Site, Date)%>%
+  distinct() %>% arrange(Site) %>% count(Site) %>%
+  rename(., nVisits=n)
+
+# summary data
+# We further estimate the number of detections per point count
+datSummary <- totalDetections %>%
+  left_join(richness) %>%
+  left_join(nVisits) %>%
+  mutate(pointDetections = totalDetections/nVisits)
+
+```
+
+
+
+
