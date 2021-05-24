@@ -118,8 +118,11 @@ modelData_openCountry <- vegPcaScores %>%
               nSpecies =  jackOpencountry$Species,
               plantingYear = vegData$plantingYear) %>% 
   mutate ("roundjk" = round(jackknife))
+```
 
-# data for the GLM
+Getting data ready for generalized linear mixed modeling
+```{r}
+# data for the GLMM
 glmAll <- richnessPerVisit[,-3] %>%
   full_join(modelDataAll, by = "Site")
 
