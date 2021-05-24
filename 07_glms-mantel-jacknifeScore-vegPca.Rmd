@@ -45,6 +45,17 @@ richness <- datSubset %>%
   mutate(richness = sum(c_across(IP:CR))) %>%
   dplyr::select(Site, Restoration.Type, richness)
 
+# richness by Visit
+richnessPerVisit <- datSubset %>%
+  group_by(Site, Date, Restoration.Type) %>%
+  transform() %>% replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
+  mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
+  rowwise() %>% 
+  mutate(richnessPerVisit = sum(c_across(IP:CR)),
+         visit = row_number()) %>%
+  dplyr::select(Site, Restoration.Type, richnessPerVisit, visit)
+
 # number of visits per site
 nVisits <- datSubset %>%
   dplyr::select(Site, Date)%>%
@@ -108,6 +119,9 @@ modelData_openCountry <- vegPcaScores %>%
               plantingYear = vegData$plantingYear) %>% 
   mutate ("roundjk" = round(jackknife))
 
+# data for the GLM
+glmAll <- richnessPerVisit[,-3] %>%
+  full_join(modelDataAll, by = "Site")
 
 ```
 
