@@ -35,12 +35,7 @@ source("code/01_internal-functions.R")
 We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations)
 ```{r}
 # Attach the 2020_summer_annotation data 
-data <- read.csv("data/2020-summer-annotation-working document.csv")
-
-# Site-wise sorting of the 16-min of data
-# Split the file names into 4 columns : Site, Date, Time and Splits   
-data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
-data
+datSubset <- read.csv("data/datSubset.csv")
 
 # Load the species-trait-data
 trait_dat <- read.csv("data/species-trait-dat.csv")
@@ -52,11 +47,10 @@ Please note that: the data at the moment is imbalanced in terms of nVisits
 ```{r}
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip
 
-nDetections_10s <- data %>%
+nDetections_10s <- datSubset %>%
   group_by(Site, Restoration.Type) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
-  transform() %>% replace(is.na(.), 0)
-
+  transform() %>% replace(is.na(.), 0) %>% 
+  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) 
 ```
 
 Calculate the cumulative number of detections for each species and arrive at a measure of vocal activity irrespective of the treatment type in which a species was recorded in. 
@@ -72,7 +66,7 @@ nDetections <- as_tibble(data.frame(nDetections_10s[,c(1,2)],final_spp))
   
 # Get the total number of clips and the number of clips annotated across each treatment type
 
-n_clips_total <- 10464
+n_clips_total <- 12576
 n_clips_benchmark <- sum(data$Restoration.Type=="Benchmark")
 n_clips_active <- sum(data$Restoration.Type=="Active")
 n_clips_passive <- sum(data$Restoration.Type=="Passive")
@@ -85,21 +79,21 @@ sumDet_Active <- nDetections %>%
   ungroup() %>%
   select(-c(Site,Restoration.Type)) %>% 
   summarise(across(everything(),sum))%>%
-  pivot_longer(1:97, names_to="Species", values_to="Count")
+  pivot_longer(1:102, names_to="Species", values_to="Count")
 
 sumDet_Passive <- nDetections %>%
   filter(Restoration.Type=="Passive") %>% # Select treatment type
   ungroup() %>%
   select(-c(Site,Restoration.Type)) %>% 
   summarise(across(everything(),sum))%>%
-  pivot_longer(1:97, names_to="Species", values_to="Count")
+  pivot_longer(1:102, names_to="Species", values_to="Count")
 
 sumDet_Benchmark <- nDetections %>%
   filter(Restoration.Type=="Benchmark") %>% # Select treatment type
   ungroup() %>%
   select(-c(Site,Restoration.Type)) %>% 
   summarise(across(everything(),sum))%>%
-  pivot_longer(1:97, names_to="Species", values_to="Count")
+  pivot_longer(1:102, names_to="Species", values_to="Count")
 
 # Measures of vocal activity
 

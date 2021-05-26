@@ -181,28 +181,23 @@ How does the cumulative number of detections vary by treatment type, as a functi
 
 detections_trait10s <- nDetections_10s %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
-  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
-  dplyr::select(-c(scientific_name)) 
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) 
 
 detections_trait30s <- nDetections_30s %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
-  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
-  dplyr::select(-c(scientific_name)) 
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes"))
 
 detections_trait1min <- nDetections_1min %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
-  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
-  dplyr::select(-c(scientific_name)) 
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) 
 
 detections_trait2min <- nDetections_2min %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
-  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
-  dplyr::select(-c(scientific_name)) 
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) 
 
 detections_trait4min <- nDetections_4min %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
-  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
-  dplyr::select(-c(scientific_name)) 
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) 
 
 # Calculate overall number of detections for each site as a function of rainforest species and open-country species and test for differences across treatment types (Calculated only for the smallest temporal duration - 10s)
 
