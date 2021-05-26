@@ -64,7 +64,6 @@ nDetections_site_date <- datSubset %>%
 nDetections_trait <- nDetections_site_date %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
-  dplyr::select(-c(scientific_name)) %>%
   mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
   rename(., nDetections = count)
 ```
@@ -127,7 +126,7 @@ lines(1:6, nmdsR2min, type="l", lty=2)
 lines(1:6, nmdsR2max, type="l", lty=2)
 title("NMDS Stepdown Explanatory Power Plot")
 
-# With the above analysis, we note that the highest increase in r2 and biggest drop in stress as at 2 dimensions (from meanR2 = 0.06 to 0.65 at 2 dimensions and drop in mean stress from 0.53 to 0.23 at 2 dimensions). However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+# With the above analysis, we note that the highest increase in r2 and biggest drop in stress as at 2 dimensions (from meanR2 = 0.03 to 0.62 at 2 dimensions and drop in mean stress from 0.55 to 0.24 at 2 dimensions). However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 ```
 
 
@@ -136,7 +135,7 @@ Final NMDS run with a fixed number of dimensions
 # Final NMDS run with 6 dimensions 
 nmdsBrayCurtis <- nmds(disBrayCurtis, mindim=6,maxdim=6, nits=100)
 
-# Minimum stress is 0.09304276 and r^2 for minimum stress configuration:  0.8256243 
+# Minimum stress is 0.0877689 and r^2 for minimum stress configuration:  0.8393313 
 nmdsPower <- nmds.min(nmdsBrayCurtis, dims=6)
 
 # Shepard diagram to check for saturation:
@@ -180,8 +179,8 @@ nmdsPower$Restoration.Type <- nmdsDat$Restoration.Type
 mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_nmds <- ggplot(data=nmdsPower) + 
-  stat_ellipse(aes(x=X1,y=X2,colour=Restoration.Type),level = 0.50) +
-  geom_point(aes(x=X1,y=X2,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
+  stat_ellipse(aes(x=X1,y=X3,colour=Restoration.Type),level = 0.50) +
+  geom_point(aes(x=X1,y=X3,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
   theme_bw() +
   scale_x_continuous(name="NMDS 1") + 
   scale_y_continuous(name="NMDS 2") +
