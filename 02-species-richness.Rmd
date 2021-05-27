@@ -25,9 +25,7 @@ library(ggpubr)
 source("code/01_internal-functions.R")
 ```
 
-To start with, we will compute species richness from 5 non-consecutive days for each site for each season (following Campos-Cerqueira et al., 2019)
-
-At the moment, data exists to calculate species richness for one season only (data collected between March 2020 - May 2020) and 3 visits to a site have been completed.
+To start with, we will compute species richness from 3 non-consecutive days for each site for each season (following Campos-Cerqueira et al., 2019)
 
 We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations)
 ```{r}
