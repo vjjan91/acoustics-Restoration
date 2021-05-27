@@ -46,37 +46,32 @@ richness <- datSubset %>%
   dplyr::select(Site, Restoration.Type, richness)
 
 # richness by Visit
+# this data basically gives you richness per visit and adds a visit number for each consecutive visit to that site
 richnessPerVisit <- datSubset %>%
   group_by(Site, Date, Restoration.Type) %>%
   transform() %>% replace(is.na(.), 0) %>%
   summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
   mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
   rowwise() %>% 
-  mutate(richnessPerVisit = sum(c_across(IP:CR)),
-         visit = row_number()) %>%
-  dplyr::select(Site, Restoration.Type, richnessPerVisit, visit)
+  mutate(richness = sum(c_across(IP:CR))) %>%
+  group_by(Site) %>% 
+  mutate(visit = row_number()) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode)) %>%
+  dplyr::select(Site, Restoration.Type, Date, richness, visit, siteCode)
 
-# number of visits per site
-nVisits <- datSubset %>%
-  dplyr::select(Site, Date)%>%
-  distinct() %>% arrange(Site) %>% count(Site) %>%
-  rename(., nVisits=n)
-
-# summary data
 # We further estimate the number of detections per point count
 datSummary <- totalDetections %>%
   left_join(richness) %>%
-  left_join(nVisits) %>%
-  mutate(pointDetections = totalDetections/nVisits)
+  mutate(pointDetections = totalDetections/3)
 
-# combine the nDetections dataframe with the trait dataset
+# combine the Detections dataframe with the trait dataset
 nDetectionsTrait <- datSubset %>%
   group_by(Site, Restoration.Type, Date) %>%
   transform() %>% replace(is.na(.), 0) %>%
   summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
-  dplyr::select(-c(scientific_name)) %>%
   mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
   rename(., nDetections = count)
 
@@ -87,6 +82,7 @@ jackAll <- read.csv("data/jackAll.csv")
 jackRainforest <- read.csv("data/jackRainforest.csv")
 jackOpencountry <- read.csv("data/jackOpencountry.csv")
 ```
+
 
 Getting data ready in a format for generalized linear modeling
 ```{r}
@@ -123,8 +119,39 @@ modelData_openCountry <- vegPcaScores %>%
 Getting data ready for generalized linear mixed modeling
 ```{r}
 # data for the GLMM
-glmAll <- richnessPerVisit[,-3] %>%
+glmmAll <- richnessPerVisit[,-2] %>%
   full_join(modelDataAll, by = "Site")
+
+# rainforest birds
+glmmRainforest <- nDetectionsTrait %>%
+  group_by(Site, Restoration.Type, Date) %>% 
+  filter (Habitat == "RF") %>%
+  summarise(richness = sum(forRichness)) %>%
+  group_by(Site) %>% 
+  mutate(visit = row_number()) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode)) %>%
+  select(-Restoration.Type) %>%
+  full_join(modelData_rainForest, by="Site")
+  
+# open-country birds
+glmmOpencountry <- nDetectionsTrait %>%
+  group_by(Site, Restoration.Type, Date) %>% 
+  filter (Habitat == "OC") %>%
+  summarise(richness = sum(forRichness)) %>%
+  group_by(Site) %>% 
+  mutate(visit = row_number()) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode)) %>%
+  select(-Restoration.Type) %>%
+  full_join(modelData_openCountry, by="Site")
+
+# Let's look at species by foraging habit
+# canopy birds
+glmmCanopy <- 
+  
+  
+
 
 ```
 
