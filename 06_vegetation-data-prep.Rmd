@@ -37,7 +37,7 @@ veg <- merge(veg, sites_needed, by.x = "Site_ID", by.y="Site_ID")
 
 # renaming restoration type
 veg$Site_type[veg$Site_type=="Unrestored"] <- "Passive"
-veg$Site_type[trial$Site_type=="Restored"] <- "Active"
+veg$Site_type[veg$Site_type=="Restored"] <- "Active"
 
 # Load species-trait data to essentially run GLMs
 trait_dat <- read.csv("data/species-trait-dat.csv")
