@@ -9,6 +9,8 @@ library(sf)
 
 # List all filenames in folder starting with "Waypoint"
 # Works for waypoint files with names like "Waypoints_22-FEB-16.gpx"
+# Please note that pathname should be modified as required
+
 files <- list.files(path="data/waypoint-data/", pattern = "^Waypoints_",
                     full.names = T)
 
