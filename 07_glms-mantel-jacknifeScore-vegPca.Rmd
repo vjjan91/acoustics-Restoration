@@ -14,6 +14,8 @@ library(vegan)
 library(ggplot2)
 library(scico)
 library(psych)
+library(rcompanion)
+library(multcomp)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -196,5 +198,51 @@ glmmUnderStory <- nDetectionsTrait %>%
   full_join(modelDataAll, by="Site")
 
 ```
+
+
+Running the generalized linear models
+
+We now run generalized linear models (GLM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. For each model, we carried out chi-square tests of significance, and calculated Nagelkerke pseudo-R2 measure of goodness of fit.
+```{r}
+# all birds
+glm_allBirds <- glm(roundjk ~ Restoration.Type, data = modelDataAll, family = poisson(link = log))
+summary(glm_allBirds)
+
+anova(glm_allBirds, test = 'Chisq')
+nagelkerke(glm_allBirds)
+tukey_glmAllBirds <- summary(glht(glm_allBirds, mcp(Restoration.Type = "Tukey")))
+cld(tukey_glmAllBirds)
+
+# The above result suggests a significant difference in first order jacknife estimates for benchmark sites and passively restored site (but no difference between active-passive and active-benchmark).
+
+# rainforest birds
+glm_rainForest <- glm(roundjk ~ Restoration.Type, data = modelData_rainForest, family = poisson(link = log))
+summary(glm_rainForest)
+
+anova(glm_rainForest, test = 'Chisq')
+nagelkerke(glm_rainForest)
+
+tukey_glmRainforest <- summary(glht(glm_rainForest, mcp(Restoration.Type = "Tukey")))
+cld(tukey_glmRainforest)
+
+# The above result suggests a significant difference in first order jacknife estimates of rainforest species between benchmark and active sites. 
+
+
+# open country birds
+glm_openCountry <- glm(roundjk ~ Restoration.Type, data = modelData_openCountry, family = poisson(link = log))
+summary(glm_openCountry)
+
+anova(glm_openCountry, test = 'Chisq')
+nagelkerke(glm_openCountry)
+
+tukey_glmOpenCountry <- summary(glht(glm_openCountry, mcp(Restoration.Type = "Tukey")))
+cld(tukey_glmOpenCountry)
+
+# For open country birds, there is a significant difference in first-order jacknife estimates for both benchmark and active sites and benchmark and passively restored sites. 
+
+```
+
+
+
 
 
