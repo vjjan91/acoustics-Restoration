@@ -16,6 +16,7 @@ library(scico)
 library(psych)
 library(rcompanion)
 library(multcomp)
+library(lme4)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -227,7 +228,6 @@ cld(tukey_glmRainforest)
 
 # The above result suggests a significant difference in first order jacknife estimates of rainforest species between benchmark and active sites. 
 
-
 # open country birds
 glm_openCountry <- glm(roundjk ~ Restoration.Type, data = modelData_openCountry, family = poisson(link = log))
 summary(glm_openCountry)
@@ -242,6 +242,45 @@ cld(tukey_glmOpenCountry)
 
 ```
 
+
+Running generalized linear mixed models
+
+Testing the role of habitat (vegetation structure) and foraging habit on species richness within a generalized linear modeling framework
+```{r}
+# Testing the role of habitat first
+
+# all bird species
+glmm_allBirds <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmAll, family = poisson(link = log))
+summary(glmm_allBirds)
+
+# rainforest birds
+glmm_Rainforest <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmRainforest, family = poisson(link = log))
+summary(glmm_Rainforest)
+
+# Results above suggest PC1 is significantly negatively associated with richness of rainforest birds. A similar result is seen below for open-country bird species richness and PC1
+
+glmm_openCountry <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmOpencountry, family = poisson(link = log))
+summary(glmm_openCountry)
+
+# Testing the role of foraging habit
+
+# canopy birds (no significant association)
+glmm_Canopy <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmCanopy, family = poisson(link = log))
+summary(glmm_Canopy)
+
+# ground-feeding birds (Marginal association between richness of ground-feeding birds and PC2)
+glmm_Ground <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmGround, family = poisson(link = log))
+summary(glmm_Ground)
+
+# mid-storey birds (Marginal association between PC1 and richness of mid-storey birds)
+glmm_MidStorey <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmMidStorey, family = poisson(link = log))
+summary(glmm_MidStorey)
+
+# understory birds (no significant association)
+glmm_Understory <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmUnderStory, family = poisson(link = log))
+summary(glmm_Understory)
+
+```
 
 
 
