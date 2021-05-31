@@ -1,0 +1,51 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Multiple regression of distance matrices
+
+
+Load necessary libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(sf)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+
+Load necessary data and create dissimilarity matrices to run Mantel's tests
+```{r}
+
+# estimating geographic distance (euclidean) between sites
+sites <- read.csv("data/list-of-sites.csv")
+
+sites <- st_as_sf(sites, coords = c("Longitude","Latitude"), crs=4326)
+sites <- st_transform(sites, 32643)
+
+distanceData <- dist(st_coordinates(sites), method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+distMatrix <- as.matrix(distanceData)
+
+
+# extract coordinates and keep sitecode and restoration 
+coords <- sites %>%
+  select(Site.code, Restoration.type) %>%
+  bind_cols(st_coordinates(sites))
+
+st_coordinates(sites)
+
+
+```
+
+
+
+
+
+
