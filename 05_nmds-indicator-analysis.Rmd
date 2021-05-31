@@ -59,7 +59,7 @@ nDetections_site_date <- datSubset %>%
   transform() %>% replace(is.na(.), 0) %>%
   summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
   
-# Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates
+# Combine the nDetections and trait based data to obtain a dataframe for further analysis
 
 nDetections_trait <- nDetections_site_date %>%
   pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
@@ -74,7 +74,7 @@ Preparing a dataframe of detections to run ordinations
 # We will prepare a community matrix data that can be used to run dissimilarity indices
 
 nmdsDat <- nDetections_trait %>% 
-  select(Site, Species_Code, nDetections, Restoration.Type) %>% 
+  dplyr::select(Site, Species_Code, nDetections, Restoration.Type) %>% 
   group_by(Species_Code, Site, Restoration.Type) %>% 
   summarise (totDetections = sum(nDetections)) %>% 
   arrange(Restoration.Type) %>%
@@ -112,7 +112,7 @@ lines(1:6, nmdsStressMin, type="l", lty=2)
 lines(1:6, nmdsStressMax, type="l", lty=2)
 title("NMDS Stepdown Stress Plot")
 
-# The above plot suggests that stress values more or less plateau around 4 dimensions and with k=6, we are achieving very low values of stress.
+# The above plot suggests that stress values more or less plateau around 4 dimensions and with k=2, we are achieving very low values of stress.
 
 # Pulling out the r2 values
 nmdsR2 <- matrix(nmdsBrayCurtis$r2, nrow=6, byrow=T)
@@ -167,6 +167,9 @@ r2Axis3 <-r3^2
 r2Axis4 <-r4^2 
 r2Axis5 <-r5^2 
 r2Axis6 <-r6^2 
+
+# Here, we know that NMDS axis 3, followed by NMDS Axis 1 has the highest explanatory power and we write out the .csv of the same
+write.csv(nmdsBrayCurtis$conf[[1]], "data/nmdsBrayCurtis.csv", row.names = F)
 ```
 
 
