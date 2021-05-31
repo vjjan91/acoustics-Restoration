@@ -165,7 +165,10 @@ Running mantel's tests on the dissimilarity matrices of bird detections (nmds sc
 mantelBirdPca <- vegan::mantel(birdMatrix, vegPcaScores)
 mantelBirdFlora <- vegan::mantel(birdMatrix, floraMatrix)
 
-vegan::mantel(birdmatrix, floramatrix)
+# Mantel's and partial mantel's tests suggest no strong relationship
+
+vegan::mantel.partial(birdMatrix, vegPcaScores, distMatrix)
+vegan::mantel.partial(birdMatrix, vegPcaScores, floraMatrix)
 
 ```
 
