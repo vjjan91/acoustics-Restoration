@@ -12,6 +12,9 @@
 *.csv
 *.xlsx
 
+# Ignore .gpx files
+*.gpx
+
 # Ignore acoustic data
 *.wav
 
