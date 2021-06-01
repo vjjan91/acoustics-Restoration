@@ -93,101 +93,38 @@ Run a bray-curtis dissimilarity matrix and identify least stressed configuration
 
 Please note that this link provides more information on NMDS: http://strata.uga.edu/8370/lecturenotes/multidimensionalScaling.html
 ```{r}
-# Run a bray-curtis dissimilarity index using the ecodist::distance function
-disBrayCurtis <- distance(nmdsDatMatrix, method="bray-curtis")
+# Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations
 
-# Run nmds using the ecodist::nmds() function that examines x number of dimensions 
-# Please note this function is a time-consuming process
-nmdsBrayCurtis <- nmds(disBrayCurtis, nits=100, mindim=1, maxdim=6)
+disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
 
-# Pulling out the stress values into a 6x100 matrix
-nmdsStress <- matrix(nmdsBrayCurtis$stress, nrow=6, byrow=T)
-(nmdsStressMean <- apply(nmdsStress, 1, "mean"))
-(nmdsStressMin <- apply(nmdsStress, 1, "min"))
-(nmdsStressMax <- apply(nmdsStress, 1, "max"))
+nmdsBrayCurtis <- vegdist (nmdsDatMatrix, method = "bray") %>% 
+  metaMDS (nmdsBrayCurtis, k=6)
 
-# Scree plot of the stresses
-plot(1:6, nmdsStressMean, type="b", pch=19, lwd=2, xlab="Dimensions",xlim = c(0,6), ylim=c(0, 1), ylab="Stress")
-lines(1:6, nmdsStressMin, type="l", lty=2)
-lines(1:6, nmdsStressMax, type="l", lty=2)
-title("NMDS Stepdown Stress Plot")
+# extract nmds scores
+nmdsScores <- as.tibble(scores(nmdsBrayCurtis))
 
-# The above plot suggests that stress values more or less plateau around 4 dimensions and with k=2, we are achieving very low values of stress.
+# Write the scores to a separate .csv
+write.csv(nmdsScores, "data/nmdsBrayCurtis.csv", row.names = F)
 
-# Pulling out the r2 values
-nmdsR2 <- matrix(nmdsBrayCurtis$r2, nrow=6, byrow=T)
-(nmdsR2mean <- apply(nmdsR2, 1, "mean"))
-(nmdsR2min <- apply(nmdsR2, 1, "min"))
-(nmdsR2max <- apply(nmdsR2, 1, "max")) 
-
-# Screeplot for r2 values
-plot(1:6, nmdsR2mean, type="b", pch=19, lwd=2, xlab="Dimensions", ylim=c(0, 1.0), ylab="R-squared")
-lines(1:6, nmdsR2min, type="l", lty=2)
-lines(1:6, nmdsR2max, type="l", lty=2)
-title("NMDS Stepdown Explanatory Power Plot")
-
-# With the above analysis, we note that the highest increase in r2 and biggest drop in stress as at 2 dimensions (from meanR2 = 0.03 to 0.62 at 2 dimensions and drop in mean stress from 0.55 to 0.24 at 2 dimensions). However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
-```
-
-
-Final NMDS run with a fixed number of dimensions
-```{r}
-# Final NMDS run with 6 dimensions 
-nmdsBrayCurtis <- nmds(disBrayCurtis, mindim=6,maxdim=6, nits=100)
-
-# Minimum stress is 0.0877689 and r^2 for minimum stress configuration:  0.8393313 
-nmdsPower <- nmds.min(nmdsBrayCurtis, dims=6)
-
-# Shepard diagram to check for saturation:
-disShep <- dist(nmdsPower)
-plot(disShep,disBrayCurtis ,pch="*",xlab="Ordination Distance", ylab="Bray-Curtis distance")
-abline(0,1,col="red") # put in the 1:1 line (intercept=0, slope=1)
-title("Shepard Diagram")
-# monotonic increase indicating no saturation
-
-# Getting the explanatory powers of the NMS axes
-nmdsAxis1 <- dist(nmdsPower[,1]) 
-nmdsAxis2 <- dist(nmdsPower[,2])
-nmdsAxis3 <- dist(nmdsPower[,3])
-nmdsAxis4 <- dist(nmdsPower[,4])
-nmdsAxis5 <- dist(nmdsPower[,5])
-nmdsAxis6 <- dist(nmdsPower[,6])
-
-# X1 and X2 have highest explanatory power
-r1 <- cor(disBrayCurtis, nmdsAxis1)
-r2 <-cor(disBrayCurtis, nmdsAxis2)
-r3 <-cor(disBrayCurtis, nmdsAxis3)
-r4 <-cor(disBrayCurtis, nmdsAxis4)
-r5 <-cor(disBrayCurtis, nmdsAxis5)
-r6 <-cor(disBrayCurtis, nmdsAxis6)
-
-r2Axis1 <-r1^2
-r2Axis2 <-r2^2 
-r2Axis3 <-r3^2 
-r2Axis4 <-r4^2 
-r2Axis5 <-r5^2 
-r2Axis6 <-r6^2 
-
-# Here, we know that NMDS axis 3, followed by NMDS Axis 1 has the highest explanatory power and we write out the .csv of the same
-write.csv(nmdsBrayCurtis$conf[[1]], "data/nmdsBrayCurtis.csv", row.names = F)
+# With the above analysis, we note the stress is 0.07316083. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 ```
 
 
 Plotting the NMDS scores using ggplot2
 ```{r}
 # First let's add the treatment type back to the nmds scores
-nmdsPower$Restoration.Type <- nmdsDat$Restoration.Type
+nmdsScores$Restoration.Type <- nmdsDat$Restoration.Type
 
 # Add a custom set of colors
 mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
-fig_nmds <- ggplot(data=nmdsPower) + 
-  stat_ellipse(aes(x=X1,y=X3,colour=Restoration.Type),level = 0.50) +
-  geom_point(aes(x=X1,y=X3,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
+fig_nmds <- ggplot(data=nmdsScores) + 
+  stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.Type),level = 0.50) +
+  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
   theme_bw() +
   scale_x_continuous(name="NMDS 1") + 
   scale_y_continuous(name="NMDS 2") +
-  scale_shape_manual(values= 1:length(unique(nmdsPower$Restoration.Type)))+
+  scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.Type)))+
   scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
 
 ggsave(fig_nmds, filename = "figs/fig_nmds.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
@@ -251,7 +188,7 @@ We will do this by using the vegan::adonis() function which allows you to do per
 
 ```{r}
 # We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
-groups <- nmdsPower$Restoration.Type
+groups <- nmdsScores$Restoration.Type
 
 adonisNMDS <- adonis(nmdsDatMatrix ~ groups, method="bray",perm=999)
 adonisNMDS
