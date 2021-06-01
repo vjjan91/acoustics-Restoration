@@ -15,6 +15,8 @@ library(vegan)
 library(ggplot2)
 library(scico)
 library(sf)
+library(sna)
+library(hier.part)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -169,10 +171,44 @@ mantelBirdFlora <- vegan::mantel(birdMatrix, floraMatrix)
 
 vegan::mantel.partial(birdMatrix, vegPcaScores, distMatrix)
 vegan::mantel.partial(birdMatrix, vegPcaScores, floraMatrix)
-
 ```
 
 
+Running multiple regression on distance matrices
+
+```{r}
+# First we get rid of redundant duplicate values, then make the diagonal zeros NA, unfold each matrix into a vector, and then omit rows with 0 in them
+
+birdVector <- upper.tri.remove(birdMatrix)
+diag(birdVector) <- NA
+birdVector <- cbind(c(birdVector)) %>% na.omit()
+
+floraVector <- upper.tri.remove(floraMatrix)
+diag(floraVector) <- NA
+floraVector <- cbind(c(floraVector)) %>% na.omit()
+
+pcaVector <- upper.tri.remove(vegPcaScores)
+diag(pcaVector) <- NA
+pcaVector <- cbind(c(pcaVector)) %>% na.omit() 
+
+distanceVector <- upper.tri.remove(distMatrix)
+diag(distanceVector) <- NA
+distanceVector <- cbind(c(distanceVector)) %>% na.omit() %>%
+  scale
+
+#arranging data for MRM
+mrmData <- bind_cols (birdVector, floraVector, pcaVector, distanceVector) %>%
+  rename (bird = ...1, flora = ...2, structure = ...3, distance = ...4)
+
+MRM(dist(bird) ~ dist(flora) + dist(structure) + dist(distance), data = mrmData, method = "linear", nperm = 1000)
+
+# The above result suggests that bird compositional dissimilarity was signficantly and positively related to dissimilarity in habitat structure (However, please note that the overall R2 values are very low)
+```
 
 
+Hierarchical partitioning
+
+```{r}
+hier.part(mrmData$bird, mrmData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+```
 
