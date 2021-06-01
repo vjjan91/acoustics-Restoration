@@ -41,7 +41,7 @@ vegPcaScores <- as.matrix(vegPcaScores)
 
 # load NMDS scores (run on bird detections)
 nmdsScores <- read.csv("data/nmdsBrayCurtis.csv")
-birdMatrix <- dist(nmdsScores[,c(1,3)], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+birdMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
 birdMatrix <- as.matrix(birdMatrix)
 ```
 
@@ -78,86 +78,19 @@ floraData <- veg %>%
 # Convert to matrix form
 nmdsDatMatrix <- as.matrix(floraData[, 3:ncol(floraData)])
 
-# Run a bray-curtis dissimilarity index using the ecodist::distance function
-disBrayCurtis <- distance(nmdsDatMatrix, method="bray-curtis")
+# Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations
+disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
 
-# Run nmds using the ecodist::nmds() function that examines x number of dimensions 
-# Please note this function is a time-consuming process
-nmdsBrayCurtis <- nmds(disBrayCurtis, nits=100, mindim=1, maxdim=6)
+nmdsBrayCurtis <- vegdist (nmdsDatMatrix, method = "bray") %>% 
+  metaMDS (nmdsBrayCurtis, k=6)
 
-# Pulling out the stress values into a 6x100 matrix
-nmdsStress <- matrix(nmdsBrayCurtis$stress, nrow=6, byrow=T)
-(nmdsStressMean <- apply(nmdsStress, 1, "mean"))
-(nmdsStressMin <- apply(nmdsStress, 1, "min"))
-(nmdsStressMax <- apply(nmdsStress, 1, "max"))
+# extract nmds scores
+nmdsScores <- as.tibble(scores(nmdsBrayCurtis))
 
-# Scree plot of the stresses
-plot(1:6, nmdsStressMean, type="b", pch=19, lwd=2, xlab="Dimensions",xlim = c(0,6), ylim=c(0, 1), ylab="Stress")
-lines(1:6, nmdsStressMin, type="l", lty=2)
-lines(1:6, nmdsStressMax, type="l", lty=2)
-title("NMDS Stepdown Stress Plot")
-
-# The above plot suggests that stress values more or less plateau around 4 dimensions and with k=2, we are achieving very low values of stress.
-
-# Pulling out the r2 values
-nmdsR2 <- matrix(nmdsBrayCurtis$r2, nrow=6, byrow=T)
-(nmdsR2mean <- apply(nmdsR2, 1, "mean"))
-(nmdsR2min <- apply(nmdsR2, 1, "min"))
-(nmdsR2max <- apply(nmdsR2, 1, "max")) 
-
-# Screeplot for r2 values
-plot(1:6, nmdsR2mean, type="b", pch=19, lwd=2, xlab="Dimensions", ylim=c(0, 1.0), ylab="R-squared")
-lines(1:6, nmdsR2min, type="l", lty=2)
-lines(1:6, nmdsR2max, type="l", lty=2)
-title("NMDS Stepdown Explanatory Power Plot")
-
-# With the above analysis, we note that the highest increase in r2 and biggest drop in stress as at 2 dimensions (from meanR2 = 0.03 to 0.54 at 2 dimensions and drop in mean stress from 0.55 to 0.26 at 2 dimensions). However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
-```
-
-
-Final NMDS run with a fixed number of dimensions
-```{r}
-# Final NMDS run with 6 dimensions 
-nmdsBrayCurtis <- nmds(disBrayCurtis, mindim=6,maxdim=6, nits=100)
-
-# Minimum stress is 0.0988172 and r^2 for minimum stress configuration:  0.7992299 
-nmdsPower <- nmds.min(nmdsBrayCurtis, dims=6)
-
-# Shepard diagram to check for saturation:
-disShep <- dist(nmdsPower)
-plot(disShep,disBrayCurtis ,pch="*",xlab="Ordination Distance", ylab="Bray-Curtis distance")
-abline(0,1,col="red") # put in the 1:1 line (intercept=0, slope=1)
-title("Shepard Diagram")
-# monotonic increase indicating no saturation
-
-# Getting the explanatory powers of the NMS axes
-nmdsAxis1 <- dist(nmdsPower[,1]) 
-nmdsAxis2 <- dist(nmdsPower[,2])
-nmdsAxis3 <- dist(nmdsPower[,3])
-nmdsAxis4 <- dist(nmdsPower[,4])
-nmdsAxis5 <- dist(nmdsPower[,5])
-nmdsAxis6 <- dist(nmdsPower[,6])
-
-# X1 and X2 have highest explanatory power
-r1 <- cor(disBrayCurtis, nmdsAxis1)
-r2 <-cor(disBrayCurtis, nmdsAxis2)
-r3 <-cor(disBrayCurtis, nmdsAxis3)
-r4 <-cor(disBrayCurtis, nmdsAxis4)
-r5 <-cor(disBrayCurtis, nmdsAxis5)
-r6 <-cor(disBrayCurtis, nmdsAxis6)
-
-r2Axis1 <-r1^2
-r2Axis2 <-r2^2 
-r2Axis3 <-r3^2 
-r2Axis4 <-r4^2 
-r2Axis5 <-r5^2 
-r2Axis6 <-r6^2 
-
-# Here, we know that NMDS axis 6 followed by NMDS axis 5 has the highest explanatory power. Extract the scores into a dataframe
-floraScores <- data.frame(nmdsBrayCurtis$conf[[1]])
+# stress is lowest at around 6 dimensions with value of 0.06350522. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 
 # create a distance matrix on the nmds scores of the flora data
-floraMatrix <- dist(floraScores[,5:6], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+floraMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
 floraMatrix <- as.matrix(floraMatrix)
 ```
 
@@ -202,7 +135,7 @@ mrmData <- bind_cols (birdVector, floraVector, pcaVector, distanceVector) %>%
 
 MRM(dist(bird) ~ dist(flora) + dist(structure) + dist(distance), data = mrmData, method = "linear", nperm = 1000)
 
-# The above result suggests that bird compositional dissimilarity was signficantly and positively related to dissimilarity in habitat structure (However, please note that the overall R2 values are very low)
+# The above result suggests that bird compositional dissimilarity is not signficantly related to dissimilarity in habitat structure, geographic distance and florstics (Please note that the overall R2 values are very low)
 ```
 
 
