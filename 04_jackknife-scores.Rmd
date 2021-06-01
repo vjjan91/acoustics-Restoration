@@ -158,7 +158,7 @@ anovaJack_openCountry <- aov(jack1~Restoration.Type, data = jack_openCountryScor
 tukeyJack_rainForest <- TukeyHSD(anovaJack_rainForest)
 tukeyJack_openCountry <- TukeyHSD(anovaJack_openCountry)
 
-# (At the moment, given unequal visits), for rainforest species - there is a significant difference in jacknife estimates between benchmark and active sites, while there is no difference in jacknife estimates across strata for open country species of birds
+# For rainforest species - there is a significant difference in jacknife estimates between benchmark and active sites, while there is no difference in jacknife estimates across strata for open country species of birds
 
 # Plot the above results
 # Rainforest species
