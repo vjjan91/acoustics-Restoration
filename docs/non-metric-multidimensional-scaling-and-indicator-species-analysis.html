@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 6 Non-metric multidimensional scaling and indicator-species analysis | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 6 Non-metric multidimensional scaling and indicator-species analysis | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 6 Non-metric multidimensional scaling and indicator-species analysis | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 6 Non-metric multidimensional scaling and indicator-species analysis | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Akshay VA" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="jackknife-estimates.html"/>
+<link rel="next" href="preparing-vegetation-data-for-glms.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness-calculations.html"><a href="species-richness-calculations.html"><i class="fa fa-check"></i><b>3</b> Species Richness Calculations</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><i class="fa fa-check"></i><b>8</b> Generalized linear modeling and generalized linear mixed modeling</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-of-distance-matrices.html"><a href="multiple-regression-of-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression of distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="a-measure-of-vocal-activity.html"><a href="a-measure-of-vocal-activity.html"><i class="fa fa-check"></i><b>10</b> A measure of Vocal Activity</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="non-metric-multidimensional-scaling-and-indicator-species-analysis" class="section level1">
+<h1><span class="header-section-number">Section 6</span> Non-metric multidimensional scaling and indicator-species analysis</h1>
+<p>Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.</p>
+<p>One common tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below).</p>
+<p>NMDS does not use the absolute abundances of species in communities, but rather their rank orders. The use of ranks omits some of the issues associated with using absolute distance (e.g., sensitivity to transformation), and as a result is much more flexible technique that accepts a variety of types of data. (It’s also where the “non-metric” part of the name comes from).</p>
+<p>A wonderful tutorial is presented in this link: <a href="https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/" class="uri">https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/</a></p>
+<p>Install required libraries</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb23-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb23-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb23-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb23-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb23-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb23-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb23-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-7"></a><span class="kw">library</span>(psych)</span>
+<span id="cb23-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-8"></a><span class="kw">library</span>(ecodist)</span>
+<span id="cb23-9"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-9"></a><span class="kw">library</span>(RColorBrewer)</span>
+<span id="cb23-10"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-10"></a><span class="kw">library</span>(ggforce)</span>
+<span id="cb23-11"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-11"></a><span class="kw">library</span>(ggalt)</span>
+<span id="cb23-12"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-12"></a><span class="kw">library</span>(indicspecies)</span>
+<span id="cb23-13"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-13"></a></span>
+<span id="cb23-14"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-14"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb23-15"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb23-15"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>Load the necessary data for NMDS calculations</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb24-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-1"></a><span class="co"># We load the subset data</span></span>
+<span id="cb24-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-2"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>)</span>
+<span id="cb24-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-3"></a></span>
+<span id="cb24-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-4"></a><span class="co"># Load species-trait data to essentially check for associations by habitat type</span></span>
+<span id="cb24-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-5"></a>trait_dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span>
+<span id="cb24-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-6"></a></span>
+<span id="cb24-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-7"></a><span class="co"># Site-summary (Number of detections across all sites)</span></span>
+<span id="cb24-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-8"></a>datSummary &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb24-9"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-9"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb24-10"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-10"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb24-11"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb24-11"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum)</span></code></pre></div>
+<p>Preparing dataframe of traits and species to be used for NMDS later on</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb25-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-1"></a><span class="co"># Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. </span></span>
+<span id="cb25-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-2"></a></span>
+<span id="cb25-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-3"></a>nDetections_site_date &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb25-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-4"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span></span>
+<span id="cb25-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-5"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb25-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-6"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum)</span>
+<span id="cb25-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-7"></a>  </span>
+<span id="cb25-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-8"></a><span class="co"># Combine the nDetections and trait based data to obtain a dataframe for further analysis</span></span>
+<span id="cb25-9"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-9"></a></span>
+<span id="cb25-10"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-10"></a>nDetections_trait &lt;-<span class="st"> </span>nDetections_site_date <span class="op">%&gt;%</span></span>
+<span id="cb25-11"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-11"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>CR, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb25-12"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-12"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb25-13"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-13"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">forRichness =</span> <span class="kw">case_when</span>(count<span class="op">&gt;</span><span class="dv">0</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span>,count<span class="op">==</span><span class="dv">0</span> <span class="op">~</span><span class="st"> </span><span class="dv">0</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb25-14"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb25-14"></a><span class="st">  </span><span class="kw">rename</span>(., <span class="dt">nDetections =</span> count)</span></code></pre></div>
+<p>Preparing a dataframe of detections to run ordinations</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb26-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-1"></a><span class="co"># We will prepare a community matrix data that can be used to run dissimilarity indices</span></span>
+<span id="cb26-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-2"></a></span>
+<span id="cb26-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-3"></a>nmdsDat &lt;-<span class="st"> </span>nDetections_trait <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb26-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-4"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Species_Code, nDetections, Restoration.Type) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb26-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-5"></a><span class="st">  </span><span class="kw">group_by</span>(Species_Code, Site, Restoration.Type) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb26-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-6"></a><span class="st">  </span><span class="kw">summarise</span> (<span class="dt">totDetections =</span> <span class="kw">sum</span>(nDetections)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb26-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-7"></a><span class="st">  </span><span class="kw">arrange</span>(Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb26-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-8"></a><span class="st">  </span><span class="kw">pivot_wider</span> (<span class="dt">names_from =</span> Species_Code, <span class="dt">values_from =</span> totDetections, <span class="dt">values_fill =</span> <span class="kw">list</span>(<span class="dt">totDetections=</span><span class="dv">0</span>))</span>
+<span id="cb26-9"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-9"></a></span>
+<span id="cb26-10"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-10"></a><span class="co"># Convert to matrix form</span></span>
+<span id="cb26-11"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb26-11"></a>nmdsDatMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(nmdsDat[, <span class="dv">3</span><span class="op">:</span><span class="kw">ncol</span>(nmdsDat)])</span></code></pre></div>
+<p>Run a bray-curtis dissimilarity matrix and identify least stressed configuration for the ordinations. Bray-curtis is a statistic used to quantify the compositional dissimilarity between two different sites, based on counts at each site. Ecologists use the Bray-Curtis dissimilarity calculation, which has a number of ideal properties:
+1. It is invariant to changes in units.
+2. It is unaffected by additions/removals of species that are not present in two communities.
+3. It is unaffected by the addition of a new community.
+4. It can recognize differences in total abundances when relative abundances are the same.</p>
+<p>Please note that this link provides more information on NMDS: <a href="http://strata.uga.edu/8370/lecturenotes/multidimensionalScaling.html" class="uri">http://strata.uga.edu/8370/lecturenotes/multidimensionalScaling.html</a></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb27-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-1"></a><span class="co"># Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations</span></span>
+<span id="cb27-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-2"></a></span>
+<span id="cb27-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-3"></a>disBrayCurtis &lt;-<span class="st"> </span><span class="kw">vegdist</span>(nmdsDatMatrix, <span class="dt">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb27-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-4"></a></span>
+<span id="cb27-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-5"></a>nmdsBrayCurtis &lt;-<span class="st"> </span><span class="kw">vegdist</span> (nmdsDatMatrix, <span class="dt">method =</span> <span class="st">&quot;bray&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb27-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-6"></a><span class="st">  </span><span class="kw">metaMDS</span> (nmdsBrayCurtis, <span class="dt">k=</span><span class="dv">6</span>)</span>
+<span id="cb27-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-7"></a></span>
+<span id="cb27-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-8"></a><span class="co"># extract nmds scores</span></span>
+<span id="cb27-9"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-9"></a>nmdsScores &lt;-<span class="st"> </span><span class="kw">as.tibble</span>(<span class="kw">scores</span>(nmdsBrayCurtis))</span>
+<span id="cb27-10"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-10"></a></span>
+<span id="cb27-11"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-11"></a><span class="co"># Write the scores to a separate .csv</span></span>
+<span id="cb27-12"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-12"></a><span class="kw">write.csv</span>(nmdsScores, <span class="st">&quot;data/nmdsBrayCurtis.csv&quot;</span>, <span class="dt">row.names =</span> F)</span>
+<span id="cb27-13"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-13"></a></span>
+<span id="cb27-14"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb27-14"></a><span class="co"># With the above analysis, we note the stress is 0.07316083. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress &lt; 0.05 provides an excellent representation in reduced dimensions, &lt; 0.1 is great, &lt; 0.2 is good/ok, and stress &lt; 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!</span></span></code></pre></div>
+<p>Plotting the NMDS scores using ggplot2</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb28-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-1"></a><span class="co"># First let&#39;s add the treatment type back to the nmds scores</span></span>
+<span id="cb28-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-2"></a>nmdsScores<span class="op">$</span>Restoration.Type &lt;-<span class="st"> </span>nmdsDat<span class="op">$</span>Restoration.Type</span>
+<span id="cb28-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-3"></a></span>
+<span id="cb28-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-4"></a><span class="co"># Add a custom set of colors</span></span>
+<span id="cb28-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-5"></a>mycolors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">brewer.pal</span>(<span class="dt">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="dt">n =</span> <span class="dv">3</span>), <span class="kw">brewer.pal</span>(<span class="dt">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="dt">n =</span> <span class="dv">3</span>))</span>
+<span id="cb28-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-6"></a></span>
+<span id="cb28-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-7"></a>fig_nmds &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data=</span>nmdsScores) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb28-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-8"></a><span class="st">  </span><span class="kw">stat_ellipse</span>(<span class="kw">aes</span>(<span class="dt">x=</span>NMDS1,<span class="dt">y=</span>NMDS2,<span class="dt">colour=</span>Restoration.Type),<span class="dt">level =</span> <span class="fl">0.50</span>) <span class="op">+</span></span>
+<span id="cb28-9"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-9"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>NMDS1,<span class="dt">y=</span>NMDS2,<span class="dt">shape=</span>Restoration.Type,<span class="dt">colour=</span>Restoration.Type),<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb28-10"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-10"></a><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb28-11"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">name=</span><span class="st">&quot;NMDS 1&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb28-12"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-12"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">name=</span><span class="st">&quot;NMDS 2&quot;</span>) <span class="op">+</span></span>
+<span id="cb28-13"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-13"></a><span class="st">  </span><span class="kw">scale_shape_manual</span>(<span class="dt">values=</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(nmdsScores<span class="op">$</span>Restoration.Type)))<span class="op">+</span></span>
+<span id="cb28-14"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-14"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span>mycolors)<span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.key =</span> <span class="kw">element_blank</span>(), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;italic&quot;</span>))</span>
+<span id="cb28-15"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-15"></a></span>
+<span id="cb28-16"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-16"></a><span class="kw">ggsave</span>(fig_nmds, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_nmds.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb28-17"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-17"></a></span>
+<span id="cb28-18"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb28-18"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_nmds.png&quot;</span>)</span></code></pre></div>
+<p>Testing multivariate homogeneity of group dispersions</p>
+<p>One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median (both referred to as ‘centroid’ from now on unless stated otherwise) in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.</p>
+<p>Betadisper tests whether two or more groups (for example, restored and unrestored sites) are homogeneously dispersed in relation to their species in studied samples. This test can be done to see if one group has more compositional variance than another. Moreover, homogeneity of dispersion among groups is very advisable to have if you want to test if two or more groups have different compositions, which is tested by adonis.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb29-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-1"></a>nmdsVariance &lt;-<span class="st"> </span><span class="kw">betadisper</span>(disBrayCurtis, <span class="dt">group =</span> nmdsDat<span class="op">$</span>Restoration.Type)</span>
+<span id="cb29-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-2"></a>nmdsVariance</span>
+<span id="cb29-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-3"></a></span>
+<span id="cb29-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-4"></a><span class="kw">anova</span>(nmdsVariance)</span>
+<span id="cb29-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-5"></a><span class="kw">permutest</span>(nmdsVariance, <span class="dt">pairwise =</span> <span class="ot">TRUE</span>, <span class="dt">permutations =</span> <span class="dv">999</span>)</span>
+<span id="cb29-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-6"></a><span class="kw">TukeyHSD</span>(nmdsVariance)</span>
+<span id="cb29-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-7"></a></span>
+<span id="cb29-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb29-8"></a><span class="co"># These results suggest that there is no difference in variance between one group and another</span></span></code></pre></div>
+<p>Visualizing the multivariate homogeneity of group dispersions</p>
+<p>The below lines of code have been adapted from: <a href="https://chrischizinski.github.io/rstats/adonis/" class="uri">https://chrischizinski.github.io/rstats/adonis/</a></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb30-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-1"></a><span class="co"># extract the centroids and the site points in multivariate space.  </span></span>
+<span id="cb30-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-2"></a>centroids &lt;-<span class="kw">data.frame</span>(<span class="dt">grps=</span><span class="kw">rownames</span>(nmdsVariance<span class="op">$</span>centroids),</span>
+<span id="cb30-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-3"></a>                       <span class="kw">data.frame</span>(nmdsVariance<span class="op">$</span>centroids))</span>
+<span id="cb30-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-4"></a>vectors &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">group=</span>nmdsVariance<span class="op">$</span>group,</span>
+<span id="cb30-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-5"></a>                      <span class="kw">data.frame</span>(nmdsVariance<span class="op">$</span>vectors))</span>
+<span id="cb30-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-6"></a></span>
+<span id="cb30-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-7"></a><span class="co"># to create the lines from the centroids to each point we will put it in a format that ggplot can handle</span></span>
+<span id="cb30-8"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-8"></a>seg.data&lt;-<span class="kw">cbind</span>(vectors[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],centroids[<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(centroids),<span class="kw">as.data.frame</span>(<span class="kw">table</span>(vectors<span class="op">$</span>group))<span class="op">$</span>Freq),<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</span>
+<span id="cb30-9"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-9"></a><span class="kw">names</span>(seg.data)&lt;-<span class="kw">c</span>(<span class="st">&quot;group&quot;</span>,<span class="st">&quot;v.PCoA1&quot;</span>,<span class="st">&quot;v.PCoA2&quot;</span>,<span class="st">&quot;PCoA1&quot;</span>,<span class="st">&quot;PCoA2&quot;</span>)</span>
+<span id="cb30-10"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-10"></a></span>
+<span id="cb30-11"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-11"></a><span class="co"># create the convex hulls of the outermost points</span></span>
+<span id="cb30-12"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-12"></a>grp1.hull &lt;-<span class="st"> </span>seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Active&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>][<span class="kw">chull</span>(seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Active&quot;</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]),]</span>
+<span id="cb30-13"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-13"></a>grp2.hull &lt;-<span class="st"> </span>seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Benchmark&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>][<span class="kw">chull</span>(seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Benchmark&quot;</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]),]</span>
+<span id="cb30-14"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-14"></a>grp3.hull &lt;-<span class="st"> </span>seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Passive&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>][<span class="kw">chull</span>(seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Passive&quot;</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]),]</span>
+<span id="cb30-15"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-15"></a>all.hull &lt;-<span class="st"> </span><span class="kw">rbind</span>(grp1.hull,grp2.hull,grp3.hull)</span>
+<span id="cb30-16"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-16"></a></span>
+<span id="cb30-17"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-17"></a><span class="co"># plot the panel and convex hulls</span></span>
+<span id="cb30-18"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-18"></a>fig_hull &lt;-<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb30-19"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-19"></a><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">data=</span> all.hull,<span class="kw">aes</span>(<span class="dt">x=</span>v.PCoA1,<span class="dt">y=</span>v.PCoA2),<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">alpha=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></span>
+<span id="cb30-20"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-20"></a><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>seg.data,<span class="kw">aes</span>(<span class="dt">x=</span>v.PCoA1,<span class="dt">xend=</span>PCoA1,<span class="dt">y=</span>v.PCoA2,<span class="dt">yend=</span>PCoA2),<span class="dt">alpha=</span><span class="fl">0.30</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb30-21"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-21"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>centroids[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="kw">aes</span>(<span class="dt">x=</span>PCoA1,<span class="dt">y=</span>PCoA2,<span class="dt">shape=</span>grps),<span class="dt">size=</span><span class="dv">4</span>,<span class="dt">colour=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb30-22"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-22"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>seg.data, <span class="kw">aes</span>(<span class="dt">x=</span>v.PCoA1,<span class="dt">y=</span>v.PCoA2,<span class="dt">shape=</span>group),<span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb30-23"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-23"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;All&quot;</span>,<span class="dt">x=</span><span class="st">&quot;&quot;</span>,<span class="dt">y=</span><span class="st">&quot;&quot;</span>) <span class="op">+</span></span>
+<span id="cb30-24"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-24"></a><span class="st">  </span><span class="co">#coord_cartesian(xlim = c(-0.2,0.2), ylim = c(-0.25,0.2)) +</span></span>
+<span id="cb30-25"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-25"></a><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb30-26"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb30-26"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p>Testing compositional dissimilarity between groups</p>
+<p>We will do this by using the vegan::adonis() function which allows you to do permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be seen as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb31-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb31-1"></a><span class="co"># We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity</span></span>
+<span id="cb31-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb31-2"></a>groups &lt;-<span class="st"> </span>nmdsScores<span class="op">$</span>Restoration.Type</span>
+<span id="cb31-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb31-3"></a></span>
+<span id="cb31-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb31-4"></a>adonisNMDS &lt;-<span class="st"> </span><span class="kw">adonis</span>(nmdsDatMatrix <span class="op">~</span><span class="st"> </span>groups, <span class="dt">method=</span><span class="st">&quot;bray&quot;</span>,<span class="dt">perm=</span><span class="dv">999</span>)</span>
+<span id="cb31-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb31-5"></a>adonisNMDS</span>
+<span id="cb31-6"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb31-6"></a></span>
+<span id="cb31-7"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb31-7"></a><span class="co"># The results suggest that there are significant compositional differences between groups.</span></span></code></pre></div>
+<p>Indicator species analysis</p>
+<p>This analysis aims to identify what species are “indicators” of groups of samples or treatment type. For instance:</p>
+<p>• A perfect indicator species will only occur in one group.
+• Generalist species will occur across multiple groups and
+therefore not a good indicator.
+• Rare species are not sampled often, also not a good
+indicator.
+• Indicator values range from 0 to 1 but may also be
+expressed as a percentage.
+• Each species is assigned an indicator value for each
+group and the significance of values can be assessed through permutations</p>
+<p>For more information, visit this link: <a href="https://ichthyology.usm.edu/courses/multivariate/apr_11.pdf" class="uri">https://ichthyology.usm.edu/courses/multivariate/apr_11.pdf</a></p>
+<p>Please note that when the aim is to determine which species can be used as indicators of certain site group, an approach commonly used in ecology is the Indicator
+Value [Dufrˆene and Legendre, 1997]. These authors defined an Indicator
+Value (IndVal) index to measure the association between a species and a
+site group. The method of Dufrˆene and Legendre [1997] calculates the IndVal index between the species and each site group and then looks for the
+group corresponding to the highest association value. Finally, the statistical
+significance of this relationship is tested using a permutation test.</p>
+<p>Diagnostic (or indicator) species are an important tool in vegetation science, because these species can be used to characterize and indicate specific plant community types. A statistic commonly used to determine the association (also known
+as fidelity, not to be confounded with the indicator value component) between species and vegetation types is Pearson’s phi coefficient of association
+[Chytr´y et al., 2002]. This coefficient is a measure of the correlation between two binary vectors. The abundance-based counterpart of the phi coefficient is called the point biserial correlation coefficient (which is defined as “r.g”)</p>
+<p>See: <a href="https://cran.r-project.org/web/packages/indicspecies/vignettes/indicspeciesTutorial.pdf" class="uri">https://cran.r-project.org/web/packages/indicspecies/vignettes/indicspeciesTutorial.pdf</a></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb32-1"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb32-1"></a><span class="co"># Running the multi-pattern analysis across combinations of groups</span></span>
+<span id="cb32-2"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb32-2"></a>indicSpec &lt;-<span class="st"> </span><span class="kw">multipatt</span>(nmdsDat[, <span class="dv">3</span><span class="op">:</span><span class="kw">ncol</span>(nmdsDat)], nmdsDat<span class="op">$</span>Restoration.Type, <span class="dt">func =</span> <span class="st">&quot;r.g&quot;</span>, <span class="dt">control =</span> <span class="kw">how</span>(<span class="dt">nperm=</span><span class="dv">999</span>))</span>
+<span id="cb32-3"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb32-3"></a></span>
+<span id="cb32-4"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb32-4"></a><span class="co"># looking at associations with stratum/pairs of strata</span></span>
+<span id="cb32-5"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html#cb32-5"></a><span class="kw">summary</span>(indicSpec)</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="jackknife-estimates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="preparing-vegetation-data-for-glms.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/05_nmds-indicator-analysis.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

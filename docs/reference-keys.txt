@@ -1,0 +1,13 @@
+introduction
+attribution
+data-access
+data-processing
+splitting-large-.wav-files-into-smaller-chunks
+species-richness-calculations
+acoustic-detections
+jackknife-estimates
+non-metric-multidimensional-scaling-and-indicator-species-analysis
+preparing-vegetation-data-for-glms
+generalized-linear-modeling-and-generalized-linear-mixed-modeling
+multiple-regression-of-distance-matrices
+a-measure-of-vocal-activity

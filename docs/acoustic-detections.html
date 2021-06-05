@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 4 Acoustic Detections | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 4 Acoustic Detections | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 4 Acoustic Detections | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 4 Acoustic Detections | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Akshay VA" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="species-richness-calculations.html"/>
+<link rel="next" href="jackknife-estimates.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness-calculations.html"><a href="species-richness-calculations.html"><i class="fa fa-check"></i><b>3</b> Species Richness Calculations</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><i class="fa fa-check"></i><b>8</b> Generalized linear modeling and generalized linear mixed modeling</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-of-distance-matrices.html"><a href="multiple-regression-of-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression of distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="a-measure-of-vocal-activity.html"><a href="a-measure-of-vocal-activity.html"><i class="fa fa-check"></i><b>10</b> A measure of Vocal Activity</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="acoustic-detections" class="section level1">
+<h1><span class="header-section-number">Section 4</span> Acoustic Detections</h1>
+<p>In this script, we will calculate:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Total Number of detections across sites (reported for varying time intervals 10s, 30s, 1-min, 2-min, 4-min). In the previous script, we essentially calculated overall species richness with a temporal unit of 16-min. However, it is important to identify the total number of detections of a particular species for a given temporal duration, which can inform levels of vocal activity (future scripts).</li>
+<li>Repeat the above three calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.</li>
+</ol>
+<p>Install required libraries</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb11-1"><a href="acoustic-detections.html#cb11-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb11-2"><a href="acoustic-detections.html#cb11-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb11-3"><a href="acoustic-detections.html#cb11-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb11-4"><a href="acoustic-detections.html#cb11-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb11-5"><a href="acoustic-detections.html#cb11-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb11-6"><a href="acoustic-detections.html#cb11-6"></a><span class="kw">library</span>(scico)</span></code></pre></div>
+<p>We will use the data that was subset previously for further analysis (This contains three non-consecutive visits to each site)</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb12-1"><a href="acoustic-detections.html#cb12-1"></a><span class="co"># Attach the 2020_summer_annotation data </span></span>
+<span id="cb12-2"><a href="acoustic-detections.html#cb12-2"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>)</span>
+<span id="cb12-3"><a href="acoustic-detections.html#cb12-3"></a></span>
+<span id="cb12-4"><a href="acoustic-detections.html#cb12-4"></a><span class="co"># Load the species-trait-data</span></span>
+<span id="cb12-5"><a href="acoustic-detections.html#cb12-5"></a>trait_dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span></code></pre></div>
+<p>Given the data annotated so far, we will calculate the overall number of detections across different temporal periods, starting from 10s to 30-s, 1-min, 2-min and 4-min. We will first calculate the overall number of detections for the shortest possible temporal duration which could be annotated confidently - 10s.</p>
+<p>Other durations are chosen to confirm if the number of detections vary as a function of the temporal duration.</p>
+<p>Please note that: the data at the moment is imbalanced in terms of nVisits</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb13-1"><a href="acoustic-detections.html#cb13-1"></a><span class="co"># Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip</span></span>
+<span id="cb13-2"><a href="acoustic-detections.html#cb13-2"></a></span>
+<span id="cb13-3"><a href="acoustic-detections.html#cb13-3"></a>nDetections_10s &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb13-4"><a href="acoustic-detections.html#cb13-4"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-5"><a href="acoustic-detections.html#cb13-5"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-6"><a href="acoustic-detections.html#cb13-6"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) </span>
+<span id="cb13-7"><a href="acoustic-detections.html#cb13-7"></a>  </span>
+<span id="cb13-8"><a href="acoustic-detections.html#cb13-8"></a><span class="co"># Calculate the overall number of detections for each site where each temporal duration chosen is a 30s clip (In this case, every third row is chosen after grouping by Site, Date and Time)</span></span>
+<span id="cb13-9"><a href="acoustic-detections.html#cb13-9"></a></span>
+<span id="cb13-10"><a href="acoustic-detections.html#cb13-10"></a>nDetections_30s &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb13-11"><a href="acoustic-detections.html#cb13-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Splits =</span> <span class="kw">case_when</span>((Splits <span class="op">==</span><span class="st"> &quot;01-10&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;10-20&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;20-30&quot;</span>) <span class="op">~</span><span class="st"> &quot;1&quot;</span>,(Splits <span class="op">==</span><span class="st"> &quot;30-40&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;40-50&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;50-60&quot;</span>) <span class="op">~</span><span class="st"> &quot;2&quot;</span>,(Splits <span class="op">==</span><span class="st"> &quot;60-70&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;70-80&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;80-90&quot;</span>) <span class="op">~</span><span class="st"> &quot;3&quot;</span>,            (Splits <span class="op">==</span><span class="st"> &quot;90-100&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;100-110&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;110-120&quot;</span>) <span class="op">~</span><span class="st"> &quot;4&quot;</span>,             (Splits <span class="op">==</span><span class="st"> &quot;120-130&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;130-140&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;140-150&quot;</span>) <span class="op">~</span><span class="st"> &quot;5&quot;</span>,            (Splits <span class="op">==</span><span class="st"> &quot;150-160&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;160-170&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;170-180&quot;</span>) <span class="op">~</span><span class="st"> &quot;6&quot;</span>,           (Splits <span class="op">==</span><span class="st"> &quot;180-190&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;190-200&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;200-210&quot;</span>) <span class="op">~</span><span class="st"> &quot;7&quot;</span>,           (Splits <span class="op">==</span><span class="st"> &quot;210-220&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;220-230&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;230-240&quot;</span>) <span class="op">~</span><span class="st">&quot;8&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(Site, Date, Time, Splits, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-12"><a href="acoustic-detections.html#cb13-12"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum)</span>
+<span id="cb13-13"><a href="acoustic-detections.html#cb13-13"></a></span>
+<span id="cb13-14"><a href="acoustic-detections.html#cb13-14"></a><span class="co"># Convert nDetections &gt;1 within a 30s period to 1 (since your temporal unit here is 30s)</span></span>
+<span id="cb13-15"><a href="acoustic-detections.html#cb13-15"></a></span>
+<span id="cb13-16"><a href="acoustic-detections.html#cb13-16"></a>nDetections_30s &lt;-<span class="st"> </span>nDetections_30s <span class="op">%&gt;%</span></span>
+<span id="cb13-17"><a href="acoustic-detections.html#cb13-17"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-18"><a href="acoustic-detections.html#cb13-18"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb13-19"><a href="acoustic-detections.html#cb13-19"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="op">~</span><span class="st"> </span><span class="kw">replace</span>(., . <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb13-20"><a href="acoustic-detections.html#cb13-20"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum)</span>
+<span id="cb13-21"><a href="acoustic-detections.html#cb13-21"></a>  </span>
+<span id="cb13-22"><a href="acoustic-detections.html#cb13-22"></a><span class="co"># Calculate the overall number of detections for each site where each temporal duration chosen is a 60s clip (In this case, every sixth row is chosen after grouping by Site, Date and Time)</span></span>
+<span id="cb13-23"><a href="acoustic-detections.html#cb13-23"></a></span>
+<span id="cb13-24"><a href="acoustic-detections.html#cb13-24"></a>nDetections_1min &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb13-25"><a href="acoustic-detections.html#cb13-25"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Splits =</span> <span class="kw">case_when</span>((Splits <span class="op">==</span><span class="st"> &quot;01-10&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;10-20&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;20-30&quot;</span> <span class="op">|</span></span>
+<span id="cb13-26"><a href="acoustic-detections.html#cb13-26"></a><span class="st">                            </span>Splits <span class="op">==</span><span class="st"> &quot;30-40&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;40-50&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;50-60&quot;</span>) <span class="op">~</span><span class="st"> &quot;1&quot;</span>, (Splits <span class="op">==</span><span class="st"> &quot;60-70&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;70-80&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;80-90&quot;</span> <span class="op">|</span></span>
+<span id="cb13-27"><a href="acoustic-detections.html#cb13-27"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;90-100&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;100-110&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;110-120&quot;</span>) <span class="op">~</span><span class="st"> &quot;2&quot;</span>,</span>
+<span id="cb13-28"><a href="acoustic-detections.html#cb13-28"></a>                         (Splits <span class="op">==</span><span class="st"> &quot;120-130&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;130-140&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;140-150&quot;</span> <span class="op">|</span></span>
+<span id="cb13-29"><a href="acoustic-detections.html#cb13-29"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;150-160&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;160-170&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;170-180&quot;</span>) <span class="op">~</span><span class="st"> &quot;3&quot;</span>,</span>
+<span id="cb13-30"><a href="acoustic-detections.html#cb13-30"></a>                         (Splits <span class="op">==</span><span class="st"> &quot;180-190&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;190-200&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;200-210&quot;</span> <span class="op">|</span></span>
+<span id="cb13-31"><a href="acoustic-detections.html#cb13-31"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;210-220&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;220-230&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;230-240&quot;</span>) <span class="op">~</span><span class="st">&quot;4&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(Site, Date, Time, Splits, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-32"><a href="acoustic-detections.html#cb13-32"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum)</span>
+<span id="cb13-33"><a href="acoustic-detections.html#cb13-33"></a>  </span>
+<span id="cb13-34"><a href="acoustic-detections.html#cb13-34"></a><span class="co"># Convert nDetections&gt;1 within a 1-min period to 1 (since your temporal unit here is 1-min)</span></span>
+<span id="cb13-35"><a href="acoustic-detections.html#cb13-35"></a></span>
+<span id="cb13-36"><a href="acoustic-detections.html#cb13-36"></a>nDetections_1min &lt;-<span class="st"> </span>nDetections_1min <span class="op">%&gt;%</span></span>
+<span id="cb13-37"><a href="acoustic-detections.html#cb13-37"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-38"><a href="acoustic-detections.html#cb13-38"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb13-39"><a href="acoustic-detections.html#cb13-39"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="op">~</span><span class="st"> </span><span class="kw">replace</span>(., . <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb13-40"><a href="acoustic-detections.html#cb13-40"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) </span>
+<span id="cb13-41"><a href="acoustic-detections.html#cb13-41"></a>  </span>
+<span id="cb13-42"><a href="acoustic-detections.html#cb13-42"></a><span class="co"># Calculate the overall number of detections for each site where each temporal duration chosen is a 120s clip (In this case, every twelfth row is chosen after grouping by Site, Date and Time)</span></span>
+<span id="cb13-43"><a href="acoustic-detections.html#cb13-43"></a></span>
+<span id="cb13-44"><a href="acoustic-detections.html#cb13-44"></a>nDetections_2min &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb13-45"><a href="acoustic-detections.html#cb13-45"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Splits =</span> <span class="kw">case_when</span>((Splits <span class="op">==</span><span class="st"> &quot;01-10&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;10-20&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;20-30&quot;</span> <span class="op">|</span></span>
+<span id="cb13-46"><a href="acoustic-detections.html#cb13-46"></a><span class="st">                            </span>Splits <span class="op">==</span><span class="st"> &quot;30-40&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;40-50&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;50-60&quot;</span> <span class="op">|</span></span>
+<span id="cb13-47"><a href="acoustic-detections.html#cb13-47"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;60-70&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;70-80&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;80-90&quot;</span> <span class="op">|</span></span>
+<span id="cb13-48"><a href="acoustic-detections.html#cb13-48"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;90-100&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;100-110&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;110-120&quot;</span>) <span class="op">~</span><span class="st"> &quot;1&quot;</span>,</span>
+<span id="cb13-49"><a href="acoustic-detections.html#cb13-49"></a>                         (Splits <span class="op">==</span><span class="st"> &quot;120-130&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;130-140&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;140-150&quot;</span> <span class="op">|</span></span>
+<span id="cb13-50"><a href="acoustic-detections.html#cb13-50"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;150-160&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;160-170&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;170-180&quot;</span> <span class="op">|</span></span>
+<span id="cb13-51"><a href="acoustic-detections.html#cb13-51"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;180-190&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;190-200&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;200-210&quot;</span> <span class="op">|</span></span>
+<span id="cb13-52"><a href="acoustic-detections.html#cb13-52"></a><span class="st">                         </span>Splits <span class="op">==</span><span class="st"> &quot;210-220&quot;</span> <span class="op">|</span><span class="st"> </span>Splits<span class="op">==</span><span class="st">&quot;220-230&quot;</span> <span class="op">|</span><span class="st"> </span>Splits <span class="op">==</span><span class="st">&quot;230-240&quot;</span>) <span class="op">~</span><span class="st">&quot;2&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(Site, Date, Time, Splits, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-53"><a href="acoustic-detections.html#cb13-53"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum)</span>
+<span id="cb13-54"><a href="acoustic-detections.html#cb13-54"></a> </span>
+<span id="cb13-55"><a href="acoustic-detections.html#cb13-55"></a><span class="co"># Convert nDetections&gt;1 within a 2-min period to 1 (since your temporal unit here is 2-min)</span></span>
+<span id="cb13-56"><a href="acoustic-detections.html#cb13-56"></a></span>
+<span id="cb13-57"><a href="acoustic-detections.html#cb13-57"></a>nDetections_2min &lt;-<span class="st"> </span>nDetections_2min <span class="op">%&gt;%</span></span>
+<span id="cb13-58"><a href="acoustic-detections.html#cb13-58"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-59"><a href="acoustic-detections.html#cb13-59"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb13-60"><a href="acoustic-detections.html#cb13-60"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="op">~</span><span class="st"> </span><span class="kw">replace</span>(., . <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb13-61"><a href="acoustic-detections.html#cb13-61"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) </span>
+<span id="cb13-62"><a href="acoustic-detections.html#cb13-62"></a>  </span>
+<span id="cb13-63"><a href="acoustic-detections.html#cb13-63"></a><span class="co"># Calculate the overall number of detections for each site where each temporal duration chosen is a 240s clip (In this case, every twentyfourth row is chosen after grouping by Site, Date and Time)</span></span>
+<span id="cb13-64"><a href="acoustic-detections.html#cb13-64"></a></span>
+<span id="cb13-65"><a href="acoustic-detections.html#cb13-65"></a>nDetections_4min &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb13-66"><a href="acoustic-detections.html#cb13-66"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Time, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-67"><a href="acoustic-detections.html#cb13-67"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) </span>
+<span id="cb13-68"><a href="acoustic-detections.html#cb13-68"></a></span>
+<span id="cb13-69"><a href="acoustic-detections.html#cb13-69"></a><span class="co"># Convert nDetections&gt;1 within a 4-min period to 1 (since your temporal unit here is 4-min)</span></span>
+<span id="cb13-70"><a href="acoustic-detections.html#cb13-70"></a></span>
+<span id="cb13-71"><a href="acoustic-detections.html#cb13-71"></a>nDetections_4min &lt;-<span class="st"> </span>nDetections_4min <span class="op">%&gt;%</span></span>
+<span id="cb13-72"><a href="acoustic-detections.html#cb13-72"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb13-73"><a href="acoustic-detections.html#cb13-73"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb13-74"><a href="acoustic-detections.html#cb13-74"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="op">~</span><span class="st"> </span><span class="kw">replace</span>(., . <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb13-75"><a href="acoustic-detections.html#cb13-75"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum)</span>
+<span id="cb13-76"><a href="acoustic-detections.html#cb13-76"></a>  </span></code></pre></div>
+<p>How does the number of detections vary as a function of restoration type? (tested across different temporal durations)?</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb14-1"><a href="acoustic-detections.html#cb14-1"></a><span class="co"># Testing if there is significant differences in overall number of detections across treatment types (this has been done only for the smallest temporal duration ~10s, while total number of detections have been estimated for different temporal durations)</span></span>
+<span id="cb14-2"><a href="acoustic-detections.html#cb14-2"></a></span>
+<span id="cb14-3"><a href="acoustic-detections.html#cb14-3"></a>sum_Detections10s &lt;-<span class="st"> </span>nDetections_10s <span class="op">%&gt;%</span></span>
+<span id="cb14-4"><a href="acoustic-detections.html#cb14-4"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-5"><a href="acoustic-detections.html#cb14-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>CR))) <span class="op">%&gt;%</span></span>
+<span id="cb14-6"><a href="acoustic-detections.html#cb14-6"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, sumDetections)</span>
+<span id="cb14-7"><a href="acoustic-detections.html#cb14-7"></a></span>
+<span id="cb14-8"><a href="acoustic-detections.html#cb14-8"></a><span class="co"># Test if there are significant differences in detections across treatment types</span></span>
+<span id="cb14-9"><a href="acoustic-detections.html#cb14-9"></a>anovaAllDetect &lt;-<span class="st"> </span><span class="kw">aov</span>(sumDetections<span class="op">~</span>Restoration.Type, <span class="dt">data =</span> sum_Detections10s)</span>
+<span id="cb14-10"><a href="acoustic-detections.html#cb14-10"></a></span>
+<span id="cb14-11"><a href="acoustic-detections.html#cb14-11"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types</span></span>
+<span id="cb14-12"><a href="acoustic-detections.html#cb14-12"></a>tukeyAllDetect &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(anovaAllDetect)</span>
+<span id="cb14-13"><a href="acoustic-detections.html#cb14-13"></a></span>
+<span id="cb14-14"><a href="acoustic-detections.html#cb14-14"></a><span class="co"># Estimating total number of detections for different temporal durations</span></span>
+<span id="cb14-15"><a href="acoustic-detections.html#cb14-15"></a></span>
+<span id="cb14-16"><a href="acoustic-detections.html#cb14-16"></a>sum_Detections30s &lt;-<span class="st"> </span>nDetections_30s <span class="op">%&gt;%</span></span>
+<span id="cb14-17"><a href="acoustic-detections.html#cb14-17"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-18"><a href="acoustic-detections.html#cb14-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>CR))) <span class="op">%&gt;%</span></span>
+<span id="cb14-19"><a href="acoustic-detections.html#cb14-19"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, sumDetections)</span>
+<span id="cb14-20"><a href="acoustic-detections.html#cb14-20"></a></span>
+<span id="cb14-21"><a href="acoustic-detections.html#cb14-21"></a>sum_Detections1min &lt;-<span class="st"> </span>nDetections_1min <span class="op">%&gt;%</span></span>
+<span id="cb14-22"><a href="acoustic-detections.html#cb14-22"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-23"><a href="acoustic-detections.html#cb14-23"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>CR))) <span class="op">%&gt;%</span></span>
+<span id="cb14-24"><a href="acoustic-detections.html#cb14-24"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, sumDetections)</span>
+<span id="cb14-25"><a href="acoustic-detections.html#cb14-25"></a></span>
+<span id="cb14-26"><a href="acoustic-detections.html#cb14-26"></a>sum_Detections2min &lt;-<span class="st"> </span>nDetections_2min <span class="op">%&gt;%</span></span>
+<span id="cb14-27"><a href="acoustic-detections.html#cb14-27"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-28"><a href="acoustic-detections.html#cb14-28"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>CR))) <span class="op">%&gt;%</span></span>
+<span id="cb14-29"><a href="acoustic-detections.html#cb14-29"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, sumDetections)</span>
+<span id="cb14-30"><a href="acoustic-detections.html#cb14-30"></a></span>
+<span id="cb14-31"><a href="acoustic-detections.html#cb14-31"></a>sum_Detections4min &lt;-<span class="st"> </span>nDetections_4min <span class="op">%&gt;%</span></span>
+<span id="cb14-32"><a href="acoustic-detections.html#cb14-32"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-33"><a href="acoustic-detections.html#cb14-33"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>CR))) <span class="op">%&gt;%</span></span>
+<span id="cb14-34"><a href="acoustic-detections.html#cb14-34"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, sumDetections)</span>
+<span id="cb14-35"><a href="acoustic-detections.html#cb14-35"></a></span>
+<span id="cb14-36"><a href="acoustic-detections.html#cb14-36"></a><span class="co"># Plotting the above (multiple plots for each temporal duration)</span></span>
+<span id="cb14-37"><a href="acoustic-detections.html#cb14-37"></a><span class="co"># Note: the cumulative number of detections across all species was obtained by summing every 16-min to 48-min set of detections across each site, including all species.</span></span>
+<span id="cb14-38"><a href="acoustic-detections.html#cb14-38"></a></span>
+<span id="cb14-39"><a href="acoustic-detections.html#cb14-39"></a>fig_sumDetections10s &lt;-<span class="st"> </span><span class="kw">ggplot</span>(sum_Detections10s, <span class="kw">aes</span>(<span class="dt">x=</span>Restoration.Type, <span class="dt">y=</span>sumDetections, <span class="dt">fill=</span>Restoration.Type)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb14-40"><a href="acoustic-detections.html#cb14-40"></a><span class="st">    </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb14-41"><a href="acoustic-detections.html#cb14-41"></a><span class="st">    </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb14-42"><a href="acoustic-detections.html#cb14-42"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb14-43"><a href="acoustic-detections.html#cb14-43"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Restoration Type&quot;</span>, </span>
+<span id="cb14-44"><a href="acoustic-detections.html#cb14-44"></a>       <span class="dt">y=</span><span class="st">&quot;Cumulative Number of Detections&quot;</span>) <span class="op">+</span></span>
+<span id="cb14-45"><a href="acoustic-detections.html#cb14-45"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb14-46"><a href="acoustic-detections.html#cb14-46"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb14-47"><a href="acoustic-detections.html#cb14-47"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb14-48"><a href="acoustic-detections.html#cb14-48"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb14-49"><a href="acoustic-detections.html#cb14-49"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb14-50"><a href="acoustic-detections.html#cb14-50"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb14-51"><a href="acoustic-detections.html#cb14-51"></a>  </span>
+<span id="cb14-52"><a href="acoustic-detections.html#cb14-52"></a><span class="co"># This plot suggests that Benchmark sites are acoustically more active than Passively restored or Actively restored sites, as expected</span></span>
+<span id="cb14-53"><a href="acoustic-detections.html#cb14-53"></a></span>
+<span id="cb14-54"><a href="acoustic-detections.html#cb14-54"></a><span class="kw">ggsave</span>(fig_sumDetections10s, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_sumDetections10s.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb14-55"><a href="acoustic-detections.html#cb14-55"></a></span>
+<span id="cb14-56"><a href="acoustic-detections.html#cb14-56"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_sumDetections10s.png&quot;</span>)</span></code></pre></div>
+<p>How does the cumulative number of detections vary by treatment type, as a function of whether a species is a rainforest specialist or an open country generalist? (These calculations are repeated for different temporal durations to assess differences, if any)</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb15-1"><a href="acoustic-detections.html#cb15-1"></a><span class="co"># First we merge the species trait dataset with the nDetections dataframe (across different temporal durations)</span></span>
+<span id="cb15-2"><a href="acoustic-detections.html#cb15-2"></a></span>
+<span id="cb15-3"><a href="acoustic-detections.html#cb15-3"></a>detections_trait10s &lt;-<span class="st"> </span>nDetections_10s <span class="op">%&gt;%</span></span>
+<span id="cb15-4"><a href="acoustic-detections.html#cb15-4"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>CR, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-5"><a href="acoustic-detections.html#cb15-5"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>)) </span>
+<span id="cb15-6"><a href="acoustic-detections.html#cb15-6"></a></span>
+<span id="cb15-7"><a href="acoustic-detections.html#cb15-7"></a>detections_trait30s &lt;-<span class="st"> </span>nDetections_30s <span class="op">%&gt;%</span></span>
+<span id="cb15-8"><a href="acoustic-detections.html#cb15-8"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>CR, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-9"><a href="acoustic-detections.html#cb15-9"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>))</span>
+<span id="cb15-10"><a href="acoustic-detections.html#cb15-10"></a></span>
+<span id="cb15-11"><a href="acoustic-detections.html#cb15-11"></a>detections_trait1min &lt;-<span class="st"> </span>nDetections_1min <span class="op">%&gt;%</span></span>
+<span id="cb15-12"><a href="acoustic-detections.html#cb15-12"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>CR, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-13"><a href="acoustic-detections.html#cb15-13"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>)) </span>
+<span id="cb15-14"><a href="acoustic-detections.html#cb15-14"></a></span>
+<span id="cb15-15"><a href="acoustic-detections.html#cb15-15"></a>detections_trait2min &lt;-<span class="st"> </span>nDetections_2min <span class="op">%&gt;%</span></span>
+<span id="cb15-16"><a href="acoustic-detections.html#cb15-16"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>CR, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-17"><a href="acoustic-detections.html#cb15-17"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>)) </span>
+<span id="cb15-18"><a href="acoustic-detections.html#cb15-18"></a></span>
+<span id="cb15-19"><a href="acoustic-detections.html#cb15-19"></a>detections_trait4min &lt;-<span class="st"> </span>nDetections_4min <span class="op">%&gt;%</span></span>
+<span id="cb15-20"><a href="acoustic-detections.html#cb15-20"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>CR, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-21"><a href="acoustic-detections.html#cb15-21"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>)) </span>
+<span id="cb15-22"><a href="acoustic-detections.html#cb15-22"></a></span>
+<span id="cb15-23"><a href="acoustic-detections.html#cb15-23"></a><span class="co"># Calculate overall number of detections for each site as a function of rainforest species and open-country species and test for differences across treatment types (Calculated only for the smallest temporal duration - 10s)</span></span>
+<span id="cb15-24"><a href="acoustic-detections.html#cb15-24"></a></span>
+<span id="cb15-25"><a href="acoustic-detections.html#cb15-25"></a>detections_trait10s &lt;-<span class="st">  </span>detections_trait10s <span class="op">%&gt;%</span></span>
+<span id="cb15-26"><a href="acoustic-detections.html#cb15-26"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, Species_Code, Habitat, count) <span class="op">%&gt;%</span></span>
+<span id="cb15-27"><a href="acoustic-detections.html#cb15-27"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Habitat) <span class="op">%&gt;%</span></span>
+<span id="cb15-28"><a href="acoustic-detections.html#cb15-28"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(count))</span>
+<span id="cb15-29"><a href="acoustic-detections.html#cb15-29"></a></span>
+<span id="cb15-30"><a href="acoustic-detections.html#cb15-30"></a><span class="co"># Split the above data into rainforest species and open country</span></span>
+<span id="cb15-31"><a href="acoustic-detections.html#cb15-31"></a>detections_10s_rainforest &lt;-<span class="st"> </span>detections_trait10s <span class="op">%&gt;%</span></span>
+<span id="cb15-32"><a href="acoustic-detections.html#cb15-32"></a><span class="st">  </span><span class="kw">filter</span>(Habitat<span class="op">==</span><span class="st">&quot;RF&quot;</span>)</span>
+<span id="cb15-33"><a href="acoustic-detections.html#cb15-33"></a>detections_10s_openCountry &lt;-<span class="st"> </span>detections_trait10s <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-34"><a href="acoustic-detections.html#cb15-34"></a><span class="st">  </span><span class="kw">filter</span>(Habitat<span class="op">==</span><span class="st">&quot;OC&quot;</span>)</span>
+<span id="cb15-35"><a href="acoustic-detections.html#cb15-35"></a></span>
+<span id="cb15-36"><a href="acoustic-detections.html#cb15-36"></a><span class="co"># Test if there are significant differences in detections across treatment types as a function of species trait</span></span>
+<span id="cb15-37"><a href="acoustic-detections.html#cb15-37"></a>anova_rainforestDet &lt;-<span class="st"> </span><span class="kw">aov</span>(sumDetections<span class="op">~</span>Restoration.Type, <span class="dt">data =</span> detections_10s_rainforest)</span>
+<span id="cb15-38"><a href="acoustic-detections.html#cb15-38"></a>anova_opencountryDet &lt;-<span class="st"> </span><span class="kw">aov</span>(sumDetections<span class="op">~</span>Restoration.Type, <span class="dt">data =</span> detections_10s_openCountry)</span>
+<span id="cb15-39"><a href="acoustic-detections.html#cb15-39"></a></span>
+<span id="cb15-40"><a href="acoustic-detections.html#cb15-40"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types</span></span>
+<span id="cb15-41"><a href="acoustic-detections.html#cb15-41"></a>tukey_rainforestDet &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(anova_rainforestDet)</span>
+<span id="cb15-42"><a href="acoustic-detections.html#cb15-42"></a>tukey_opencountryDet &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(anova_opencountryDet)</span>
+<span id="cb15-43"><a href="acoustic-detections.html#cb15-43"></a></span>
+<span id="cb15-44"><a href="acoustic-detections.html#cb15-44"></a><span class="co"># Calculating overall number of detections for other temporal durations as a function of species trait</span></span>
+<span id="cb15-45"><a href="acoustic-detections.html#cb15-45"></a>detections_trait30s &lt;-<span class="st">  </span>detections_trait30s <span class="op">%&gt;%</span></span>
+<span id="cb15-46"><a href="acoustic-detections.html#cb15-46"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, Species_Code, Habitat, count) <span class="op">%&gt;%</span></span>
+<span id="cb15-47"><a href="acoustic-detections.html#cb15-47"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Habitat) <span class="op">%&gt;%</span></span>
+<span id="cb15-48"><a href="acoustic-detections.html#cb15-48"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(count))</span>
+<span id="cb15-49"><a href="acoustic-detections.html#cb15-49"></a></span>
+<span id="cb15-50"><a href="acoustic-detections.html#cb15-50"></a>detections_trait1min &lt;-<span class="st">  </span>detections_trait1min <span class="op">%&gt;%</span></span>
+<span id="cb15-51"><a href="acoustic-detections.html#cb15-51"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, Species_Code, Habitat, count) <span class="op">%&gt;%</span></span>
+<span id="cb15-52"><a href="acoustic-detections.html#cb15-52"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Habitat) <span class="op">%&gt;%</span></span>
+<span id="cb15-53"><a href="acoustic-detections.html#cb15-53"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(count))</span>
+<span id="cb15-54"><a href="acoustic-detections.html#cb15-54"></a></span>
+<span id="cb15-55"><a href="acoustic-detections.html#cb15-55"></a>detections_trait2min &lt;-<span class="st">  </span>detections_trait2min <span class="op">%&gt;%</span></span>
+<span id="cb15-56"><a href="acoustic-detections.html#cb15-56"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, Species_Code, Habitat, count) <span class="op">%&gt;%</span></span>
+<span id="cb15-57"><a href="acoustic-detections.html#cb15-57"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Habitat) <span class="op">%&gt;%</span></span>
+<span id="cb15-58"><a href="acoustic-detections.html#cb15-58"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(count))</span>
+<span id="cb15-59"><a href="acoustic-detections.html#cb15-59"></a></span>
+<span id="cb15-60"><a href="acoustic-detections.html#cb15-60"></a>detections_trait4min &lt;-<span class="st">  </span>detections_trait4min <span class="op">%&gt;%</span></span>
+<span id="cb15-61"><a href="acoustic-detections.html#cb15-61"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, Species_Code, Habitat, count) <span class="op">%&gt;%</span></span>
+<span id="cb15-62"><a href="acoustic-detections.html#cb15-62"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Habitat) <span class="op">%&gt;%</span></span>
+<span id="cb15-63"><a href="acoustic-detections.html#cb15-63"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sumDetections =</span> <span class="kw">sum</span>(count))</span>
+<span id="cb15-64"><a href="acoustic-detections.html#cb15-64"></a></span>
+<span id="cb15-65"><a href="acoustic-detections.html#cb15-65"></a><span class="co"># Plot the figures</span></span>
+<span id="cb15-66"><a href="acoustic-detections.html#cb15-66"></a>fig_detections_trait10s &lt;-<span class="st"> </span><span class="kw">ggplot</span>(detections_trait10s, <span class="kw">aes</span>(<span class="dt">x=</span>Restoration.Type, <span class="dt">y=</span>sumDetections, <span class="dt">fill=</span>Habitat)) <span class="op">+</span></span>
+<span id="cb15-67"><a href="acoustic-detections.html#cb15-67"></a><span class="st">    </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb15-68"><a href="acoustic-detections.html#cb15-68"></a><span class="st">    </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb15-69"><a href="acoustic-detections.html#cb15-69"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb15-70"><a href="acoustic-detections.html#cb15-70"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Restoration Type&quot;</span>, </span>
+<span id="cb15-71"><a href="acoustic-detections.html#cb15-71"></a>       <span class="dt">y=</span><span class="st">&quot;Cumulative Number of Detections&quot;</span>) <span class="op">+</span></span>
+<span id="cb15-72"><a href="acoustic-detections.html#cb15-72"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb15-73"><a href="acoustic-detections.html#cb15-73"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb15-74"><a href="acoustic-detections.html#cb15-74"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb15-75"><a href="acoustic-detections.html#cb15-75"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb15-76"><a href="acoustic-detections.html#cb15-76"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb15-77"><a href="acoustic-detections.html#cb15-77"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb15-78"><a href="acoustic-detections.html#cb15-78"></a></span>
+<span id="cb15-79"><a href="acoustic-detections.html#cb15-79"></a></span>
+<span id="cb15-80"><a href="acoustic-detections.html#cb15-80"></a><span class="co"># Save the above plot</span></span>
+<span id="cb15-81"><a href="acoustic-detections.html#cb15-81"></a><span class="kw">ggsave</span>(fig_detections_trait10s, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_detections_trait10s.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb15-82"><a href="acoustic-detections.html#cb15-82"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_detections_trait10s.png&quot;</span>)</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="species-richness-calculations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="jackknife-estimates.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/03_acoustic-detections.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 8 Generalized linear modeling and generalized linear mixed modeling | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 8 Generalized linear modeling and generalized linear mixed modeling | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 8 Generalized linear modeling and generalized linear mixed modeling | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 8 Generalized linear modeling and generalized linear mixed modeling | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Akshay VA" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="preparing-vegetation-data-for-glms.html"/>
+<link rel="next" href="multiple-regression-of-distance-matrices.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness-calculations.html"><a href="species-richness-calculations.html"><i class="fa fa-check"></i><b>3</b> Species Richness Calculations</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><i class="fa fa-check"></i><b>8</b> Generalized linear modeling and generalized linear mixed modeling</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-of-distance-matrices.html"><a href="multiple-regression-of-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression of distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="a-measure-of-vocal-activity.html"><a href="a-measure-of-vocal-activity.html"><i class="fa fa-check"></i><b>10</b> A measure of Vocal Activity</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="generalized-linear-modeling-and-generalized-linear-mixed-modeling" class="section level1">
+<h1><span class="header-section-number">Section 8</span> Generalized linear modeling and generalized linear mixed modeling</h1>
+<p>In this script, we run generalized linear models to test the association between first order jacknife scores and restoration type. In addition, we run generalized linear mixed models to test associations between species richness and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects.</p>
+<p>Install required libraries</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb37-1"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb37-2"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb37-3"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb37-4"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb37-5"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb37-6"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb37-7"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-7"></a><span class="kw">library</span>(psych)</span>
+<span id="cb37-8"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-8"></a><span class="kw">library</span>(rcompanion)</span>
+<span id="cb37-9"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-9"></a><span class="kw">library</span>(multcomp)</span>
+<span id="cb37-10"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-10"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb37-11"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-11"></a></span>
+<span id="cb37-12"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-12"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb37-13"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb37-13"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>Load the necessary data for statistical modeling</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb38-1"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-1"></a><span class="co"># We load the subset data</span></span>
+<span id="cb38-2"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-2"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>)</span>
+<span id="cb38-3"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-3"></a></span>
+<span id="cb38-4"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-4"></a><span class="co"># Load species-trait data to essentially check for associations by habitat type</span></span>
+<span id="cb38-5"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-5"></a>trait_dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span>
+<span id="cb38-6"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-6"></a></span>
+<span id="cb38-7"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-7"></a><span class="co"># Total number of detections</span></span>
+<span id="cb38-8"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-8"></a>totalDetections &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb38-9"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-9"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb38-10"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-10"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb38-11"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-11"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) <span class="op">%&gt;%</span></span>
+<span id="cb38-12"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-12"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totalDetections =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)))</span>
+<span id="cb38-13"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-13"></a></span>
+<span id="cb38-14"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-14"></a><span class="co"># richness</span></span>
+<span id="cb38-15"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-15"></a>richness &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb38-16"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-16"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb38-17"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-17"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb38-18"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-18"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb38-19"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-19"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="op">~</span><span class="st"> </span><span class="kw">replace</span>(., . <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb38-20"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-20"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb38-21"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-21"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>CR))) <span class="op">%&gt;%</span></span>
+<span id="cb38-22"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-22"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, richness)</span>
+<span id="cb38-23"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-23"></a></span>
+<span id="cb38-24"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-24"></a><span class="co"># richness by Visit</span></span>
+<span id="cb38-25"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-25"></a><span class="co"># this data basically gives you richness per visit and adds a visit number for each consecutive visit to that site</span></span>
+<span id="cb38-26"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-26"></a>richnessPerVisit &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb38-27"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-27"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb38-28"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-28"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb38-29"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-29"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb38-30"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-30"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="op">~</span><span class="st"> </span><span class="kw">replace</span>(., . <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb38-31"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-31"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb38-32"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-32"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>CR))) <span class="op">%&gt;%</span></span>
+<span id="cb38-33"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-33"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb38-34"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-34"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb38-35"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-35"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb38-36"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-36"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb38-37"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-37"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Restoration.Type, Date, richness, visit, siteCode)</span>
+<span id="cb38-38"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-38"></a></span>
+<span id="cb38-39"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-39"></a><span class="co"># We further estimate the number of detections per point count</span></span>
+<span id="cb38-40"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-40"></a>datSummary &lt;-<span class="st"> </span>totalDetections <span class="op">%&gt;%</span></span>
+<span id="cb38-41"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-41"></a><span class="st">  </span><span class="kw">left_join</span>(richness) <span class="op">%&gt;%</span></span>
+<span id="cb38-42"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-42"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pointDetections =</span> totalDetections<span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb38-43"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-43"></a></span>
+<span id="cb38-44"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-44"></a><span class="co"># combine the Detections dataframe with the trait dataset</span></span>
+<span id="cb38-45"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-45"></a>nDetectionsTrait &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb38-46"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-46"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span></span>
+<span id="cb38-47"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-47"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb38-48"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-48"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) <span class="op">%&gt;%</span></span>
+<span id="cb38-49"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-49"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>CR, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb38-50"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-50"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb38-51"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-51"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">forRichness =</span> <span class="kw">case_when</span>(count<span class="op">&gt;</span><span class="dv">0</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span>,count<span class="op">==</span><span class="dv">0</span> <span class="op">~</span><span class="st"> </span><span class="dv">0</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb38-52"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-52"></a><span class="st">  </span><span class="kw">rename</span>(., <span class="dt">nDetections =</span> count)</span>
+<span id="cb38-53"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-53"></a></span>
+<span id="cb38-54"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-54"></a><span class="co"># Load data from previous scripts for use in a GLM</span></span>
+<span id="cb38-55"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-55"></a>vegData &lt;-<span class="st">  </span><span class="kw">read.csv</span>(<span class="st">&quot;data/summaryVeg.csv&quot;</span>)</span>
+<span id="cb38-56"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-56"></a>vegPcaScores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/pcaVeg.csv&quot;</span>)</span>
+<span id="cb38-57"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-57"></a>jackAll &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/jackAll.csv&quot;</span>)</span>
+<span id="cb38-58"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-58"></a>jackRainforest &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/jackRainforest.csv&quot;</span>)</span>
+<span id="cb38-59"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb38-59"></a>jackOpencountry &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/jackOpencountry.csv&quot;</span>)</span></code></pre></div>
+<p>Getting data ready in a format for generalized linear modeling</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb39-1"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-1"></a><span class="co"># All birds</span></span>
+<span id="cb39-2"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-2"></a>modelDataAll &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-3"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-3"></a><span class="st">  </span><span class="kw">add_column</span> (<span class="dt">Site =</span> vegData<span class="op">$</span>Site_ID,</span>
+<span id="cb39-4"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-4"></a>              <span class="dt">Restoration.Type =</span> <span class="kw">as.factor</span>(datSummary<span class="op">$</span>Restoration.Type),</span>
+<span id="cb39-5"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-5"></a>              <span class="dt">jackknife =</span> jackAll<span class="op">$</span>jack1,</span>
+<span id="cb39-6"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-6"></a>              <span class="dt">nSpecies =</span> jackAll<span class="op">$</span>Species,</span>
+<span id="cb39-7"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-7"></a>              <span class="dt">totalDetections =</span> datSummary<span class="op">$</span>totalDetections,</span>
+<span id="cb39-8"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-8"></a>              <span class="dt">pointDetections =</span> datSummary<span class="op">$</span>pointDetections, </span>
+<span id="cb39-9"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-9"></a>              <span class="dt">plantingYear =</span> vegData<span class="op">$</span>plantingYear) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-10"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-10"></a><span class="st">  </span><span class="kw">mutate</span> (<span class="st">&quot;roundjk&quot;</span> =<span class="st"> </span><span class="kw">round</span>(jackknife))</span>
+<span id="cb39-11"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-11"></a></span>
+<span id="cb39-12"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-12"></a><span class="co"># rainforest birds</span></span>
+<span id="cb39-13"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-13"></a>modelData_rainForest &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-14"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-14"></a><span class="st">  </span><span class="kw">add_column</span> (<span class="dt">Site =</span> vegData<span class="op">$</span>Site_ID,</span>
+<span id="cb39-15"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-15"></a>              <span class="dt">Restoration.Type =</span> <span class="kw">as.factor</span>(datSummary<span class="op">$</span>Restoration.Type),</span>
+<span id="cb39-16"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-16"></a>              <span class="dt">jackknife =</span> jackRainforest<span class="op">$</span>jack1,</span>
+<span id="cb39-17"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-17"></a>              <span class="dt">nSpecies =</span>  jackRainforest<span class="op">$</span>Species,</span>
+<span id="cb39-18"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-18"></a>              <span class="dt">plantingYear =</span> vegData<span class="op">$</span>plantingYear) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-19"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-19"></a><span class="st">  </span><span class="kw">mutate</span> (<span class="st">&quot;roundjk&quot;</span> =<span class="st"> </span><span class="kw">round</span>(jackknife))</span>
+<span id="cb39-20"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-20"></a></span>
+<span id="cb39-21"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-21"></a><span class="co"># open country birds</span></span>
+<span id="cb39-22"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-22"></a>modelData_openCountry &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-23"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-23"></a><span class="st">  </span><span class="kw">add_column</span> (<span class="dt">Site =</span> vegData<span class="op">$</span>Site_ID,</span>
+<span id="cb39-24"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-24"></a>              <span class="dt">Restoration.Type =</span> <span class="kw">as.factor</span>(datSummary<span class="op">$</span>Restoration.Type),</span>
+<span id="cb39-25"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-25"></a>              <span class="dt">jackknife =</span> jackOpencountry<span class="op">$</span>jack1,</span>
+<span id="cb39-26"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-26"></a>              <span class="dt">nSpecies =</span>  jackOpencountry<span class="op">$</span>Species,</span>
+<span id="cb39-27"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-27"></a>              <span class="dt">plantingYear =</span> vegData<span class="op">$</span>plantingYear) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-28"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb39-28"></a><span class="st">  </span><span class="kw">mutate</span> (<span class="st">&quot;roundjk&quot;</span> =<span class="st"> </span><span class="kw">round</span>(jackknife))</span></code></pre></div>
+<p>Getting data ready for generalized linear mixed modeling</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb40-1"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-1"></a><span class="co"># data for the GLMM</span></span>
+<span id="cb40-2"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-2"></a>glmmAll &lt;-<span class="st"> </span>richnessPerVisit[,<span class="op">-</span><span class="dv">2</span>] <span class="op">%&gt;%</span></span>
+<span id="cb40-3"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-3"></a><span class="st">  </span><span class="kw">full_join</span>(modelDataAll, <span class="dt">by =</span> <span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb40-4"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-4"></a></span>
+<span id="cb40-5"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-5"></a><span class="co"># rainforest birds</span></span>
+<span id="cb40-6"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-6"></a>glmmRainforest &lt;-<span class="st"> </span>nDetectionsTrait <span class="op">%&gt;%</span></span>
+<span id="cb40-7"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-7"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-8"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-8"></a><span class="st">  </span><span class="kw">filter</span> (Habitat <span class="op">==</span><span class="st"> &quot;RF&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-9"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-9"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(forRichness)) <span class="op">%&gt;%</span></span>
+<span id="cb40-10"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-10"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-11"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb40-12"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-12"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb40-13"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-13"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb40-14"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-14"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb40-15"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-15"></a><span class="st">  </span><span class="kw">full_join</span>(modelData_rainForest, <span class="dt">by=</span><span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb40-16"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-16"></a>  </span>
+<span id="cb40-17"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-17"></a><span class="co"># open-country birds</span></span>
+<span id="cb40-18"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-18"></a>glmmOpencountry &lt;-<span class="st"> </span>nDetectionsTrait <span class="op">%&gt;%</span></span>
+<span id="cb40-19"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-19"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-20"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-20"></a><span class="st">  </span><span class="kw">filter</span> (Habitat <span class="op">==</span><span class="st"> &quot;OC&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-21"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-21"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(forRichness)) <span class="op">%&gt;%</span></span>
+<span id="cb40-22"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-22"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-23"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-23"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb40-24"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-24"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb40-25"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-25"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb40-26"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-26"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb40-27"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-27"></a><span class="st">  </span><span class="kw">full_join</span>(modelData_openCountry, <span class="dt">by=</span><span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb40-28"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-28"></a></span>
+<span id="cb40-29"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-29"></a><span class="co"># Let&#39;s look at species by foraging habit</span></span>
+<span id="cb40-30"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-30"></a><span class="co"># canopy birds</span></span>
+<span id="cb40-31"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-31"></a>glmmCanopy &lt;-<span class="st"> </span>nDetectionsTrait <span class="op">%&gt;%</span></span>
+<span id="cb40-32"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-32"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-33"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-33"></a><span class="st">  </span><span class="kw">filter</span> (Habit <span class="op">==</span><span class="st"> &quot;CAN&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-34"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-34"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(forRichness)) <span class="op">%&gt;%</span></span>
+<span id="cb40-35"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-35"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-36"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-36"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb40-37"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-37"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb40-38"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-38"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb40-39"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-39"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb40-40"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-40"></a><span class="st">  </span><span class="kw">full_join</span>(modelDataAll, <span class="dt">by=</span><span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb40-41"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-41"></a>  </span>
+<span id="cb40-42"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-42"></a><span class="co"># ground-feeding birds</span></span>
+<span id="cb40-43"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-43"></a>glmmGround &lt;-<span class="st"> </span>nDetectionsTrait <span class="op">%&gt;%</span></span>
+<span id="cb40-44"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-44"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-45"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-45"></a><span class="st">  </span><span class="kw">filter</span> (Habit <span class="op">==</span><span class="st"> &quot;GRD&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-46"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-46"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(forRichness)) <span class="op">%&gt;%</span></span>
+<span id="cb40-47"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-47"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-48"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-48"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb40-49"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-49"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb40-50"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-50"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb40-51"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-51"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb40-52"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-52"></a><span class="st">  </span><span class="kw">full_join</span>(modelDataAll, <span class="dt">by=</span><span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb40-53"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-53"></a></span>
+<span id="cb40-54"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-54"></a><span class="co"># mid-storey birds</span></span>
+<span id="cb40-55"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-55"></a>glmmMidStorey &lt;-<span class="st"> </span>nDetectionsTrait <span class="op">%&gt;%</span></span>
+<span id="cb40-56"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-56"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-57"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-57"></a><span class="st">  </span><span class="kw">filter</span> (Habit <span class="op">==</span><span class="st"> &quot;MID&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-58"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-58"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(forRichness)) <span class="op">%&gt;%</span></span>
+<span id="cb40-59"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-59"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-60"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-60"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb40-61"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-61"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb40-62"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-62"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb40-63"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-63"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb40-64"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-64"></a><span class="st">  </span><span class="kw">full_join</span>(modelDataAll, <span class="dt">by=</span><span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb40-65"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-65"></a></span>
+<span id="cb40-66"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-66"></a><span class="co"># understorey birds</span></span>
+<span id="cb40-67"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-67"></a>glmmUnderStory &lt;-<span class="st"> </span>nDetectionsTrait <span class="op">%&gt;%</span></span>
+<span id="cb40-68"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-68"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type, Date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-69"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-69"></a><span class="st">  </span><span class="kw">filter</span> (Habit <span class="op">==</span><span class="st"> &quot;UND&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-70"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-70"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">richness =</span> <span class="kw">sum</span>(forRichness)) <span class="op">%&gt;%</span></span>
+<span id="cb40-71"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-71"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-72"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-72"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb40-73"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-73"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb40-74"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-74"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb40-75"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-75"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb40-76"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb40-76"></a><span class="st">  </span><span class="kw">full_join</span>(modelDataAll, <span class="dt">by=</span><span class="st">&quot;Site&quot;</span>)</span></code></pre></div>
+<p>Running the generalized linear models</p>
+<p>We now run generalized linear models (GLM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. For each model, we carried out chi-square tests of significance, and calculated Nagelkerke pseudo-R2 measure of goodness of fit.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb41-1"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-1"></a><span class="co"># all birds</span></span>
+<span id="cb41-2"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-2"></a>glm_allBirds &lt;-<span class="st"> </span><span class="kw">glm</span>(roundjk <span class="op">~</span><span class="st"> </span>Restoration.Type, <span class="dt">data =</span> modelDataAll, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb41-3"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-3"></a><span class="kw">summary</span>(glm_allBirds)</span>
+<span id="cb41-4"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-4"></a></span>
+<span id="cb41-5"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-5"></a><span class="kw">anova</span>(glm_allBirds, <span class="dt">test =</span> <span class="st">&#39;Chisq&#39;</span>)</span>
+<span id="cb41-6"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-6"></a><span class="kw">nagelkerke</span>(glm_allBirds)</span>
+<span id="cb41-7"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-7"></a>tukey_glmAllBirds &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">glht</span>(glm_allBirds, <span class="kw">mcp</span>(<span class="dt">Restoration.Type =</span> <span class="st">&quot;Tukey&quot;</span>)))</span>
+<span id="cb41-8"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-8"></a><span class="kw">cld</span>(tukey_glmAllBirds)</span>
+<span id="cb41-9"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-9"></a></span>
+<span id="cb41-10"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-10"></a><span class="co"># The above result suggests a significant difference in first order jacknife estimates for benchmark sites and passively restored site (but no difference between active-passive and active-benchmark).</span></span>
+<span id="cb41-11"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-11"></a></span>
+<span id="cb41-12"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-12"></a><span class="co"># rainforest birds</span></span>
+<span id="cb41-13"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-13"></a>glm_rainForest &lt;-<span class="st"> </span><span class="kw">glm</span>(roundjk <span class="op">~</span><span class="st"> </span>Restoration.Type, <span class="dt">data =</span> modelData_rainForest, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb41-14"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-14"></a><span class="kw">summary</span>(glm_rainForest)</span>
+<span id="cb41-15"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-15"></a></span>
+<span id="cb41-16"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-16"></a><span class="kw">anova</span>(glm_rainForest, <span class="dt">test =</span> <span class="st">&#39;Chisq&#39;</span>)</span>
+<span id="cb41-17"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-17"></a><span class="kw">nagelkerke</span>(glm_rainForest)</span>
+<span id="cb41-18"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-18"></a></span>
+<span id="cb41-19"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-19"></a>tukey_glmRainforest &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">glht</span>(glm_rainForest, <span class="kw">mcp</span>(<span class="dt">Restoration.Type =</span> <span class="st">&quot;Tukey&quot;</span>)))</span>
+<span id="cb41-20"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-20"></a><span class="kw">cld</span>(tukey_glmRainforest)</span>
+<span id="cb41-21"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-21"></a></span>
+<span id="cb41-22"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-22"></a><span class="co"># The above result suggests a significant difference in first order jacknife estimates of rainforest species between benchmark and active sites. </span></span>
+<span id="cb41-23"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-23"></a></span>
+<span id="cb41-24"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-24"></a><span class="co"># open country birds</span></span>
+<span id="cb41-25"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-25"></a>glm_openCountry &lt;-<span class="st"> </span><span class="kw">glm</span>(roundjk <span class="op">~</span><span class="st"> </span>Restoration.Type, <span class="dt">data =</span> modelData_openCountry, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb41-26"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-26"></a><span class="kw">summary</span>(glm_openCountry)</span>
+<span id="cb41-27"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-27"></a></span>
+<span id="cb41-28"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-28"></a><span class="kw">anova</span>(glm_openCountry, <span class="dt">test =</span> <span class="st">&#39;Chisq&#39;</span>)</span>
+<span id="cb41-29"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-29"></a><span class="kw">nagelkerke</span>(glm_openCountry)</span>
+<span id="cb41-30"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-30"></a></span>
+<span id="cb41-31"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-31"></a>tukey_glmOpenCountry &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">glht</span>(glm_openCountry, <span class="kw">mcp</span>(<span class="dt">Restoration.Type =</span> <span class="st">&quot;Tukey&quot;</span>)))</span>
+<span id="cb41-32"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-32"></a><span class="kw">cld</span>(tukey_glmOpenCountry)</span>
+<span id="cb41-33"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-33"></a></span>
+<span id="cb41-34"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb41-34"></a><span class="co"># For open country birds, there is a significant difference in first-order jacknife estimates for both benchmark and active sites and benchmark and passively restored sites. </span></span></code></pre></div>
+<p>Running generalized linear mixed models</p>
+<p>Testing the role of habitat (vegetation structure) and foraging habit on species richness within a generalized linear modeling framework</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb42-1"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-1"></a><span class="co"># Testing the role of habitat first</span></span>
+<span id="cb42-2"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-2"></a></span>
+<span id="cb42-3"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-3"></a><span class="co"># all bird species</span></span>
+<span id="cb42-4"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-4"></a>glmm_allBirds &lt;-<span class="st"> </span><span class="kw">glmer</span>(richness <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> glmmAll, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb42-5"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-5"></a><span class="kw">summary</span>(glmm_allBirds)</span>
+<span id="cb42-6"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-6"></a></span>
+<span id="cb42-7"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-7"></a><span class="co"># rainforest birds</span></span>
+<span id="cb42-8"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-8"></a>glmm_Rainforest &lt;-<span class="st"> </span><span class="kw">glmer</span>(richness <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> glmmRainforest, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb42-9"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-9"></a><span class="kw">summary</span>(glmm_Rainforest)</span>
+<span id="cb42-10"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-10"></a></span>
+<span id="cb42-11"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-11"></a><span class="co"># Results above suggest PC1 is significantly negatively associated with richness of rainforest birds. A similar result is seen below for open-country bird species richness and PC1</span></span>
+<span id="cb42-12"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-12"></a></span>
+<span id="cb42-13"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-13"></a>glmm_openCountry &lt;-<span class="st"> </span><span class="kw">glmer</span>(richness <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> glmmOpencountry, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb42-14"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-14"></a><span class="kw">summary</span>(glmm_openCountry)</span>
+<span id="cb42-15"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-15"></a></span>
+<span id="cb42-16"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-16"></a><span class="co"># Testing the role of foraging habit</span></span>
+<span id="cb42-17"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-17"></a></span>
+<span id="cb42-18"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-18"></a><span class="co"># canopy birds (no significant association)</span></span>
+<span id="cb42-19"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-19"></a>glmm_Canopy &lt;-<span class="st"> </span><span class="kw">glmer</span>(richness <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> glmmCanopy, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb42-20"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-20"></a><span class="kw">summary</span>(glmm_Canopy)</span>
+<span id="cb42-21"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-21"></a></span>
+<span id="cb42-22"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-22"></a><span class="co"># ground-feeding birds (Marginal association between richness of ground-feeding birds and PC2)</span></span>
+<span id="cb42-23"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-23"></a>glmm_Ground &lt;-<span class="st"> </span><span class="kw">glmer</span>(richness <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> glmmGround, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb42-24"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-24"></a><span class="kw">summary</span>(glmm_Ground)</span>
+<span id="cb42-25"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-25"></a></span>
+<span id="cb42-26"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-26"></a><span class="co"># mid-storey birds (Marginal association between PC1 and richness of mid-storey birds)</span></span>
+<span id="cb42-27"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-27"></a>glmm_MidStorey &lt;-<span class="st"> </span><span class="kw">glmer</span>(richness <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> glmmMidStorey, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb42-28"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-28"></a><span class="kw">summary</span>(glmm_MidStorey)</span>
+<span id="cb42-29"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-29"></a></span>
+<span id="cb42-30"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-30"></a><span class="co"># understory birds (no significant association)</span></span>
+<span id="cb42-31"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-31"></a>glmm_Understory &lt;-<span class="st"> </span><span class="kw">glmer</span>(richness <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> glmmUnderStory, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb42-32"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html#cb42-32"></a><span class="kw">summary</span>(glmm_Understory)</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="preparing-vegetation-data-for-glms.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multiple-regression-of-distance-matrices.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/07_glms-and-glmms-jacknifeScore-vegPca.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

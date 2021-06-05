@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 7 Preparing vegetation data for GLMs | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 7 Preparing vegetation data for GLMs | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 7 Preparing vegetation data for GLMs | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 7 Preparing vegetation data for GLMs | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Akshay VA" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"/>
+<link rel="next" href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness-calculations.html"><a href="species-richness-calculations.html"><i class="fa fa-check"></i><b>3</b> Species Richness Calculations</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><i class="fa fa-check"></i><b>8</b> Generalized linear modeling and generalized linear mixed modeling</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-of-distance-matrices.html"><a href="multiple-regression-of-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression of distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="a-measure-of-vocal-activity.html"><a href="a-measure-of-vocal-activity.html"><i class="fa fa-check"></i><b>10</b> A measure of Vocal Activity</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="preparing-vegetation-data-for-glms" class="section level1">
+<h1><span class="header-section-number">Section 7</span> Preparing vegetation data for GLMs</h1>
+<p>Here, we prepare the vegetation data to run GLMs in the next series of scripts.</p>
+<p>Install required libraries</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb33-1"><a href="preparing-vegetation-data-for-glms.html#cb33-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb33-2"><a href="preparing-vegetation-data-for-glms.html#cb33-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb33-3"><a href="preparing-vegetation-data-for-glms.html#cb33-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb33-4"><a href="preparing-vegetation-data-for-glms.html#cb33-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb33-5"><a href="preparing-vegetation-data-for-glms.html#cb33-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb33-6"><a href="preparing-vegetation-data-for-glms.html#cb33-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb33-7"><a href="preparing-vegetation-data-for-glms.html#cb33-7"></a><span class="kw">library</span>(psych)</span>
+<span id="cb33-8"><a href="preparing-vegetation-data-for-glms.html#cb33-8"></a></span>
+<span id="cb33-9"><a href="preparing-vegetation-data-for-glms.html#cb33-9"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb33-10"><a href="preparing-vegetation-data-for-glms.html#cb33-10"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>Load the vegetation data</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb34-1"><a href="preparing-vegetation-data-for-glms.html#cb34-1"></a>veg &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/2020-vegetation-data.csv&quot;</span>)</span>
+<span id="cb34-2"><a href="preparing-vegetation-data-for-glms.html#cb34-2"></a>veg<span class="op">$</span>Site_ID &lt;-<span class="st"> </span><span class="kw">str_remove</span>(veg<span class="op">$</span>Site_ID,<span class="st">&quot;_&quot;</span>)</span>
+<span id="cb34-3"><a href="preparing-vegetation-data-for-glms.html#cb34-3"></a></span>
+<span id="cb34-4"><a href="preparing-vegetation-data-for-glms.html#cb34-4"></a><span class="co"># We load the subset data</span></span>
+<span id="cb34-5"><a href="preparing-vegetation-data-for-glms.html#cb34-5"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>)</span>
+<span id="cb34-6"><a href="preparing-vegetation-data-for-glms.html#cb34-6"></a>sites_needed &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">unique</span>(datSubset<span class="op">$</span>Site))</span>
+<span id="cb34-7"><a href="preparing-vegetation-data-for-glms.html#cb34-7"></a><span class="kw">names</span>(sites_needed) &lt;-<span class="st"> &quot;Site_ID&quot;</span></span>
+<span id="cb34-8"><a href="preparing-vegetation-data-for-glms.html#cb34-8"></a></span>
+<span id="cb34-9"><a href="preparing-vegetation-data-for-glms.html#cb34-9"></a><span class="co"># Obtain a subset of the data which have the sites visited </span></span>
+<span id="cb34-10"><a href="preparing-vegetation-data-for-glms.html#cb34-10"></a>veg &lt;-<span class="st"> </span><span class="kw">merge</span>(veg, sites_needed, <span class="dt">by.x =</span> <span class="st">&quot;Site_ID&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;Site_ID&quot;</span>)</span>
+<span id="cb34-11"><a href="preparing-vegetation-data-for-glms.html#cb34-11"></a></span>
+<span id="cb34-12"><a href="preparing-vegetation-data-for-glms.html#cb34-12"></a><span class="co"># renaming restoration type</span></span>
+<span id="cb34-13"><a href="preparing-vegetation-data-for-glms.html#cb34-13"></a>veg<span class="op">$</span>Site_type[veg<span class="op">$</span>Site_type<span class="op">==</span><span class="st">&quot;Unrestored&quot;</span>] &lt;-<span class="st"> &quot;Passive&quot;</span></span>
+<span id="cb34-14"><a href="preparing-vegetation-data-for-glms.html#cb34-14"></a>veg<span class="op">$</span>Site_type[veg<span class="op">$</span>Site_type<span class="op">==</span><span class="st">&quot;Restored&quot;</span>] &lt;-<span class="st"> &quot;Active&quot;</span></span>
+<span id="cb34-15"><a href="preparing-vegetation-data-for-glms.html#cb34-15"></a></span>
+<span id="cb34-16"><a href="preparing-vegetation-data-for-glms.html#cb34-16"></a><span class="co"># Load species-trait data to essentially run GLMs</span></span>
+<span id="cb34-17"><a href="preparing-vegetation-data-for-glms.html#cb34-17"></a>trait_dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span></code></pre></div>
+<p>Carrying out exploratory analysis and preparing a dataframe for further steps</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb35-1"><a href="preparing-vegetation-data-for-glms.html#cb35-1"></a><span class="co"># Counting number of tree species and unique species per plot</span></span>
+<span id="cb35-2"><a href="preparing-vegetation-data-for-glms.html#cb35-2"></a>treerich &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-3"><a href="preparing-vegetation-data-for-glms.html#cb35-3"></a><span class="st">  </span><span class="kw">group_by</span>(Site_ID) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-4"><a href="preparing-vegetation-data-for-glms.html#cb35-4"></a><span class="st">  </span><span class="kw">summarise</span> (<span class="dt">count =</span> <span class="kw">n</span>(), <span class="dt">richness =</span> <span class="kw">n_distinct</span>(tree_species))</span>
+<span id="cb35-5"><a href="preparing-vegetation-data-for-glms.html#cb35-5"></a></span>
+<span id="cb35-6"><a href="preparing-vegetation-data-for-glms.html#cb35-6"></a><span class="co"># Calculate average tree height across each unique site</span></span>
+<span id="cb35-7"><a href="preparing-vegetation-data-for-glms.html#cb35-7"></a>treeheight &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-8"><a href="preparing-vegetation-data-for-glms.html#cb35-8"></a><span class="st">  </span><span class="kw">drop_na</span>(height) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-9"><a href="preparing-vegetation-data-for-glms.html#cb35-9"></a><span class="st">  </span><span class="kw">group_by</span>(Site_ID) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-10"><a href="preparing-vegetation-data-for-glms.html#cb35-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">height =</span> <span class="kw">mean</span>(height))</span>
+<span id="cb35-11"><a href="preparing-vegetation-data-for-glms.html#cb35-11"></a></span>
+<span id="cb35-12"><a href="preparing-vegetation-data-for-glms.html#cb35-12"></a><span class="co"># Calculate basal area and left join with other data</span></span>
+<span id="cb35-13"><a href="preparing-vegetation-data-for-glms.html#cb35-13"></a>basal_area &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-14"><a href="preparing-vegetation-data-for-glms.html#cb35-14"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">basal_sum =</span> <span class="kw">rowSums</span>(veg[,<span class="kw">c</span>(<span class="dv">5</span><span class="op">:</span><span class="dv">15</span>)]<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">4</span><span class="op">*</span>pi)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(Site_ID, Site_type) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-15"><a href="preparing-vegetation-data-for-glms.html#cb35-15"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">basal_area =</span> <span class="kw">sum</span>(basal_sum)) </span>
+<span id="cb35-16"><a href="preparing-vegetation-data-for-glms.html#cb35-16"></a></span>
+<span id="cb35-17"><a href="preparing-vegetation-data-for-glms.html#cb35-17"></a><span class="co"># Calculate average canopy height</span></span>
+<span id="cb35-18"><a href="preparing-vegetation-data-for-glms.html#cb35-18"></a>canopy_height &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span></span>
+<span id="cb35-19"><a href="preparing-vegetation-data-for-glms.html#cb35-19"></a><span class="st">  </span><span class="kw">group_by</span>(Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb35-20"><a href="preparing-vegetation-data-for-glms.html#cb35-20"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">canopy_cover =</span> <span class="kw">mean</span>(Canopy_cover))</span>
+<span id="cb35-21"><a href="preparing-vegetation-data-for-glms.html#cb35-21"></a></span>
+<span id="cb35-22"><a href="preparing-vegetation-data-for-glms.html#cb35-22"></a><span class="co"># Calculate average leaf litter</span></span>
+<span id="cb35-23"><a href="preparing-vegetation-data-for-glms.html#cb35-23"></a>leaf_litter &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span></span>
+<span id="cb35-24"><a href="preparing-vegetation-data-for-glms.html#cb35-24"></a><span class="st">  </span><span class="kw">group_by</span>(Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb35-25"><a href="preparing-vegetation-data-for-glms.html#cb35-25"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">leaf_litter =</span> <span class="kw">mean</span>(Leaf_litter))</span>
+<span id="cb35-26"><a href="preparing-vegetation-data-for-glms.html#cb35-26"></a></span>
+<span id="cb35-27"><a href="preparing-vegetation-data-for-glms.html#cb35-27"></a><span class="co"># Calculate average vertical stratification</span></span>
+<span id="cb35-28"><a href="preparing-vegetation-data-for-glms.html#cb35-28"></a>vert_strat &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span></span>
+<span id="cb35-29"><a href="preparing-vegetation-data-for-glms.html#cb35-29"></a><span class="st">  </span><span class="kw">group_by</span>(Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb35-30"><a href="preparing-vegetation-data-for-glms.html#cb35-30"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">vert_strat =</span> <span class="kw">mean</span>(Foliage_score))</span>
+<span id="cb35-31"><a href="preparing-vegetation-data-for-glms.html#cb35-31"></a></span>
+<span id="cb35-32"><a href="preparing-vegetation-data-for-glms.html#cb35-32"></a><span class="co"># Year of planting</span></span>
+<span id="cb35-33"><a href="preparing-vegetation-data-for-glms.html#cb35-33"></a>plantingYear &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span></span>
+<span id="cb35-34"><a href="preparing-vegetation-data-for-glms.html#cb35-34"></a><span class="st">  </span><span class="kw">group_by</span>(Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb35-35"><a href="preparing-vegetation-data-for-glms.html#cb35-35"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">plantingYear =</span> <span class="kw">unique</span>(Year.of.planting))</span>
+<span id="cb35-36"><a href="preparing-vegetation-data-for-glms.html#cb35-36"></a></span>
+<span id="cb35-37"><a href="preparing-vegetation-data-for-glms.html#cb35-37"></a><span class="co"># Creating a final dataframe for further analysis</span></span>
+<span id="cb35-38"><a href="preparing-vegetation-data-for-glms.html#cb35-38"></a>allVeg &lt;-<span class="st"> </span>basal_area <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-39"><a href="preparing-vegetation-data-for-glms.html#cb35-39"></a><span class="st">  </span><span class="kw">left_join</span>(treeheight) <span class="op">%&gt;%</span></span>
+<span id="cb35-40"><a href="preparing-vegetation-data-for-glms.html#cb35-40"></a><span class="st">  </span><span class="kw">left_join</span>(treerich) <span class="op">%&gt;%</span></span>
+<span id="cb35-41"><a href="preparing-vegetation-data-for-glms.html#cb35-41"></a><span class="st">  </span><span class="kw">left_join</span>(canopy_height) <span class="op">%&gt;%</span></span>
+<span id="cb35-42"><a href="preparing-vegetation-data-for-glms.html#cb35-42"></a><span class="st">  </span><span class="kw">left_join</span>(leaf_litter) <span class="op">%&gt;%</span></span>
+<span id="cb35-43"><a href="preparing-vegetation-data-for-glms.html#cb35-43"></a><span class="st">  </span><span class="kw">left_join</span>(vert_strat) <span class="op">%&gt;%</span></span>
+<span id="cb35-44"><a href="preparing-vegetation-data-for-glms.html#cb35-44"></a><span class="st">  </span><span class="kw">left_join</span>(plantingYear)</span>
+<span id="cb35-45"><a href="preparing-vegetation-data-for-glms.html#cb35-45"></a></span>
+<span id="cb35-46"><a href="preparing-vegetation-data-for-glms.html#cb35-46"></a><span class="kw">write.csv</span>(allVeg, <span class="st">&quot;data/summaryVeg.csv&quot;</span>, <span class="dt">row.names =</span> F)</span></code></pre></div>
+<p>Running a PCA of the vegetation data</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb36-1"><a href="preparing-vegetation-data-for-glms.html#cb36-1"></a><span class="co"># Check for correlations among vegetation predictors</span></span>
+<span id="cb36-2"><a href="preparing-vegetation-data-for-glms.html#cb36-2"></a><span class="kw">pairs.panels</span>(allVeg[,<span class="dv">3</span><span class="op">:</span><span class="dv">9</span>])</span>
+<span id="cb36-3"><a href="preparing-vegetation-data-for-glms.html#cb36-3"></a></span>
+<span id="cb36-4"><a href="preparing-vegetation-data-for-glms.html#cb36-4"></a><span class="co"># The above panel suggests that richness is highly correlated with a number of predictors including canopy cover, count and basal area. We will calculate a PCA and keep the top two explanatory axes</span></span>
+<span id="cb36-5"><a href="preparing-vegetation-data-for-glms.html#cb36-5"></a></span>
+<span id="cb36-6"><a href="preparing-vegetation-data-for-glms.html#cb36-6"></a>vegPca &lt;-<span class="st"> </span><span class="kw">prcomp</span>(allVeg[, <span class="dv">3</span><span class="op">:</span><span class="dv">9</span>], <span class="dt">scale=</span><span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">retx=</span><span class="ot">TRUE</span>)</span>
+<span id="cb36-7"><a href="preparing-vegetation-data-for-glms.html#cb36-7"></a><span class="kw">summary</span>(vegPca)</span>
+<span id="cb36-8"><a href="preparing-vegetation-data-for-glms.html#cb36-8"></a></span>
+<span id="cb36-9"><a href="preparing-vegetation-data-for-glms.html#cb36-9"></a><span class="co"># save the data for use in a GLM later</span></span>
+<span id="cb36-10"><a href="preparing-vegetation-data-for-glms.html#cb36-10"></a><span class="kw">write.csv</span>(<span class="kw">as.tibble</span>(vegPca<span class="op">$</span>x[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]),<span class="st">&quot;data/pcaVeg.csv&quot;</span>, <span class="dt">row.names =</span> F)</span>
+<span id="cb36-11"><a href="preparing-vegetation-data-for-glms.html#cb36-11"></a></span>
+<span id="cb36-12"><a href="preparing-vegetation-data-for-glms.html#cb36-12"></a><span class="co"># The proportion of variance explained by the first two axes account for ~72.67%</span></span>
+<span id="cb36-13"><a href="preparing-vegetation-data-for-glms.html#cb36-13"></a></span>
+<span id="cb36-14"><a href="preparing-vegetation-data-for-glms.html#cb36-14"></a><span class="co"># Extract PCA values</span></span>
+<span id="cb36-15"><a href="preparing-vegetation-data-for-glms.html#cb36-15"></a>PCAvalues &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&#39;Site_type&#39;</span> =<span class="st"> </span>allVeg<span class="op">$</span>Site_type, vegPca<span class="op">$</span>x[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]) <span class="co"># the first two components are selected </span></span>
+<span id="cb36-16"><a href="preparing-vegetation-data-for-glms.html#cb36-16"></a></span>
+<span id="cb36-17"><a href="preparing-vegetation-data-for-glms.html#cb36-17"></a><span class="co"># Extract loadings of the variables</span></span>
+<span id="cb36-18"><a href="preparing-vegetation-data-for-glms.html#cb36-18"></a>PCAloadings &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">variables =</span> <span class="kw">rownames</span>(vegPca<span class="op">$</span>rotation), vegPca<span class="op">$</span>rotation)</span>
+<span id="cb36-19"><a href="preparing-vegetation-data-for-glms.html#cb36-19"></a></span>
+<span id="cb36-20"><a href="preparing-vegetation-data-for-glms.html#cb36-20"></a><span class="co"># figure below, includes loadings (edit plot later on)</span></span>
+<span id="cb36-21"><a href="preparing-vegetation-data-for-glms.html#cb36-21"></a></span>
+<span id="cb36-22"><a href="preparing-vegetation-data-for-glms.html#cb36-22"></a>fig_pca &lt;-<span class="st"> </span><span class="kw">ggplot</span>(PCAvalues, <span class="kw">aes</span>(<span class="dt">x =</span> PC1, <span class="dt">y =</span> PC2, <span class="dt">col =</span> Site_type)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb36-23"><a href="preparing-vegetation-data-for-glms.html#cb36-23"></a><span class="st">       </span><span class="kw">geom_segment</span>(<span class="dt">data =</span> PCAloadings, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">xend =</span> (PC1<span class="op">*</span><span class="dv">5</span>),</span>
+<span id="cb36-24"><a href="preparing-vegetation-data-for-glms.html#cb36-24"></a>     <span class="dt">yend =</span> (PC2<span class="op">*</span><span class="dv">5</span>)), <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="st">&quot;picas&quot;</span>)),</span>
+<span id="cb36-25"><a href="preparing-vegetation-data-for-glms.html#cb36-25"></a>     <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span></span>
+<span id="cb36-26"><a href="preparing-vegetation-data-for-glms.html#cb36-26"></a><span class="st">     </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>PC1, <span class="dt">y=</span>PC2, <span class="dt">shape=</span> Site_type, <span class="dt">colour =</span> Site_type),<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span><span class="st">    </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> (PCAloadings<span class="op">$</span>PC1<span class="op">*</span><span class="dv">3</span>), <span class="dt">y =</span> (PCAloadings<span class="op">$</span>PC2<span class="op">*</span><span class="dv">3</span>),</span>
+<span id="cb36-27"><a href="preparing-vegetation-data-for-glms.html#cb36-27"></a>     <span class="dt">label =</span> PCAloadings<span class="op">$</span>variables) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb36-28"><a href="preparing-vegetation-data-for-glms.html#cb36-28"></a><span class="st">     </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">scico</span>(<span class="dv">3</span>, <span class="dt">begin =</span> <span class="fl">0.3</span>, <span class="dt">palette =</span> <span class="st">&quot;vik&quot;</span>)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb36-29"><a href="preparing-vegetation-data-for-glms.html#cb36-29"></a><span class="st">     </span><span class="kw">scale_shape_manual</span>(<span class="dt">values=</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(PCAvalues<span class="op">$</span>Site_type)))<span class="op">+</span></span>
+<span id="cb36-30"><a href="preparing-vegetation-data-for-glms.html#cb36-30"></a><span class="st">     </span><span class="kw">theme</span>(<span class="dt">legend.key =</span> <span class="kw">element_blank</span>(), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;italic&quot;</span>)) <span class="op">+</span><span class="st">    </span><span class="kw">theme_bw</span>()</span>
+<span id="cb36-31"><a href="preparing-vegetation-data-for-glms.html#cb36-31"></a></span>
+<span id="cb36-32"><a href="preparing-vegetation-data-for-glms.html#cb36-32"></a><span class="kw">ggsave</span>(fig_pca, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_pca.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb36-33"><a href="preparing-vegetation-data-for-glms.html#cb36-33"></a></span>
+<span id="cb36-34"><a href="preparing-vegetation-data-for-glms.html#cb36-34"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_pca.png&quot;</span>)</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/06_vegetation-data-prep.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

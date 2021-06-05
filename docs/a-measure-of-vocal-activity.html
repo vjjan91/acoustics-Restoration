@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 10 A measure of Vocal Activity | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 10 A measure of Vocal Activity | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 10 A measure of Vocal Activity | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 10 A measure of Vocal Activity | Source code for Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Akshay VA" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="multiple-regression-of-distance-matrices.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness-calculations.html"><a href="species-richness-calculations.html"><i class="fa fa-check"></i><b>3</b> Species Richness Calculations</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><a href="generalized-linear-modeling-and-generalized-linear-mixed-modeling.html"><i class="fa fa-check"></i><b>8</b> Generalized linear modeling and generalized linear mixed modeling</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-of-distance-matrices.html"><a href="multiple-regression-of-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression of distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="a-measure-of-vocal-activity.html"><a href="a-measure-of-vocal-activity.html"><i class="fa fa-check"></i><b>10</b> A measure of Vocal Activity</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="a-measure-of-vocal-activity" class="section level1">
+<h1><span class="header-section-number">Section 10</span> A measure of Vocal Activity</h1>
+<p>In this script, we will:</p>
+<p>Calculate measures of overall vocal activity for each species</p>
+<p>To do this, we define a measure of vocal activity as = (Cumulative number of detections of a given species)/(Overall number of acoustic clips annotated).<br />
+We then classify a particular species as having High Vocal Activity, Moderate Vocal Activity and Low Vocal Activity if the above ratio is &gt; 0.7, (0.4 to 0.7) and &lt;0.4 respectively.</p>
+<p>We then assess if there is variation in vocal activity (as measured by number of species that are highly vocal, moderately vocal and less vocal) across treatment types.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Rainforest specialist vs open-country generalist.</p></li>
+<li><p>Test if
+Highly vocal, moderately vocal and less vocal (calculated at the smallest possible temporal unit: 10s).</p></li>
+</ol>
+<p>Install required libraries</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb49-1"><a href="a-measure-of-vocal-activity.html#cb49-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb49-2"><a href="a-measure-of-vocal-activity.html#cb49-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb49-3"><a href="a-measure-of-vocal-activity.html#cb49-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb49-4"><a href="a-measure-of-vocal-activity.html#cb49-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb49-5"><a href="a-measure-of-vocal-activity.html#cb49-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb49-6"><a href="a-measure-of-vocal-activity.html#cb49-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb49-7"><a href="a-measure-of-vocal-activity.html#cb49-7"></a></span>
+<span id="cb49-8"><a href="a-measure-of-vocal-activity.html#cb49-8"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb49-9"><a href="a-measure-of-vocal-activity.html#cb49-9"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations)</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb50-1"><a href="a-measure-of-vocal-activity.html#cb50-1"></a><span class="co"># Attach the 2020_summer_annotation data </span></span>
+<span id="cb50-2"><a href="a-measure-of-vocal-activity.html#cb50-2"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>)</span>
+<span id="cb50-3"><a href="a-measure-of-vocal-activity.html#cb50-3"></a></span>
+<span id="cb50-4"><a href="a-measure-of-vocal-activity.html#cb50-4"></a><span class="co"># Load the species-trait-data</span></span>
+<span id="cb50-5"><a href="a-measure-of-vocal-activity.html#cb50-5"></a>trait_dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span></code></pre></div>
+<p>Given the data annotated so far, we will calculate the overall number of detections across the smallest possible temporal duration, since there isn’t a significant variation in cumulative detections as a function of the temporal duration (See acoustic-detections.Rmd).</p>
+<p>Please note that: the data at the moment is imbalanced in terms of nVisits</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb51-1"><a href="a-measure-of-vocal-activity.html#cb51-1"></a><span class="co"># Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip</span></span>
+<span id="cb51-2"><a href="a-measure-of-vocal-activity.html#cb51-2"></a></span>
+<span id="cb51-3"><a href="a-measure-of-vocal-activity.html#cb51-3"></a>nDetections_10s &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb51-4"><a href="a-measure-of-vocal-activity.html#cb51-4"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.Type) <span class="op">%&gt;%</span></span>
+<span id="cb51-5"><a href="a-measure-of-vocal-activity.html#cb51-5"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-6"><a href="a-measure-of-vocal-activity.html#cb51-6"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;CR&quot;</span>)),<span class="dt">.funs =</span> sum) </span></code></pre></div>
+<p>Calculate the cumulative number of detections for each species and arrive at a measure of vocal activity irrespective of the treatment type in which a species was recorded in.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb52-1"><a href="a-measure-of-vocal-activity.html#cb52-1"></a></span>
+<span id="cb52-2"><a href="a-measure-of-vocal-activity.html#cb52-2"></a><span class="co"># Get rid of species with no detections across the entire data</span></span>
+<span id="cb52-3"><a href="a-measure-of-vocal-activity.html#cb52-3"></a></span>
+<span id="cb52-4"><a href="a-measure-of-vocal-activity.html#cb52-4"></a>final_spp &lt;-<span class="st"> </span>nDetections_10s[,<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>)][,<span class="op">-</span>(<span class="kw">which</span>(<span class="kw">colSums</span>(nDetections_10s[,<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>)])<span class="op">==</span><span class="dv">0</span>))]</span>
+<span id="cb52-5"><a href="a-measure-of-vocal-activity.html#cb52-5"></a></span>
+<span id="cb52-6"><a href="a-measure-of-vocal-activity.html#cb52-6"></a><span class="co"># Add the first two columns back to the above column</span></span>
+<span id="cb52-7"><a href="a-measure-of-vocal-activity.html#cb52-7"></a></span>
+<span id="cb52-8"><a href="a-measure-of-vocal-activity.html#cb52-8"></a>nDetections &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">data.frame</span>(nDetections_10s[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)],final_spp))</span>
+<span id="cb52-9"><a href="a-measure-of-vocal-activity.html#cb52-9"></a>  </span>
+<span id="cb52-10"><a href="a-measure-of-vocal-activity.html#cb52-10"></a><span class="co"># Get the total number of clips and the number of clips annotated across each treatment type</span></span>
+<span id="cb52-11"><a href="a-measure-of-vocal-activity.html#cb52-11"></a></span>
+<span id="cb52-12"><a href="a-measure-of-vocal-activity.html#cb52-12"></a>n_clips_total &lt;-<span class="st"> </span><span class="dv">12576</span></span>
+<span id="cb52-13"><a href="a-measure-of-vocal-activity.html#cb52-13"></a>n_clips_benchmark &lt;-<span class="st"> </span><span class="kw">sum</span>(data<span class="op">$</span>Restoration.Type<span class="op">==</span><span class="st">&quot;Benchmark&quot;</span>)</span>
+<span id="cb52-14"><a href="a-measure-of-vocal-activity.html#cb52-14"></a>n_clips_active &lt;-<span class="st"> </span><span class="kw">sum</span>(data<span class="op">$</span>Restoration.Type<span class="op">==</span><span class="st">&quot;Active&quot;</span>)</span>
+<span id="cb52-15"><a href="a-measure-of-vocal-activity.html#cb52-15"></a>n_clips_passive &lt;-<span class="st"> </span><span class="kw">sum</span>(data<span class="op">$</span>Restoration.Type<span class="op">==</span><span class="st">&quot;Passive&quot;</span>)</span>
+<span id="cb52-16"><a href="a-measure-of-vocal-activity.html#cb52-16"></a></span>
+<span id="cb52-17"><a href="a-measure-of-vocal-activity.html#cb52-17"></a></span>
+<span id="cb52-18"><a href="a-measure-of-vocal-activity.html#cb52-18"></a><span class="co"># Calculate the cumulative number of detections for each species by treatment type</span></span>
+<span id="cb52-19"><a href="a-measure-of-vocal-activity.html#cb52-19"></a></span>
+<span id="cb52-20"><a href="a-measure-of-vocal-activity.html#cb52-20"></a>sumDet_Active &lt;-<span class="st"> </span>nDetections <span class="op">%&gt;%</span></span>
+<span id="cb52-21"><a href="a-measure-of-vocal-activity.html#cb52-21"></a><span class="st">  </span><span class="kw">filter</span>(Restoration.Type<span class="op">==</span><span class="st">&quot;Active&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Select treatment type</span></span>
+<span id="cb52-22"><a href="a-measure-of-vocal-activity.html#cb52-22"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb52-23"><a href="a-measure-of-vocal-activity.html#cb52-23"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(Site,Restoration.Type)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-24"><a href="a-measure-of-vocal-activity.html#cb52-24"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="kw">across</span>(<span class="kw">everything</span>(),sum))<span class="op">%&gt;%</span></span>
+<span id="cb52-25"><a href="a-measure-of-vocal-activity.html#cb52-25"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">102</span>, <span class="dt">names_to=</span><span class="st">&quot;Species&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;Count&quot;</span>)</span>
+<span id="cb52-26"><a href="a-measure-of-vocal-activity.html#cb52-26"></a></span>
+<span id="cb52-27"><a href="a-measure-of-vocal-activity.html#cb52-27"></a>sumDet_Passive &lt;-<span class="st"> </span>nDetections <span class="op">%&gt;%</span></span>
+<span id="cb52-28"><a href="a-measure-of-vocal-activity.html#cb52-28"></a><span class="st">  </span><span class="kw">filter</span>(Restoration.Type<span class="op">==</span><span class="st">&quot;Passive&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Select treatment type</span></span>
+<span id="cb52-29"><a href="a-measure-of-vocal-activity.html#cb52-29"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb52-30"><a href="a-measure-of-vocal-activity.html#cb52-30"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(Site,Restoration.Type)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-31"><a href="a-measure-of-vocal-activity.html#cb52-31"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="kw">across</span>(<span class="kw">everything</span>(),sum))<span class="op">%&gt;%</span></span>
+<span id="cb52-32"><a href="a-measure-of-vocal-activity.html#cb52-32"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">102</span>, <span class="dt">names_to=</span><span class="st">&quot;Species&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;Count&quot;</span>)</span>
+<span id="cb52-33"><a href="a-measure-of-vocal-activity.html#cb52-33"></a></span>
+<span id="cb52-34"><a href="a-measure-of-vocal-activity.html#cb52-34"></a>sumDet_Benchmark &lt;-<span class="st"> </span>nDetections <span class="op">%&gt;%</span></span>
+<span id="cb52-35"><a href="a-measure-of-vocal-activity.html#cb52-35"></a><span class="st">  </span><span class="kw">filter</span>(Restoration.Type<span class="op">==</span><span class="st">&quot;Benchmark&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Select treatment type</span></span>
+<span id="cb52-36"><a href="a-measure-of-vocal-activity.html#cb52-36"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb52-37"><a href="a-measure-of-vocal-activity.html#cb52-37"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(Site,Restoration.Type)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-38"><a href="a-measure-of-vocal-activity.html#cb52-38"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="kw">across</span>(<span class="kw">everything</span>(),sum))<span class="op">%&gt;%</span></span>
+<span id="cb52-39"><a href="a-measure-of-vocal-activity.html#cb52-39"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">102</span>, <span class="dt">names_to=</span><span class="st">&quot;Species&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;Count&quot;</span>)</span>
+<span id="cb52-40"><a href="a-measure-of-vocal-activity.html#cb52-40"></a></span>
+<span id="cb52-41"><a href="a-measure-of-vocal-activity.html#cb52-41"></a><span class="co"># Measures of vocal activity</span></span>
+<span id="cb52-42"><a href="a-measure-of-vocal-activity.html#cb52-42"></a></span>
+<span id="cb52-43"><a href="a-measure-of-vocal-activity.html#cb52-43"></a><span class="co"># Note: Based on discussion with Akshay, scale the pproportion of clips in which a species was detected to ensure that we could compare vocal activity for multiple species across treatment types</span></span>
+<span id="cb52-44"><a href="a-measure-of-vocal-activity.html#cb52-44"></a></span>
+<span id="cb52-45"><a href="a-measure-of-vocal-activity.html#cb52-45"></a>vocal_Benchmark &lt;-<span class="st"> </span>sumDet_Benchmark <span class="op">%&gt;%</span></span>
+<span id="cb52-46"><a href="a-measure-of-vocal-activity.html#cb52-46"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">propDetected =</span> Count<span class="op">/</span>n_clips_benchmark) <span class="op">%&gt;%</span></span>
+<span id="cb52-47"><a href="a-measure-of-vocal-activity.html#cb52-47"></a><span class="st">  </span><span class="co"># mutate(propDetected=range01(propDetected)) %&gt;% </span></span>
+<span id="cb52-48"><a href="a-measure-of-vocal-activity.html#cb52-48"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vocalActivity =</span> <span class="kw">case_when</span>(propDetected <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;High&quot;</span>,</span>
+<span id="cb52-49"><a href="a-measure-of-vocal-activity.html#cb52-49"></a>            propDetected <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">&amp;</span><span class="st"> </span>propDetected <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;Moderate&quot;</span>,</span>
+<span id="cb52-50"><a href="a-measure-of-vocal-activity.html#cb52-50"></a>            propDetected <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">~</span><span class="st"> &quot;Low&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb52-51"><a href="a-measure-of-vocal-activity.html#cb52-51"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Restoration.Type =</span> <span class="st">&quot;Benchmark&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb52-52"><a href="a-measure-of-vocal-activity.html#cb52-52"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Count))</span>
+<span id="cb52-53"><a href="a-measure-of-vocal-activity.html#cb52-53"></a></span>
+<span id="cb52-54"><a href="a-measure-of-vocal-activity.html#cb52-54"></a>vocal_Active &lt;-<span class="st"> </span>sumDet_Active <span class="op">%&gt;%</span></span>
+<span id="cb52-55"><a href="a-measure-of-vocal-activity.html#cb52-55"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">propDetected =</span> Count<span class="op">/</span>n_clips_active) <span class="op">%&gt;%</span></span>
+<span id="cb52-56"><a href="a-measure-of-vocal-activity.html#cb52-56"></a><span class="st">  </span><span class="co"># mutate(propDetected=range01(propDetected)) %&gt;% </span></span>
+<span id="cb52-57"><a href="a-measure-of-vocal-activity.html#cb52-57"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vocalActivity =</span> <span class="kw">case_when</span>(propDetected <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;High&quot;</span>,</span>
+<span id="cb52-58"><a href="a-measure-of-vocal-activity.html#cb52-58"></a>            propDetected <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">&amp;</span><span class="st"> </span>propDetected <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;Moderate&quot;</span>,</span>
+<span id="cb52-59"><a href="a-measure-of-vocal-activity.html#cb52-59"></a>            propDetected <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">~</span><span class="st"> &quot;Low&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb52-60"><a href="a-measure-of-vocal-activity.html#cb52-60"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Restoration.Type =</span> <span class="st">&quot;Active&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb52-61"><a href="a-measure-of-vocal-activity.html#cb52-61"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Count))</span>
+<span id="cb52-62"><a href="a-measure-of-vocal-activity.html#cb52-62"></a></span>
+<span id="cb52-63"><a href="a-measure-of-vocal-activity.html#cb52-63"></a>vocal_Passive &lt;-<span class="st"> </span>sumDet_Passive <span class="op">%&gt;%</span></span>
+<span id="cb52-64"><a href="a-measure-of-vocal-activity.html#cb52-64"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">propDetected =</span> Count<span class="op">/</span>n_clips_passive) <span class="op">%&gt;%</span></span>
+<span id="cb52-65"><a href="a-measure-of-vocal-activity.html#cb52-65"></a><span class="st">  </span><span class="co"># mutate(propDetected=range01(propDetected)) %&gt;% </span></span>
+<span id="cb52-66"><a href="a-measure-of-vocal-activity.html#cb52-66"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vocalActivity =</span> <span class="kw">case_when</span>(propDetected <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;High&quot;</span>,</span>
+<span id="cb52-67"><a href="a-measure-of-vocal-activity.html#cb52-67"></a>            propDetected <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">&amp;</span><span class="st"> </span>propDetected <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;Moderate&quot;</span>,</span>
+<span id="cb52-68"><a href="a-measure-of-vocal-activity.html#cb52-68"></a>            propDetected <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">~</span><span class="st"> &quot;Low&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb52-69"><a href="a-measure-of-vocal-activity.html#cb52-69"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Restoration.Type =</span> <span class="st">&quot;Passive&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb52-70"><a href="a-measure-of-vocal-activity.html#cb52-70"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Count))</span></code></pre></div>
+<p>Plot the top ten detections for each species</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb53-1"><a href="a-measure-of-vocal-activity.html#cb53-1"></a></span>
+<span id="cb53-2"><a href="a-measure-of-vocal-activity.html#cb53-2"></a><span class="co"># Creating a temporary plot of vocal activity as a function of the proportion of overall detections of a particular species by treatment type</span></span>
+<span id="cb53-3"><a href="a-measure-of-vocal-activity.html#cb53-3"></a></span>
+<span id="cb53-4"><a href="a-measure-of-vocal-activity.html#cb53-4"></a>fig_vocalAct_Benchmark &lt;-<span class="st"> </span><span class="kw">ggplot</span>(vocal_Benchmark[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,], <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">reorder</span>(Species,propDetected), <span class="dt">y=</span>propDetected)) <span class="op">+</span><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb53-5"><a href="a-measure-of-vocal-activity.html#cb53-5"></a><span class="st">    </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-6"><a href="a-measure-of-vocal-activity.html#cb53-6"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb53-7"><a href="a-measure-of-vocal-activity.html#cb53-7"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Species&quot;</span>, </span>
+<span id="cb53-8"><a href="a-measure-of-vocal-activity.html#cb53-8"></a>       <span class="dt">y=</span><span class="st">&quot;Vocal Activity across Benchmark Sites&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-9"><a href="a-measure-of-vocal-activity.html#cb53-9"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb53-10"><a href="a-measure-of-vocal-activity.html#cb53-10"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb53-11"><a href="a-measure-of-vocal-activity.html#cb53-11"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb53-12"><a href="a-measure-of-vocal-activity.html#cb53-12"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb53-13"><a href="a-measure-of-vocal-activity.html#cb53-13"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb53-14"><a href="a-measure-of-vocal-activity.html#cb53-14"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb53-15"><a href="a-measure-of-vocal-activity.html#cb53-15"></a></span>
+<span id="cb53-16"><a href="a-measure-of-vocal-activity.html#cb53-16"></a>fig_vocalAct_Active &lt;-<span class="st"> </span><span class="kw">ggplot</span>(vocal_Active[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,], <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">reorder</span>(Species,propDetected), <span class="dt">y=</span>propDetected)) <span class="op">+</span><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb53-17"><a href="a-measure-of-vocal-activity.html#cb53-17"></a><span class="st">    </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-18"><a href="a-measure-of-vocal-activity.html#cb53-18"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb53-19"><a href="a-measure-of-vocal-activity.html#cb53-19"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Species&quot;</span>, </span>
+<span id="cb53-20"><a href="a-measure-of-vocal-activity.html#cb53-20"></a>       <span class="dt">y=</span><span class="st">&quot;Vocal Activity across actively restored sites&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-21"><a href="a-measure-of-vocal-activity.html#cb53-21"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb53-22"><a href="a-measure-of-vocal-activity.html#cb53-22"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb53-23"><a href="a-measure-of-vocal-activity.html#cb53-23"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb53-24"><a href="a-measure-of-vocal-activity.html#cb53-24"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb53-25"><a href="a-measure-of-vocal-activity.html#cb53-25"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb53-26"><a href="a-measure-of-vocal-activity.html#cb53-26"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb53-27"><a href="a-measure-of-vocal-activity.html#cb53-27"></a></span>
+<span id="cb53-28"><a href="a-measure-of-vocal-activity.html#cb53-28"></a>fig_vocalAct_Passive &lt;-<span class="st"> </span><span class="kw">ggplot</span>(vocal_Passive[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,], <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">reorder</span>(Species,propDetected), <span class="dt">y=</span>propDetected)) <span class="op">+</span><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb53-29"><a href="a-measure-of-vocal-activity.html#cb53-29"></a><span class="st">    </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-30"><a href="a-measure-of-vocal-activity.html#cb53-30"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb53-31"><a href="a-measure-of-vocal-activity.html#cb53-31"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Species&quot;</span>, </span>
+<span id="cb53-32"><a href="a-measure-of-vocal-activity.html#cb53-32"></a>       <span class="dt">y=</span><span class="st">&quot;Vocal Activity across passively restored sites&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-33"><a href="a-measure-of-vocal-activity.html#cb53-33"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb53-34"><a href="a-measure-of-vocal-activity.html#cb53-34"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb53-35"><a href="a-measure-of-vocal-activity.html#cb53-35"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb53-36"><a href="a-measure-of-vocal-activity.html#cb53-36"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb53-37"><a href="a-measure-of-vocal-activity.html#cb53-37"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb53-38"><a href="a-measure-of-vocal-activity.html#cb53-38"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb53-39"><a href="a-measure-of-vocal-activity.html#cb53-39"></a></span>
+<span id="cb53-40"><a href="a-measure-of-vocal-activity.html#cb53-40"></a><span class="co"># Save the plots</span></span>
+<span id="cb53-41"><a href="a-measure-of-vocal-activity.html#cb53-41"></a></span>
+<span id="cb53-42"><a href="a-measure-of-vocal-activity.html#cb53-42"></a><span class="kw">ggsave</span>(fig_vocalAct_Benchmark, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_vocalAct_Benchmark.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb53-43"><a href="a-measure-of-vocal-activity.html#cb53-43"></a><span class="kw">ggsave</span>(fig_vocalAct_Active, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_vocalAct_Active.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb53-44"><a href="a-measure-of-vocal-activity.html#cb53-44"></a><span class="kw">ggsave</span>(fig_vocalAct_Passive, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_vocalAct_Passive.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb53-45"><a href="a-measure-of-vocal-activity.html#cb53-45"></a></span>
+<span id="cb53-46"><a href="a-measure-of-vocal-activity.html#cb53-46"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_vocalAct_Benchmark.png&quot;</span>)</span>
+<span id="cb53-47"><a href="a-measure-of-vocal-activity.html#cb53-47"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_vocalAct_Active.png&quot;</span>)</span>
+<span id="cb53-48"><a href="a-measure-of-vocal-activity.html#cb53-48"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_vocalAct_Passive.png&quot;</span>)</span></code></pre></div>
+
+<p>Install necessary libraries</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb54-1"><a href="a-measure-of-vocal-activity.html#cb54-1"></a><span class="kw">library</span>(seewave)</span>
+<span id="cb54-2"><a href="a-measure-of-vocal-activity.html#cb54-2"></a><span class="kw">library</span>(warbleR)</span>
+<span id="cb54-3"><a href="a-measure-of-vocal-activity.html#cb54-3"></a><span class="kw">library</span>(tuneR)</span>
+<span id="cb54-4"><a href="a-measure-of-vocal-activity.html#cb54-4"></a><span class="kw">library</span>(stringi)</span>
+<span id="cb54-5"><a href="a-measure-of-vocal-activity.html#cb54-5"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb54-6"><a href="a-measure-of-vocal-activity.html#cb54-6"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb54-7"><a href="a-measure-of-vocal-activity.html#cb54-7"></a><span class="kw">library</span>(RColorBrewer)</span>
+<span id="cb54-8"><a href="a-measure-of-vocal-activity.html#cb54-8"></a><span class="kw">library</span>(foreach)</span>
+<span id="cb54-9"><a href="a-measure-of-vocal-activity.html#cb54-9"></a><span class="kw">library</span>(doParallel)</span>
+<span id="cb54-10"><a href="a-measure-of-vocal-activity.html#cb54-10"></a></span>
+<span id="cb54-11"><a href="a-measure-of-vocal-activity.html#cb54-11"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb54-12"><a href="a-measure-of-vocal-activity.html#cb54-12"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>Acoustic Space Use (ASU)</p>
+<p>We are interested in creating a three-dimensional matrix of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)</p>
+<p>Previous papers broadly calculated space use by ascertaining the proportion of recordings in a particular time and frequency bin that is above a certain amplitude. However, this proportion was estimated by counting the number of frequency peaks within a given recording (seewave::fpeaks()) and then scaling it to go from 0 to 1. In our analysis, we want to obtain an understanding of the overall acoustic activity for a given time and frequency bin. In other words, we want the area under the curve for a particular frequency contour.</p>
+<p><em>Note</em> From Sound Analysis and Synthesis with R by Jerome Sueur</p>
+<p>The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256=187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.005s.</p>
+<p>Below, we have summarized approaches taken by previous studies:</p>
+<p>Aide et al. 2017: We aggregated recordings at time scale of hour of day and used a frequency bin size of 86.13 Hz and an amplitude filtering threshold of 0.02. So if the sampling rate is 22000 Hz, that would mean - 22000/86.13 ~ 256 frequency bins to divide up the frequency space. In this paper, there would be 24hr*256 bins = 6144 time/frequency bins</p>
+<p>Campos-Cerqueira et al. 2019: We aggregated recordings at the time scale of hour of day (24 h), used a frequency bin size of 172 Hz, and an amplitude filtering threshold of 0.003. So if the sampling rate is 22000 Hz, that would mean - 22000/172 ~ 128 frequency bins. This resulted in a three‐dimensional (x = hour, y = acoustic frequency, z = proportion of all recordings in each time/frequency bin with a frequency peak value &gt; 0.003 amplitude) matrix of acoustic activity with a total of 3,072 time/frequency bins (24 h × 128 frequency bins).</p>
+<p>Campos-Cerqueira and Aide 2017: To calculate the amplitude, we used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a peak in each time/frequency class by the total number of recordings collected during each hourly interval.</p>
+<p>To calculate ASU:</p>
+<ul>
+<li>A. Aggregate recordings for a multiple days across multiple sites (Keep only data that has been recorded continuously for a 24hr period)</li>
+</ul>
+<div class="sourceCode" id="cb55"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb55-1"><a href="a-measure-of-vocal-activity.html#cb55-1"></a><span class="co"># List the path that contains all folders, which contain the audiomoth data</span></span>
+<span id="cb55-2"><a href="a-measure-of-vocal-activity.html#cb55-2"></a>path &lt;-<span class="st"> &quot;C:</span><span class="ch">\\</span><span class="st">data</span><span class="ch">\\</span><span class="st">&quot;</span></span>
+<span id="cb55-3"><a href="a-measure-of-vocal-activity.html#cb55-3"></a></span>
+<span id="cb55-4"><a href="a-measure-of-vocal-activity.html#cb55-4"></a><span class="co"># Listing the folders within which .WAV files are stored</span></span>
+<span id="cb55-5"><a href="a-measure-of-vocal-activity.html#cb55-5"></a>folders &lt;-<span class="st"> </span><span class="kw">dir</span>(path, <span class="dt">recursive=</span>F,<span class="dt">full.names=</span>T)</span>
+<span id="cb55-6"><a href="a-measure-of-vocal-activity.html#cb55-6"></a></span>
+<span id="cb55-7"><a href="a-measure-of-vocal-activity.html#cb55-7"></a><span class="co"># Let&#39;s first rename the files by name of each site (as prefix)</span></span>
+<span id="cb55-8"><a href="a-measure-of-vocal-activity.html#cb55-8"></a><span class="co"># Please note: The renaming needs to be done only a single time (else there will be errors)</span></span>
+<span id="cb55-9"><a href="a-measure-of-vocal-activity.html#cb55-9"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folders)){</span>
+<span id="cb55-10"><a href="a-measure-of-vocal-activity.html#cb55-10"></a></span>
+<span id="cb55-11"><a href="a-measure-of-vocal-activity.html#cb55-11"></a><span class="kw">setwd</span>(folders[i])</span>
+<span id="cb55-12"><a href="a-measure-of-vocal-activity.html#cb55-12"></a>  </span>
+<span id="cb55-13"><a href="a-measure-of-vocal-activity.html#cb55-13"></a><span class="co"># List the files within each folder and renaming the files with the prefix - SITE_ID</span></span>
+<span id="cb55-14"><a href="a-measure-of-vocal-activity.html#cb55-14"></a>a &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">paste0</span>(path,<span class="kw">basename</span>(folders)[i],<span class="st">&quot;</span><span class="ch">\\</span><span class="st">&quot;</span>), <span class="dt">full.names =</span> T)</span>
+<span id="cb55-15"><a href="a-measure-of-vocal-activity.html#cb55-15"></a><span class="kw">file.rename</span>(<span class="dt">from =</span> a, <span class="dt">to=</span><span class="kw">paste0</span>(<span class="kw">basename</span>(folders)[i],<span class="st">&quot;_&quot;</span>,<span class="kw">basename</span>(a)))</span>
+<span id="cb55-16"><a href="a-measure-of-vocal-activity.html#cb55-16"></a>}</span>
+<span id="cb55-17"><a href="a-measure-of-vocal-activity.html#cb55-17"></a></span>
+<span id="cb55-18"><a href="a-measure-of-vocal-activity.html#cb55-18"></a><span class="co"># Now get only those files for a full 24 hours across every unique site</span></span>
+<span id="cb55-19"><a href="a-measure-of-vocal-activity.html#cb55-19"></a>files &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb55-20"><a href="a-measure-of-vocal-activity.html#cb55-20"></a></span>
+<span id="cb55-21"><a href="a-measure-of-vocal-activity.html#cb55-21"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folders)){</span>
+<span id="cb55-22"><a href="a-measure-of-vocal-activity.html#cb55-22"></a></span>
+<span id="cb55-23"><a href="a-measure-of-vocal-activity.html#cb55-23"></a>a &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">paste0</span>(path,<span class="kw">basename</span>(folders)[i],<span class="st">&quot;</span><span class="ch">\\</span><span class="st">&quot;</span>), <span class="dt">full.names =</span> T)</span>
+<span id="cb55-24"><a href="a-measure-of-vocal-activity.html#cb55-24"></a>site_date &lt;-<span class="st"> </span><span class="kw">str_extract</span>(<span class="kw">basename</span>(a),<span class="st">&#39;</span><span class="ch">\\</span><span class="st">w+_</span><span class="ch">\\</span><span class="st">d+_&#39;</span>)</span>
+<span id="cb55-25"><a href="a-measure-of-vocal-activity.html#cb55-25"></a></span>
+<span id="cb55-26"><a href="a-measure-of-vocal-activity.html#cb55-26"></a><span class="co"># Choosing all 24 hours of data across every unique site (288 corresponds to 12 files every 1 hour)</span></span>
+<span id="cb55-27"><a href="a-measure-of-vocal-activity.html#cb55-27"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(site_date))){</span>
+<span id="cb55-28"><a href="a-measure-of-vocal-activity.html#cb55-28"></a>    dat &lt;-<span class="st"> </span>a[<span class="kw">str_detect</span>(a,<span class="kw">unique</span>(site_date)[j])]</span>
+<span id="cb55-29"><a href="a-measure-of-vocal-activity.html#cb55-29"></a>    <span class="cf">if</span>((<span class="kw">length</span>(dat)<span class="op">&lt;</span><span class="dv">288</span>)<span class="op">==</span><span class="ot">TRUE</span>){</span>
+<span id="cb55-30"><a href="a-measure-of-vocal-activity.html#cb55-30"></a>      <span class="cf">next</span></span>
+<span id="cb55-31"><a href="a-measure-of-vocal-activity.html#cb55-31"></a>    } <span class="cf">else</span> {</span>
+<span id="cb55-32"><a href="a-measure-of-vocal-activity.html#cb55-32"></a>      files &lt;-<span class="st"> </span><span class="kw">c</span>(files, dat) </span>
+<span id="cb55-33"><a href="a-measure-of-vocal-activity.html#cb55-33"></a>    }</span>
+<span id="cb55-34"><a href="a-measure-of-vocal-activity.html#cb55-34"></a>  }</span>
+<span id="cb55-35"><a href="a-measure-of-vocal-activity.html#cb55-35"></a>}</span>
+<span id="cb55-36"><a href="a-measure-of-vocal-activity.html#cb55-36"></a></span>
+<span id="cb55-37"><a href="a-measure-of-vocal-activity.html#cb55-37"></a>files &lt;-<span class="st"> </span><span class="kw">unlist</span>(files)</span></code></pre></div>
+<ul>
+<li>B. Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs) and then loop it across multiple days</li>
+</ul>
+<p>ASU is being calculated for every one hour period and showcased for a 24 hour period of data. ASU here is defined as the overall area occupied by the frequency contour.In our case, the sampling rate of our signal is 48,000 Hz (in future iterations, this value can be changed depending on the range of frequency values for which we would want to estimate acoustic space use)</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb56-1"><a href="a-measure-of-vocal-activity.html#cb56-1"></a><span class="co"># Select all unique site_date combinations for each unique site</span></span>
+<span id="cb56-2"><a href="a-measure-of-vocal-activity.html#cb56-2"></a>site_date &lt;-<span class="st"> </span><span class="kw">str_extract</span>(<span class="kw">basename</span>(files),<span class="st">&#39;</span><span class="ch">\\</span><span class="st">w+_</span><span class="ch">\\</span><span class="st">d+_&#39;</span>)</span>
+<span id="cb56-3"><a href="a-measure-of-vocal-activity.html#cb56-3"></a><span class="kw">unique</span>(site_date)</span>
+<span id="cb56-4"><a href="a-measure-of-vocal-activity.html#cb56-4"></a></span>
+<span id="cb56-5"><a href="a-measure-of-vocal-activity.html#cb56-5"></a><span class="co"># Create a sequence of numbers to combine files by 1 hour</span></span>
+<span id="cb56-6"><a href="a-measure-of-vocal-activity.html#cb56-6"></a>hour_seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>,<span class="dt">to=</span><span class="dv">288</span>, <span class="dt">by=</span><span class="dv">12</span>)</span>
+<span id="cb56-7"><a href="a-measure-of-vocal-activity.html#cb56-7"></a></span>
+<span id="cb56-8"><a href="a-measure-of-vocal-activity.html#cb56-8"></a><span class="co"># To name files with a suffix for each hour</span></span>
+<span id="cb56-9"><a href="a-measure-of-vocal-activity.html#cb56-9"></a>time_of_day &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;00:00-01:00&quot;</span>,<span class="st">&quot;01:00-02:00&quot;</span>,<span class="st">&quot;02:00-03:00&quot;</span>,<span class="st">&quot;03:00-04:00&quot;</span>,</span>
+<span id="cb56-10"><a href="a-measure-of-vocal-activity.html#cb56-10"></a>                 <span class="st">&quot;04:00-05:00&quot;</span>,<span class="st">&quot;05:00-06:00&quot;</span>,<span class="st">&quot;06:00-07:00&quot;</span>,<span class="st">&quot;07:00-08:00&quot;</span>,</span>
+<span id="cb56-11"><a href="a-measure-of-vocal-activity.html#cb56-11"></a>                 <span class="st">&quot;08:00-09:00&quot;</span>,<span class="st">&quot;09:00-10:00&quot;</span>,<span class="st">&quot;10:00-11:00&quot;</span>,<span class="st">&quot;11:00-12:00&quot;</span>,</span>
+<span id="cb56-12"><a href="a-measure-of-vocal-activity.html#cb56-12"></a>                 <span class="st">&quot;12:00-13:00&quot;</span>,<span class="st">&quot;13:00-14:00&quot;</span>,<span class="st">&quot;14:00-15:00&quot;</span>,<span class="st">&quot;15:00-16:00&quot;</span>,</span>
+<span id="cb56-13"><a href="a-measure-of-vocal-activity.html#cb56-13"></a>                 <span class="st">&quot;16:00-17:00&quot;</span>,<span class="st">&quot;17:00-18:00&quot;</span>,<span class="st">&quot;18:00-19:00&quot;</span>,<span class="st">&quot;19:00-20:00&quot;</span>,</span>
+<span id="cb56-14"><a href="a-measure-of-vocal-activity.html#cb56-14"></a>                 <span class="st">&quot;20:00-21:00&quot;</span>,<span class="st">&quot;21:00-22:00&quot;</span>,<span class="st">&quot;22:00-23:00&quot;</span>,<span class="st">&quot;23:00-24:00&quot;</span>)</span>
+<span id="cb56-15"><a href="a-measure-of-vocal-activity.html#cb56-15"></a></span>
+<span id="cb56-16"><a href="a-measure-of-vocal-activity.html#cb56-16"></a><span class="co"># Loading parameters necessary for the Short-term fourier transform to be performed on hourly aggregates of data for each site_date combination</span></span>
+<span id="cb56-17"><a href="a-measure-of-vocal-activity.html#cb56-17"></a>f &lt;-<span class="st"> </span><span class="dv">48000</span></span>
+<span id="cb56-18"><a href="a-measure-of-vocal-activity.html#cb56-18"></a>wl &lt;-<span class="st"> </span><span class="dv">48</span> <span class="co"># This window length should be changed as a function of the frequency resolution (ie. bin size) and temporal resolution (ie. time)</span></span>
+<span id="cb56-19"><a href="a-measure-of-vocal-activity.html#cb56-19"></a>ovlp &lt;-<span class="st"> </span><span class="dv">50</span></span>
+<span id="cb56-20"><a href="a-measure-of-vocal-activity.html#cb56-20"></a>wn &lt;-<span class="st"> &quot;hanning&quot;</span></span>
+<span id="cb56-21"><a href="a-measure-of-vocal-activity.html#cb56-21"></a></span>
+<span id="cb56-22"><a href="a-measure-of-vocal-activity.html#cb56-22"></a><span class="co"># Store the 24 hour acoustic space use data in a list and name it by a unique site and date</span></span>
+<span id="cb56-23"><a href="a-measure-of-vocal-activity.html#cb56-23"></a>site_date_asu &lt;-<span class="st">  </span><span class="kw">list</span>()</span>
+<span id="cb56-24"><a href="a-measure-of-vocal-activity.html#cb56-24"></a></span>
+<span id="cb56-25"><a href="a-measure-of-vocal-activity.html#cb56-25"></a><span class="co"># Add a progress bar for the loop</span></span>
+<span id="cb56-26"><a href="a-measure-of-vocal-activity.html#cb56-26"></a>pb &lt;-<span class="st"> </span><span class="kw">txtProgressBar</span>(</span>
+<span id="cb56-27"><a href="a-measure-of-vocal-activity.html#cb56-27"></a>  <span class="dt">min =</span> <span class="dv">0</span>,</span>
+<span id="cb56-28"><a href="a-measure-of-vocal-activity.html#cb56-28"></a>  <span class="dt">max =</span> <span class="kw">length</span>(<span class="kw">unique</span>(site_date)),</span>
+<span id="cb56-29"><a href="a-measure-of-vocal-activity.html#cb56-29"></a>  <span class="dt">style =</span> <span class="dv">3</span></span>
+<span id="cb56-30"><a href="a-measure-of-vocal-activity.html#cb56-30"></a>)</span>
+<span id="cb56-31"><a href="a-measure-of-vocal-activity.html#cb56-31"></a></span>
+<span id="cb56-32"><a href="a-measure-of-vocal-activity.html#cb56-32"></a><span class="co"># Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site-date</span></span>
+<span id="cb56-33"><a href="a-measure-of-vocal-activity.html#cb56-33"></a></span>
+<span id="cb56-34"><a href="a-measure-of-vocal-activity.html#cb56-34"></a><span class="kw">length</span>(<span class="kw">unique</span>(site_date))</span>
+<span id="cb56-35"><a href="a-measure-of-vocal-activity.html#cb56-35"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>){ </span>
+<span id="cb56-36"><a href="a-measure-of-vocal-activity.html#cb56-36"></a>  </span>
+<span id="cb56-37"><a href="a-measure-of-vocal-activity.html#cb56-37"></a>  <span class="co"># Store the each hour of data as a list here (raw audio files read by tuneR::readWave())</span></span>
+<span id="cb56-38"><a href="a-measure-of-vocal-activity.html#cb56-38"></a>  hourlydata &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb56-39"><a href="a-measure-of-vocal-activity.html#cb56-39"></a>  </span>
+<span id="cb56-40"><a href="a-measure-of-vocal-activity.html#cb56-40"></a>  <span class="co"># Store the acoustic space use data in a data.frame for plotting and analysis</span></span>
+<span id="cb56-41"><a href="a-measure-of-vocal-activity.html#cb56-41"></a>  space_use &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</span>
+<span id="cb56-42"><a href="a-measure-of-vocal-activity.html#cb56-42"></a></span>
+<span id="cb56-43"><a href="a-measure-of-vocal-activity.html#cb56-43"></a>  <span class="co"># Extract the strings first by site </span></span>
+<span id="cb56-44"><a href="a-measure-of-vocal-activity.html#cb56-44"></a>  dat &lt;-<span class="st"> </span>files[stringr<span class="op">::</span><span class="kw">str_detect</span>(files,<span class="kw">unique</span>(site_date)[i])]</span>
+<span id="cb56-45"><a href="a-measure-of-vocal-activity.html#cb56-45"></a>  </span>
+<span id="cb56-46"><a href="a-measure-of-vocal-activity.html#cb56-46"></a>  <span class="co"># Read the files using tuneR::readWave() function and save it in a list</span></span>
+<span id="cb56-47"><a href="a-measure-of-vocal-activity.html#cb56-47"></a>  tmp_list &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb56-48"><a href="a-measure-of-vocal-activity.html#cb56-48"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(dat)){</span>
+<span id="cb56-49"><a href="a-measure-of-vocal-activity.html#cb56-49"></a>    r &lt;-<span class="st"> </span>tuneR<span class="op">::</span><span class="kw">readWave</span>(dat[k])</span>
+<span id="cb56-50"><a href="a-measure-of-vocal-activity.html#cb56-50"></a>    tmp_list&lt;-<span class="st"> </span><span class="kw">c</span>(tmp_list,r)</span>
+<span id="cb56-51"><a href="a-measure-of-vocal-activity.html#cb56-51"></a>    }</span>
+<span id="cb56-52"><a href="a-measure-of-vocal-activity.html#cb56-52"></a>    <span class="kw">rm</span>(r); <span class="kw">gc</span>()</span>
+<span id="cb56-53"><a href="a-measure-of-vocal-activity.html#cb56-53"></a>    hourlydata &lt;-<span class="st"> </span><span class="kw">do.call</span>(c,tmp_list)</span>
+<span id="cb56-54"><a href="a-measure-of-vocal-activity.html#cb56-54"></a>    <span class="kw">rm</span>(tmp_list); <span class="kw">gc</span>()</span>
+<span id="cb56-55"><a href="a-measure-of-vocal-activity.html#cb56-55"></a>  </span>
+<span id="cb56-56"><a href="a-measure-of-vocal-activity.html#cb56-56"></a>  <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(hour_seq)<span class="op">-</span><span class="dv">1</span>)){ <span class="co"># Every 12 files correspond to one hour here</span></span>
+<span id="cb56-57"><a href="a-measure-of-vocal-activity.html#cb56-57"></a>    <span class="cf">if</span> (t<span class="op">==</span><span class="dv">1</span>){</span>
+<span id="cb56-58"><a href="a-measure-of-vocal-activity.html#cb56-58"></a>    e &lt;-<span class="st"> </span>hourlydata[hour_seq[t]<span class="op">:</span>hour_seq[t<span class="op">+</span><span class="dv">1</span>]]</span>
+<span id="cb56-59"><a href="a-measure-of-vocal-activity.html#cb56-59"></a>    } <span class="cf">else</span> {</span>
+<span id="cb56-60"><a href="a-measure-of-vocal-activity.html#cb56-60"></a>    e &lt;-<span class="st"> </span>hourlydata[(hour_seq[t]<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>hour_seq[t<span class="op">+</span><span class="dv">1</span>]]</span>
+<span id="cb56-61"><a href="a-measure-of-vocal-activity.html#cb56-61"></a>    }</span>
+<span id="cb56-62"><a href="a-measure-of-vocal-activity.html#cb56-62"></a>  </span>
+<span id="cb56-63"><a href="a-measure-of-vocal-activity.html#cb56-63"></a>  <span class="co"># Store every hour&#39;s ASU data here</span></span>
+<span id="cb56-64"><a href="a-measure-of-vocal-activity.html#cb56-64"></a>  data_per_hour &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb56-65"><a href="a-measure-of-vocal-activity.html#cb56-65"></a>    </span>
+<span id="cb56-66"><a href="a-measure-of-vocal-activity.html#cb56-66"></a>  <span class="cf">for</span>(z <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(e)){</span>
+<span id="cb56-67"><a href="a-measure-of-vocal-activity.html#cb56-67"></a>      wave &lt;-<span class="st"> </span>e[[z]] <span class="co"># this needs to be E!</span></span>
+<span id="cb56-68"><a href="a-measure-of-vocal-activity.html#cb56-68"></a>      n &lt;-<span class="st"> </span><span class="kw">length</span>(wave)</span>
+<span id="cb56-69"><a href="a-measure-of-vocal-activity.html#cb56-69"></a>        </span>
+<span id="cb56-70"><a href="a-measure-of-vocal-activity.html#cb56-70"></a>      <span class="co">## Short-term Fourier transform (using a seewave internal function)</span></span>
+<span id="cb56-71"><a href="a-measure-of-vocal-activity.html#cb56-71"></a>      m &lt;-<span class="st"> </span><span class="kw">sspectro</span>(wave, <span class="dt">f =</span> f, <span class="dt">wl =</span> wl, <span class="dt">ovlp =</span> ovlp, <span class="dt">wn =</span> wn)</span>
+<span id="cb56-72"><a href="a-measure-of-vocal-activity.html#cb56-72"></a></span>
+<span id="cb56-73"><a href="a-measure-of-vocal-activity.html#cb56-73"></a>      <span class="co"># Frequency selection and frequency axis</span></span>
+<span id="cb56-74"><a href="a-measure-of-vocal-activity.html#cb56-74"></a>      <span class="co"># Here, want only a sequence of numbers that correspond to the length of rows of the</span></span>
+<span id="cb56-75"><a href="a-measure-of-vocal-activity.html#cb56-75"></a>      <span class="co"># short-time fourier transform and we divide it by 1000 to get values in kHz</span></span>
+<span id="cb56-76"><a href="a-measure-of-vocal-activity.html#cb56-76"></a>      freq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, (f<span class="op">/</span><span class="dv">2</span>) <span class="op">-</span><span class="st"> </span>(f<span class="op">/</span>wl), <span class="dt">length.out =</span> <span class="kw">nrow</span>(m))<span class="op">/</span><span class="dv">1000</span></span>
+<span id="cb56-77"><a href="a-measure-of-vocal-activity.html#cb56-77"></a>        </span>
+<span id="cb56-78"><a href="a-measure-of-vocal-activity.html#cb56-78"></a>      <span class="co"># Calculate acoustic space use per frequency bin </span></span>
+<span id="cb56-79"><a href="a-measure-of-vocal-activity.html#cb56-79"></a>      f.cont &lt;-<span class="st"> </span><span class="kw">apply</span>(m, <span class="dt">MARGIN =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> sum)</span>
+<span id="cb56-80"><a href="a-measure-of-vocal-activity.html#cb56-80"></a>      <span class="co">#f.cont &lt;- f.cont/sum(f.cont)</span></span>
+<span id="cb56-81"><a href="a-measure-of-vocal-activity.html#cb56-81"></a>        </span>
+<span id="cb56-82"><a href="a-measure-of-vocal-activity.html#cb56-82"></a>      <span class="co"># Store the space use data in a dataframe for plotting later</span></span>
+<span id="cb56-83"><a href="a-measure-of-vocal-activity.html#cb56-83"></a>      a &lt;-<span class="st"> </span><span class="kw">data.frame</span>(freq, f.cont)</span>
+<span id="cb56-84"><a href="a-measure-of-vocal-activity.html#cb56-84"></a>      data_per_hour &lt;-<span class="st"> </span><span class="kw">rbind</span>(a, data_per_hour)</span>
+<span id="cb56-85"><a href="a-measure-of-vocal-activity.html#cb56-85"></a>    }</span>
+<span id="cb56-86"><a href="a-measure-of-vocal-activity.html#cb56-86"></a>  <span class="kw">rm</span>(m, wave, a, e, freq, f.cont); <span class="kw">gc</span>()</span>
+<span id="cb56-87"><a href="a-measure-of-vocal-activity.html#cb56-87"></a>  </span>
+<span id="cb56-88"><a href="a-measure-of-vocal-activity.html#cb56-88"></a>  data_needed &lt;-<span class="st"> </span><span class="kw">do.call</span>(c, data_per_hour)</span>
+<span id="cb56-89"><a href="a-measure-of-vocal-activity.html#cb56-89"></a>    </span>
+<span id="cb56-90"><a href="a-measure-of-vocal-activity.html#cb56-90"></a>  data_per_hour  &lt;-<span class="st"> </span>data_per_hour <span class="op">%&gt;%</span></span>
+<span id="cb56-91"><a href="a-measure-of-vocal-activity.html#cb56-91"></a><span class="st">  </span><span class="kw">group_by</span>(freq) <span class="op">%&gt;%</span></span>
+<span id="cb56-92"><a href="a-measure-of-vocal-activity.html#cb56-92"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">f.cont=</span><span class="kw">sum</span>(f.cont)) </span>
+<span id="cb56-93"><a href="a-measure-of-vocal-activity.html#cb56-93"></a>  </span>
+<span id="cb56-94"><a href="a-measure-of-vocal-activity.html#cb56-94"></a>  data_per_hour<span class="op">$</span>f.cont &lt;-<span class="st"> </span>(data_per_hour<span class="op">$</span>f.cont)<span class="op">/</span><span class="dv">12</span></span>
+<span id="cb56-95"><a href="a-measure-of-vocal-activity.html#cb56-95"></a>  data_per_hour<span class="op">$</span>time_of_day &lt;-<span class="st"> </span>time_of_day[t]</span>
+<span id="cb56-96"><a href="a-measure-of-vocal-activity.html#cb56-96"></a>  </span>
+<span id="cb56-97"><a href="a-measure-of-vocal-activity.html#cb56-97"></a>  space_use &lt;-<span class="st"> </span><span class="kw">rbind</span>(data_per_hour, space_use)</span>
+<span id="cb56-98"><a href="a-measure-of-vocal-activity.html#cb56-98"></a>}</span>
+<span id="cb56-99"><a href="a-measure-of-vocal-activity.html#cb56-99"></a>  space_use &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(space_use)</span>
+<span id="cb56-100"><a href="a-measure-of-vocal-activity.html#cb56-100"></a>  site_date_asu &lt;-<span class="st"> </span><span class="kw">c</span>(site_date_asu,<span class="kw">list</span>(space_use))</span>
+<span id="cb56-101"><a href="a-measure-of-vocal-activity.html#cb56-101"></a>  <span class="kw">names</span>(site_date_asu)[i] &lt;-<span class="st"> </span><span class="kw">unique</span>(site_date)[i] </span>
+<span id="cb56-102"><a href="a-measure-of-vocal-activity.html#cb56-102"></a>  <span class="kw">rm</span>(hourlydata, space_use, data_needed); <span class="kw">gc</span>()</span>
+<span id="cb56-103"><a href="a-measure-of-vocal-activity.html#cb56-103"></a>  <span class="kw">setTxtProgressBar</span>(pb, i)</span>
+<span id="cb56-104"><a href="a-measure-of-vocal-activity.html#cb56-104"></a>}</span>
+<span id="cb56-105"><a href="a-measure-of-vocal-activity.html#cb56-105"></a><span class="kw">close</span>(pb)    </span>
+<span id="cb56-106"><a href="a-measure-of-vocal-activity.html#cb56-106"></a> </span></code></pre></div>
+<p>Now that we have calculated acoustic space use values for a given frequency bin size and time resolution for every unique site-date combination, we would like to obtain a single set of space use values for every unique site. In other words, we would like to average space use values across all frequency bins for seven days (a week approximately)</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb57-1"><a href="a-measure-of-vocal-activity.html#cb57-1"></a><span class="co"># All unique sites</span></span>
+<span id="cb57-2"><a href="a-measure-of-vocal-activity.html#cb57-2"></a>site &lt;-<span class="st"> </span><span class="kw">str_extract</span>(<span class="kw">basename</span>(files),<span class="st">&#39;^([[:alnum:]])+&#39;</span>)</span>
+<span id="cb57-3"><a href="a-measure-of-vocal-activity.html#cb57-3"></a><span class="kw">unique</span>(site)</span>
+<span id="cb57-4"><a href="a-measure-of-vocal-activity.html#cb57-4"></a></span>
+<span id="cb57-5"><a href="a-measure-of-vocal-activity.html#cb57-5"></a><span class="co"># Store the site-wise ASU values</span></span>
+<span id="cb57-6"><a href="a-measure-of-vocal-activity.html#cb57-6"></a>site_asu &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb57-7"><a href="a-measure-of-vocal-activity.html#cb57-7"></a></span>
+<span id="cb57-8"><a href="a-measure-of-vocal-activity.html#cb57-8"></a><span class="co"># Loop through site-wise data and average data for each site</span></span>
+<span id="cb57-9"><a href="a-measure-of-vocal-activity.html#cb57-9"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(site))) {</span>
+<span id="cb57-10"><a href="a-measure-of-vocal-activity.html#cb57-10"></a>  </span>
+<span id="cb57-11"><a href="a-measure-of-vocal-activity.html#cb57-11"></a>  <span class="co"># Extract data needed for every unique site</span></span>
+<span id="cb57-12"><a href="a-measure-of-vocal-activity.html#cb57-12"></a>  dat &lt;-<span class="st"> </span>site_date_asu[stringr<span class="op">::</span><span class="kw">str_detect</span>(<span class="kw">names</span>(site_date_asu),<span class="kw">unique</span>(site)[i])]</span>
+<span id="cb57-13"><a href="a-measure-of-vocal-activity.html#cb57-13"></a>  </span>
+<span id="cb57-14"><a href="a-measure-of-vocal-activity.html#cb57-14"></a>  <span class="co"># Sum up values of acoustic space use across X no. of days for every unique site</span></span>
+<span id="cb57-15"><a href="a-measure-of-vocal-activity.html#cb57-15"></a>  asu_sum &lt;-<span class="st">  </span>dat <span class="op">%&gt;%</span></span>
+<span id="cb57-16"><a href="a-measure-of-vocal-activity.html#cb57-16"></a><span class="st">    </span><span class="kw">bind_rows</span>(<span class="dt">.id=</span><span class="st">&quot;data&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb57-17"><a href="a-measure-of-vocal-activity.html#cb57-17"></a><span class="st">    </span><span class="kw">group_by</span>(freq, time_of_day) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb57-18"><a href="a-measure-of-vocal-activity.html#cb57-18"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">f.cont.sum=</span><span class="kw">sum</span>(f.cont))</span>
+<span id="cb57-19"><a href="a-measure-of-vocal-activity.html#cb57-19"></a>  </span>
+<span id="cb57-20"><a href="a-measure-of-vocal-activity.html#cb57-20"></a>  <span class="co"># Averaging data as a function of number of days for a given site over which data was summed</span></span>
+<span id="cb57-21"><a href="a-measure-of-vocal-activity.html#cb57-21"></a>  asu_sum<span class="op">$</span>f.cont.sum &lt;-<span class="st"> </span>(asu_sum<span class="op">$</span>f.cont.sum)<span class="op">/</span><span class="kw">length</span>(dat)</span>
+<span id="cb57-22"><a href="a-measure-of-vocal-activity.html#cb57-22"></a>  </span>
+<span id="cb57-23"><a href="a-measure-of-vocal-activity.html#cb57-23"></a>  <span class="co"># Scaling the data between 0 to 1 for the sake of comparison across sites</span></span>
+<span id="cb57-24"><a href="a-measure-of-vocal-activity.html#cb57-24"></a>  asu_sum<span class="op">$</span>f.cont.sum &lt;-<span class="st"> </span><span class="kw">range01</span>(asu_sum<span class="op">$</span>f.cont.sum)</span>
+<span id="cb57-25"><a href="a-measure-of-vocal-activity.html#cb57-25"></a>  </span>
+<span id="cb57-26"><a href="a-measure-of-vocal-activity.html#cb57-26"></a>  site_asu &lt;-<span class="st"> </span><span class="kw">c</span>(site_asu, <span class="kw">list</span>(asu_sum))</span>
+<span id="cb57-27"><a href="a-measure-of-vocal-activity.html#cb57-27"></a>  <span class="kw">names</span>(site_asu)[i] &lt;-<span class="st"> </span><span class="kw">unique</span>(site)[i] </span>
+<span id="cb57-28"><a href="a-measure-of-vocal-activity.html#cb57-28"></a>  <span class="kw">rm</span>(dat,asu_sum)</span>
+<span id="cb57-29"><a href="a-measure-of-vocal-activity.html#cb57-29"></a>}</span></code></pre></div>
+<p>Visualization of data</p>
+<p>We will use ggplot2 to plot and save individual ASU plots for each unique site-date combination. This will then be repeated for each unique site (calculated in the previous chunk of code)</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb58-1"><a href="a-measure-of-vocal-activity.html#cb58-1"></a><span class="co"># Saving the ggplots to a folder for every unique site-date combination</span></span>
+<span id="cb58-2"><a href="a-measure-of-vocal-activity.html#cb58-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(site_date_asu)){</span>
+<span id="cb58-3"><a href="a-measure-of-vocal-activity.html#cb58-3"></a>  </span>
+<span id="cb58-4"><a href="a-measure-of-vocal-activity.html#cb58-4"></a>  <span class="co"># Get the data out from a list to a .dataframe (else ggplot won&#39;t accept it)</span></span>
+<span id="cb58-5"><a href="a-measure-of-vocal-activity.html#cb58-5"></a>  dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(site_date_asu[i])</span>
+<span id="cb58-6"><a href="a-measure-of-vocal-activity.html#cb58-6"></a>  <span class="kw">names</span>(dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;freq&quot;</span>,<span class="st">&quot;f.cont&quot;</span>,<span class="st">&quot;time_of_day&quot;</span>)</span>
+<span id="cb58-7"><a href="a-measure-of-vocal-activity.html#cb58-7"></a>  </span>
+<span id="cb58-8"><a href="a-measure-of-vocal-activity.html#cb58-8"></a>  <span class="co"># Plot the data</span></span>
+<span id="cb58-9"><a href="a-measure-of-vocal-activity.html#cb58-9"></a>  g1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(dat, <span class="kw">aes</span>(<span class="dt">x=</span>time_of_day, <span class="dt">y=</span>freq)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb58-10"><a href="a-measure-of-vocal-activity.html#cb58-10"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> f.cont)) <span class="op">+</span></span>
+<span id="cb58-11"><a href="a-measure-of-vocal-activity.html#cb58-11"></a><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Reds&quot;</span>))<span class="op">+</span></span>
+<span id="cb58-12"><a href="a-measure-of-vocal-activity.html#cb58-12"></a><span class="st">    </span><span class="co"># scale_fill_scico(palette = &quot;vikO&quot;) +</span></span>
+<span id="cb58-13"><a href="a-measure-of-vocal-activity.html#cb58-13"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb58-14"><a href="a-measure-of-vocal-activity.html#cb58-14"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Time of Day (in hours)&quot;</span>,</span>
+<span id="cb58-15"><a href="a-measure-of-vocal-activity.html#cb58-15"></a>       <span class="dt">y=</span><span class="st">&quot;Frequency (in kHz) &quot;</span>) <span class="op">+</span></span>
+<span id="cb58-16"><a href="a-measure-of-vocal-activity.html#cb58-16"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb58-17"><a href="a-measure-of-vocal-activity.html#cb58-17"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb58-18"><a href="a-measure-of-vocal-activity.html#cb58-18"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb58-19"><a href="a-measure-of-vocal-activity.html#cb58-19"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">vjust=</span><span class="fl">0.5</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>),</span>
+<span id="cb58-20"><a href="a-measure-of-vocal-activity.html#cb58-20"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb58-21"><a href="a-measure-of-vocal-activity.html#cb58-21"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb58-22"><a href="a-measure-of-vocal-activity.html#cb58-22"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb58-23"><a href="a-measure-of-vocal-activity.html#cb58-23"></a>  </span>
+<span id="cb58-24"><a href="a-measure-of-vocal-activity.html#cb58-24"></a>  <span class="co"># Save the data to a folder</span></span>
+<span id="cb58-25"><a href="a-measure-of-vocal-activity.html#cb58-25"></a>  <span class="kw">ggsave</span>(<span class="dt">filename=</span><span class="st">&quot;&quot;</span>,<span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>, </span>
+<span id="cb58-26"><a href="a-measure-of-vocal-activity.html#cb58-26"></a>         <span class="dt">plot=</span>g1, <span class="dt">device=</span><span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">paste</span>(<span class="st">&quot;figs/site_date_asu/&quot;</span>,  <span class="kw">paste</span>(<span class="kw">names</span>(site_date_asu)[i], <span class="st">&quot;.png&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</span>
+<span id="cb58-27"><a href="a-measure-of-vocal-activity.html#cb58-27"></a>}</span>
+<span id="cb58-28"><a href="a-measure-of-vocal-activity.html#cb58-28"></a></span>
+<span id="cb58-29"><a href="a-measure-of-vocal-activity.html#cb58-29"></a></span>
+<span id="cb58-30"><a href="a-measure-of-vocal-activity.html#cb58-30"></a><span class="co"># Saving the ggplots to a folder for every unique site</span></span>
+<span id="cb58-31"><a href="a-measure-of-vocal-activity.html#cb58-31"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(site_asu)){</span>
+<span id="cb58-32"><a href="a-measure-of-vocal-activity.html#cb58-32"></a>  </span>
+<span id="cb58-33"><a href="a-measure-of-vocal-activity.html#cb58-33"></a>  <span class="co"># Get the data out from a list to a .dataframe (else ggplot won&#39;t accept it)</span></span>
+<span id="cb58-34"><a href="a-measure-of-vocal-activity.html#cb58-34"></a>  dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(site_asu[j])</span>
+<span id="cb58-35"><a href="a-measure-of-vocal-activity.html#cb58-35"></a>  <span class="kw">names</span>(dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;freq&quot;</span>,<span class="st">&quot;time_of_day&quot;</span>,<span class="st">&quot;f.cont.sum&quot;</span>)</span>
+<span id="cb58-36"><a href="a-measure-of-vocal-activity.html#cb58-36"></a>  </span>
+<span id="cb58-37"><a href="a-measure-of-vocal-activity.html#cb58-37"></a>  <span class="co"># Plot the data</span></span>
+<span id="cb58-38"><a href="a-measure-of-vocal-activity.html#cb58-38"></a>  g1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(dat, <span class="kw">aes</span>(<span class="dt">x=</span>time_of_day, <span class="dt">y=</span>freq)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb58-39"><a href="a-measure-of-vocal-activity.html#cb58-39"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> f.cont.sum)) <span class="op">+</span></span>
+<span id="cb58-40"><a href="a-measure-of-vocal-activity.html#cb58-40"></a><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Reds&quot;</span>))<span class="op">+</span></span>
+<span id="cb58-41"><a href="a-measure-of-vocal-activity.html#cb58-41"></a><span class="st">    </span><span class="co"># scale_fill_scico(palette = &quot;vikO&quot;) +</span></span>
+<span id="cb58-42"><a href="a-measure-of-vocal-activity.html#cb58-42"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb58-43"><a href="a-measure-of-vocal-activity.html#cb58-43"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Time of Day (in hours)&quot;</span>,</span>
+<span id="cb58-44"><a href="a-measure-of-vocal-activity.html#cb58-44"></a>       <span class="dt">y=</span><span class="st">&quot;Frequency (in kHz) &quot;</span>) <span class="op">+</span></span>
+<span id="cb58-45"><a href="a-measure-of-vocal-activity.html#cb58-45"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb58-46"><a href="a-measure-of-vocal-activity.html#cb58-46"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb58-47"><a href="a-measure-of-vocal-activity.html#cb58-47"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb58-48"><a href="a-measure-of-vocal-activity.html#cb58-48"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">vjust=</span><span class="fl">0.5</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>),</span>
+<span id="cb58-49"><a href="a-measure-of-vocal-activity.html#cb58-49"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb58-50"><a href="a-measure-of-vocal-activity.html#cb58-50"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb58-51"><a href="a-measure-of-vocal-activity.html#cb58-51"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb58-52"><a href="a-measure-of-vocal-activity.html#cb58-52"></a>  </span>
+<span id="cb58-53"><a href="a-measure-of-vocal-activity.html#cb58-53"></a>  <span class="co"># Save the data to a folder</span></span>
+<span id="cb58-54"><a href="a-measure-of-vocal-activity.html#cb58-54"></a>  <span class="kw">ggsave</span>(<span class="dt">filename=</span><span class="st">&quot;&quot;</span>,<span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>, </span>
+<span id="cb58-55"><a href="a-measure-of-vocal-activity.html#cb58-55"></a>         <span class="dt">plot=</span>g1, <span class="dt">device=</span><span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">paste</span>(<span class="st">&quot;figs/site_asu/&quot;</span>,  <span class="kw">paste</span>(<span class="kw">names</span>(site_asu)[j], <span class="st">&quot;.png&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</span>
+<span id="cb58-56"><a href="a-measure-of-vocal-activity.html#cb58-56"></a>}</span>
+<span id="cb58-57"><a href="a-measure-of-vocal-activity.html#cb58-57"></a></span>
+<span id="cb58-58"><a href="a-measure-of-vocal-activity.html#cb58-58"></a></span>
+<span id="cb58-59"><a href="a-measure-of-vocal-activity.html#cb58-59"></a><span class="kw">ggsave</span>(g1, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_asu_HP37P4B.svg&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,</span>
+<span id="cb58-60"><a href="a-measure-of-vocal-activity.html#cb58-60"></a>       <span class="dt">device =</span> <span class="kw">svg</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="multiple-regression-of-distance-matrices.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/08_vocal-activity-index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
