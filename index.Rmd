@@ -1,0 +1,42 @@
+--- 
+knit: "bookdown::render_book"
+title: "Source code for _Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats_"
+author:
+    - Vijay Ramesh
+    - Akshay VA
+    - VV Robin
+    - Ruth DeFries
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    fig_caption: yes
+  bookdown::pdf_document2:
+    documentclass: scrreprt
+    toc-depth: 1
+    secnumdepth: 2
+    geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
+bibliography: 
+biblio-style: apalike
+link-citations: yes
+github-repo: vjjan91/acoustics-westernGhats
+---
+
+# Introduction
+
+This is the readable version that showcases analyses carried out to test the impacts of forest restoration on bird communities in the Anamalai hills of the Western Ghats biodiversity hotspot. 
+
+## Attribution
+
+Please contact the following in case of interest in the project.
+
+- Vijay Ramesh (lead author)
+    - PhD student, Columbia University
+
+## Data access
+
+The data used in this work will be archived and made public upon publication.
+
+## Data processing
+
+The data processing for this project is described in the following sections. Navigate through them using the links in the sidebar.
