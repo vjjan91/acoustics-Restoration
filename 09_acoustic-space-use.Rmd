@@ -14,6 +14,7 @@ library(ggplot2)
 library(RColorBrewer)
 library(foreach)
 library(doParallel)
+library(doSNOW)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -21,13 +22,13 @@ source("code/01_internal-functions.R")
 
 Acoustic Space Use (ASU)
 
-We are interested in creating a three-dimensional matrix of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)
+We are interested in creating a measure (3-dimensional matrix) of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)
 
 Previous papers broadly calculated space use by ascertaining the proportion of recordings in a particular time and frequency bin that is above a certain amplitude. However, this proportion was estimated by counting the number of frequency peaks within a given recording (seewave::fpeaks()) and then scaling it to go from 0 to 1. In our analysis, we want to obtain an understanding of the overall acoustic activity for a given time and frequency bin. In other words, we want the area under the curve for a particular frequency contour. 
 
 *Note* From Sound Analysis and Synthesis with R by Jerome Sueur
 
-The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256=187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.005s. 
+The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/512 = 93.75 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 93.75 corresponds to a time duration of 0.01s (1/93.75=0.01s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313) 
 
 Below, we have summarized approaches taken by previous studies: 
 
@@ -37,9 +38,9 @@ Campos-Cerqueira et al. 2019: We aggregated recordings at the time scale of hour
 
 Campos-Cerqueira and Aide 2017: To calculate the amplitude, we used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a peak in each time/frequency class by the total number of recordings collected during each hourly interval.
 
-To calculate ASU: 
+To calculate ASU in our study:
 
-- A. Aggregate recordings for a multiple days across multiple sites (Keep only data that has been recorded continuously for a 24hr period)
+- A. We aggregate recordings for a multiple days across multiple sites (Keep only data that has been recorded continuously for a 24hr period)
 ```{r}
 # List the path that contains all folders, which contain the audiomoth data
 path <- "C:\\data\\"
@@ -48,7 +49,8 @@ path <- "C:\\data\\"
 folders <- dir(path, recursive=F,full.names=T)
 
 # Let's first rename the files by name of each site (as prefix)
-# Please note: The renaming needs to be done only a single time (else there will be errors)
+# PLEASE NOTE: The renaming needs to be done only a single time (else there will be errors)
+
 for(i in 1:length(folders)){
 
 setwd(folders[i])
@@ -102,7 +104,7 @@ time_of_day <- c("00:00-01:00","01:00-02:00","02:00-03:00","03:00-04:00",
 
 # Loading parameters necessary for the Short-term fourier transform to be performed on hourly aggregates of data for each site_date combination
 f <- 48000
-wl <- 48 # This window length should be changed as a function of the frequency resolution (ie. bin size) and temporal resolution (ie. time)
+wl <- 512 # This window length should be changed as a function of the frequency resolution (ie. bin size) and temporal resolution (ie. time)
 ovlp <- 50
 wn <- "hanning"
 
@@ -119,7 +121,7 @@ pb <- txtProgressBar(
 # Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site-date
 
 length(unique(site_date))
-for (i in 1:3){ 
+for(i in 1:1){ 
   
   # Store the each hour of data as a list here (raw audio files read by tuneR::readWave())
   hourlydata <- list()
@@ -132,25 +134,32 @@ for (i in 1:3){
   
   # Read the files using tuneR::readWave() function and save it in a list
   tmp_list <- list()
-  for(k in 1:length(dat)){
-    r <- tuneR::readWave(dat[k])
-    tmp_list<- c(tmp_list,r)
-    }
-    rm(r); gc()
-    hourlydata <- do.call(c,tmp_list)
-    rm(tmp_list); gc()
   
-  for(t in 1:(length(hour_seq)-1)){ # Every 12 files correspond to one hour here
+  cl <- makeCluster(8, type = "SOCK")
+  registerDoSNOW(cl)
+  
+  #for(k in 1:length(dat))
+  hourlydata <- foreach(k=1:length(dat), .combine = 'c', .inorder = T, .packages = 'tuneR') %dopar% {
+    r <- readWave(dat[k])
+  }
+    result; gc()
+    #rm(r); gc()
+    #hourlydata <- do.call(c,tmp_list)
+    #rm(tmp_list); gc()
+    #return(hourlydata)
+} 
+  for(t in 1:(length(hour_seq)-1)) { # Every 12 files correspond to one hour here
     if (t==1){
     e <- hourlydata[hour_seq[t]:hour_seq[t+1]]
     } else {
     e <- hourlydata[(hour_seq[t]+1):hour_seq[t+1]]
     }
+  gc()
   
   # Store every hour's ASU data here
   data_per_hour <- list()
-    
-  for(z in 1:length(e)){
+  
+  for(z in 1:length(e)) {
       wave <- e[[z]] # this needs to be E!
       n <- length(wave)
         
@@ -182,6 +191,7 @@ for (i in 1:3){
   data_per_hour$time_of_day <- time_of_day[t]
   
   space_use <- rbind(data_per_hour, space_use)
+  gc()
 }
   space_use <- as.data.frame(space_use)
   site_date_asu <- c(site_date_asu,list(space_use))
@@ -237,7 +247,7 @@ We will use ggplot2 to plot and save individual ASU plots for each unique site-d
 # Saving the ggplots to a folder for every unique site-date combination
 for(i in 1:length(site_date_asu)){
   
-  # Get the data out from a list to a .dataframe (else ggplot won't accept it)
+  # Get the data out from a list to a dataframe (else ggplot won't accept it)
   dat <- data.frame(site_date_asu[i])
   names(dat) <- c("freq","f.cont","time_of_day")
   
