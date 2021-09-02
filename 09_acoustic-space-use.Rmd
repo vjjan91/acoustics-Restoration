@@ -123,44 +123,43 @@ pb <- txtProgressBar(
 length(unique(site_date))
 for(i in 1:1){ 
   
-  # Store the each hour of data as a list here (raw audio files read by tuneR::readWave())
-  hourlydata <- list()
-  
   # Store the acoustic space use data in a data.frame for plotting and analysis
   space_use <- data.frame()
 
   # Extract the strings first by site 
   dat <- files[stringr::str_detect(files,unique(site_date)[i])]
   
-  # Read the files using tuneR::readWave() function and save it in a list
-  tmp_list <- list()
-  
+  # Parallelize the runs
   cl <- makeCluster(8, type = "SOCK")
   registerDoSNOW(cl)
   
-  #for(k in 1:length(dat))
-  hourlydata <- foreach(k=1:length(dat), .combine = 'c', .inorder = T, .packages = 'tuneR') %dopar% {
+  # Store the each hour of data for an entire day as a list here (raw audio files read by tuneR::readWave())
+  dailydata <- foreach(k=1:length(dat), .combine = 'c', .inorder = T, .packages = 'tuneR') %dopar% {
     r <- readWave(dat[k])
   }
-    result; gc()
-    #rm(r); gc()
-    #hourlydata <- do.call(c,tmp_list)
-    #rm(tmp_list); gc()
-    #return(hourlydata)
-} 
+  gc()
+  stopCluster(cl)
+  
+  # renaming the files to ensure that data is read in hour by hour and stored in a separate object called hourlydata
+  # Below we read the first 12 files in and then save it after computing the STDFT and then repeating it for the next 12 files and so on
+  
   for(t in 1:(length(hour_seq)-1)) { # Every 12 files correspond to one hour here
-    if (t==1){
-    e <- hourlydata[hour_seq[t]:hour_seq[t+1]]
+    if (t == 1) {
+    hourlydata <- dailydata[hour_seq[t]:hour_seq[t+1]]
     } else {
-    e <- hourlydata[(hour_seq[t]+1):hour_seq[t+1]]
+    hourlydata <- dailydata[(hour_seq[t]+1):hour_seq[t+1]]
     }
+  
   gc()
   
-  # Store every hour's ASU data here
-  data_per_hour <- list()
+  # Parallelize the runs
+  cl <- makeCluster(8, type = "SOCK")
+  registerDoSNOW(cl)
   
-  for(z in 1:length(e)) {
-      wave <- e[[z]] # this needs to be E!
+  # Store every hour's ASU data here
+  data_per_hour <- foreach(z = 1:length(hourlydata), .combine = 'rbind',
+                           .inorder=T, .packages = 'seewave') %dopar% {
+      wave <- hourlydata[[z]] 
       n <- length(wave)
         
       ## Short-term Fourier transform (using a seewave internal function)
@@ -177,11 +176,11 @@ for(i in 1:1){
         
       # Store the space use data in a dataframe for plotting later
       a <- data.frame(freq, f.cont)
-      data_per_hour <- rbind(a, data_per_hour)
+      #data_per_hour <- rbind(a, data_per_hour)
     }
-  rm(m, wave, a, e, freq, f.cont); gc()
+  rm(hourlydata); gc()
   
-  data_needed <- do.call(c, data_per_hour)
+  #data_needed <- do.call(c, data_per_hour)
     
   data_per_hour  <- data_per_hour %>%
   group_by(freq) %>%
@@ -191,8 +190,8 @@ for(i in 1:1){
   data_per_hour$time_of_day <- time_of_day[t]
   
   space_use <- rbind(data_per_hour, space_use)
-  gc()
-}
+  stopCluster(cl); gc()
+}}
   space_use <- as.data.frame(space_use)
   site_date_asu <- c(site_date_asu,list(space_use))
   names(site_date_asu)[i] <- unique(site_date)[i] 
