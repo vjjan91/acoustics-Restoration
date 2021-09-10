@@ -15,6 +15,7 @@ library(RColorBrewer)
 library(foreach)
 library(doSNOW)
 library(tictoc)
+library(textme)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -28,7 +29,7 @@ Previous papers broadly calculated space use by ascertaining the proportion of r
 
 *Note* From Sound Analysis and Synthesis with R by Jerome Sueur
 
-The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/512 = 93.75 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 93.75 corresponds to a time duration of 0.01s (1/93.75=0.01s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313) 
+The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256 = 187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.01s (1/187.5=0.005s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313) 
 
 Below, we have summarized approaches taken by previous studies: 
 
@@ -48,8 +49,10 @@ path <- "C:\\data\\"
 # Listing the folders within which .WAV files are stored
 folders <- dir(path, recursive=F,full.names=T)
 
+###### Please note ######
+
+# The below set of lines need to be run only once for a given set of sites and days. 
 # Let's first rename the files by name of each site (as prefix)
-# PLEASE NOTE: The renaming needs to be done only a single time (else there will be errors)
 
 for(i in 1:length(folders)){
 
@@ -59,6 +62,8 @@ setwd(folders[i])
 a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
 file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
 }
+
+###### Ending note here ######
 
 # Now get only those files for a full 24 hours across every unique site
 files <- list()
@@ -132,7 +137,7 @@ for(i in 1:2){
   dat <- files[stringr::str_detect(files,unique(site_date)[i])]
   
   # Parallelize the runs
-  cl <- makeCluster(5, type = "SOCK")
+  cl <- makeCluster(6, type = "SOCK")
   registerDoSNOW(cl)
   
   # Store the each hour of data for an entire day as a list here (raw audio files read by tuneR::readWave())
@@ -158,7 +163,7 @@ for(i in 1:2){
   gc()
   
   # Parallelize the runs
-  cl <- makeCluster(5, type = "SOCK")
+  cl <- makeCluster(6, type = "SOCK")
   registerDoSNOW(cl)
   
   # Store every hour's ASU data here
@@ -205,12 +210,19 @@ for(i in 1:2){
   setTxtProgressBar(pb, i)
   toc()
 }
-close(pb)    
- 
+close(pb)
+
+# textme(message = "Code has been completed, check out the results")
+
+# Save the list of dataframes for future analysis
+siteByDayAsu <- bind_rows(site_date_asu, .id = "Site_Day")
+
+# Write to .csv
+write.csv(siteByDayAsu, "data/site-by-day-asu.csv", row.names = F) 
 ```
 
 
-Now that we have calculated acoustic space use values for a given frequency bin size and time resolution for every unique site-date combination, we would like to obtain a single set of space use values for every unique site. In other words, we would like to average space use values across all frequency bins for seven days (a week approximately)
+- C. Now that we have calculated acoustic space use values for a given frequency bin size and time resolution for every unique site-date combination, we would like to obtain a single set of space use values for every unique site. In other words, we would like to average space use values across all frequency bins for seven days (a week approximately). This is done for comparison between sites. 
 
 ```{r}
 # All unique sites
@@ -238,11 +250,17 @@ for(i in 1:length(unique(site))) {
   # Scaling the data between 0 to 1 for the sake of comparison across sites
   asu_sum$f.cont.sum <- range01(asu_sum$f.cont.sum)
   
+  asu_sum <- as.data.frame(asu_sum)
   site_asu <- c(site_asu, list(asu_sum))
   names(site_asu)[i] <- unique(site)[i] 
   rm(dat,asu_sum)
 }
 
+# Save the list of dataframes for future analysis
+siteWiseAsu <- bind_rows(site_asu, .id = "Site")
+
+# Write to .csv
+write.csv(siteWiseAsu, "data/site-wise-asu.csv", row.names = F)
 ```
 
 
@@ -310,8 +328,5 @@ for(j in 1:length(site_asu)){
 
 ggsave(g1, filename = "figs/fig_asu_HP37P4B.svg", width=12, height=7,
        device = svg(), units="in", dpi = 300); dev.off()
-
-
-
 ```
 
