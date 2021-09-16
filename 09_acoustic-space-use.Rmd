@@ -15,7 +15,7 @@ library(RColorBrewer)
 library(foreach)
 library(doSNOW)
 library(tictoc)
-library(textme)
+library(rlist)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -125,8 +125,7 @@ pb <- txtProgressBar(
 
 # Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site-date
 
-length(unique(site_date))
-for(i in 1:2){ 
+for(i in 1:length(unique(site_date))){ 
   
   tic("Total time for a single site-day combination")
   
@@ -212,7 +211,8 @@ for(i in 1:2){
 }
 close(pb)
 
-# textme(message = "Code has been completed, check out the results")
+# store the list object for later
+list.save(site_date_asu, "data/site_date_asu.rdata")
 
 # Save the list of dataframes for future analysis
 siteByDayAsu <- bind_rows(site_date_asu, .id = "Site_Day")
@@ -256,6 +256,9 @@ for(i in 1:length(unique(site))) {
   rm(dat,asu_sum)
 }
 
+# store the list object for later
+list.save(site_asu, "data/site_asu.rdata")
+
 # Save the list of dataframes for future analysis
 siteWiseAsu <- bind_rows(site_asu, .id = "Site")
 
@@ -293,7 +296,7 @@ names(dat) <- c("freq","f.cont","time_of_day")
   
   # Save the data to a folder
   ggsave(filename="",width=12, height=7, units="in", dpi = 300, 
-         plot=g1, device="png", path = paste("figs/site_date_asu/",  paste(names(site_date_asu)[i], ".png", sep=""), sep=""))
+         plot=g1, device="png", path = paste("figs/siteByDayAsu/",  paste(names(site_date_asu)[i], ".png", sep=""), sep=""))
 }
 
 
@@ -322,11 +325,7 @@ for(j in 1:length(site_asu)){
   
   # Save the data to a folder
   ggsave(filename="",width=12, height=7, units="in", dpi = 300, 
-         plot=g1, device="png", path = paste("figs/site_asu/",  paste(names(site_asu)[j], ".png", sep=""), sep=""))
+         plot=g1, device="png", path = paste("figs/siteWiseAsu/",  paste(names(site_asu)[j], ".png", sep=""), sep=""))
 }
-
-
-ggsave(g1, filename = "figs/fig_asu_HP37P4B.svg", width=12, height=7,
-       device = svg(), units="in", dpi = 300); dev.off()
 ```
 
