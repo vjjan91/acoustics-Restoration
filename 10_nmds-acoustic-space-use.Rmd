@@ -128,4 +128,50 @@ TukeyHSD(nmdsVariance)
 ```
 
 
+Visualizing the multivariate homogeneity of group dispersions
+
+The below lines of code have been adapted from: https://chrischizinski.github.io/rstats/adonis/
+```{r}
+# extract the centroids and the site points in multivariate space.  
+centroids <-data.frame(grps=rownames(nmdsVariance$centroids),
+                       data.frame(nmdsVariance$centroids))
+vectors <- data.frame(group=nmdsVariance$group,
+                      data.frame(nmdsVariance$vectors))
+
+# to create the lines from the centroids to each point we will put it in a format that ggplot can handle
+seg.data<-cbind(vectors[,1:3],centroids[rep(1:nrow(centroids),as.data.frame(table(vectors$group))$Freq),2:3])
+names(seg.data)<-c("group","v.PCoA1","v.PCoA2","PCoA1","PCoA2")
+
+# create the convex hulls of the outermost points
+grp1.hull <- seg.data[seg.data$group=="Active",1:3][chull(seg.data[seg.data$group=="Active",2:3]),]
+grp2.hull <- seg.data[seg.data$group=="Benchmark",1:3][chull(seg.data[seg.data$group=="Benchmark",2:3]),]
+grp3.hull <- seg.data[seg.data$group=="Passive",1:3][chull(seg.data[seg.data$group=="Passive",2:3]),]
+all.hull <- rbind(grp1.hull,grp2.hull,grp3.hull)
+
+# plot the panel and convex hulls
+fig_hull <- ggplot() + 
+  geom_polygon(data= all.hull,aes(x=v.PCoA1,y=v.PCoA2),colour="black",alpha=0,linetype="dashed") +
+  geom_segment(data=seg.data,aes(x=v.PCoA1,xend=PCoA1,y=v.PCoA2,yend=PCoA2),alpha=0.30) + 
+  geom_point(data=centroids[,1:3], aes(x=PCoA1,y=PCoA2,shape=grps),size=4,colour="red") + 
+  geom_point(data=seg.data, aes(x=v.PCoA1,y=v.PCoA2,shape=group),size=2) +
+  labs(title="All",x="",y="") +
+  #coord_cartesian(xlim = c(-0.2,0.2), ylim = c(-0.25,0.2)) +
+  theme_bw() + 
+  theme(legend.position="none")
+```
+
+Testing compositional dissimilarity between groups
+
+We will do this by using the vegan::adonis() function which allows you to do permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be seen as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.
+
+```{r}
+# We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
+groups <- nmdsScores$Restoration.type
+
+adonisNMDS <- adonis(nmdsDatMatrix ~ groups, method="bray",perm=999)
+adonisNMDS
+
+# The results suggest that there are significant compositional differences between groups.
+```
+
 
