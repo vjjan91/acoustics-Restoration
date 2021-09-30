@@ -85,7 +85,7 @@ nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
 ```
 
 
-Run a bray-curtis dissimilarity matrix and identify least stressed configuration for the ordinations. Bray-curtis is a statistic used to quantify the compositional dissimilarity between two different sites, based on counts at each site. Ecologists use the Bray-Curtis dissimilarity calculation, which has a number of ideal properties:
+Run a bray-curtis dissimilarity index and identify least stressed configuration for the ordinations. Bray-curtis is a statistic used to quantify the compositional dissimilarity between two different sites, based on counts at each site. Ecologists use the Bray-Curtis dissimilarity calculation, which has a number of ideal properties:
 1. It is invariant to changes in units.
 2. It is unaffected by additions/removals of species that are not present in two communities.
 3. It is unaffected by the addition of a new community.
