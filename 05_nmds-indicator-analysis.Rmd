@@ -234,5 +234,3 @@ indicSpec <- multipatt(nmdsDat[, 3:ncol(nmdsDat)], nmdsDat$Restoration.Type, fun
 summary(indicSpec)
 
 ```
-
-
