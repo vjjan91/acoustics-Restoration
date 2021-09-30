@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Generalized linear modeling and generalized linear mixed modeling
+# Generalized linear mixed modeling (species richness and vegetation data)
 
 In this script, we run generalized linear models to test the association between first order jacknife scores and restoration type. In addition, we run generalized linear mixed models to test associations between species richness and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects.  
 
