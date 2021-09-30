@@ -50,7 +50,6 @@ dawnChorusAsu <- siteWiseAsu %>%
 dusk <- c("16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00")
 duskChorusAsu <- siteWiseAsu %>%
   filter(time_of_day %in% dusk)
-
 ```
 
 Preparing a dataframe of space use to run ordinations
