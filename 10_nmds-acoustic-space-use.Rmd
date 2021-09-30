@@ -1,0 +1,131 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Non-metric multidimensional scaling of acoustic space use data
+
+Here, we will use ordinations as a method of analyzing how acoustic space use (defined in terms of frequency and time, across 24 hours in a day) to test if space use follows a similar pattern of direction of change that was observed for species richness with the direction of change observed as moving from naturally regenerating sites to actively restored to benchmark sites. 
+
+Load necessary libraries for analysis
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(psych)
+library(ecodist)
+library(RColorBrewer)
+library(ggforce)
+library(ggalt)
+library(indicspecies)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+Load the necessary data for nmds calculations
+```{r}
+# load the space use data
+siteWiseAsu <- read.csv("data/site-wise-asu.csv")
+
+# load list of sites
+sites <- read.csv("data/list-of-sites.csv") %>%
+  select("Site.code","Restoration.type")
+
+# Add restoration type column to the space use data
+siteWiseAsu <- left_join(siteWiseAsu,sites, by=c("Site"="Site.code"))
+
+# Separate analysis: space use during certain times of day alone
+# let's look only at dawn chorus to explore what the data looks like
+dawn <- c("05:00-06:00","06:00-07:00","07:00-08:00","08:00-09:00",
+          "09:00-10:00")
+dawnChorusAsu <- siteWiseAsu %>%
+  filter(time_of_day %in% dawn)
+
+# Separate analysis: space use during certain times of day alone
+# let's look only at dusk chorus to explore what the data looks like
+dusk <- c("16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00")
+duskChorusAsu <- siteWiseAsu %>%
+  filter(time_of_day %in% dusk)
+
+```
+
+Preparing a dataframe of space use to run ordinations
+```{r}
+
+# Please note that while creating this dataframe for ordinations, the overall acoustic space use (sum of f.cont.sum column) was calculated by frequency bin, irrespective of the time of day for a given site. In other words, for 24 hours of data, a single value of space use was obtained for a given frequency bin. The frequency bin was pivoted from long to wide and each column essentially corresponded to a frequency bin. Within that frequency bin, grouped for each site, an overall value of space use was computed. 
+
+nmdsDat <- siteWiseAsu %>% # replace with dawnChorusAsu/duskChorusAsu 
+  dplyr::select(Site, freq, f.cont.sum, Restoration.type) %>%
+  group_by(Site, Restoration.type, freq) %>%
+  summarise(totSpaceuse = sum(f.cont.sum)) %>%
+  arrange(Restoration.type) %>%
+  pivot_wider (names_from = freq, values_from = totSpaceuse, values_fill = list(totSpaceuse=0))
+
+# Convert to matrix form
+nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
+```
+
+
+Currently using a euclidean measure of estimating dissimilarity prior to running ordinations
+```{r}
+# Run a euclidean dissimilarity distance and use metaMDS function from vegan to run ordinations
+
+disEuclidean <- vegdist(nmdsDatMatrix, method = "euclidean")
+
+nmdsEuclidean <- vegdist (nmdsDatMatrix, method = "euclidean") %>% 
+  metaMDS (nmdsEuclidean, k=6)
+
+# extract nmds scores
+nmdsScores <- as_tibble(scores(nmdsEuclidean))
+
+# Write the scores to a separate .csv
+write.csv(nmdsScores, "data/nmds-acousticSpaceUse.csv", row.names = F)
+
+# With the above analysis, we note the stress is 0.009349337. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+```
+
+
+Plotting the NMDS scores using ggplot2
+```{r}
+# First let's add the treatment type back to the nmds scores
+nmdsScores$Restoration.type <- nmdsDat$Restoration.type
+
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+
+fig_nmds <- ggplot(data=nmdsScores) + 
+  stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
+  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=4) + 
+  theme_bw() +
+  scale_x_continuous(name="NMDS 1") + 
+  scale_y_continuous(name="NMDS 2") +
+  scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.type)))+
+  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+
+ggsave(fig_nmds, filename = "figs/fig_nmds_spaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_nmds.png")
+```
+
+Testing multivariate homogeneity of group dispersions
+
+One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median (both referred to as 'centroid' from now on unless stated otherwise) in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.
+
+Betadisper tests whether two or more groups (for example, restored and unrestored sites) are homogeneously dispersed in relation to their species in studied samples. This test can be done to see if one group has more compositional variance than another. Moreover, homogeneity of dispersion among groups is very advisable to have if you want to test if two or more groups have different compositions, which is tested by adonis. 
+```{r}
+nmdsVariance <- betadisper(disEuclidean, group = nmdsDat$Restoration.type)
+nmdsVariance
+
+anova(nmdsVariance)
+permutest(nmdsVariance, pairwise = TRUE, permutations = 999)
+TukeyHSD(nmdsVariance)
+
+# These results suggest that there is a significant difference in within group variance between one group and another (For Benchmark-Active sites and Passive-Benchmark sites)
+```
+
+
+
