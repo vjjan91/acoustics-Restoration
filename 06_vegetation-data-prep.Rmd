@@ -105,13 +105,13 @@ pairs.panels(allVeg[,3:9])
 vegPca <- prcomp(allVeg[, 3:9], scale=TRUE, center = TRUE, retx=TRUE)
 summary(vegPca)
 
-# save the data for use in a GLM later
-write.csv(as.tibble(vegPca$x[,1:2]),"data/pcaVeg.csv", row.names = F)
-
 # The proportion of variance explained by the first two axes account for ~72.67%
 
 # Extract PCA values
-PCAvalues <- data.frame('Site_type' = allVeg$Site_type, vegPca$x[,1:2]) # the first two components are selected 
+PCAvalues <- data.frame('Site_ID'=allVeg$Site_ID, 'Site_type' = allVeg$Site_type, vegPca$x[,1:2]) # the first two components are selected 
+
+# save the data for use in a GLM later
+write.csv(PCAvalues,"data/pcaVeg.csv", row.names = F)
 
 # Extract loadings of the variables
 PCAloadings <- data.frame(variables = rownames(vegPca$rotation), vegPca$rotation)
