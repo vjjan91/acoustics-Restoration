@@ -28,7 +28,7 @@ source("code/01_internal-functions.R")
 
 Load the necessary data for nmds calculations
 ```{r}
-# load the space use data
+# load the site-wise space use data
 siteWiseAsu <- read.csv("data/site-wise-asu.csv")
 
 # load list of sites
