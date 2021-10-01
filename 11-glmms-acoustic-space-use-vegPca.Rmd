@@ -26,46 +26,77 @@ source("code/01_internal-functions.R")
 
 Load necessary data for statistical modeling
 ```{r}
-# load the space use data
-siteWiseAsu <- read.csv("data/site-wise-asu.csv")
-
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>%     dplyr::select("Site.code","Restoration.type")
 
+# load the entire asu data across all sites and days computed
+sitebyDayAsu <- read.csv("data/site-by-day-asu.csv") 
+
+# separate by Site and Date
+sitebyDayAsu <- separate(sitebyDayAsu, col = Site_Day, into = c("Site", "Date"), sep = "_") 
+
 # Add restoration type column to the space use data
-siteWiseAsu <- left_join(siteWiseAsu,sites, by=c("Site"="Site.code"))
+sitebyDayAsu <- left_join(sitebyDayAsu, sites, by=c("Site"="Site.code"))
+
+# scale values per site/date for comparison between sites and treatment types
+sitebyDayAsu <- sitebyDayAsu %>%
+  group_by(Site, Date, Restoration.type) %>%
+  mutate(f.cont.scaled = range01(f.cont))
+
+# computing total number of days for which space use has been computed for each site (some sites have very few days. Eg. OLV110R)
+nSites_Days <- sitebyDayAsu %>%
+  dplyr::select(Site, Date, Restoration.type) %>%
+  distinct() %>% arrange(Site) %>% count(Site)
+
+# Unique date site combination to give you a sense of sampling
+# This suggests that we have a lot more data for benchmark sites
+nDays_siteType <- sitebyDayAsu %>%
+  dplyr::select(Site, Date, Restoration.type) %>%
+  distinct() %>% arrange(Site) %>% count(Restoration.type)
 
 # Separate analysis: space use during certain times of day alone
 # let's look only at dawn chorus to explore what the data looks like
 dawn <- c("05:00-06:00","06:00-07:00","07:00-08:00","08:00-09:00",
           "09:00-10:00")
-dawnChorusAsu <- siteWiseAsu %>%
+dawnChorusAsu <- sitebyDayAsu %>%
   filter(time_of_day %in% dawn)
 
 # Separate analysis: space use during certain times of day alone
 # let's look only at dusk chorus to explore what the data looks like
 dusk <- c("16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00")
-duskChorusAsu <- siteWiseAsu %>%
+duskChorusAsu <- sitebyDayAsu %>%
   filter(time_of_day %in% dusk)
 
 # Prepare data for statistical modeling
-# Calculating total space use across all frequency bins and times of day: 128*24
+# Calculating total space use across all frequency bins and times of day: 128*24 for each site-day combination
 
-totSpaceUse <- siteWiseAsu %>%
-  group_by(Site, Restoration.type) %>%
-  summarise(totSpaceuse = sum(f.cont.sum)) 
+totSpaceUse <- sitebyDayAsu %>%
+  group_by(Site, Date, Restoration.type) %>%
+  summarise(totSpaceuse = sum(f.cont.scaled)) %>%
+  group_by(Site) %>% 
+  mutate(visit = row_number()) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode))
 
-# Calculating total space use for dawn chorus alone
+# Calculating total space use for dawn chorus alone for each site-day combination
 
 totSpaceUseDawn <- dawnChorusAsu %>%
-  group_by(Site, Restoration.type) %>%
-  summarise(totSpaceuse = sum(f.cont.sum)) 
+  group_by(Site, Date, Restoration.type) %>%
+  summarise(totSpaceuse = sum(f.cont.scaled)) %>% 
+  group_by(Site) %>% 
+  mutate(visit = row_number()) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode))
 
-# Calculating total space use for dusk chorus alone
+# Calculating total space use for dusk chorus alone for each site-date combination
 
 totSpaceUseDusk <- duskChorusAsu %>%
-  group_by(Site, Restoration.type) %>%
-  summarise(totSpaceuse = sum(f.cont.sum)) 
+  group_by(Site, Date, Restoration.type) %>%
+  summarise(totSpaceuse = sum(f.cont.scaled)) %>% 
+  group_by(Site) %>% 
+  mutate(visit = row_number()) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode))
 
 # Load data from previous scripts for use in a GLM
 vegData <-  read.csv("data/summaryVeg.csv") %>%
@@ -82,40 +113,37 @@ modelDataAll <- vegPcaScores %>%
   rename(Site = Site_ID) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  add_column (spaceUse = totSpaceUse$totSpaceuse,
-              plantingYear = vegData$plantingYear) %>%
-  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
-  mutate(siteCode = factor(siteCode))
+  full_join(totSpaceUse, by=c("Site","Restoration.type")) %>%
+  mutate("roundSpaceuse" = round(totSpaceuse))
 
 # dawn chorus space use
 modelDataDawn <- vegPcaScores %>% 
   rename(Site = Site_ID) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  add_column (spaceUse = totSpaceUseDawn$totSpaceuse,
-              plantingYear = vegData$plantingYear) %>%
-  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
-  mutate(siteCode = factor(siteCode))
+  full_join(totSpaceUseDawn, by=c("Site","Restoration.type")) %>%
+  mutate("roundSpaceuse" = round(totSpaceuse))
 
 # dusk chorus space use
 modelDataDusk <- vegPcaScores %>% 
   rename(Site = Site_ID) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  add_column (spaceUse = totSpaceUseDusk$totSpaceuse,
-              plantingYear = vegData$plantingYear) %>%
-  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
-  mutate(siteCode = factor(siteCode)) 
+  full_join(totSpaceUseDusk, by=c("Site","Restoration.type")) %>%
+  mutate("roundSpaceuse" = round(totSpaceuse))
 ```
 
 Running the generalized linear models
 
-We now run generalized linear models (GLM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. For each model, we carried out chi-square tests of significance, and calculated Nagelkerke pseudo-R2 measure of goodness of fit.
+We now run generalized linear mixed models (GLM) assuming gaussian errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means. 
 
 ```{r}
 # overall space use
-glm_totSpaceUse <- glm(spaceUse ~ Restoration.type, data = modelDataAll, family = gaussian)
-summary(glm_totSpaceUse)
+glmm_allRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian)
+
+summary(glmm_allRestoration)
+tukey_glmmAllRestoration <- summary(glht(glmm_allRestoration, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmAllRestoration)
 
 anova(glm_totSpaceUse, test = 'Chisq')
 nagelkerke(glm_totSpaceUse)
