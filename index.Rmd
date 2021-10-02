@@ -4,6 +4,8 @@ title: "Source code for _Using acoustics to evaluate the impact of forest restor
 author:
     - Vijay Ramesh
     - Akshay VA
+    - Priyanka Hari Haran
+    - Pooja Choksi
     - VV Robin
     - Ruth DeFries
 date: "`r Sys.Date()`"
