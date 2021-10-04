@@ -133,56 +133,63 @@ modelDataDusk <- vegPcaScores %>%
   mutate("roundSpaceuse" = round(totSpaceuse))
 ```
 
-Running the generalized linear models
+Running the generalized linear mixed models
 
-We now run generalized linear mixed models (GLM) assuming gaussian errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means. 
+We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means. 
 
 ```{r}
 # overall space use
-glmm_allRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian)
+glmm_allRestoration <- glmer(totSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="log"))
 
 summary(glmm_allRestoration)
 tukey_glmmAllRestoration <- summary(glht(glmm_allRestoration, linfct=mcp(Restoration.type ="Tukey")))
 cld(tukey_glmmAllRestoration)
 
-anova(glm_totSpaceUse, test = 'Chisq')
-nagelkerke(glm_totSpaceUse)
-tukey_glmtotSpaceUse <- summary(glht(glm_totSpaceUse, mcp(Restoration.type = "Tukey")))
-cld(tukey_glmtotSpaceUse)
-
 # The above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and benchmark sites and actively restored sites (but no difference between active-passive)
 
 # dawn chorus
-glm_dawnSpaceUse <- glm(spaceUse ~ Restoration.type, data = modelDataDawn, family = gaussian)
-summary(glm_dawnSpaceUse)
+glmm_dawnRestoration <- glmer(totSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="log"))
 
-anova(glm_dawnSpaceUse, test = 'Chisq')
-nagelkerke(glm_dawnSpaceUse)
-tukey_glmDawnSpaceUse <- summary(glht(glm_dawnSpaceUse, mcp(Restoration.type = "Tukey")))
-cld(tukey_glmDawnSpaceUse)
+summary(glmm_dawnRestoration)
+tukey_glmmdawnRestoration <- summary(glht(glmm_dawnRestoration, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmdawnRestoration)
 
-# The above result suggests no significant difference in acoustic space use values across treatment types
+# When we look at only the dawn chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and actively restored sites and passively restored sites (but no difference between active-benchmark)
 
-# dawn chorus
-glm_duskSpaceUse <- glm(spaceUse ~ Restoration.type, data = modelDataDusk, family = gaussian)
-summary(glm_duskSpaceUse)
+# dusk chorus
+glmm_duskRestoration <- glmer(totSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDusk, family = gaussian(link="log"))
 
-anova(glm_duskSpaceUse, test = 'Chisq')
-nagelkerke(glm_duskSpaceUse)
-tukey_glmDuskSpaceUse <- summary(glht(glm_duskSpaceUse, mcp(Restoration.type = "Tukey")))
-cld(tukey_glmDuskSpaceUse)
+summary(glmm_duskRestoration)
+tukey_glmmduskRestoration <- summary(glht(glmm_duskRestoration, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmduskRestoration)
 
-# The above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and benchmark sites and actively restored sites (but no difference between active-passive)
+# For dusk chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and benchmark sites and actively restored sites (but no difference between active-passive)
 ```
 
-Running generalized linear mixed models
 
-Testing the role of habitat (vegetation structure) and on acoustic space use within a generalized linear modeling framework
+We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.
 
 ```{r}
-# all bird species
-glmm_totSpaceUse <- glmer(spaceUse ~ PC1 + PC2 + (1|siteCode), data = modelDataAll, family = gaussian)
-summary(glmm_totSpaceUse)
+# overall space use
+glmm_allVeg<- glmer(totSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="log"))
+
+summary(glmm_allVeg)
+
+# There is a significant effect of PC1 on acoustic space use and a marginally significant effect of PC2 on overall acoustic space use
+
+# dawn chorus
+glmm_dawnVeg<- glmer(totSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="log"))
+
+summary(glmm_dawnVeg)
+
+# There is a significant effect of PC1 on dawn acoustic space use and a highly significant effect of PC2 on dawn acoustic space use
+
+# dawn chorus
+glmm_duskVeg<- glmer(totSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDusk, family = gaussian(link="log"))
+
+summary(glmm_duskVeg)
+
+# There is a significant effect of PC1 on dusk acoustic space use
 ```
 
 
