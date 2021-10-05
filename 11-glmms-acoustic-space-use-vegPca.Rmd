@@ -19,6 +19,7 @@ library(psych)
 library(rcompanion)
 library(multcomp)
 library(lme4)
+library(ggpubr)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -164,6 +165,61 @@ tukey_glmmduskRestoration <- summary(glht(glmm_duskRestoration, linfct=mcp(Resto
 cld(tukey_glmmduskRestoration)
 
 # For dusk chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and benchmark sites and actively restored sites (but no difference between active-passive)
+
+# Plotting the above results
+
+mycolours <- c("#440154FF", "#21908CFF", "orange")
+
+fig_glmm_allRest <- ggplot (totSpaceUse, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+  geom_boxplot(alpha = 0.75) + 
+  theme_bw() +
+  scale_x_discrete(labels = c('AR','BM','NR')) +
+  labs(x = "Restoration Type", 
+       y="Overall acoustic space use") +
+  scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
+  stat_summary(geom = 'text', label = c("a", "b", "a"), fun = max, vjust = -1, size = 5.0) +
+  theme(axis.title = element_text(size = 14, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+  
+ggsave(fig_glmm_allRest, filename = "figs/fig_glmm_overallAcousticSpace.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
+
+fig_glmm_dawnRest <- ggplot(totSpaceUseDawn, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+  geom_boxplot(alpha = 0.75) + 
+  theme_bw() +
+  scale_x_discrete(labels = c('AR','BM','NR')) +
+  labs(x = "Restoration Type", 
+       y="Dawn acoustic space use") +
+  scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
+  stat_summary(geom = 'text', label = c("b", "b", "a"), fun = max, vjust = -1, size = 5.0) +
+  theme(axis.title = element_text(size = 14, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+  
+ggsave(fig_glmm_dawnRest, filename = "figs/fig_glmm_dawnAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
+
+fig_glmm_duskRest <- ggplot(totSpaceUseDusk, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+  geom_boxplot(alpha = 0.75) + 
+  theme_bw() +
+  scale_x_discrete(labels = c('AR','BM','NR')) +
+  labs(x = "Restoration Type", 
+       y="Dusk acoustic space use") +
+  scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
+  stat_summary(geom = 'text', label = c("a", "b", "a"), fun = max, vjust = -1, size = 5.0) +
+  theme(axis.title = element_text(size = 14, face = "bold"), 
+        axis.ticks.length.x = unit(.5, "cm"),
+        axis.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(size = 12))
+  
+ggsave(fig_glmm_duskRest, filename = "figs/fig_glmm_duskAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 ```
 
 
