@@ -35,35 +35,35 @@ trait_dat <- read.csv("data/species-trait-dat.csv")
 
 # Total number of detections
 totalDetections <- datSubset %>%
-  group_by(Site, Restoration.Type) %>%
+  group_by(Site, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
-  summarise(totalDetections = sum(c_across("IP":"CR")))
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) %>%
+  summarise(totalDetections = sum(c_across("IP":"HSWP")))
 
 # richness
 richness <- datSubset %>%
-  group_by(Site, Restoration.Type) %>%
+  group_by(Site, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
-  mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) %>% 
+  mutate_at(vars(c("IP":"HSWP")),~ replace(., . > 0, 1)) %>%
   rowwise() %>% 
-  mutate(richness = sum(c_across(IP:CR))) %>%
-  dplyr::select(Site, Restoration.Type, richness)
+  mutate(richness = sum(c_across(IP:HSWP))) %>%
+  dplyr::select(Site, Restoration.type, richness)
 
 # richness by Visit
 # this data basically gives you richness per visit and adds a visit number for each consecutive visit to that site
 richnessPerVisit <- datSubset %>%
-  group_by(Site, Date, Restoration.Type) %>%
+  group_by(Site, Date, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>% 
-  mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) %>% 
+  mutate_at(vars(c("IP":"HSWP")),~ replace(., . > 0, 1)) %>%
   rowwise() %>% 
-  mutate(richness = sum(c_across(IP:CR))) %>%
+  mutate(richness = sum(c_across(IP:HSWP))) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  dplyr::select(Site, Restoration.Type, Date, richness, visit, siteCode)
+  dplyr::select(Site, Restoration.type, Date, richness, visit, siteCode)
 
 # We further estimate the number of detections per point count
 datSummary <- totalDetections %>%
@@ -72,17 +72,19 @@ datSummary <- totalDetections %>%
 
 # combine the Detections dataframe with the trait dataset
 nDetectionsTrait <- datSubset %>%
-  group_by(Site, Restoration.Type, Date) %>%
+  group_by(Site, Restoration.type, Date) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) %>%
-  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) %>%
+  pivot_longer(cols=IP:HSWP, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
   mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
   rename(., nDetections = count)
 
 # Load data from previous scripts for use in a GLM
-vegData <-  read.csv("data/summaryVeg.csv")
-vegPcaScores <- read.csv("data/pcaVeg.csv")
+vegData <-  read.csv("data/summaryVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
+vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
 jackAll <- read.csv("data/jackAll.csv")
 jackRainforest <- read.csv("data/jackRainforest.csv")
 jackOpencountry <- read.csv("data/jackOpencountry.csv")
@@ -92,155 +94,141 @@ jackOpencountry <- read.csv("data/jackOpencountry.csv")
 Getting data ready in a format for generalized linear modeling
 ```{r}
 # All birds
-modelDataAll <- vegPcaScores %>% 
-  add_column (Site = vegData$Site_ID,
-              Restoration.Type = as.factor(datSummary$Restoration.Type),
-              jackknife = jackAll$jack1,
-              nSpecies = jackAll$Species,
-              totalDetections = datSummary$totalDetections,
-              pointDetections = datSummary$pointDetections, 
-              plantingYear = vegData$plantingYear) %>% 
-  mutate ("roundjk" = round(jackknife))
+modelDataAll <- vegPcaScores %>%  
+  rename(Site = Site_ID) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode)) %>%
+  rename(Restoration.type = Site_type) %>%
+  mutate(across(Restoration.type, factor))  %>%
+  add_column(jacknife = jackAll$jack1) %>% 
+  mutate ("roundjk" = round(jacknife))
 
 # rainforest birds
-modelData_rainForest <- vegPcaScores %>% 
-  add_column (Site = vegData$Site_ID,
-              Restoration.Type = as.factor(datSummary$Restoration.Type),
-              jackknife = jackRainforest$jack1,
-              nSpecies =  jackRainforest$Species,
-              plantingYear = vegData$plantingYear) %>% 
-  mutate ("roundjk" = round(jackknife))
+modelData_rainForest <- vegPcaScores %>%  
+  rename(Site = Site_ID) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode)) %>%
+  rename(Restoration.type = Site_type) %>%
+  mutate(across(Restoration.type, factor))  %>%
+  add_column(jacknife = jackRainforest$jack1) %>% 
+  mutate ("roundjk" = round(jacknife))
 
 # open country birds
-modelData_openCountry <- vegPcaScores %>% 
-  add_column (Site = vegData$Site_ID,
-              Restoration.Type = as.factor(datSummary$Restoration.Type),
-              jackknife = jackOpencountry$jack1,
-              nSpecies =  jackOpencountry$Species,
-              plantingYear = vegData$plantingYear) %>% 
-  mutate ("roundjk" = round(jackknife))
+modelData_openCountry <- vegPcaScores %>%  
+  rename(Site = Site_ID) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode)) %>%
+  rename(Restoration.type = Site_type) %>%
+  mutate(across(Restoration.type, factor))  %>%
+  add_column(jacknife = jackOpencountry$jack1) %>% 
+  mutate ("roundjk" = round(jacknife))
 ```
 
-Getting data ready for generalized linear mixed modeling
+Getting data ready for generalized linear mixed modeling with richness data as well as visits. 
 ```{r}
-# data for the GLMM
+# data for the GLMM (overall richness)
 glmmAll <- richnessPerVisit[,-2] %>%
-  full_join(modelDataAll, by = "Site")
+  full_join(modelDataAll, by = c("Site","siteCode"))
 
-# rainforest birds
+# rainforest birds richness for glmm
 glmmRainforest <- nDetectionsTrait %>%
-  group_by(Site, Restoration.Type, Date) %>% 
+  group_by(Site, Restoration.type, Date) %>% 
   filter (Habitat == "RF") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  select(-Restoration.Type) %>%
-  full_join(modelData_rainForest, by="Site")
+  full_join(modelData_rainForest, by = c("Site","siteCode","Restoration.type"))
   
 # open-country birds
 glmmOpencountry <- nDetectionsTrait %>%
-  group_by(Site, Restoration.Type, Date) %>% 
+  group_by(Site, Restoration.type, Date) %>% 
   filter (Habitat == "OC") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  select(-Restoration.Type) %>%
-  full_join(modelData_openCountry, by="Site")
+  full_join(modelData_openCountry, by = c("Site","siteCode","Restoration.type"))
 
 # Let's look at species by foraging habit
 # canopy birds
 glmmCanopy <- nDetectionsTrait %>%
-  group_by(Site, Restoration.Type, Date) %>% 
+  group_by(Site, Restoration.type, Date) %>% 
   filter (Habit == "CAN") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  select(-Restoration.Type) %>%
-  full_join(modelDataAll, by="Site")
+  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
   
 # ground-feeding birds
 glmmGround <- nDetectionsTrait %>%
-  group_by(Site, Restoration.Type, Date) %>% 
+  group_by(Site, Restoration.type, Date) %>% 
   filter (Habit == "GRD") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  select(-Restoration.Type) %>%
-  full_join(modelDataAll, by="Site")
+  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
 
 # mid-storey birds
 glmmMidStorey <- nDetectionsTrait %>%
-  group_by(Site, Restoration.Type, Date) %>% 
+  group_by(Site, Restoration.type, Date) %>% 
   filter (Habit == "MID") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  select(-Restoration.Type) %>%
-  full_join(modelDataAll, by="Site")
+  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
 
 # understorey birds
 glmmUnderStory <- nDetectionsTrait %>%
-  group_by(Site, Restoration.Type, Date) %>% 
+  group_by(Site, Restoration.type, Date) %>% 
   filter (Habit == "UND") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  select(-Restoration.Type) %>%
-  full_join(modelDataAll, by="Site")
+  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
 
 ```
 
-Running the generalized linear models
+Running the generalized linear mixed models
 
-We now run generalized linear models (GLM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. For each model, we carried out chi-square tests of significance, and calculated Nagelkerke pseudo-R2 measure of goodness of fit.
+We now run generalized linear models (GLM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
 ```{r}
 # all birds
-glm_allBirds <- glm(roundjk ~ Restoration.Type, data = modelDataAll, family = poisson(link = log))
-summary(glm_allBirds)
+glmm_alljk <- glmer(roundjk ~ Restoration.type +(1|siteCode), data = modelDataAll, family = poisson(link = log))
+summary(glmm_alljk)
 
-anova(glm_allBirds, test = 'Chisq')
-nagelkerke(glm_allBirds)
-tukey_glmAllBirds <- summary(glht(glm_allBirds, mcp(Restoration.Type = "Tukey")))
-cld(tukey_glmAllBirds)
+tukey_glmmAllJack <- summary(glht(glmm_alljk, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmAllJack)
 
-# The above result suggests a significant difference in first order jacknife estimates for benchmark sites and passively restored site (but no difference between active-passive and active-benchmark).
+# The above result suggests that there is a significant difference in first order jacknife estimates for benchmark sites and passively restored site (but no difference between active-passive and active-benchmark).
 
 # rainforest birds
-glm_rainForest <- glm(roundjk ~ Restoration.Type, data = modelData_rainForest, family = poisson(link = log))
-summary(glm_rainForest)
+glmm_rainForestJack <- glmer(roundjk ~ Restoration.type + +(1|siteCode), data = modelData_rainForest, family = poisson(link = log))
+summary(glmm_rainForestJack)
 
-anova(glm_rainForest, test = 'Chisq')
-nagelkerke(glm_rainForest)
+tukey_glmmRainForestJack <- summary(glht(glmm_rainForestJack, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmRainForestJack)
 
-tukey_glmRainforest <- summary(glht(glm_rainForest, mcp(Restoration.Type = "Tukey")))
-cld(tukey_glmRainforest)
-
-# The above result suggests a significant difference in first order jacknife estimates of rainforest species between benchmark and active sites. 
+# The above result suggests no significant difference in means between any treatment types
 
 # open country birds
-glm_openCountry <- glm(roundjk ~ Restoration.Type, data = modelData_openCountry, family = poisson(link = log))
-summary(glm_openCountry)
+glmm_openCountryJack <- glmer(roundjk ~ Restoration.type + +(1|siteCode), data = modelData_openCountry, family = poisson(link = log))
+summary(glmm_openCountryJack)
 
-anova(glm_openCountry, test = 'Chisq')
-nagelkerke(glm_openCountry)
+tukey_glmmOpenCountryJack <- summary(glht(glmm_openCountryJack, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmOpenCountryJack)
 
-tukey_glmOpenCountry <- summary(glht(glm_openCountry, mcp(Restoration.Type = "Tukey")))
-cld(tukey_glmOpenCountry)
-
-# For open country birds, there is a significant difference in first-order jacknife estimates for both benchmark and active sites and benchmark and passively restored sites. 
-
+# For open country birds, there is a significant difference in first-order jacknife estimates between each treatment type
 ```
 
 
@@ -253,6 +241,8 @@ Testing the role of habitat (vegetation structure) and foraging habit on species
 # all bird species
 glmm_allBirds <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmAll, family = poisson(link = log))
 summary(glmm_allBirds)
+
+# significant association with PC2
 
 # rainforest birds
 glmm_Rainforest <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmRainforest, family = poisson(link = log))
