@@ -25,15 +25,23 @@ library(ggpubr)
 source("code/01_internal-functions.R")
 ```
 
-To start with, we will compute species richness from 3 non-consecutive days for each site for each season (following Campos-Cerqueira et al., 2019)
+To start with, we will compute species richness from 3 non-consecutive visits for each site for each season. Across two seasons, a total of 6 non-consecutive visits are chosen for each site. 
 
-We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations)
+We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations).
 ```{r}
-# Attach the 2020_summer_annotation data 
-data <- read.csv("data/2020-summer-annotation-working-document.csv")
+# Attach the annotation data for summer and winter
+summer_data <- read.csv("data/2020-summer-annotation-working-document.csv")
+winter_data <- read.csv("data/2020-winter-annotation-working-document.csv")
 
+# combine the datasets for a single dataframe for the present analysis
+data <- bind_rows(summer_data,winter_data)
+names(data)
+
+# reorder columns
+data <- data %>%
+  relocate(c("BFO","SBEO", "JN", "AK", "HSWP"),  .after = "CR")                                                                     
 # Site-wise sorting of the 16-min of data
-# Split the file names into 4 columns : Site, Date, Time and Splits   
+# Split the file names into 4 columns : Site, Date, Time and Splits  
 data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 data
 
@@ -41,13 +49,14 @@ data
 trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
 
-How many visits (counted as number of unique days) to a site has been annotated? Please note that some sites have more than 3 visits to a site, and hence we ensure that we choose only three non-consecutive visits to a given site
+How many visits (counted as number of unique days) to a site has been annotated? Please note that some sites have more than 6 visits to a site, and hence we ensure that we choose only 6 non-consecutive visits to a given site
 ```{r}
-# At the moment 1-3 days at each site has been annotated
-# Some sites have only 1 visit. See SEL sites (Selaliparai)
-# Some sites even have 4 visits, but we will choose 3 random visits only
+# First we remove OLCAP5B - a site for which only 3 visits were made in summer and not sampled as a result of logistic reasons in winter
+data <- data %>%
+  filter(!str_detect(Site, 'OLCAP5B'))
 
 # Number of visits to a particular site
+# Only INBS04U has 5 visits because another visit was not possible due to rain
 nSites_Days <- data %>%
   dplyr::select(Site, Date)%>%
   distinct() %>% arrange(Site) %>% count(Site)
@@ -60,7 +69,7 @@ uniqueSiteDate <- data %>%
 # Convert date column to YMD format using lubridate::ymd()
 uniqueSiteDate$Date <- lubridate::ymd(uniqueSiteDate$Date)
 
-# The below lines of code were written following a query on stackOverflow to select three non-consecutive visits to any site
+# The below lines of code were written following a query on stackOverflow to select six non-consecutive visits to any site
 # Link: https://stackoverflow.com/questions/67212152/select-non-consecutive-dates-for-every-grouped-element-in-r
 
 nonConVisits <- uniqueSiteDate%>% 
@@ -74,7 +83,7 @@ nonConVisits <- uniqueSiteDate%>%
            filter(!is.na(Site)) %>%
            filter(row_number() %% 2 == 1) %>%
            ungroup() %>%
-           sample_n(min(n(), 3))
+           sample_n(min(n(), 6))
          ) %>%
   select(-n)
 
@@ -83,6 +92,10 @@ nonConVisits$Date <- str_remove_all(as.character(nonConVisits$Date),"-")
 
 # Left-join with the original dataframe to subset the data for analysis
 datSubset <- left_join(nonConVisits,data)
+names(datSubset)
+
+# renaming columns
+datSubset <- rename(datSubset, Restoration.type = Restoration.Type..Benchmark.Active.Passive.)
 
 # Save this data as a .csv for future analysis (later scripts)
 write.csv(datSubset,"data/datSubset.csv", row.names = F)
@@ -90,26 +103,24 @@ write.csv(datSubset,"data/datSubset.csv", row.names = F)
 
 Now group the data by site and restoration type and sum the number of detections across sites. At the moment, we will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness below.
 ```{r}
-# Calculate the overall number of detections for each site across 1-3 days of data (translates to 16min to 48min of data per site)
-# We would like to obtain a max of 3 visits to a site only (some sites have 4 visits)
+# Calculate the overall number of detections for each site across 6 days of data (translates to ~ 96 min of data per site)
 
 nDetections_Site <- datSubset %>%
-  group_by(Site, Restoration.Type) %>%
+  group_by(Site, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum) 
-  
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) 
 ```
 
 Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall species richness for a 16-min to 48-min window.
 ```{r}
 richness <- nDetections_Site  %>% 
-  mutate_at(vars(c("IP":"CR")),~ replace(., . > 0, 1)) %>%
+  mutate_at(vars(c("IP":"HSWP")),~ replace(., . > 0, 1)) %>%
   rowwise() %>% 
-  mutate(richness = sum(c_across(IP:CR))) %>%
-  dplyr::select(Site, Restoration.Type, richness)
+  mutate(richness = sum(c_across(IP:HSWP))) %>%
+  dplyr::select(Site, Restoration.type, richness)
 
 # Test if there are significant differences in richness across treatment types
-anovaAll <- aov(richness~Restoration.Type, data = richness)
+anovaAll <- aov(richness~Restoration.type, data = richness)
 
 # Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
 tukeyAll <- TukeyHSD(anovaAll)
@@ -117,9 +128,8 @@ tukeyAll <- TukeyHSD(anovaAll)
 # The above result suggests that there are no differences in overall species richness across treatment types
 
 # Create a boxplot of species richness by group (Here: group refers to Restoration Type)
-# Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
 
-fig_richness <- ggplot(richness, aes(x=Restoration.Type, y=richness, fill=Restoration.Type)) +  geom_boxplot(alpha=0.7) + 
+fig_richness <- ggplot(richness, aes(x=Restoration.type, y=richness, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
     labs(x="Restoration Type", 
@@ -139,13 +149,12 @@ knitr::include_graphics("figs/fig_richness.png")
 # We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches (But these differences are not significant)
 ```
 
-Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.
-To do so: Add an additional column of species-trait data and group data based on the same.
+Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.To do so: Add an additional column of species-trait data and group data based on the same.
 ```{r}
 # First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections>0 as 1 else they are 0
 
 richness_trait <- nDetections_Site %>%
-  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  pivot_longer(cols=IP:HSWP, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
   mutate(forRichness = case_when(count>0 ~ 1,
                                  count==0 ~ 0))
@@ -153,8 +162,8 @@ richness_trait <- nDetections_Site %>%
 # Calculate overall richness for each site as a function of rainforest species and open-country species
 
 richness_trait <-  richness_trait %>%
-  dplyr::select(Site, Restoration.Type, Species_Code, Habitat, forRichness) %>%
-  group_by(Site, Restoration.Type, Habitat) %>%
+  dplyr::select(Site, Restoration.type, Species_Code, Habitat, forRichness)%>%
+  group_by(Site, Restoration.type, Habitat) %>%
   summarise(richness = sum(forRichness))
 
 # Let's subset data for richness as a function of rainforest specialists and open-country generalists and test for significant differences (if any)
@@ -165,17 +174,19 @@ richness_opencountry <- richness_trait %>%
   filter(Habitat=="OC")
 
 # Test if there are significant differences in richness across treatment types as a function of species trait
-anova_rainforest <- aov(richness~Restoration.Type, data = richness_rainforest)
-anova_opencountry <- aov(richness~Restoration.Type, data = richness_opencountry)
+anova_rainforest <- aov(richness~Restoration.type, data = richness_rainforest)
+anova_opencountry <- aov(richness~Restoration.type, data = richness_opencountry)
 
-# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
+# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types for rainforest birds, but a significant difference between benchmark-active and benchmark-passive sites for open country birds
+
 tukey_rainforest <- TukeyHSD(anova_rainforest)
 tukey_opencountry <- TukeyHSD(anova_opencountry)
 
 # Plot the above result
-fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.Type, y=richness, fill=Habitat)) +
+fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.type, y=richness, fill=Habitat)) +
+  #facet_wrap(vars(Habitat)) +
     geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+  scale_fill_scico_d(palette = "roma") +
     theme_bw() +
     labs(x="Restoration Type", 
        y="Species Richness") +
