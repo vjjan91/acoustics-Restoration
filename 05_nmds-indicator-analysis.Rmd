@@ -44,25 +44,25 @@ trait_dat <- read.csv("data/species-trait-dat.csv")
 
 # Site-summary (Number of detections across all sites)
 datSummary <- datSubset %>%
-  group_by(Site, Restoration.Type) %>%
+  group_by(Site, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
 ```
 
 
 Preparing dataframe of traits and species to be used for NMDS later on
 ```{r}
-# Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
+# Calculate the overall number of detections for each site. Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
 
 nDetections_site_date <- datSubset %>%
-  group_by(Site, Restoration.Type, Date) %>%
+  group_by(Site, Restoration.type, Date) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
   
 # Combine the nDetections and trait based data to obtain a dataframe for further analysis
 
 nDetections_trait <- nDetections_site_date %>%
-  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  pivot_longer(cols=IP:HSWP, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
   mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
   rename(., nDetections = count)
@@ -74,10 +74,10 @@ Preparing a dataframe of detections to run ordinations
 # We will prepare a community matrix data that can be used to run dissimilarity indices
 
 nmdsDat <- nDetections_trait %>% 
-  dplyr::select(Site, Species_Code, nDetections, Restoration.Type) %>% 
-  group_by(Species_Code, Site, Restoration.Type) %>% 
+  dplyr::select(Site, Species_Code, nDetections, Restoration.type) %>% 
+  group_by(Species_Code, Site, Restoration.type) %>% 
   summarise (totDetections = sum(nDetections)) %>% 
-  arrange(Restoration.Type) %>%
+  arrange(Restoration.type) %>%
   pivot_wider (names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
 
 # Convert to matrix form
@@ -104,32 +104,32 @@ nmdsBrayCurtis <- vegdist (nmdsDatMatrix, method = "bray") %>%
 nmdsScores <- as.tibble(scores(nmdsBrayCurtis))
 
 # Write the scores to a separate .csv
-write.csv(nmdsScores, "data/nmdsBrayCurtis.csv", row.names = F)
+write.csv(nmdsScores, "data/nmdsBrayCurtis-bird-detections.csv", row.names = F)
 
-# With the above analysis, we note the stress is 0.07316083. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+# With the above analysis, we note the stress is 0.06107898. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 ```
 
 
 Plotting the NMDS scores using ggplot2
 ```{r}
 # First let's add the treatment type back to the nmds scores
-nmdsScores$Restoration.Type <- nmdsDat$Restoration.Type
+nmdsScores$Restoration.type <- nmdsDat$Restoration.type
 
 # Add a custom set of colors
 mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_nmds <- ggplot(data=nmdsScores) + 
-  stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.Type),level = 0.50) +
-  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.Type,colour=Restoration.Type),size=4) + 
+  stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
+  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=4) + 
   theme_bw() +
   scale_x_continuous(name="NMDS 1") + 
   scale_y_continuous(name="NMDS 2") +
-  scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.Type)))+
+  scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.type)))+
   scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
 
-ggsave(fig_nmds, filename = "figs/fig_nmds.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_nmds, filename = "figs/fig_nmds_birdDetections.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
-knitr::include_graphics("figs/fig_nmds.png")
+knitr::include_graphics("figs/fig_nmds_birdDetections.png")
 ```
 
 Testing multivariate homogeneity of group dispersions
@@ -138,7 +138,7 @@ One measure of multivariate dispersion (variance) for a group of samples is to c
 
 Betadisper tests whether two or more groups (for example, restored and unrestored sites) are homogeneously dispersed in relation to their species in studied samples. This test can be done to see if one group has more compositional variance than another. Moreover, homogeneity of dispersion among groups is very advisable to have if you want to test if two or more groups have different compositions, which is tested by adonis. 
 ```{r}
-nmdsVariance <- betadisper(disBrayCurtis, group = nmdsDat$Restoration.Type)
+nmdsVariance <- betadisper(disBrayCurtis, group = nmdsDat$Restoration.type)
 nmdsVariance
 
 anova(nmdsVariance)
@@ -188,7 +188,7 @@ We will do this by using the vegan::adonis() function which allows you to do per
 
 ```{r}
 # We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
-groups <- nmdsScores$Restoration.Type
+groups <- nmdsScores$Restoration.type
 
 adonisNMDS <- adonis(nmdsDatMatrix ~ groups, method="bray",perm=999)
 adonisNMDS
@@ -228,7 +228,7 @@ See: https://cran.r-project.org/web/packages/indicspecies/vignettes/indicspecies
 
 ```{r}
 # Running the multi-pattern analysis across combinations of groups
-indicSpec <- multipatt(nmdsDat[, 3:ncol(nmdsDat)], nmdsDat$Restoration.Type, func = "r.g", control = how(nperm=999))
+indicSpec <- multipatt(nmdsDat[, 3:ncol(nmdsDat)], nmdsDat$Restoration.type, func = "r.g", control = how(nperm=999))
 
 # looking at associations with stratum/pairs of strata
 summary(indicSpec)
