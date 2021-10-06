@@ -32,25 +32,25 @@ trait_dat <- read.csv("data/species-trait-dat.csv")
 
 # Site-summary (Number of detections across all sites)
 datSummary <- datSubset %>%
-  group_by(Site, Restoration.Type) %>%
+  group_by(Site, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
 ```
 
 
 Preparing dataframe for jacknifing and extracting jacknife scores
 ```{r}
-# Calculate the overall number of detections for each site across X days of data (translates to 16min to 48min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
+# Calculate the overall number of detections for each site across 6 days of data (translates to ~96-min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
 
 nDetections_site_date <- datSubset %>%
-  group_by(Site, Restoration.Type, Date) %>%
+  group_by(Site, Restoration.type, Date) %>%
   transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"CR")),.funs = sum)
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
   
 # Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates
 
 nDetections_trait <- nDetections_site_date %>%
-  pivot_longer(cols=IP:CR, names_to="Species_Code", values_to="count") %>%
+  pivot_longer(cols=IP:HSWP, names_to="Species_Code", values_to="count") %>%
   left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes")) %>%
   mutate(forRichness = case_when(count>0 ~ 1,count==0 ~ 0)) %>%
   rename(., nDetections = count)
@@ -59,8 +59,8 @@ nDetections_trait <- nDetections_site_date %>%
 # To do the same, we first prepare the dataframe in a manner where we have a matrix of Site by Date by Species name
 
 jacknifeAll <- nDetections_trait %>%
-  select(Site, Date, Species_Code, nDetections, Restoration.Type) %>%
-  group_by(Site, Date, Restoration.Type, Species_Code) %>%
+  dplyr::select(Site, Date, Species_Code, nDetections, Restoration.type) %>%
+  group_by(Site, Date, Restoration.type, Species_Code) %>%
   summarise(totDetections = sum(nDetections)) %>%
   pivot_wider(names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
 
@@ -68,8 +68,8 @@ jacknifeAll <- nDetections_trait %>%
 
 jacknife_rainForest <- nDetections_trait %>%
   filter(Habitat=="RF") %>%
-  select(Site, Date, Species_Code, nDetections, Restoration.Type) %>%
-  group_by(Site, Date, Restoration.Type, Species_Code) %>%
+  dplyr::select(Site, Date, Species_Code, nDetections, Restoration.type) %>%
+  group_by(Site, Date, Restoration.type, Species_Code) %>%
   summarise(totDetections = sum(nDetections)) %>%
   pivot_wider(names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
 
@@ -77,8 +77,8 @@ jacknife_rainForest <- nDetections_trait %>%
 
 jacknife_openCountry <- nDetections_trait %>%
   filter(Habitat=="OC") %>%
-  select(Site, Date, Species_Code, nDetections, Restoration.Type) %>%
-  group_by(Site, Date, Restoration.Type, Species_Code) %>%
+  dplyr::select(Site, Date, Species_Code, nDetections, Restoration.type) %>%
+  group_by(Site, Date, Restoration.type, Species_Code) %>%
   summarise(totDetections = sum(nDetections)) %>%
   pivot_wider(names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
 ```
@@ -88,7 +88,7 @@ Extract jacknife scores
 jackAllScore <- specpool(jacknifeAll[,4:ncol(jacknifeAll)],
                        pool = jacknifeAll$Site) %>%
   rownames_to_column("Site") %>%
-  add_column (Restoration.Type = datSummary$Restoration.Type)
+  add_column (Restoration.type = datSummary$Restoration.type)
 
 # write out results
 write.csv(jackAllScore, "data/jackAll.csv", row.names=F)
@@ -96,7 +96,7 @@ write.csv(jackAllScore, "data/jackAll.csv", row.names=F)
 jack_rainForestScore <- specpool(jacknife_rainForest[,4:ncol(jacknife_rainForest)],
                        pool = jacknife_rainForest$Site) %>%
   rownames_to_column("Site") %>%
-  add_column (Restoration.Type = datSummary$Restoration.Type)
+  add_column (Restoration.type = datSummary$Restoration.type)
 
 # write out results
 write.csv(jack_rainForestScore,"data/jackRainforest.csv", row.names = F)
@@ -104,7 +104,7 @@ write.csv(jack_rainForestScore,"data/jackRainforest.csv", row.names = F)
 jack_openCountryScore <-specpool(jacknife_openCountry[,4:ncol(jacknife_openCountry)],
                        pool = jacknife_openCountry$Site) %>%
   rownames_to_column("Site") %>%
-  add_column (Restoration.Type = datSummary$Restoration.Type)
+  add_column (Restoration.type = datSummary$Restoration.type)
 
 # write out results
 write.csv(jack_openCountryScore, "data/jackOpencountry.csv", row.names = F)
@@ -119,17 +119,16 @@ plot(jackAllScore$jack1, jackAllScore$boot)
 Plotting jacknife estimates and testing for any significant differences between treatment types
 ```{r}
 # Test if there are significant differences in jacknife estimates across treatment types
-anovaJackAll <- aov(jack1~Restoration.Type, data = jackAllScore)
+anovaJackAll <- aov(jack1~Restoration.type, data = jackAllScore)
 
 # Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
 tukeyJackAll <- TukeyHSD(anovaJackAll)
 
-# The above result suggests that there are no differences in overall jacknife estimates across treatment types
+# The above result suggests that there is a significant difference in overall jacknife estimates between passive and benchmark sites but no other pair
 
 # Create a boxplot of jacknife estimates by group (Here: group refers to Restoration Type)
-# Temporary plots based on uneven visits to a site. Note it ranges from 1 to 3 visits.
 
-fig_jackAll <- ggplot(jackAllScore, aes(x=Restoration.Type, y=jack1, fill=Restoration.Type)) +  geom_boxplot(alpha=0.7) + 
+fig_jackAll <- ggplot(jackAllScore, aes(x=Restoration.type, y=jack1, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
     labs(x="Restoration Type", 
@@ -146,23 +145,22 @@ ggsave(fig_jackAll, filename = "figs/fig_jackAll.png", width=12, height=7,
 
 knitr::include_graphics("figs/fig_jackAll.png")
 
-# We observe that the overall jacknife estimates is similar across passively restored forest patches and benchmark (protected area) forest patches while actively restored forest patches have lower jacknife estimates(But these differences are not significant)
 ```
 
 Let's test for significant differences in jacknife estimates as a function of species trait
 ```{r}
-anovaJack_rainForest <- aov(jack1~Restoration.Type, data = jack_rainForestScore)
-anovaJack_openCountry <- aov(jack1~Restoration.Type, data = jack_openCountryScore)
+anovaJack_rainForest <- aov(jack1~Restoration.type, data = jack_rainForestScore)
+anovaJack_openCountry <- aov(jack1~Restoration.type, data = jack_openCountryScore)
 
 # Tukey test to study each pair of treatment 
 tukeyJack_rainForest <- TukeyHSD(anovaJack_rainForest)
 tukeyJack_openCountry <- TukeyHSD(anovaJack_openCountry)
 
-# For rainforest species - there is a significant difference in jacknife estimates between benchmark and active sites, while there is no difference in jacknife estimates across strata for open country species of birds
+# For rainforest species - there is no significant difference in jacknife estimates between any treatment types, while for open-country birds; there is a significant difference in jacknife estimates across each treatment type
 
 # Plot the above results
 # Rainforest species
-fig_jack_rainForest <- ggplot(jack_rainForestScore, aes(x=Restoration.Type, y=jack1, fill=Restoration.Type)) +
+fig_jack_rainForest <- ggplot(jack_rainForestScore, aes(x=Restoration.type, y=jack1, fill=Restoration.type)) +
     geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -180,7 +178,7 @@ ggsave(fig_jack_rainForest, filename = "figs/fig_jack_rainForest.png", width=12,
 knitr::include_graphics("figs/fig_jack_rainForest.png")
 
 # Opencountry species
-fig_jack_openCountry <- ggplot(jack_openCountryScore, aes(x=Restoration.Type, y=jack1, fill=Restoration.Type)) +
+fig_jack_openCountry <- ggplot(jack_openCountryScore, aes(x=Restoration.type, y=jack1, fill=Restoration.type)) +
     geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
