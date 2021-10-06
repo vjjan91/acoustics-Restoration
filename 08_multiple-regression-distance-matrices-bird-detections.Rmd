@@ -26,7 +26,8 @@ source("code/01_internal-functions.R")
 Load necessary data and create dissimilarity matrices to run Mantel's tests
 ```{r}
 # estimating geographic distance (euclidean) between sites
-sites <- read.csv("data/list-of-sites.csv")
+sites <- read.csv("data/list-of-sites.csv") %>%
+  filter(!str_detect(Site.code, 'OLCAP5B'))
 
 sites <- st_as_sf(sites, coords = c("Longitude","Latitude"), crs=4326)
 sites <- st_transform(sites, 32643)
@@ -35,12 +36,14 @@ distanceData <- dist(st_coordinates(sites), method = "euclidean", diag = TRUE, u
 distMatrix <- as.matrix(distanceData)
 
 # getting vegetation PCA scores as a matrix
-vegPcaScores <- read.csv("data/pcaVeg.csv")
+vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
+
 vegPcaScores <- dist(vegPcaScores, method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
 vegPcaScores <- as.matrix(vegPcaScores)
 
 # load NMDS scores (run on bird detections)
-nmdsScores <- read.csv("data/nmdsBrayCurtis.csv")
+nmdsScores <- read.csv("data/nmdsBrayCurtis-bird-detections.csv")
 birdMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
 birdMatrix <- as.matrix(birdMatrix)
 ```
@@ -87,7 +90,7 @@ nmdsBrayCurtis <- vegdist (nmdsDatMatrix, method = "bray") %>%
 # extract nmds scores
 nmdsScores <- as.tibble(scores(nmdsBrayCurtis))
 
-# stress is lowest at around 6 dimensions with value of 0.06350522. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+# stress is lowest at around 6 dimensions with value of 0.06152919. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 
 # create a distance matrix on the nmds scores of the flora data
 floraMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
