@@ -47,6 +47,13 @@ datSummary <- datSubset %>%
   group_by(Site, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>%
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
+
+# richness across sites (converting detections to 1)
+richness <- datSummary %>% 
+  mutate_at(vars(c("IP":"HSWP")),~ replace(., . > 0, 1)) %>%
+  rowwise() %>% 
+  mutate(richness = sum(c_across(IP:HSWP))) %>%
+  dplyr::select(Site, Restoration.type, richness)
 ```
 
 
@@ -58,7 +65,7 @@ nDetections_site_date <- datSubset %>%
   group_by(Site, Restoration.type, Date) %>%
   transform() %>% replace(is.na(.), 0) %>%
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
-  
+
 # Combine the nDetections and trait based data to obtain a dataframe for further analysis
 
 nDetections_trait <- nDetections_site_date %>%
@@ -232,5 +239,42 @@ indicSpec <- multipatt(nmdsDat[, 3:ncol(nmdsDat)], nmdsDat$Restoration.type, fun
 
 # looking at associations with stratum/pairs of strata
 summary(indicSpec)
-
 ```
+
+
+Separate analysis: Instead of using bird detections, using richness to run nmds ordinations
+```{r}
+nmdsDatRichness <- datSummary %>% 
+  mutate_at(vars(c("IP":"HSWP")),~ replace(., . > 0, 1))
+
+# Convert to matrix form
+nmdsDatMatrixRichness <- as.matrix(nmdsDatRichness[, 3:ncol(nmdsDatRichness)])
+
+# Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations
+
+disBrayCurtisRichness <- vegdist(nmdsDatMatrixRichness, method = "bray")
+
+nmdsBrayCurtisRichness <- vegdist(nmdsDatMatrixRichness, method = "bray") %>%   metaMDS (nmdsBrayCurtisRichness, k=6)
+
+# extract nmds scores
+nmdsScoresRichness <- as.tibble(scores(nmdsBrayCurtisRichness))
+
+# plot the data
+# First let's add the treatment type back to the nmds scores
+nmdsScoresRichness$Restoration.type <- nmdsDatRichness$Restoration.type
+
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+
+fig_nmds_richness <- ggplot(data=nmdsScoresRichness) + 
+  stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
+  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=4) + 
+  theme_bw() +
+  scale_x_continuous(name="NMDS 1") + 
+  scale_y_continuous(name="NMDS 2") +
+  scale_shape_manual(values= 1:length(unique(nmdsScoresRichness$Restoration.type)))+
+  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+
+ggsave(fig_nmds_richness, filename = "figs/fig_nmds_birdRichness.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+```
+
