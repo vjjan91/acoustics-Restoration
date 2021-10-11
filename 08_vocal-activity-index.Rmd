@@ -9,15 +9,16 @@ In this script, we will:
 
 Calculate measures of overall vocal activity for each species
 
-To do this, we define a measure of vocal activity as = (Cumulative number of detections of a given species)/(Overall number of acoustic clips annotated).  
-We then classify a particular species as having High Vocal Activity, Moderate Vocal Activity and Low Vocal Activity if the above ratio is > 0.7, (0.4 to 0.7) and <0.4 respectively.  
+To do this, we define a measure of vocal activity as = (Cumulative number of detections of a given species)/(Overall number of acoustic clips annotated for that treatment type).
 
-We then assess if there is variation in vocal activity (as measured by number of species that are highly vocal, moderately vocal and less vocal) across treatment types. 
+Please note: Cue rate = Measure of vocalizations per unit time
 
-b) Rainforest specialist vs open-country generalist. 
+We can assess:
 
-b) Test if 
-Highly vocal, moderately vocal and less vocal (calculated at the smallest possible temporal unit: 10s). 
+a) If overall vocal activity as defined above varies as a function of treatment type. 
+
+b) If vocal activity varies as a function of a species being a rainforest specialist vs open-country generalist across treatment types.
+
 
 Install required libraries
 ```{r}
@@ -27,6 +28,7 @@ library(stringr)
 library(vegan)
 library(ggplot2)
 library(scico)
+library(tidytext)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -46,98 +48,122 @@ Given the data annotated so far, we will calculate the overall number of detecti
 Please note that: the data at the moment is imbalanced in terms of nVisits
 ```{r}
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip
-
-nDetections_10s <- datSubset %>%
+nDetections <- datSubset %>%
   group_by(Site, Restoration.type) %>%
   transform() %>% replace(is.na(.), 0) %>% 
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) 
 ```
 
-Calculate the cumulative number of detections for each species and arrive at a measure of vocal activity irrespective of the treatment type in which a species was recorded in. 
+Calculate the cumulative number of detections for each species and arrive at a measure of vocal activity irrespective of the treatment type in which a species was recorded in. Vocal activity (or using the definition of cue rate) = (Number of detections of that species)/(total time over which the recording was made).
+
+In other words, if a white-cheeked barbet was detected ~40 times over 400 seconds, then its vocal activity would be (40/400) = 0.1
 ```{r}
+# number of visits to each unique site in seconds:
+# This gives you a sense of sampling effort in seconds and minutes at each site
 
-# Get rid of species with no detections across the entire data
+nSites_visits <- datSubset %>%
+  dplyr::select(Site, Date)%>%
+  distinct() %>% arrange(Site) %>% count(Site) %>%
+  mutate(timeInSeconds = (n*16*60)) %>%
+  mutate(timeInMinutes = (n*16))
 
-final_spp <- nDetections_10s[,c(-1,-2)][,-(which(colSums(nDetections_10s[,c(-1,-2)])==0))]
+# merge the above dataframe with the detections dataframe and calculate vocal activity in minutes
 
-# Add the first two columns back to the above column
-
-nDetections <- as_tibble(data.frame(nDetections_10s[,c(1,2)],final_spp))
-  
-# Get the total number of clips and the number of clips annotated across each treatment type
-
-n_clips_total <- 24672
-n_clips_benchmark <- sum(datSubset$Restoration.type=="Benchmark")
-n_clips_active <- sum(datSubset$Restoration.type=="Active")
-n_clips_passive <- sum(datSubset$Restoration.type=="Passive")
-
-
-# Calculate the cumulative number of detections for each species by treatment type
-
-sumDet_Active <- nDetections %>%
-  filter(Restoration.type=="Active") %>% # Select treatment type
-  ungroup() %>%
-  dplyr::select(-c(Site,Restoration.type)) %>% 
-  summarise(across(everything(),sum)) %>%
-  pivot_longer(1:115, names_to="Species", values_to="Count")
-
-sumDet_Passive <- nDetections %>%
-  filter(Restoration.type=="Passive") %>% # Select treatment type
-  ungroup() %>%
-  dplyr::select(-c(Site,Restoration.type)) %>% 
-  summarise(across(everything(),sum))%>%
-  pivot_longer(1:115, names_to="Species", values_to="Count")
-
-sumDet_Benchmark <- nDetections %>%
-  filter(Restoration.type=="Benchmark") %>% # Select treatment type
-  ungroup() %>%
-  dplyr::select(-c(Site,Restoration.type)) %>% 
-  summarise(across(everything(),sum))%>%
-  pivot_longer(1:115, names_to="Species", values_to="Count")
-
-# Measures of vocal activity
-
-# Note: Based on discussion with Akshay, scale the proportion of clips in which a species was detected to ensure that we could compare vocal activity for multiple species across treatment types
-
-vocal_Benchmark <- sumDet_Benchmark %>%
-  mutate(propDetected = Count/n_clips_benchmark) %>%
-  # mutate(propDetected=range01(propDetected)) %>% 
-  mutate(vocalActivity = case_when(propDetected > 0.5 ~ "High",
-            propDetected > 0.2 & propDetected < 0.5 ~ "Moderate",
-            propDetected < 0.2 ~ "Low")) %>%
-  mutate(Restoration.Type = "Benchmark") %>%
-  arrange(desc(Count))
-
-vocal_Active <- sumDet_Active %>%
-  mutate(propDetected = Count/n_clips_active) %>%
-  # mutate(propDetected=range01(propDetected)) %>% 
-  mutate(vocalActivity = case_when(propDetected > 0.5 ~ "High",
-            propDetected > 0.2 & propDetected < 0.5 ~ "Moderate",
-            propDetected < 0.2 ~ "Low")) %>%
-  mutate(Restoration.Type = "Active") %>%
-  arrange(desc(Count))
-
-vocal_Passive <- sumDet_Passive %>%
-  mutate(propDetected = Count/n_clips_passive) %>%
-  # mutate(propDetected=range01(propDetected)) %>% 
-  mutate(vocalActivity = case_when(propDetected > 0.5 ~ "High",
-            propDetected > 0.2 & propDetected < 0.5 ~ "Moderate",
-            propDetected < 0.2 ~ "Low")) %>%
-  mutate(Restoration.Type = "Passive") %>%
-  arrange(desc(Count))
-
+vocalActivity <- nDetections %>%
+  full_join(nSites_visits, by=c("Site")) %>%
+  mutate_at(.vars = vars(c("IP":"HSWP")), ~.x/timeInMinutes)
 ```
 
-Plot the top ten detections for each species
+
+Preparing a dataframe of vocal activity to run ordinations
 ```{r}
+# Remove columns not needed for ordination analysis
+nmdsDat <- vocalActivity %>%
+  dplyr::select(-n, -timeInSeconds, -timeInMinutes)
 
-# Creating a temporary plot of vocal activity as a function of the proportion of overall detections of a particular species by treatment type
+# Convert to matrix form
+nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
 
-fig_vocalAct_Benchmark <- ggplot(vocal_Benchmark[1:10,], aes(x=reorder(Species,propDetected), y=propDetected)) +  geom_point(alpha=0.7, size=2) + 
-    scale_fill_scico_d(palette = "roma") +
+# Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations
+
+disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
+
+nmdsBrayCurtis <- vegdist (nmdsDatMatrix, method = "bray") %>% 
+  metaMDS (nmdsBrayCurtis, k=6)
+
+# extract nmds scores
+nmdsScores <- as.tibble(scores(nmdsBrayCurtis))
+
+# Write the scores to a separate .csv
+write.csv(nmdsScores, "data/nmdsBrayCurtis-vocal-activity.csv", row.names = F)
+
+# With the above analysis, we note the stress is 0.06172835. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+```
+
+
+Plotting the NMDS scores using ggplot2
+```{r}
+# First let's add the treatment type back to the nmds scores
+nmdsScores$Restoration.type <- nmdsDat$Restoration.type
+
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+
+fig_nmds <- ggplot(data=nmdsScores) + 
+  stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
+  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=4) + 
+  theme_bw() +
+  scale_x_continuous(name="NMDS 1") + 
+  scale_y_continuous(name="NMDS 2") +
+  scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.type)))+
+  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+
+ggsave(fig_nmds, filename = "figs/fig_nmds_vocalActivity.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_nmds_vocalActivity.png")
+```
+
+
+Using species trait data to check if vocal activity varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.To do so: Add an additional column of species-trait data and group data based on the same.
+```{r}
+# First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections>0 as 1 else they are 0
+
+vocal_trait <- vocalActivity %>%
+  pivot_longer(cols=IP:HSWP, names_to="Species_Code", values_to="vocalActivity") %>%
+  left_join(.,trait_dat, by=c("Species_Code"="species_annotation_codes"))
+
+# Calculate overall vocal activity/cue rate for each site as a function of rainforest species and open-country species
+
+sum_vocal_trait <-  vocal_trait %>%
+  dplyr::select(Site, Restoration.type, Species_Code, Habitat, vocalActivity)%>%
+  group_by(Site, Restoration.type, Habitat) %>%
+  summarise(overallVocalActivity = sum(vocalActivity))
+
+# Let's subset data for vocal activity as a function of rainforest specialists and open-country generalists and test for significant differences (if any)
+vocal_rainforest <- sum_vocal_trait %>%
+  filter(Habitat=="RF")
+vocal_opencountry <- sum_vocal_trait %>%
+  filter(Habitat=="OC")
+
+# Test if there are significant differences in vocal activity across treatment types as a function of species trait
+anova_rainforest <- aov(overallVocalActivity~Restoration.type, data = vocal_rainforest)
+anova_opencountry <- aov(overallVocalActivity~Restoration.type, data = vocal_opencountry)
+
+# Tukey test to study each pair of treatment
+
+# For rainforest birds, there is a significant difference in vocal activity between benchmark-passive sites
+tukey_rainforest <- TukeyHSD(anova_rainforest)
+
+# For open-country birds, there is a significant difference in vocal activity across each treatment pair
+tukey_opencountry <- TukeyHSD(anova_opencountry)
+
+# Plot the above result
+fig_vocal_trait <- ggplot(sum_vocal_trait, aes(x=Restoration.type, y=overallVocalActivity, fill=Habitat)) +
+    geom_boxplot(alpha=0.7) + 
+  scale_fill_scico_d(palette = "roma") +
     theme_bw() +
-    labs(x="Species", 
-       y="Vocal Activity across Benchmark Sites") +
+    labs(x="Restoration Type", 
+       y="Vocal Activity") +
     theme(axis.title = element_text(size = 16, face = "bold"), 
         axis.ticks.length.x = unit(.5, "cm"),
         axis.text = element_text(size = 14),
@@ -145,39 +171,46 @@ fig_vocalAct_Benchmark <- ggplot(vocal_Benchmark[1:10,], aes(x=reorder(Species,p
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(size = 12))
 
-fig_vocalAct_Active <- ggplot(vocal_Active[1:10,], aes(x=reorder(Species,propDetected), y=propDetected)) +  geom_point(alpha=0.7, size=2) + 
+ggsave(fig_vocal_trait, filename = "figs/fig_vocalActivity_trait.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig_vocalActivity_trait.png")
+```
+
+
+What are the most vocal species at each site?
+```{r}
+sum_vocal_species <- vocal_trait %>%
+  group_by(Restoration.type, Species_Code) %>%
+  summarise(vocalActivity = sum(vocalActivity))
+
+# Top ten species (most vocal ones) across each restoration type
+top10_vocal <- sum_vocal_species %>%
+  group_by(Restoration.type) %>%
+  top_n(10, vocalActivity)
+```
+
+
+Plot the above results of the top ten vocal species by restoration type
+```{r}
+fig_vocalAct <- top10_vocal %>%
+  mutate(Species_Code = reorder_within(Species_Code, vocalActivity,
+                                       Restoration.type)) %>%
+    ggplot(aes(Species_Code, vocalActivity, fill = Restoration.type)) +
+    geom_col(show.legend = FALSE) +
+    facet_wrap(~Restoration.type, scales = "free_y") +
+    coord_flip() +
+    scale_x_reordered() +
+    scale_y_continuous(expand = c(0,0)) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
     labs(x="Species", 
-       y="Vocal Activity across actively restored sites") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
+       y="Vocal Activity") 
 
-fig_vocalAct_Passive <- ggplot(vocal_Passive[1:10,], aes(x=reorder(Species,propDetected), y=propDetected)) +  geom_point(alpha=0.7, size=2) + 
-    scale_fill_scico_d(palette = "roma") +
-    theme_bw() +
-    labs(x="Species", 
-       y="Vocal Activity across passively restored sites") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
+# Save the plot
 
-# Save the plots
+ggsave(fig_vocalAct, filename = "figs/fig_vocalAct.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
-ggsave(fig_vocalAct_Benchmark, filename = "figs/fig_vocalAct_Benchmark.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_vocalAct_Active, filename = "figs/fig_vocalAct_Active.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_vocalAct_Passive, filename = "figs/fig_vocalAct_Passive.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig_vocalAct_Benchmark.png")
-knitr::include_graphics("figs/fig_vocalAct_Active.png")
-knitr::include_graphics("figs/fig_vocalAct_Passive.png")
+knitr::include_graphics("figs/fig_vocalAct.png")
 
 ```
 
