@@ -78,14 +78,14 @@ nonConVisits <- uniqueSiteDate%>%
   map_df(., ~ .x %>% ungroup() %>%
            arrange(Date) %>%
            mutate(n = 1) %>%
-           complete(Date = seq.Date(first(Date), last(Date), by = 'days')) %>%
+           complete(Date = seq.Date(first(Date), last(Date), by = 'days'))%>%
            group_by(n = cumsum(is.na(n))) %>%
            filter(!is.na(Site)) %>%
            filter(row_number() %% 2 == 1) %>%
            ungroup() %>%
            sample_n(min(n(), 6))
          ) %>%
-  select(-n)
+  dplyr::select(-n)
 
 # Change the structure of the date column back to character for using one of the join functions
 nonConVisits$Date <- str_remove_all(as.character(nonConVisits$Date),"-")
@@ -169,7 +169,6 @@ richness_trait <-  richness_trait %>%
 # Let's subset data for richness as a function of rainforest specialists and open-country generalists and test for significant differences (if any)
 richness_rainforest <- richness_trait %>%
   filter(Habitat=="RF")
-
 richness_opencountry <- richness_trait %>%
   filter(Habitat=="OC")
 
