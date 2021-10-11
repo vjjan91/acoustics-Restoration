@@ -271,7 +271,6 @@ summary(glmm_MidStorey)
 # understory birds (no significant association)
 glmm_Understory <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmUnderStory, family = poisson(link = log))
 summary(glmm_Understory)
-
 ```
 
 
