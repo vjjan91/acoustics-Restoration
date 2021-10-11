@@ -278,3 +278,14 @@ fig_nmds_richness <- ggplot(data=nmdsScoresRichness) +
 ggsave(fig_nmds_richness, filename = "figs/fig_nmds_birdRichness.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
+
+Running indicator species analysis on species richness dataset above, rather than bird detections to see if the results change
+```{r}
+# Running the multi-pattern analysis across combinations of groups
+indicSpecRichness <- multipatt(nmdsDatRichness[, 3:ncol(nmdsDatRichness)], nmdsDatRichness$Restoration.type, func = "r.g", control = how(nperm=999))
+
+# looking at associations with stratum/pairs of strata
+summary(indicSpecRichness)
+```
+
+
