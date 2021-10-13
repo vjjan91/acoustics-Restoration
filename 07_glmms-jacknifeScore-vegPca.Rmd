@@ -101,7 +101,9 @@ modelDataAll <- vegPcaScores %>%
   mutate(siteCode = factor(siteCode)) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  add_column(jacknife = jackAll$jack1) %>% 
+  add_column(jacknife = jackAll$jack1,
+             year = vegData$plantingYear,
+             richness = richness$richness) %>% 
   mutate ("roundjk" = round(jacknife))
 
 # rainforest birds
@@ -111,7 +113,8 @@ modelData_rainForest <- vegPcaScores %>%
   mutate(siteCode = factor(siteCode)) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  add_column(jacknife = jackRainforest$jack1) %>% 
+  add_column(jacknife = jackRainforest$jack1,
+             year = vegData$plantingYear) %>% 
   mutate ("roundjk" = round(jacknife))
 
 # open country birds
@@ -121,7 +124,8 @@ modelData_openCountry <- vegPcaScores %>%
   mutate(siteCode = factor(siteCode)) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  add_column(jacknife = jackOpencountry$jack1) %>% 
+  add_column(jacknife = jackOpencountry$jack1,
+             year = vegData$plantingYear) %>% 
   mutate ("roundjk" = round(jacknife))
 ```
 
@@ -273,4 +277,32 @@ glmm_Understory <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data =
 summary(glmm_Understory)
 ```
 
+Lastly, running a generalized linear model to test the effect of year since restoration on jacknife estimates of species richness
+```{r}
+# Let's look at overall species richness first
+# filter only data for restored sites
+allRestored <- modelDataAll %>%
+  filter(Restoration.type=="Active") %>%
+  mutate(yearSinceRestoration = (2021-year))
+
+glmAll <- glm(richness ~ yearSinceRestoration, data = allRestored, family = poisson(link = log))
+summary(glmAll)
+
+# rainforest bird richness
+rainRestored <- modelData_rainForest %>%
+  filter(Restoration.type=="Active") %>%
+  mutate(yearSinceRestoration = (2021-year))
+
+glmRain <- glm(roundjk ~ yearSinceRestoration, data = rainRestored, family = poisson(link = log))
+summary(glmRain)
+
+# open-country richness
+openRestored <- modelData_openCountry %>%
+  filter(Restoration.type=="Active") %>%
+  mutate(yearSinceRestoration = (2021-year))
+
+glmOpen <- glm(roundjk ~ yearSinceRestoration, data = openRestored, family = poisson(link = log))
+summary(glmOpen)
+
+```
 
