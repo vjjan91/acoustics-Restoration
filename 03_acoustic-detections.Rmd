@@ -113,7 +113,7 @@ nDetections_4min <- nDetections_4min %>%
 ```
 
 
-How does the number of detections vary as a function of restoration type? (tested aHSWPoss different temporal durations)?
+How does the number of detections vary as a function of restoration type? (tested across different temporal durations)?
 ```{r}
 # Testing if there is significant differences in overall number of detections across treatment types (this has been done only for the smallest temporal duration ~10s, while total number of detections have been estimated for different temporal durations)
 
