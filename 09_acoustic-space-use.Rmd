@@ -14,8 +14,8 @@ library(ggplot2)
 library(RColorBrewer)
 library(foreach)
 library(doSNOW)
-library(tictoc)
 library(rlist)
+library(tictoc)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -44,7 +44,7 @@ To calculate ASU in our study:
 - A. We aggregate recordings for a multiple days across multiple sites (Keep only data that has been recorded continuously for a 24hr period)
 ```{r}
 # List the path that contains all folders, which contain the audiomoth data
-path <- "C:\\data\\"
+path <- "D:\\2020-summer\\"
 
 # Listing the folders within which .WAV files are stored
 folders <- dir(path, recursive=F,full.names=T)
@@ -95,6 +95,16 @@ ASU is being calculated for every one hour period and showcased for a 24 hour pe
 # Select all unique site_date combinations for each unique site
 site_date <- str_extract(basename(files),'\\w+_\\d+_')
 unique(site_date)
+
+# The only step that involves sub-selection (Selecting 5 days across each site; Note: IPTO06R has 3 days sampled and OLV110R has only 2 days sampled)
+site_date <- unique(site_date)[c(1:5,10:14,19:23,28:47,52:61,71:75,
+                             86:90,97:101,107:111,118:122,130:134,
+                             141:143,150:154,161:165,173:177,188:189,
+                             193:197,202:206,211:215,219:223,225:229,
+                             231:235,237:241,249:253,261:265,269:273,
+                             281:285,289:293,300:304,309:313,319:323,
+                             329:333,340:344,351:355,361:365,370:374,
+                             378:382,387:391,396:400)]
 
 # Create a sequence of numbers to combine files by 1 hour
 hour_seq <- seq(from=0,to=288, by=12)
