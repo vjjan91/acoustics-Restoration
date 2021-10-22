@@ -33,7 +33,8 @@ siteWiseAsu <- read.csv("data/site-wise-asu.csv")
 
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>%
-  select("Site.code","Restoration.type")
+  select("Site.code","Restoration.type") %>%
+  filter(Site.code != "OLCAP5B")
 
 # Add restoration type column to the space use data
 siteWiseAsu <- left_join(siteWiseAsu,sites, by=c("Site"="Site.code"))
@@ -84,7 +85,7 @@ nmdsScores <- as_tibble(scores(nmdsEuclidean))
 # Write the scores to a separate .csv
 write.csv(nmdsScores, "data/nmds-acousticSpaceUse.csv", row.names = F)
 
-# With the above analysis, we note the stress is 0.009349337. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+# With the above analysis, we note the stress is 0.008566905. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 ```
 
 
@@ -105,7 +106,7 @@ fig_nmds <- ggplot(data=nmdsScores) +
   scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.type)))+
   scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
 
-ggsave(fig_nmds, filename = "figs/fig_nmds_spaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_nmds, filename = "figs/fig_nmds_overallSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_nmds.png")
 ```
