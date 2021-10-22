@@ -1,0 +1,279 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Generalized linear mixed modeling (acoustic space use and richness, vocal activity and time since restoration)
+
+In this script, we run generalized linear models to test the association between acoustic space use values and species richness, vocal activity (total calling rate at each site, which is a proxy for the total number of vocal detections/unit of recording time) and time since restoration. 
+
+Install required libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(psych)
+library(rcompanion)
+library(multcomp)
+library(lme4)
+library(ggpubr)
+library(sjPlot)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+Load necessary data for statistical modeling
+```{r}
+# load list of sites
+sites <- read.csv("data/list-of-sites.csv") %>% 
+  dplyr::select("Site.code","Restoration.type") %>%
+  filter(Site.code != "OLCAP5B")
+
+# loading jacknife scores 
+jackAll <- read.csv("data/jackAll.csv")
+
+# loading vocal activity data
+vocalAct <- read.csv("data/total-calling-rate-per-site.csv")
+
+# Load vegetation data from previous scripts 
+vegData <-  read.csv("data/summaryVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
+vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
+
+# Attach the annotation data
+datSubset <- read.csv("data/datSubset.csv")
+
+# Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip
+nDetections <- datSubset %>%
+  group_by(Site, Restoration.type) %>%
+  transform() %>% replace(is.na(.), 0) %>% 
+  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) 
+
+# total number of detections at each site
+totDetections <-  nDetections %>%
+   rowwise() %>% 
+   summarise(totDetections = sum(c_across(IP:HSWP)))
+
+# Load a dataframe of average space use by site
+siteWiseAsu <- read.csv("data/site-wise-asu.csv")
+
+# add restoration type
+siteWiseAsu <- left_join(siteWiseAsu, sites, by=c("Site"="Site.code"))
+
+# Separate analysis: space use during certain times of day alone
+# let's look only at dawn chorus to explore what the data looks like
+dawn <- c("05:00-06:00","06:00-07:00","07:00-08:00","08:00-09:00",
+          "09:00-10:00")
+dawnChorusAvgAsu <- siteWiseAsu %>%
+  filter(time_of_day %in% dawn)
+
+# Separate analysis: space use during certain times of day alone
+# let's look only at dusk chorus to explore what the data looks like
+dusk <- c("16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00")
+duskChorusAvgAsu <- siteWiseAsu %>%
+  filter(time_of_day %in% dusk)
+
+# Calculating total space use across all frequency bins and times of day: 128*24 for each site-day combination
+
+avgSpaceUse <- siteWiseAsu %>%
+  group_by(Site, Restoration.type) %>%
+  summarise(totSpaceuse = sum(f.cont.sum)) %>%
+  full_join(jackAll, by=c("Site","Restoration.type")) %>% 
+  mutate ("roundjk" = round(jack1)) %>%
+  mutate("roundSpaceUse" = round(totSpaceuse)) %>%
+  add_column(year = vegData$plantingYear) %>%
+  add_column(vocalAct = vocalAct$totCallingRate) %>%
+  add_column(totDetections = totDetections$totDetections)
+
+# dawn
+dawnAvgSpaceUse <- dawnChorusAvgAsu %>%
+  group_by(Site, Restoration.type) %>%
+  summarise(totSpaceuse = sum(f.cont.sum)) %>%
+  full_join(jackAll, by=c("Site","Restoration.type")) %>% 
+  mutate ("roundjk" = round(jack1)) %>%
+  mutate("roundSpaceUse" = round(totSpaceuse)) %>%
+  add_column(year = vegData$plantingYear) %>%
+  add_column(vocalAct = vocalAct$totCallingRate) %>%
+  add_column(totDetections = totDetections$totDetections)
+
+#dusk
+duskAvgSpaceUse <- duskChorusAvgAsu %>%
+  group_by(Site, Restoration.type) %>%
+  summarise(totSpaceuse = sum(f.cont.sum)) %>%
+  full_join(jackAll, by=c("Site","Restoration.type")) %>% 
+  mutate ("roundjk" = round(jack1)) %>%
+  mutate("roundSpaceUse" = round(totSpaceuse)) %>%
+  add_column(year = vegData$plantingYear) %>%
+  add_column(vocalAct = vocalAct$totCallingRate) %>%
+  add_column(totDetections = totDetections$totDetections)
+
+```
+
+Let's first explore richness (as measured through first order jacknife scores and test for associations with space use)
+```{r}
+# running generalized linear models
+glmRichnessSpace <- glm(roundSpaceUse ~ roundjk, data = avgSpaceUse, family = poisson(link = log))
+summary(glmRichnessSpace)
+
+plot_model(glmRichnessSpace, type="pred")
+report::report(glmRichnessSpace)
+
+# The results suggest a significant and negative association between overall space use and first-order jacknife scores
+
+# Let's look at how this varies by restoration type
+benchmark <- avgSpaceUse %>%
+  filter(Restoration.type=="Benchmark")
+active <- avgSpaceUse %>%
+  filter(Restoration.type=="Active")
+passive <- avgSpaceUse %>%
+  filter(Restoration.type=="Passive")
+
+# benchmark
+glmRichnessBench <- glm(roundSpaceUse ~ roundjk, data = benchmark, family = poisson(link = log))
+summary(glmRichnessBench)
+
+plot_model(glmRichnessBench, type="pred")
+report::report(glmRichnessBench)
+
+# for benchmark sites, The effect of roundjk is statistically significant and positive (beta = 8.80e-03, 95% CI [6.62e-03, 0.01], p < .001; Std. beta = 0.09, 95% CI [0.07, 0.11])
+
+# active
+glmRichnessActive <- glm(roundSpaceUse ~ roundjk, data = active, family = poisson(link = log))
+summary(glmRichnessActive)
+
+plot_model(glmRichnessActive, type="pred")
+report::report(glmRichnessActive)
+
+# For actively restored sites, The effect of roundjk is statistically significant and negative (beta = -0.01, 95% CI [-0.02, -6.71e-03], p < .001; Std. beta = -0.08, 95% CI [-0.12, -0.04])
+
+# passive
+glmRichnessPassive <- glm(roundSpaceUse ~ roundjk, data = passive, family = poisson(link = log))
+summary(glmRichnessPassive)
+
+plot_model(glmRichnessPassive, type="pred")
+report::report(glmRichnessPassive)
+
+# For passively restored sites, The effect of roundjk is statistically non-significant and negative (beta = -1.98e-03, 95% CI [-6.30e-03, 2.32e-03], p = 0.368; Std. beta = -0.02, 95% CI [-0.06, 0.02])
+```
+
+
+Let's look at year since restoration and ask if space use has a significant association with time
+```{r}
+allRestored <- avgSpaceUse %>%
+  filter(Restoration.type=="Active") %>%
+  mutate(yearSinceRestoration = (2022-year))
+
+dawnRestored <- dawnAvgSpaceUse %>%
+    filter(Restoration.type=="Active") %>%
+  mutate(yearSinceRestoration = (2022-year))
+
+duskRestored <- duskAvgSpaceUse %>%
+    filter(Restoration.type=="Active") %>%
+  mutate(yearSinceRestoration = (2022-year))
+
+glmAll <- glm(roundSpaceUse ~ yearSinceRestoration, data = allRestored, family = poisson(link = log))
+summary(glmAll)
+
+plot_model(glmAll, type="pred")
+report::report(glmAll)
+
+glmDawn <- glm(roundSpaceUse ~ yearSinceRestoration, data = dawnRestored, family = poisson(link = log))
+summary(glmDawn)
+
+plot_model(glmDawn, type="pred")
+report::report(glmDawn)
+
+glmDusk <- glm(roundSpaceUse ~ yearSinceRestoration, data = duskRestored, family = poisson(link = log))
+summary(glmDusk)
+
+plot_model(glmDusk, type="pred")
+report::report(glmDusk)
+
+# all three analysis report a statistically significant and negative association with year since restoration and spaceuse values
+
+```
+
+Let's look at associations between space use and vocal activity
+```{r}
+glmVocalAct <- glm(roundSpaceUse ~ vocalAct, data = avgSpaceUse, family = poisson(link = log))
+summary(glmVocalAct)
+
+plot_model(glmVocalAct, type="pred")
+report::report(glmVocalAct)
+
+# Statistically significant and positive association between space use and total vocal activity (inferred by overall calling rate)
+
+# What if we look at it by treatment type
+
+# Model each of them separately:
+glmBench <- glm(roundSpaceUse ~ vocalAct, data = benchmark, family = poisson(link = log))
+summary(glmBench)
+
+plot_model(glmBench, type="pred")
+report::report(glmBench)
+
+# For Benchmark sites, The effect of vocalAct is statistically significant and positive (beta = 6.79e-03, 95% CI [2.68e-03, 0.01], p = 0.001; Std. beta = 0.04, 95% CI [0.02, 0.06])
+
+glmActive <- glm(roundSpaceUse ~ vocalAct, data = active, family = poisson(link = log))
+summary(glmActive)
+
+plot_model(glmActive, type="pred")
+report::report(glmActive)
+
+# For actively restored sites, The effect of vocalAct is statistically non-significant and negative (beta = -2.50e-03, 95% CI [-8.88e-03, 3.88e-03], p = 0.442; Std. beta = -0.01, 95% CI [-0.05, 0.02])
+
+glmPassive<- glm(roundSpaceUse ~ vocalAct, data = passive, family = poisson(link = log))
+summary(glmPassive)
+
+plot_model(glmPassive, type="pred")
+report::report(glmPassive)
+
+# For passively restored sites, The effect of vocalAct is statistically significant and negative (beta = -5.82e-03, 95% CI [-0.01, -8.24e-04], p = 0.023; Std. beta = -0.05, 95% CI [-0.09, -6.56e-03])
+
+```
+
+Let's look at associations between acoustic space use and sum total of detections of species at each site
+```{r}
+glmDetections<- glm(roundSpaceUse ~ totDetections, data = avgSpaceUse, family = poisson(link = log))
+summary(glmDetections)
+
+plot_model(glmDetections, type="pred")
+report::report(glmDetections)
+
+# The effect of totDetections is statistically significant and positive (beta = 7.93e-05, 95% CI [5.19e-05, 1.07e-04], p < .001; Std. beta = 0.05, 95% CI [0.03, 0.07])
+
+# # What if we look at it by treatment type
+# Model each of them separately:
+
+glmBenchDet <- glm(roundSpaceUse ~ totDetections, data = benchmark, family = poisson(link = log))
+summary(glmBenchDet)
+
+plot_model(glmBenchDet, type="pred")
+report::report(glmBenchDet)
+
+# For benchmark sites, The effect of totDetections is statistically significant and positive (beta = 7.07e-05, 95% CI [2.79e-05, 1.13e-04], p = 0.001; Std. beta = 0.04, 95% CI [0.02, 0.06])
+
+glmActiveDet <- glm(roundSpaceUse ~ totDetections, data = active, family = poisson(link = log))
+summary(glmActiveDet)
+
+plot_model(glmActiveDet, type="pred")
+report::report(glmActiveDet)
+
+# For actively restored sites, The effect of totDetections is statistically non-significant and negative (beta = -2.61e-05, 95% CI [-9.25e-05, 4.04e-05], p = 0.442; Std. beta = -0.01, 95% CI [-0.05, 0.02])
+
+glmPassiveDet <- glm(roundSpaceUse ~ totDetections, data = passive, family = poisson(link = log))
+summary(glmPassiveDet)
+
+plot_model(glmPassiveDet, type="pred")
+report::report(glmPassiveDet)
+
+# For passively restored sites,  The effect of totDetections is statistically non-significant and negative (beta = -4.86e-05, 95% CI [-9.93e-05, 1.49e-06], p = 0.059; Std. beta = -0.04, 95% CI [-0.08, 1.17e-03])
+```
+
+
+
