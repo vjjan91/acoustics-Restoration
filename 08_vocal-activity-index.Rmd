@@ -36,7 +36,7 @@ source("code/01_internal-functions.R")
 
 We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations)
 ```{r}
-# Attach the 2020_summer_annotation data 
+# Attach the annotation data 
 datSubset <- read.csv("data/datSubset.csv")
 
 # Load the species-trait-data
@@ -72,6 +72,12 @@ nSites_visits <- datSubset %>%
 vocalActivity <- nDetections %>%
   full_join(nSites_visits, by=c("Site")) %>%
   mutate_at(.vars = vars(c("IP":"HSWP")), ~.x/timeInMinutes)
+
+totalCallingRate <- vocalActivity %>%
+   rowwise() %>% 
+   summarise(totCallingRate = sum(c_across(IP:HSWP)))
+
+write.csv(totalCallingRate,"data/total-calling-rate-per-site.csv", row.names = F)
 ```
 
 
