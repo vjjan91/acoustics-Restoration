@@ -147,16 +147,16 @@ We now run generalized linear mixed models (GLMM) assuming gaussian errors and u
 
 ```{r}
 # overall space use
-glmm_allRestoration <- glmer(totSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="log"))
+glmm_allRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = poisson(link=log))
 
 summary(glmm_allRestoration)
 tukey_glmmAllRestoration <- summary(glht(glmm_allRestoration, linfct=mcp(Restoration.type ="Tukey")))
 cld(tukey_glmmAllRestoration)
 
-# The above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and benchmark sites and actively restored sites (but no difference between active-passive)
+# The above result suggests a significant difference in acoustic space use values across all three treatment types
 
 # dawn chorus
-glmm_dawnRestoration <- glmer(totSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="log"))
+glmm_dawnRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDawn, family = poisson(link=log))
 
 summary(glmm_dawnRestoration)
 tukey_glmmdawnRestoration <- summary(glht(glmm_dawnRestoration, linfct=mcp(Restoration.type ="Tukey")))
@@ -165,7 +165,7 @@ cld(tukey_glmmdawnRestoration)
 # When we look at only the dawn chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and actively restored sites and passively restored sites (but no difference between active-benchmark)
 
 # dusk chorus
-glmm_duskRestoration <- glmer(totSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDusk, family = gaussian(link="log"))
+glmm_duskRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDusk, family = poisson(link=log))
 
 summary(glmm_duskRestoration)
 tukey_glmmduskRestoration <- summary(glht(glmm_duskRestoration, linfct=mcp(Restoration.type ="Tukey")))
@@ -177,14 +177,14 @@ cld(tukey_glmmduskRestoration)
 
 mycolours <- c("#440154FF", "#21908CFF", "orange")
 
-fig_glmm_allRest <- ggplot (totSpaceUse, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+fig_glmm_allRest <- ggplot(totSpaceUse, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
   geom_boxplot(alpha = 0.75) + 
   theme_bw() +
   scale_x_discrete(labels = c('AR','BM','NR')) +
   labs(x = "Restoration Type", 
        y="Overall acoustic space use") +
   scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
-  stat_summary(geom = 'text', label = c("a", "b", "a"), fun = max, vjust = -1, size = 5.0) +
+  stat_summary(geom = 'text', label = c("a", "b", "c"), fun = max, vjust = -1, size = 5.0) +
   theme(axis.title = element_text(size = 14, face = "bold"), 
         axis.ticks.length.x = unit(.5, "cm"),
         axis.text = element_text(size = 12),
@@ -201,7 +201,7 @@ fig_glmm_dawnRest <- ggplot(totSpaceUseDawn, aes(Restoration.type, totSpaceuse, 
   labs(x = "Restoration Type", 
        y="Dawn acoustic space use") +
   scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
-  stat_summary(geom = 'text', label = c("b", "b", "a"), fun = max, vjust = -1, size = 5.0) +
+  stat_summary(geom = 'text', label = c("a", "a", "b"), fun = max, vjust = -1, size = 5.0) +
   theme(axis.title = element_text(size = 14, face = "bold"), 
         axis.ticks.length.x = unit(.5, "cm"),
         axis.text = element_text(size = 12),
@@ -234,125 +234,30 @@ We now run generalized linear mixed models (GLMM) assuming gaussian errors and u
 
 ```{r}
 # overall space use
-glmm_allVeg<- glmer(totSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="log"))
+glmm_allVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataAll, family = poisson(link = log))
 
 summary(glmm_allVeg)
+plot_model(glmm_allVeg, type="pred", terms=c("PC1","PC2"))
+report::report(glmm_allVeg)
 
-# There is a significant effect of PC1 on acoustic space use
+# There is a significant negative effect of PC1 and PC2 on acoustic space use
 
 # dawn chorus
-glmm_dawnVeg<- glmer(totSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="log"))
+glmm_dawnVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDawn, family = poisson(link = log))
 
 summary(glmm_dawnVeg)
+plot_model(glmm_dawnVeg, type="pred", terms=c("PC2","PC1"))
+report::report(glmm_dawnVeg)
 
-# There is a significant effect of PC1 on dawn acoustic space use and a highly significant effect of PC2 on dawn acoustic space use
+# There is a significant effect of PC1 and PC2 on dawn acoustic space use and a highly significant effect of PC2 on dawn acoustic space use
 
 # dawn chorus
-glmm_duskVeg<- glmer(totSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDusk, family = gaussian(link="log"))
+glmm_duskVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDusk, family = poisson(link = log))
 
 summary(glmm_duskVeg)
+plot_model(glmm_duskVeg, type="pred", terms=c("PC1","PC2"))
+report::report(glmm_duskVeg)
 
 # There is a significant effect of PC1 on dusk acoustic space use
 ```
-
-Lastly, we explore correlations and associations between bird species richness and acoustic space use
-```{r}
-# loading jacknife scores 
-jackAll <- read.csv("data/jackAll.csv")
-jackRainforest <- read.csv("data/jackRainforest.csv")
-jackOpencountry <- read.csv("data/jackOpencountry.csv")
-
-# Load a dataframe of average space use by site
-siteWiseAsu <- read.csv("data/site-wise-asu.csv")
-
-# add restoration type
-siteWiseAsu <- left_join(siteWiseAsu, sites, by=c("Site"="Site.code"))
-
-# Separate analysis: space use during certain times of day alone
-# let's look only at dawn chorus to explore what the data looks like
-dawn <- c("05:00-06:00","06:00-07:00","07:00-08:00","08:00-09:00",
-          "09:00-10:00")
-dawnChorusAvgAsu <- siteWiseAsu %>%
-  filter(time_of_day %in% dawn)
-
-# Separate analysis: space use during certain times of day alone
-# let's look only at dusk chorus to explore what the data looks like
-dusk <- c("16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00")
-duskChorusAvgAsu <- siteWiseAsu %>%
-  filter(time_of_day %in% dusk)
-
-# Calculating total space use across all frequency bins and times of day: 128*24 for each site-day combination
-
-avgSpaceUse <- siteWiseAsu %>%
-  group_by(Site, Restoration.type) %>%
-  summarise(totSpaceuse = sum(f.cont.sum)) %>%
-  full_join(jackAll, by=c("Site","Restoration.type")) %>% 
-  mutate ("roundjk" = round(jack1)) %>%
-  mutate("roundSpaceUse" = round(totSpaceuse)) %>%
-  add_column(year = vegData$plantingYear)
-
-# dawn
-dawnAvgSpaceUse <- dawnChorusAvgAsu %>%
-  group_by(Site, Restoration.type) %>%
-  summarise(totSpaceuse = sum(f.cont.sum)) %>%
-  full_join(jackAll, by=c("Site","Restoration.type")) %>% 
-  mutate ("roundjk" = round(jack1)) %>%
-  mutate("roundSpaceUse" = round(totSpaceuse)) %>%
-  add_column(year = vegData$plantingYear)
-
-#dusk
-duskAvgSpaceUse <- duskChorusAvgAsu %>%
-  group_by(Site, Restoration.type) %>%
-  summarise(totSpaceuse = sum(f.cont.sum)) %>%
-  full_join(jackAll, by=c("Site","Restoration.type")) %>% 
-  mutate ("roundjk" = round(jack1)) %>%
-  mutate("roundSpaceUse" = round(totSpaceuse)) %>%
-  add_column(year = vegData$plantingYear)
-
-# running generalized linear models
-glmRichnessSpace <- glm(roundSpaceUse ~ roundjk, data = avgSpaceUse, family = poisson(link = log))
-summary(glmRichnessSpace)
-
-plot_model(glmRichnessSpace, type="pred")
-report::report(glmRichnessSpace)
-
-# The results suggest a significant and negative association between overall space use and first-order jacknife scores.
-```
-
-Let's look at year since restoration and ask if space use has a significant association with time
-```{r}
-allRestored <- avgSpaceUse %>%
-  filter(Restoration.type=="Active") %>%
-  mutate(yearSinceRestoration = (2022-year))
-
-dawnRestored <- dawnAvgSpaceUse %>%
-    filter(Restoration.type=="Active") %>%
-  mutate(yearSinceRestoration = (2022-year))
-
-duskRestored <- duskAvgSpaceUse %>%
-    filter(Restoration.type=="Active") %>%
-  mutate(yearSinceRestoration = (2022-year))
-
-glmAll <- glm(roundSpaceUse ~ yearSinceRestoration, data = allRestored, family = poisson(link = log))
-summary(glmAll)
-
-plot_model(glmAll, type="pred")
-report::report(glmAll)
-
-glmDawn <- glm(roundSpaceUse ~ yearSinceRestoration, data = dawnRestored, family = poisson(link = log))
-summary(glmDawn)
-
-plot_model(glmDawn, type="pred")
-report::report(glmDawn)
-
-glmDusk <- glm(roundSpaceUse ~ yearSinceRestoration, data = duskRestored, family = poisson(link = log))
-summary(glmDusk)
-
-plot_model(glmDusk, type="pred")
-report::report(glmDusk)
-
-# all three analysis report a statistically significant and negative association with year since restoration and spaceuse values
-
-```
-
 
