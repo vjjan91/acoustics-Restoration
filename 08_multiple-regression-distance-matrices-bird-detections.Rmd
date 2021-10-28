@@ -99,6 +99,7 @@ floraMatrix <- as.matrix(floraMatrix)
 
 
 Running mantel's tests on the dissimilarity matrices of bird detections (nmds scores), vegetation (pca scores) and flora abundance (nmds scores)
+Note: This analysis need not be run since MRM performs some of the tests that partial mantel's tests essentially does. 
 ```{r}
 mantelBirdPca <- vegan::mantel(birdMatrix, vegPcaScores)
 mantelBirdFlora <- vegan::mantel(birdMatrix, floraMatrix)
