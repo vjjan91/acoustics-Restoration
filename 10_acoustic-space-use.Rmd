@@ -29,7 +29,7 @@ Previous papers broadly calculated space use by ascertaining the proportion of r
 
 *Note* From Sound Analysis and Synthesis with R by Jerome Sueur
 
-The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256 = 187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.01s (1/187.5=0.005s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313) 
+The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256 = 187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.005s (1/187.5=0.005s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313) 
 
 Below, we have summarized approaches taken by previous studies: 
 
@@ -185,21 +185,17 @@ for(i in 1:length(unique(site_date))){
       m <- sspectro(wave, f = f, wl = wl, ovlp = ovlp, wn = wn)
 
       # Frequency selection and frequency axis
-      # Here, want only a sequence of numbers that correspond to the length of rows of the
-      # short-time fourier transform and we divide it by 1000 to get values in kHz
+      # Here, want only a sequence of numbers that correspond to the length of rows       # of the short-time fourier transform and we divide it by 1000 to get values        # in kHz
       freq <- seq(0, (f/2) - (f/wl), length.out = nrow(m))/1000
         
       # Calculate acoustic space use per frequency bin 
       f.cont <- apply(m, MARGIN = 1, FUN = sum)
-      #f.cont <- f.cont/sum(f.cont)
         
       # Store the space use data in a dataframe for plotting later
       a <- data.frame(freq, f.cont)
-      #data_per_hour <- rbind(a, data_per_hour)
     }
-  rm(hourlydata); gc()
   
-  #data_needed <- do.call(c, data_per_hour)
+  rm(hourlydata); gc()
     
   data_per_hour  <- data_per_hour %>%
   group_by(freq) %>%
