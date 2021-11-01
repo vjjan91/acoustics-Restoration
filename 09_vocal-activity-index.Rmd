@@ -219,5 +219,3 @@ ggsave(fig_vocalAct, filename = "figs/fig_vocalAct.png", width=12, height=7,devi
 knitr::include_graphics("figs/fig_vocalAct.png")
 
 ```
-
-
