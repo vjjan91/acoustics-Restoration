@@ -17,6 +17,7 @@ library(scico)
 library(sf)
 library(sna)
 library(hier.part)
+library(ecodist)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -43,9 +44,18 @@ vegPcaScores <- dist(vegPcaScores, method = "euclidean", diag = TRUE, upper = TR
 vegPcaScores <- as.matrix(vegPcaScores)
 
 # load NMDS scores (run on acoustic space use)
-nmdsScores <- read.csv("data/nmds-acousticSpaceUse.csv")
-spaceUseMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
-spaceUseMatrix <- as.matrix(spaceUseMatrix)
+nmdsScoresAll <- read.csv("data/nmds-acousticSpaceUse.csv")
+nmdsScoresDawn <- read.csv("data/nmds-acousticSpaceUse-dawn.csv") 
+nmdsScoresDusk <- read.csv("data/nmds-acousticSpaceUse-dawn.csv")  
+
+overallspaceUseMatrix <- dist(nmdsScoresAll[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+overallspaceUseMatrix <- as.matrix(overallspaceUseMatrix)
+
+dawnspaceUseMatrix <- dist(nmdsScoresDawn[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+dawnspaceUseMatrix <- as.matrix(dawnspaceUseMatrix)
+
+duskspaceUseMatrix <- dist(nmdsScoresDusk[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+duskspaceUseMatrix <- as.matrix(duskspaceUseMatrix)
 ```
 
 
@@ -99,26 +109,21 @@ floraMatrix <- as.matrix(floraMatrix)
 ```
 
 
-Running mantel's tests on the dissimilarity matrices of space use (nmds scores), vegetation (pca scores) and flora abundance (nmds scores)
-```{r}
-mantelSpacePca <- vegan::mantel(spaceUseMatrix, vegPcaScores)
-mantelSpaceFlora <- vegan::mantel(spaceUseMatrix, floraMatrix)
-
-# Mantel's and partial mantel's tests suggest no strong relationship
-
-vegan::mantel.partial(spaceUseMatrix, vegPcaScores, distMatrix)
-vegan::mantel.partial(spaceUseMatrix, vegPcaScores, floraMatrix)
-```
-
-
 Running multiple regression on distance matrices
-
 ```{r}
 # First we get rid of redundant duplicate values, then make the diagonal zeros NA, unfold each matrix into a vector, and then omit rows with 0 in them
 
-spaceUseVector <- upper.tri.remove(spaceUseMatrix)
-diag(spaceUseVector) <- NA
-spaceUseVector <- cbind(c(spaceUseVector)) %>% na.omit()
+overallspaceUseVector <- upper.tri.remove(overallspaceUseMatrix)
+diag(overallspaceUseVector) <- NA
+overallspaceUseVector <- cbind(c(overallspaceUseVector)) %>% na.omit()
+
+dawnspaceUseVector <- upper.tri.remove(dawnspaceUseMatrix)
+diag(dawnspaceUseVector) <- NA
+dawnspaceUseVector <- cbind(c(dawnspaceUseVector)) %>% na.omit()
+
+duskspaceUseVector <- upper.tri.remove(duskspaceUseMatrix)
+diag(duskspaceUseVector) <- NA
+duskspaceUseVector <- cbind(c(duskspaceUseVector)) %>% na.omit()
 
 floraVector <- upper.tri.remove(floraMatrix)
 diag(floraVector) <- NA
@@ -134,17 +139,50 @@ distanceVector <- cbind(c(distanceVector)) %>% na.omit() %>%
   scale
 
 #arranging data for MRM
-mrmData <- bind_cols (spaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
+mrmAllData <- bind_cols (overallspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
 
-MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmData, method = "linear", nperm = 1000)
+mrmDawnData <- bind_cols (dawnspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
 
-# The above result suggests that space use compositional dissimilarity is not signficantly related to dissimilarity in habitat structure, geographic distance and florstics (Please note that the overall R2 values are very low)
+mrmDuskData <- bind_cols (duskspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
+
+# run the analysis
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmAllData, method = "linear", nperm = 1000)
+
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmDawnData, method = "linear", nperm = 1000)
+
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmDuskData, method = "linear", nperm = 1000)
+
+# Overall space use is not signficantly related to dissimilarity in habitat structure, geographic distance and floristics (Please note that the overall R2 values are very low)
+
+# dawn space use is positively and significantly related to dissimilarity in habitat structure, geographic distance and floristics (Please note that the overall R2 values are very low)
+
+# dusk space use is also positively and significantly related to dissimilarity in habitat structure, geographic distance and floristics (Please note that the overall R2 values are very low)
 ```
 
 
 Hierarchical partitioning
 
 ```{r}
-hier.part(mrmData$spaceUse, mrmData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+hier.part(mrmAllData$spaceUse, mrmAllData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+
+hier.part(mrmDawnData$spaceUse, mrmDawnData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+
+# Vegetation structure and floristics together contributed to ~99% of explained variation in ASU at dawn. 
+
+# $I.perc
+#          ind.exp.var
+# flora      34.4959891
+# structure  65.3188904
+# distance    0.1851205
+
+hier.part(mrmDuskData$spaceUse, mrmDuskData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+
+# Vegetation structure and floristics together contributed to ~99% of explained variation in ASU at dusk.
+
+# $I.perc
+#           ind.exp.var
+# flora      34.4959891
+# structure  65.3188904
+# distance    0.1851205
 ```
 
