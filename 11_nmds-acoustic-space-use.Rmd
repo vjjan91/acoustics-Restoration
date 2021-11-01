@@ -20,7 +20,6 @@ library(ecodist)
 library(RColorBrewer)
 library(ggforce)
 library(ggalt)
-library(indicspecies)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -124,7 +123,12 @@ anova(nmdsVariance)
 permutest(nmdsVariance, pairwise = TRUE, permutations = 999)
 TukeyHSD(nmdsVariance)
 
-# These results suggest that there is a significant difference in within group variance between one group and another (For Benchmark-Active sites and Passive-Benchmark sites)
+# For overall space use, there is a significant difference in within group variance between one group and another (For Benchmark-Active sites and Passive-Benchmark sites)
+
+# For dawn ASU, there is no significant difference in within group variance across the three treatment types
+
+# For dusk ASU, there is a significant difference in within group variance between benchmark and active sites and benchmark and passive sites. 
+
 ```
 
 
@@ -171,7 +175,11 @@ groups <- nmdsScores$Restoration.type
 adonisNMDS <- adonis(nmdsDatMatrix ~ groups, method="bray",perm=999)
 adonisNMDS
 
-# The results suggest that there are significant compositional differences between groups.
+# For overall ASU, the results suggest that there are significant differences in ASU between groups.
+
+# For dawn ASU, there is a significant difference in ASU between treatment types
+
+# For dusk ASU, there is a significant difference in ASU between treatment types
 ```
 
 
