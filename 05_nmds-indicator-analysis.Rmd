@@ -281,6 +281,23 @@ ggsave(fig_nmds_richness, filename = "figs/fig_nmds_birdRichness.png", width=12,
 
 Running indicator species analysis on species richness dataset above, rather than bird detections to see if the results change
 ```{r}
+# Running betadisper and adonis tests
+nmdsVarianceRichness <- betadisper(disBrayCurtisRichness, group = nmdsDatRichness$Restoration.type)
+nmdsVarianceRichness
+
+anova(nmdsVarianceRichness)
+permutest(nmdsVarianceRichness, pairwise = TRUE, permutations = 999)
+TukeyHSD(nmdsVarianceRichness)
+
+# These results suggest that there is no difference in variance between one group and another
+
+# Adonis
+# We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
+groups <- nmdsScoresRichness$Restoration.type
+
+adonisNMDS <- adonis(nmdsDatMatrixRichness ~ groups, method="bray",perm=999)
+adonisNMDS
+
 # Running the multi-pattern analysis across combinations of groups
 indicSpecRichness <- multipatt(nmdsDatRichness[, 3:ncol(nmdsDatRichness)], nmdsDatRichness$Restoration.type, func = "r.g", control = how(nperm=999))
 
