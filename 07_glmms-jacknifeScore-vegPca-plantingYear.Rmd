@@ -133,7 +133,7 @@ Getting data ready for generalized linear mixed modeling with richness data as w
 ```{r}
 # data for the GLMM (overall richness)
 glmmAll <- richnessPerVisit[,-2] %>%
-  full_join(modelDataAll, by = c("Site","siteCode"))
+  full_join(modelDataAll[,-8], by = c("Site","siteCode"))
 
 # rainforest birds richness for glmm
 glmmRainforest <- nDetectionsTrait %>%
@@ -167,7 +167,7 @@ glmmCanopy <- nDetectionsTrait %>%
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
+  full_join(modelDataAll[,-8], by = c("Site","siteCode","Restoration.type"))
   
 # ground-feeding birds
 glmmGround <- nDetectionsTrait %>%
@@ -178,7 +178,7 @@ glmmGround <- nDetectionsTrait %>%
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
+  full_join(modelDataAll[,-8], by = c("Site","siteCode","Restoration.type"))
 
 # mid-storey birds
 glmmMidStorey <- nDetectionsTrait %>%
@@ -189,7 +189,7 @@ glmmMidStorey <- nDetectionsTrait %>%
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
+  full_join(modelDataAll[,-8], by = c("Site","siteCode","Restoration.type"))
 
 # understorey birds
 glmmUnderStory <- nDetectionsTrait %>%
@@ -200,7 +200,7 @@ glmmUnderStory <- nDetectionsTrait %>%
   mutate(visit = row_number()) %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
-  full_join(modelDataAll, by = c("Site","siteCode","Restoration.type"))
+  full_join(modelDataAll[,-8], by = c("Site","siteCode","Restoration.type"))
 
 ```
 
@@ -247,13 +247,13 @@ Testing the role of habitat (vegetation structure) and foraging habit on species
 glmm_allBirds <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmAll, family = poisson(link = log))
 summary(glmm_allBirds)
 
-# significant association with PC2
+# significant negative association with PC2
 
 # rainforest birds
 glmm_Rainforest <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmRainforest, family = poisson(link = log))
 summary(glmm_Rainforest)
 
-# Results above suggest PC1 is significantly negatively associated with richness of rainforest birds. A similar result is seen below for open-country bird species richness and PC1
+# Results above suggest PC2 is significantly negatively associated with richness of rainforest birds. A similar result is seen below for open-country bird species richness and PC1
 
 glmm_openCountry <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmOpencountry, family = poisson(link = log))
 summary(glmm_openCountry)
