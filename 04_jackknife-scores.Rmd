@@ -124,7 +124,7 @@ anovaJackAll <- aov(jack1~Restoration.type, data = jackAllScore)
 # Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
 tukeyJackAll <- TukeyHSD(anovaJackAll)
 
-# The above result suggests that there is a significant difference in overall jacknife estimates between passive and benchmark sites but no other pair
+# The above result suggests that there is no significant different in jacknife scores between treatment tyoes
 
 # Create a boxplot of jacknife estimates by group (Here: group refers to Restoration Type)
 
@@ -156,7 +156,7 @@ anovaJack_openCountry <- aov(jack1~Restoration.type, data = jack_openCountryScor
 tukeyJack_rainForest <- TukeyHSD(anovaJack_rainForest)
 tukeyJack_openCountry <- TukeyHSD(anovaJack_openCountry)
 
-# For rainforest species - there is no significant difference in jacknife estimates between any treatment types, while for open-country birds; there is a significant difference in jacknife estimates across each treatment type
+# For rainforest species - there is no significant difference in jacknife estimates between any treatment types, while for open-country birds; there is a significant difference in jacknife estimates across active-benchmark and passive-benchmark
 
 # Plot the above results
 # Rainforest species
