@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Multiple regression of distance matrices
+# Multiple regression on distance matrices
 
 
 Load necessary libraries
@@ -23,7 +23,7 @@ source("code/01_internal-functions.R")
 ```
 
 
-Load necessary data and create dissimilarity matrices to run Mantel's tests
+Load necessary data and create dissimilarity matrices to run MRM analyses
 ```{r}
 # estimating geographic distance (euclidean) between sites
 sites <- read.csv("data/list-of-sites.csv") %>%
