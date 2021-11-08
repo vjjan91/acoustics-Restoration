@@ -28,7 +28,7 @@ Steps: 1. Load a list of .wav files in a given folder (will have to be done site
 
 ```{r}
 # List the path that contains all folders, which contain the audiomoth data
-path <- "C:\\data\\"
+path <- "D:\\2020-summer\\"
 
 # Listing the folders within which .WAV files are stored
 folders <- dir(path, recursive=F,full.names=T)
@@ -40,14 +40,15 @@ for(i in 1:length(folders)){
 
 setwd(folders[i])
 
+# Below code needs to be run only if we have to rename files
 # List the files within each folder and renaming the files with the prefix - SITE_ID
-a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
-file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
+# a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
+# file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
 
 # Extract the strings for .wav files between 6am and 10am
 time_str <- list.files(paste0(path,basename(folders)[i],"\\"),full.names = T) %>%
                     tools::file_path_sans_ext() %>% str_extract('\\d+$')
-time_str <- time_str[time_str>="060000" & time_str <="100000"]
+time_str <- time_str[time_str>="160000" & time_str <="190000"]
 
   for(j in 1:length(unique(time_str))){
     
@@ -69,17 +70,20 @@ unique(site_date) # Give you unique date and sites for which we need to generate
 subset_files <- list()
 
 for(i in 1:length(unique(site_date))){
-  
   a <- files[str_detect(files,unique(site_date)[i])]
+  if(length(a)<4){ # essentially specifies that the min number you need
+    next
+  } else {
   subset_dat <- extractRandWindow(a,4)
   subset_dat <- na.exclude(subset_dat) # If there are less than 4 files
   subset_files <- c(subset_files, subset_dat)
+  }
 }
 
 final_subset <- unlist(subset_files)
 
 # Subset those files and copy it to a separate folder
-dir.create(paste0(path,"subset"))
+dir.create(paste0("C:\\data\\","subset"))
 file.copy(from = final_subset, to="C:\\data\\subset\\")
 
 ```
