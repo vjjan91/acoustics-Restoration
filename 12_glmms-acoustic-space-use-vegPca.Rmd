@@ -21,6 +21,7 @@ library(multcomp)
 library(lme4)
 library(ggpubr)
 library(sjPlot)
+library(RColorBrewer)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -177,13 +178,16 @@ cld(tukey_glmmduskRestoration)
 
 mycolours <- c("#440154FF", "#21908CFF", "orange")
 
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+
 fig_glmm_allRest <- ggplot(totSpaceUse, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
   geom_boxplot(alpha = 0.75) + 
   theme_bw() +
-  scale_x_discrete(labels = c('AR','BM','NR')) +
+  scale_x_discrete(labels = c('Active','Benchmark','Passive')) +
   labs(x = "Restoration Type", 
-       y="Overall acoustic space use") +
-  scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
+       y="Acoustic Space Use") +
+  scale_fill_scico_d(palette = "roma") +  
   stat_summary(geom = 'text', label = c("a", "b", "c"), fun = max, vjust = -1, size = 5.0) +
   theme(axis.title = element_text(size = 14, face = "bold"), 
         axis.ticks.length.x = unit(.5, "cm"),
