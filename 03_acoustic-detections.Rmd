@@ -122,10 +122,10 @@ sum_Detections10s <- nDetections_10s %>%
   mutate(sumDetections = sum(c_across(IP:HSWP))) %>%
   dplyr::select(Site, Restoration.type, sumDetections)
 
-# Test if there are significant differences in detections aHSWPoss treatment types
+# Test if there are significant differences in detections across treatment types
 anovaAllDetect <- aov(sumDetections~Restoration.type, data = sum_Detections10s)
 
-# Tukey test to study each pair of treatment - reveals no signficant difference aHSWPoss treatment types
+# Tukey test to study each pair of treatment - reveals no signficant difference across treatment types
 tukeyAllDetect <- TukeyHSD(anovaAllDetect)
 
 # Estimating total number of detections for different temporal durations
