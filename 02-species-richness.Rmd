@@ -176,6 +176,7 @@ richness_opencountry <- richness_trait %>%
 anova_rainforest <- aov(richness~Restoration.type, data = richness_rainforest)
 anova_opencountry <- aov(richness~Restoration.type, data = richness_opencountry)
 
+
 # Tukey test to study each pair of treatment - reveals no signficant difference across treatment types for rainforest birds, but a significant difference between benchmark-active and benchmark-passive sites for open country birds
 
 tukey_rainforest <- TukeyHSD(anova_rainforest)
