@@ -130,10 +130,6 @@ duskspaceUseVector <- upper.tri.remove(duskspaceUseMatrix)
 diag(duskspaceUseVector) <- NA
 duskspaceUseVector <- cbind(c(duskspaceUseVector)) %>% na.omit()
 
-birdVector <- upper.tri.remove(birdMatrix)
-diag(birdVector) <- NA
-birdVector <- cbind(c(birdVector)) %>% na.omit()
-
 floraVector <- upper.tri.remove(floraMatrix)
 diag(floraVector) <- NA
 floraVector <- cbind(c(floraVector)) %>% na.omit()
@@ -148,20 +144,20 @@ distanceVector <- cbind(c(distanceVector)) %>% na.omit() %>%
   scale
 
 #arranging data for MRM
-mrmAllData <- bind_cols (overallspaceUseVector, birdVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, bird = ...2, flora = ...3, structure = ...4, distance = ...5)
+mrmAllData <- bind_cols (overallspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
 
-mrmDawnData <- bind_cols (dawnspaceUseVector, birdVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, bird = ...2, flora = ...3, structure = ...4, distance = ...5)
+mrmDawnData <- bind_cols (dawnspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
 
-mrmDuskData <- bind_cols (duskspaceUseVector, birdVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, bird = ...2, flora = ...3, structure = ...4, distance = ...5)
+mrmDuskData <- bind_cols (duskspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
 
 # run the analysis
-MRM(dist(spaceUse) ~ dist(bird) + dist(flora) + dist(structure) + dist(distance), data = mrmAllData, method = "linear", nperm = 1000)
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmAllData, method = "linear", nperm = 1000)
 
-MRM(dist(spaceUse) ~ dist(bird) + dist(flora) + dist(structure) + dist(distance), data = mrmDawnData, method = "linear", nperm = 1000)
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmDawnData, method = "linear", nperm = 1000)
 
-MRM(dist(spaceUse) ~ dist(bird) + dist(flora) + dist(structure) + dist(distance), data = mrmDuskData, method = "linear", nperm = 1000)
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmDuskData, method = "linear", nperm = 1000)
 
-# Overall space use is not signficantly related to dissimilarity in habitat structure, geographic distance and floristics, but significantly and positively related to dissimilarity in bird composition (Please note that the overall R2 values are very low)
+# Overall space use is not signficantly related to dissimilarity in habitat structure, geographic distance and floristics
 
 # dawn space use is positively and significantly related to dissimilarity in habitat structure (Please note that the overall R2 values are very low)
 
@@ -172,32 +168,10 @@ MRM(dist(spaceUse) ~ dist(bird) + dist(flora) + dist(structure) + dist(distance)
 Hierarchical partitioning
 
 ```{r}
-hier.part(mrmAllData$spaceUse, mrmAllData[2:5], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+hier.part(mrmAllData$spaceUse, mrmAllData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
 
-# bird composition contributes to ~98% of explained variation
-#          ind.exp.var
-# bird       98.1777240
-# flora       0.3070649
-# structure   0.7777847
-# distance    0.7374265
+hier.part(mrmDawnData$spaceUse, mrmDawnData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
 
-hier.part(mrmDawnData$spaceUse, mrmDawnData[2:5], family = "gaussian", gof = "Rsqu", barplot = TRUE)
-
-# $I.perc
-#          ind.exp.var
-# bird        0.8196923
-# flora      34.5907163
-# structure  64.3763315
-# distance    0.2132599
-
-hier.part(mrmDuskData$spaceUse, mrmDuskData[2:5], family = "gaussian", gof = "Rsqu", barplot = TRUE)
-
-# $I.perc
-#          ind.exp.var
-# bird        0.8196923
-# flora      34.5907163
-# structure  64.3763315
-# distance    0.2132599
-
+hier.part(mrmDuskData$spaceUse, mrmDuskData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
 ```
 
