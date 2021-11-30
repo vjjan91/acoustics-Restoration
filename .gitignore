@@ -51,3 +51,4 @@ vignettes/*.pdf
 
 # Ignoring very large image files (space use)
 figs/siteByDayAsu
+*.svg
