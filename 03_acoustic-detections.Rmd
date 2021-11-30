@@ -5,10 +5,10 @@ editor_options:
 
 # Acoustic Detections
 
-In this sHSWPipt, we will calculate:
+In this script, we will calculate:
 
-a) Total Number of detections across sites (reported for varying time intervals 10s, 30s, 1-min, 2-min, 4-min). In the previous script, we essentially calculated overall species richness with a temporal unit of 16-min. However, it is important to identify the total number of detections of a particular species for a given temporal duration, which can inform levels of vocal activity (future scripts). 
-b) Repeat the above three calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.
+a) Total Number of detections across sites (reported for varying time intervals 10s, 30s, 1-min, 2-min, 4-min).
+b) Repeat the above calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.
 
 Install required libraries
 ```{r}
@@ -18,6 +18,7 @@ library(stringr)
 library(vegan)
 library(ggplot2)
 library(scico)
+library(extrafont)
 ```
 
 We will use the data that was subset previously for further analysis.
@@ -45,7 +46,7 @@ nDetections_10s <- datSubset %>%
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 30s clip (In this case, every third row is chosen after grouping by Site, Date and Time)
 
 nDetections_30s <- datSubset %>%
-  mutate(Splits = case_when((Splits == "01-10" | Splits=="10-20" | Splits =="20-30") ~ "1",(Splits == "30-40" | Splits=="40-50" | Splits =="50-60") ~ "2",(Splits == "60-70" | Splits=="70-80" | Splits =="80-90") ~ "3",            (Splits == "90-100" | Splits=="100-110" | Splits =="110-120") ~ "4",             (Splits == "120-130" | Splits=="130-140" | Splits =="140-150") ~ "5",            (Splits == "150-160" | Splits=="160-170" | Splits =="170-180") ~ "6",           (Splits == "180-190" | Splits=="190-200" | Splits =="200-210") ~ "7",           (Splits == "210-220" | Splits=="220-230" | Splits =="230-240") ~"8")) %>% group_by(Site, Date, Time, Splits, Restoration.type) %>%
+  mutate(Splits = case_when((Splits == "01-10" | Splits=="10-20" | Splits =="20-30") ~ "1",(Splits == "30-40" | Splits=="40-50" | Splits =="50-60") ~ "2",(Splits == "60-70" | Splits=="70-80" | Splits =="80-90") ~ "3", (Splits == "90-100" | Splits=="100-110" | Splits =="110-120") ~ "4",(Splits == "120-130" | Splits=="130-140" | Splits =="140-150") ~ "5",(Splits == "150-160" | Splits=="160-170" | Splits =="170-180") ~ "6",(Splits == "180-190" | Splits=="190-200" | Splits =="200-210") ~ "7", (Splits == "210-220" | Splits=="220-230" | Splits =="230-240") ~"8")) %>% group_by(Site, Date, Time, Splits, Restoration.type) %>%
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
 
 # Convert nDetections >1 within a 30s period to 1 (since your temporal unit here is 30s)
@@ -153,20 +154,20 @@ sum_Detections4min <- nDetections_4min %>%
 # Plotting the above (multiple plots for each temporal duration)
 # Note: the cumulative number of detections aHSWPoss all species was obtained by summing every 16-min to 48-min set of detections aHSWPoss each site, including all species.
 
+# reordering factors for plotting
+sum_Detections10s$Restoration.type <- factor(sum_Detections10s$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 fig_sumDetections10s <- ggplot(sum_Detections10s, aes(x=Restoration.type, y=sumDetections, fill=Restoration.type)) +  
     geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-  
-# This plot suggests that Benchmark sites are acoustically more active than Passively restored or Actively restored sites, as expected
+     labs(x="\nTreatment Type", 
+       y="Cumulative number of detections\n") +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+    theme(axis.title = element_text(family = "Century Gothic",
+      size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",size = 14),
+        legend.position = "none")
 
 ggsave(fig_sumDetections10s, filename = "figs/fig_sumDetections10s.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 
@@ -174,7 +175,6 @@ knitr::include_graphics("figs/fig_sumDetections10s.png")
 ```
 
 How does the cumulative number of detections vary by treatment type, as a function of whether a species is a rainforest specialist or an open country generalist? (These calculations are repeated for different temporal durations to assess differences, if any)
-
 ```{r}
 # First we merge the species trait dataset with the nDetections dataframe (across different temporal durations)
 
@@ -203,7 +203,8 @@ detections_trait4min <- nDetections_4min %>%
 detections_trait10s <-  detections_trait10s %>%
   dplyr::select(Site, Restoration.type, Species_Code, Habitat, count) %>%
   group_by(Site, Restoration.type, Habitat) %>%
-  summarise(sumDetections = sum(count))
+  summarise(sumDetections = sum(count)) %>%
+  drop_na()
 
 # Split the above data into rainforest species and open country
 detections_10s_rainforest <- detections_trait10s %>%
@@ -244,23 +245,28 @@ detections_trait4min <-  detections_trait4min %>%
   summarise(sumDetections = sum(count))
 
 # Plot the figures
+
+# reordering factors for plotting
+detections_trait10s$Restoration.type <- factor(detections_trait10s$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 fig_detections_trait10s <- ggplot(detections_trait10s, aes(x=Restoration.type, y=sumDetections, fill=Habitat)) +
     geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+    scale_fill_scico_d(palette = "roma",
+                     labels=c("Open-country","Rainforest")) +
     theme_bw() +
-    labs(x="Restoration Type", 
-       y="Cumulative Number of Detections") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
+    labs(x="\nTreatment Type", 
+       y="Cumulative number of detections\n") +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+    theme(axis.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"), 
+        axis.text = element_text(family="Century Gothic",size = 14),
+        legend.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
         legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-
+        legend.text = element_text(family="Century Gothic",size = 14))
 
 # Save the above plot
 ggsave(fig_detections_trait10s, filename = "figs/fig_detections_trait10s.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_detections_trait10s.png")
 ```
-
