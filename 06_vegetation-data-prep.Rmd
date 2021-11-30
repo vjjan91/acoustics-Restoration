@@ -5,7 +5,7 @@ editor_options:
 
 # Preparing vegetation data for GLMs
 
-Here, we prepare the vegetation data to run GLMs in the next series of scripts. 
+Here, we prepare the vegetation data to run GLMMs in the next series of scripts. 
 
 Install required libraries
 ```{r}
@@ -105,7 +105,7 @@ pairs.panels(allVeg[,3:9])
 vegPca <- prcomp(allVeg[, 3:9], scale=TRUE, center = TRUE, retx=TRUE)
 summary(vegPca)
 
-# The proportion of variance explained by the first two axes account for ~72.67%
+# The proportion of variance explained by the first two axes account for ~73.42%
 
 # Extract PCA values
 PCAvalues <- data.frame('Site_ID'=allVeg$Site_ID, 'Site_type' = allVeg$Site_type, vegPca$x[,1:2]) # the first two components are selected 
@@ -116,21 +116,36 @@ write.csv(PCAvalues,"data/pcaVeg.csv", row.names = F)
 # Extract loadings of the variables
 PCAloadings <- data.frame(variables = rownames(vegPca$rotation), vegPca$rotation)
 
-# figure below, includes loadings (edit plot later on)
+# figure below
 
-fig_pca <- ggplot(PCAvalues, aes(x = PC1, y = PC2, col = Site_type)) + 
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+
+# reordering factors for plotting
+PCAvalues$Site_type <- factor(PCAvalues$Site_type, levels = c("Benchmark", "Active", "Passive"))
+
+fig_pca <- ggplot(PCAvalues, aes(x = PC1, y = PC2, colour = Site_type)) + 
        geom_segment(data = PCAloadings, aes(x = 0, y = 0, xend = (PC1*5),
      yend = (PC2*5)), arrow = arrow(length = unit(1/2, "picas")),
      color = "black") +
-     geom_point(aes(x=PC1, y=PC2, shape= Site_type, colour = Site_type),size=4) +    annotate("text", x = (PCAloadings$PC1*3), y = (PCAloadings$PC2*3),
-     label = PCAloadings$variables) + 
-     scale_color_manual(values = scico(3, begin = 0.3, palette = "vik")) + 
-     scale_shape_manual(values= 1:length(unique(PCAvalues$Site_type)))+
-     theme(legend.key = element_blank(), legend.text = element_text(face = "italic")) +    theme_bw()
+     geom_point(aes(x=PC1, y=PC2, shape= Site_type, colour = Site_type),size=5) +        annotate("text", x = (PCAloadings$PC1*3), y = (PCAloadings$PC2*3),
+     label = PCAloadings$variables, family = "Century Gothic", size=5) + 
+    theme_bw() +
+     scale_x_continuous(name="PC1 (54.67%)") + 
+     scale_y_continuous(name="PC2 (18.74%)") +
+     scale_color_manual("Treatment type",values = mycolors, labels=c("BM","AR","NR")) + 
+     scale_shape_manual("Treatment type", values= 1:length(unique(PCAvalues$Site_type)), labels=c("BM","AR","NR"))+
+     theme(axis.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",
+                                    size = 12),
+        legend.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(family="Century Gothic",size = 14))
 
 ggsave(fig_pca, filename = "figs/fig_pca.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_pca.png")
 ```
-
 

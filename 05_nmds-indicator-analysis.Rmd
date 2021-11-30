@@ -7,7 +7,7 @@ editor_options:
 
 Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.
 
-One common tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below). 
+One tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below). 
 
 NMDS does not use the absolute abundances of species in communities, but rather their rank orders. The use of ranks omits some of the issues associated with using absolute distance (e.g., sensitivity to transformation), and as a result is much more flexible technique that accepts a variety of types of data. (It’s also where the “non-metric” part of the name comes from).
 
@@ -28,6 +28,8 @@ library(RColorBrewer)
 library(ggforce)
 library(ggalt)
 library(indicspecies)
+library(patchwork)
+library(sjPlot)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -125,19 +127,51 @@ nmdsScores$Restoration.type <- nmdsDat$Restoration.type
 # Add a custom set of colors
 mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
+# reordering factors for plotting
+nmdsScores$Restoration.type <- factor(nmdsScores$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 fig_nmds <- ggplot(data=nmdsScores) + 
   stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
-  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=4) + 
+  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=5) + 
   theme_bw() +
   scale_x_continuous(name="NMDS 1") + 
   scale_y_continuous(name="NMDS 2") +
-  scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.type)))+
-  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+  scale_shape_manual("Treatment type",values= 1:length(unique(nmdsScores$Restoration.type)), labels=c("BM","AR","NR"))+
+  scale_color_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR"))+ 
+  theme(axis.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",
+                                    size = 12),
+        legend.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(family="Century Gothic",size = 14)) +
+   annotate(geom = "text", x = max(nmdsScores$NMDS1), y = max(nmdsScores$NMDS2),  label = "Stress = 0.05", hjust = 1, family = "Century Gothic", size=5)
 
 ggsave(fig_nmds, filename = "figs/fig_nmds_birdDetections.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_nmds_birdDetections.png")
 ```
+
+Main text Figure 2
+```{r}
+# reload previous figures to create part A and B for the main text Fig. 2
+fig_jack_ordinations <-
+  wrap_plots(fig_jackTrait, fig_nmds,
+    design = "AABBBB"
+  ) +
+  plot_annotation(
+    tag_levels = "a",
+    tag_prefix = "(",
+    tag_suffix = ")"
+  )
+
+# Expand the width to avoid compression
+ggsave(fig_jack_ordinations, filename = "figs/fig2.png", width=20, height=7,device = png(), units="in", dpi = 300); dev.off()
+
+knitr::include_graphics("figs/fig2.png")
+```
+
 
 Testing multivariate homogeneity of group dispersions
 
@@ -191,7 +225,7 @@ fig_hull <- ggplot() +
 
 Testing compositional dissimilarity between groups
 
-We will do this by using the vegan::adonis() function which allows you to do permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be seen as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.
+We will do this by using the vegan::adonis() function which allows you to run permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be thought of as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.
 
 ```{r}
 # We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
@@ -220,8 +254,7 @@ group and the significance of values can be assessed through permutations
 
 For more information, visit this link: https://ichthyology.usm.edu/courses/multivariate/apr_11.pdf
 
-Please note that when the aim is to determine which species can be used as indicators of certain site group, an approach commonly used in ecology is the Indicator
-Value [Dufrˆene and Legendre, 1997]. These authors defined an Indicator
+Please note that when the aim is to determine which species can be used as indicators of certain site group, an approach commonly used in ecology is the Indicator Value [Dufrˆene and Legendre, 1997]. These authors defined an Indicator
 Value (IndVal) index to measure the association between a species and a
 site group. The method of Dufrˆene and Legendre [1997] calculates the IndVal index between the species and each site group and then looks for the
 group corresponding to the highest association value. Finally, the statistical
@@ -266,43 +299,26 @@ nmdsScoresRichness$Restoration.type <- nmdsDatRichness$Restoration.type
 # Add a custom set of colors
 mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
+# reordering factors for plotting
+nmdsScoresRichness$Restoration.type <- factor(nmdsScoresRichness$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 fig_nmds_richness <- ggplot(data=nmdsScoresRichness) + 
   stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
   geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=4) + 
   theme_bw() +
   scale_x_continuous(name="NMDS 1") + 
   scale_y_continuous(name="NMDS 2") +
-  scale_shape_manual(values= 1:length(unique(nmdsScoresRichness$Restoration.type)))+
-  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+  scale_shape_manual("Treatment type",values= 1:length(unique(nmdsScoresRichness$Restoration.type)), labels=c("BM","AR","NR"))+
+  scale_color_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR"))+ 
+  theme(axis.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",
+                                    size = 12),
+        legend.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(family="Century Gothic",size = 14)) +
+   annotate(geom = "text", x = max(nmdsScoresRichness$NMDS1), y = max(nmdsScoresRichness$NMDS2),  label = "Stress = 0.1", hjust = 1, family = "Century Gothic", size=5)
 
 ggsave(fig_nmds_richness, filename = "figs/fig_nmds_birdRichness.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
-
-
-Running indicator species analysis on species richness dataset above, rather than bird detections to see if the results change
-```{r}
-# Running betadisper and adonis tests
-nmdsVarianceRichness <- betadisper(disBrayCurtisRichness, group = nmdsDatRichness$Restoration.type)
-nmdsVarianceRichness
-
-anova(nmdsVarianceRichness)
-permutest(nmdsVarianceRichness, pairwise = TRUE, permutations = 999)
-TukeyHSD(nmdsVarianceRichness)
-
-# These results suggest that there is no difference in variance between one group and another
-
-# Adonis
-# We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
-groups <- nmdsScoresRichness$Restoration.type
-
-adonisNMDS <- adonis(nmdsDatMatrixRichness ~ groups, method="bray",perm=999)
-adonisNMDS
-
-# Running the multi-pattern analysis across combinations of groups
-indicSpecRichness <- multipatt(nmdsDatRichness[, 3:ncol(nmdsDatRichness)], nmdsDatRichness$Restoration.type, func = "r.g", control = how(nperm=999))
-
-# looking at associations with stratum/pairs of strata
-summary(indicSpecRichness)
-```
-
-
