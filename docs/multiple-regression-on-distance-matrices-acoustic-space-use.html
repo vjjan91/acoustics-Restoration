@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 13 Multiple regression on distance matrices (acoustic space use) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 13 Multiple regression on distance matrices (acoustic space use) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 13 Multiple regression on distance matrices (acoustic space use) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 13 Multiple regression on distance matrices (acoustic space use) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="VA Akshay" />
+<meta name="author" content="Priyanka HariHaran" />
+<meta name="author" content="Pooja Choksi" />
+<meta name="author" content="Sarika Khanwilkar" />
+<meta name="author" content="Don J Melnick" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-11-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"/>
+<link rel="next" href="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.4</b> Main Text Figure 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness.html"><a href="species-richness.html"><i class="fa fa-check"></i><b>3</b> Species Richness</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-on-distance-matrices.html"><a href="multiple-regression-on-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression on distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>10</b> Acoustic space use</a></li>
+<li class="chapter" data-level="11" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>11</b> Non-metric multidimensional scaling of acoustic space use data</a></li>
+<li class="chapter" data-level="12" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>12</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a></li>
+<li class="chapter" data-level="13" data-path="multiple-regression-on-distance-matrices-acoustic-space-use.html"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html"><i class="fa fa-check"></i><b>13</b> Multiple regression on distance matrices (acoustic space use)</a></li>
+<li class="chapter" data-level="14" data-path="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><i class="fa fa-check"></i><b>14</b> Generalized linear modeling (acoustic space use and richness, and time since restoration)</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="multiple-regression-on-distance-matrices-acoustic-space-use" class="section level1">
+<h1><span class="header-section-number">Section 13</span> Multiple regression on distance matrices (acoustic space use)</h1>
+<p>Load necessary libraries</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb69-1"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb69-2"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb69-3"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb69-4"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb69-5"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb69-6"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb69-7"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-7"></a><span class="kw">library</span>(sf)</span>
+<span id="cb69-8"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-8"></a><span class="kw">library</span>(sna)</span>
+<span id="cb69-9"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-9"></a><span class="kw">library</span>(hier.part)</span>
+<span id="cb69-10"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-10"></a><span class="kw">library</span>(ecodist)</span>
+<span id="cb69-11"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-11"></a></span>
+<span id="cb69-12"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-12"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb69-13"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb69-13"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>Load necessary data and create dissimilarity matrices to run multiple regression on distance matrices</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb70-1"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-1"></a><span class="co"># estimating geographic distance (euclidean) between sites</span></span>
+<span id="cb70-2"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-2"></a>sites &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/list-of-sites.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb70-3"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">str_detect</span>(Site.code, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
+<span id="cb70-4"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-4"></a></span>
+<span id="cb70-5"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-5"></a>sites &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(sites, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>,<span class="st">&quot;Latitude&quot;</span>), <span class="dt">crs=</span><span class="dv">4326</span>)</span>
+<span id="cb70-6"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-6"></a>sites &lt;-<span class="st"> </span><span class="kw">st_transform</span>(sites, <span class="dv">32643</span>)</span>
+<span id="cb70-7"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-7"></a></span>
+<span id="cb70-8"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-8"></a>distanceData &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="kw">st_coordinates</span>(sites), <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">diag =</span> <span class="ot">TRUE</span>, <span class="dt">upper =</span> <span class="ot">TRUE</span>, <span class="dt">p =</span> <span class="dv">2</span>)</span>
+<span id="cb70-9"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-9"></a>distMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(distanceData)</span>
+<span id="cb70-10"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-10"></a></span>
+<span id="cb70-11"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-11"></a><span class="co"># getting vegetation PCA scores as a matrix</span></span>
+<span id="cb70-12"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-12"></a>vegPcaScores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/pcaVeg.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb70-13"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-13"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">str_detect</span>(Site_ID, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
+<span id="cb70-14"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-14"></a></span>
+<span id="cb70-15"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-15"></a>vegPcaScores &lt;-<span class="st"> </span><span class="kw">dist</span>(vegPcaScores, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">diag =</span> <span class="ot">TRUE</span>, <span class="dt">upper =</span> <span class="ot">TRUE</span>, <span class="dt">p =</span> <span class="dv">2</span>)</span>
+<span id="cb70-16"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-16"></a>vegPcaScores &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(vegPcaScores)</span>
+<span id="cb70-17"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-17"></a></span>
+<span id="cb70-18"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-18"></a><span class="co"># load NMDS scores (run on bird detections)</span></span>
+<span id="cb70-19"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-19"></a>nmdsScoresBird &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/nmdsBrayCurtis-bird-detections.csv&quot;</span>)</span>
+<span id="cb70-20"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-20"></a>birdMatrix &lt;-<span class="st"> </span><span class="kw">dist</span>(nmdsScoresBird[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">diag =</span> <span class="ot">TRUE</span>, <span class="dt">upper =</span> <span class="ot">TRUE</span>, <span class="dt">p =</span> <span class="dv">2</span>)</span>
+<span id="cb70-21"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-21"></a>birdMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(birdMatrix)</span>
+<span id="cb70-22"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-22"></a></span>
+<span id="cb70-23"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-23"></a><span class="co"># load NMDS scores (run on acoustic space use)</span></span>
+<span id="cb70-24"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-24"></a>nmdsScoresAll &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/nmds-acousticSpaceUse.csv&quot;</span>)</span>
+<span id="cb70-25"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-25"></a>nmdsScoresDawn &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/nmds-acousticSpaceUse-dawn.csv&quot;</span>) </span>
+<span id="cb70-26"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-26"></a>nmdsScoresDusk &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/nmds-acousticSpaceUse-dawn.csv&quot;</span>)  </span>
+<span id="cb70-27"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-27"></a></span>
+<span id="cb70-28"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-28"></a>overallspaceUseMatrix &lt;-<span class="st"> </span><span class="kw">dist</span>(nmdsScoresAll[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">diag =</span> <span class="ot">TRUE</span>, <span class="dt">upper =</span> <span class="ot">TRUE</span>, <span class="dt">p =</span> <span class="dv">2</span>)</span>
+<span id="cb70-29"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-29"></a>overallspaceUseMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(overallspaceUseMatrix)</span>
+<span id="cb70-30"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-30"></a></span>
+<span id="cb70-31"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-31"></a>dawnspaceUseMatrix &lt;-<span class="st"> </span><span class="kw">dist</span>(nmdsScoresDawn[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">diag =</span> <span class="ot">TRUE</span>, <span class="dt">upper =</span> <span class="ot">TRUE</span>, <span class="dt">p =</span> <span class="dv">2</span>)</span>
+<span id="cb70-32"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-32"></a>dawnspaceUseMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(dawnspaceUseMatrix)</span>
+<span id="cb70-33"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-33"></a></span>
+<span id="cb70-34"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-34"></a>duskspaceUseMatrix &lt;-<span class="st"> </span><span class="kw">dist</span>(nmdsScoresDusk[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">diag =</span> <span class="ot">TRUE</span>, <span class="dt">upper =</span> <span class="ot">TRUE</span>, <span class="dt">p =</span> <span class="dv">2</span>)</span>
+<span id="cb70-35"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb70-35"></a>duskspaceUseMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(duskspaceUseMatrix)</span></code></pre></div>
+<p>Extracting floristic data and running NMDS ordinations on the same</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb71-1"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-1"></a><span class="co"># getting floristic data as a matrix, using NMDS scores</span></span>
+<span id="cb71-2"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-2"></a><span class="co"># to do the above, we need to reload the vegetation data and process it</span></span>
+<span id="cb71-3"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-3"></a></span>
+<span id="cb71-4"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-4"></a>veg &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/2020-vegetation-data.csv&quot;</span>)</span>
+<span id="cb71-5"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-5"></a>veg<span class="op">$</span>Site_ID &lt;-<span class="st"> </span><span class="kw">str_remove</span>(veg<span class="op">$</span>Site_ID,<span class="st">&quot;_&quot;</span>)</span>
+<span id="cb71-6"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-6"></a></span>
+<span id="cb71-7"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-7"></a><span class="co"># We load the subset data</span></span>
+<span id="cb71-8"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-8"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb71-9"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-9"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">str_detect</span>(Site, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
+<span id="cb71-10"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-10"></a>sites_needed &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">unique</span>(datSubset<span class="op">$</span>Site))</span>
+<span id="cb71-11"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-11"></a><span class="kw">names</span>(sites_needed) &lt;-<span class="st"> &quot;Site_ID&quot;</span></span>
+<span id="cb71-12"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-12"></a></span>
+<span id="cb71-13"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-13"></a><span class="co"># Obtain a subset of the data which have the sites visited </span></span>
+<span id="cb71-14"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-14"></a>veg &lt;-<span class="st"> </span><span class="kw">merge</span>(veg, sites_needed, <span class="dt">by.x =</span> <span class="st">&quot;Site_ID&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;Site_ID&quot;</span>)</span>
+<span id="cb71-15"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-15"></a></span>
+<span id="cb71-16"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-16"></a><span class="co"># renaming restoration type</span></span>
+<span id="cb71-17"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-17"></a>veg<span class="op">$</span>Site_type[veg<span class="op">$</span>Site_type<span class="op">==</span><span class="st">&quot;Unrestored&quot;</span>] &lt;-<span class="st"> &quot;Passive&quot;</span></span>
+<span id="cb71-18"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-18"></a>veg<span class="op">$</span>Site_type[veg<span class="op">$</span>Site_type<span class="op">==</span><span class="st">&quot;Restored&quot;</span>] &lt;-<span class="st"> &quot;Active&quot;</span></span>
+<span id="cb71-19"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-19"></a></span>
+<span id="cb71-20"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-20"></a><span class="co"># now extract floristics data (tree species abundance)</span></span>
+<span id="cb71-21"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-21"></a>floraData &lt;-<span class="st"> </span>veg <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-22"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-22"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site_ID, tree_species, Site_type) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-23"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-23"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Number =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb71-24"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-24"></a><span class="st">  </span><span class="kw">group_by</span>(tree_species, Site_ID, Site_type) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-25"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-25"></a><span class="st">  </span><span class="kw">summarise</span> (<span class="dt">totalAbun =</span> <span class="kw">sum</span>(Number)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-26"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-26"></a><span class="st">  </span><span class="kw">pivot_wider</span> (<span class="dt">names_from =</span> tree_species, <span class="dt">values_from =</span> totalAbun, <span class="dt">values_fill =</span> <span class="kw">list</span>(<span class="dt">totalAbun=</span><span class="dv">0</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb71-27"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-27"></a><span class="st">  </span><span class="kw">arrange</span>(.,Site_ID)</span>
+<span id="cb71-28"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-28"></a></span>
+<span id="cb71-29"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-29"></a><span class="co"># Convert to matrix form</span></span>
+<span id="cb71-30"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-30"></a>nmdsDatMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(floraData[, <span class="dv">3</span><span class="op">:</span><span class="kw">ncol</span>(floraData)])</span>
+<span id="cb71-31"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-31"></a></span>
+<span id="cb71-32"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-32"></a><span class="co"># Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations</span></span>
+<span id="cb71-33"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-33"></a>disBrayCurtis &lt;-<span class="st"> </span><span class="kw">vegdist</span>(nmdsDatMatrix, <span class="dt">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb71-34"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-34"></a></span>
+<span id="cb71-35"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-35"></a>nmdsBrayCurtis &lt;-<span class="st"> </span><span class="kw">vegdist</span> (nmdsDatMatrix, <span class="dt">method =</span> <span class="st">&quot;bray&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-36"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-36"></a><span class="st">  </span><span class="kw">metaMDS</span> (nmdsBrayCurtis, <span class="dt">k=</span><span class="dv">6</span>)</span>
+<span id="cb71-37"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-37"></a></span>
+<span id="cb71-38"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-38"></a><span class="co"># extract nmds scores</span></span>
+<span id="cb71-39"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-39"></a>nmdsScores &lt;-<span class="st"> </span><span class="kw">as.tibble</span>(<span class="kw">scores</span>(nmdsBrayCurtis))</span>
+<span id="cb71-40"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-40"></a></span>
+<span id="cb71-41"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-41"></a><span class="co"># stress is lowest at around 6 dimensions with value of 0.06350522. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress &lt; 0.05 provides an excellent representation in reduced dimensions, &lt; 0.1 is great, &lt; 0.2 is good/ok, and stress &lt; 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!</span></span>
+<span id="cb71-42"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-42"></a></span>
+<span id="cb71-43"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-43"></a><span class="co"># create a distance matrix on the nmds scores of the flora data</span></span>
+<span id="cb71-44"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-44"></a>floraMatrix &lt;-<span class="st"> </span><span class="kw">dist</span>(nmdsScores[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">diag =</span> <span class="ot">TRUE</span>, <span class="dt">upper =</span> <span class="ot">TRUE</span>, <span class="dt">p =</span> <span class="dv">2</span>)</span>
+<span id="cb71-45"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb71-45"></a>floraMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(floraMatrix)</span></code></pre></div>
+<p>Running multiple regression on distance matrices</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb72-1"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-1"></a><span class="co"># First we get rid of redundant duplicate values, then make the diagonal zeros NA, unfold each matrix into a vector, and then omit rows with 0 in them</span></span>
+<span id="cb72-2"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-2"></a></span>
+<span id="cb72-3"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-3"></a>overallspaceUseVector &lt;-<span class="st"> </span><span class="kw">upper.tri.remove</span>(overallspaceUseMatrix)</span>
+<span id="cb72-4"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-4"></a><span class="kw">diag</span>(overallspaceUseVector) &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb72-5"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-5"></a>overallspaceUseVector &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">c</span>(overallspaceUseVector)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span>
+<span id="cb72-6"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-6"></a></span>
+<span id="cb72-7"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-7"></a>dawnspaceUseVector &lt;-<span class="st"> </span><span class="kw">upper.tri.remove</span>(dawnspaceUseMatrix)</span>
+<span id="cb72-8"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-8"></a><span class="kw">diag</span>(dawnspaceUseVector) &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb72-9"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-9"></a>dawnspaceUseVector &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">c</span>(dawnspaceUseVector)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span>
+<span id="cb72-10"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-10"></a></span>
+<span id="cb72-11"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-11"></a>duskspaceUseVector &lt;-<span class="st"> </span><span class="kw">upper.tri.remove</span>(duskspaceUseMatrix)</span>
+<span id="cb72-12"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-12"></a><span class="kw">diag</span>(duskspaceUseVector) &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb72-13"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-13"></a>duskspaceUseVector &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">c</span>(duskspaceUseVector)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span>
+<span id="cb72-14"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-14"></a></span>
+<span id="cb72-15"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-15"></a>floraVector &lt;-<span class="st"> </span><span class="kw">upper.tri.remove</span>(floraMatrix)</span>
+<span id="cb72-16"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-16"></a><span class="kw">diag</span>(floraVector) &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb72-17"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-17"></a>floraVector &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">c</span>(floraVector)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span>
+<span id="cb72-18"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-18"></a></span>
+<span id="cb72-19"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-19"></a>pcaVector &lt;-<span class="st"> </span><span class="kw">upper.tri.remove</span>(vegPcaScores)</span>
+<span id="cb72-20"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-20"></a><span class="kw">diag</span>(pcaVector) &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb72-21"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-21"></a>pcaVector &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">c</span>(pcaVector)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>() </span>
+<span id="cb72-22"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-22"></a></span>
+<span id="cb72-23"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-23"></a>distanceVector &lt;-<span class="st"> </span><span class="kw">upper.tri.remove</span>(distMatrix)</span>
+<span id="cb72-24"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-24"></a><span class="kw">diag</span>(distanceVector) &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb72-25"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-25"></a>distanceVector &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">c</span>(distanceVector)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span></span>
+<span id="cb72-26"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-26"></a><span class="st">  </span>scale</span>
+<span id="cb72-27"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-27"></a></span>
+<span id="cb72-28"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-28"></a><span class="co">#arranging data for MRM</span></span>
+<span id="cb72-29"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-29"></a>mrmAllData &lt;-<span class="st"> </span><span class="kw">bind_cols</span> (overallspaceUseVector, floraVector, pcaVector, distanceVector) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span> (<span class="dt">spaceUse =</span> ...<span class="dv">1</span>, <span class="dt">flora =</span> ...<span class="dv">2</span>, <span class="dt">structure =</span> ...<span class="dv">3</span>, <span class="dt">distance =</span> ...<span class="dv">4</span>)</span>
+<span id="cb72-30"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-30"></a></span>
+<span id="cb72-31"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-31"></a>mrmDawnData &lt;-<span class="st"> </span><span class="kw">bind_cols</span> (dawnspaceUseVector, floraVector, pcaVector, distanceVector) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span> (<span class="dt">spaceUse =</span> ...<span class="dv">1</span>, <span class="dt">flora =</span> ...<span class="dv">2</span>, <span class="dt">structure =</span> ...<span class="dv">3</span>, <span class="dt">distance =</span> ...<span class="dv">4</span>)</span>
+<span id="cb72-32"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-32"></a></span>
+<span id="cb72-33"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-33"></a>mrmDuskData &lt;-<span class="st"> </span><span class="kw">bind_cols</span> (duskspaceUseVector, floraVector, pcaVector, distanceVector) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span> (<span class="dt">spaceUse =</span> ...<span class="dv">1</span>, <span class="dt">flora =</span> ...<span class="dv">2</span>, <span class="dt">structure =</span> ...<span class="dv">3</span>, <span class="dt">distance =</span> ...<span class="dv">4</span>)</span>
+<span id="cb72-34"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-34"></a></span>
+<span id="cb72-35"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-35"></a><span class="co"># run the analysis</span></span>
+<span id="cb72-36"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-36"></a><span class="kw">MRM</span>(<span class="kw">dist</span>(spaceUse) <span class="op">~</span><span class="st"> </span><span class="kw">dist</span>(flora) <span class="op">+</span><span class="st"> </span><span class="kw">dist</span>(structure) <span class="op">+</span><span class="st"> </span><span class="kw">dist</span>(distance), <span class="dt">data =</span> mrmAllData, <span class="dt">method =</span> <span class="st">&quot;linear&quot;</span>, <span class="dt">nperm =</span> <span class="dv">1000</span>)</span>
+<span id="cb72-37"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-37"></a></span>
+<span id="cb72-38"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-38"></a><span class="kw">MRM</span>(<span class="kw">dist</span>(spaceUse) <span class="op">~</span><span class="st"> </span><span class="kw">dist</span>(flora) <span class="op">+</span><span class="st"> </span><span class="kw">dist</span>(structure) <span class="op">+</span><span class="st"> </span><span class="kw">dist</span>(distance), <span class="dt">data =</span> mrmDawnData, <span class="dt">method =</span> <span class="st">&quot;linear&quot;</span>, <span class="dt">nperm =</span> <span class="dv">1000</span>)</span>
+<span id="cb72-39"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-39"></a></span>
+<span id="cb72-40"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-40"></a><span class="kw">MRM</span>(<span class="kw">dist</span>(spaceUse) <span class="op">~</span><span class="st"> </span><span class="kw">dist</span>(flora) <span class="op">+</span><span class="st"> </span><span class="kw">dist</span>(structure) <span class="op">+</span><span class="st"> </span><span class="kw">dist</span>(distance), <span class="dt">data =</span> mrmDuskData, <span class="dt">method =</span> <span class="st">&quot;linear&quot;</span>, <span class="dt">nperm =</span> <span class="dv">1000</span>)</span>
+<span id="cb72-41"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-41"></a></span>
+<span id="cb72-42"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-42"></a><span class="co"># Overall space use is not signficantly related to dissimilarity in habitat structure, geographic distance and floristics</span></span>
+<span id="cb72-43"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-43"></a></span>
+<span id="cb72-44"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-44"></a><span class="co"># dawn space use is positively and significantly related to dissimilarity in habitat structure (Please note that the overall R2 values are very low)</span></span>
+<span id="cb72-45"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-45"></a></span>
+<span id="cb72-46"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb72-46"></a><span class="co"># dusk space use is also positively and significantly related to dissimilarity in habitat structure(Please note that the overall R2 values are very low)</span></span></code></pre></div>
+<p>Hierarchical partitioning</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb73-1"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb73-1"></a><span class="kw">hier.part</span>(mrmAllData<span class="op">$</span>spaceUse, mrmAllData[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">family =</span> <span class="st">&quot;gaussian&quot;</span>, <span class="dt">gof =</span> <span class="st">&quot;Rsqu&quot;</span>, <span class="dt">barplot =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb73-2"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb73-2"></a></span>
+<span id="cb73-3"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb73-3"></a><span class="kw">hier.part</span>(mrmDawnData<span class="op">$</span>spaceUse, mrmDawnData[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">family =</span> <span class="st">&quot;gaussian&quot;</span>, <span class="dt">gof =</span> <span class="st">&quot;Rsqu&quot;</span>, <span class="dt">barplot =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb73-4"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb73-4"></a></span>
+<span id="cb73-5"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html#cb73-5"></a><span class="kw">hier.part</span>(mrmDuskData<span class="op">$</span>spaceUse, mrmDuskData[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">family =</span> <span class="st">&quot;gaussian&quot;</span>, <span class="dt">gof =</span> <span class="st">&quot;Rsqu&quot;</span>, <span class="dt">barplot =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/12_multiple-regression-distance-matrices-acoustic-space-use.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

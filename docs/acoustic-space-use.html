@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 10 Acoustic space use | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 10 Acoustic space use | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 10 Acoustic space use | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 10 Acoustic space use | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="VA Akshay" />
+<meta name="author" content="Priyanka HariHaran" />
+<meta name="author" content="Pooja Choksi" />
+<meta name="author" content="Sarika Khanwilkar" />
+<meta name="author" content="Don J Melnick" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-11-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="multiple-regression-on-distance-matrices.html"/>
+<link rel="next" href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.4</b> Main Text Figure 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness.html"><a href="species-richness.html"><i class="fa fa-check"></i><b>3</b> Species Richness</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-on-distance-matrices.html"><a href="multiple-regression-on-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression on distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>10</b> Acoustic space use</a></li>
+<li class="chapter" data-level="11" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>11</b> Non-metric multidimensional scaling of acoustic space use data</a></li>
+<li class="chapter" data-level="12" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>12</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a></li>
+<li class="chapter" data-level="13" data-path="multiple-regression-on-distance-matrices-acoustic-space-use.html"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html"><i class="fa fa-check"></i><b>13</b> Multiple regression on distance matrices (acoustic space use)</a></li>
+<li class="chapter" data-level="14" data-path="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><i class="fa fa-check"></i><b>14</b> Generalized linear modeling (acoustic space use and richness, and time since restoration)</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="acoustic-space-use" class="section level1">
+<h1><span class="header-section-number">Section 10</span> Acoustic space use</h1>
+<p>Install necessary libraries</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb50-1"><a href="acoustic-space-use.html#cb50-1"></a><span class="kw">library</span>(seewave)</span>
+<span id="cb50-2"><a href="acoustic-space-use.html#cb50-2"></a><span class="kw">library</span>(warbleR)</span>
+<span id="cb50-3"><a href="acoustic-space-use.html#cb50-3"></a><span class="kw">library</span>(tuneR)</span>
+<span id="cb50-4"><a href="acoustic-space-use.html#cb50-4"></a><span class="kw">library</span>(stringi)</span>
+<span id="cb50-5"><a href="acoustic-space-use.html#cb50-5"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb50-6"><a href="acoustic-space-use.html#cb50-6"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb50-7"><a href="acoustic-space-use.html#cb50-7"></a><span class="kw">library</span>(RColorBrewer)</span>
+<span id="cb50-8"><a href="acoustic-space-use.html#cb50-8"></a><span class="kw">library</span>(foreach)</span>
+<span id="cb50-9"><a href="acoustic-space-use.html#cb50-9"></a><span class="kw">library</span>(doSNOW)</span>
+<span id="cb50-10"><a href="acoustic-space-use.html#cb50-10"></a><span class="kw">library</span>(rlist)</span>
+<span id="cb50-11"><a href="acoustic-space-use.html#cb50-11"></a><span class="kw">library</span>(tictoc)</span>
+<span id="cb50-12"><a href="acoustic-space-use.html#cb50-12"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb50-13"><a href="acoustic-space-use.html#cb50-13"></a></span>
+<span id="cb50-14"><a href="acoustic-space-use.html#cb50-14"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb50-15"><a href="acoustic-space-use.html#cb50-15"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>We are interested in creating a measure (3-dimensional matrix) of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)</p>
+<p>Previous papers broadly calculated space use by ascertaining the proportion of recordings in a particular time and frequency bin that is above a certain amplitude. However, this proportion was estimated by counting the number of frequency peaks within a given recording (seewave::fpeaks()) and then scaling it to go from 0 to 1. In our analysis, we want to obtain an understanding of the overall acoustic activity for a given time and frequency bin. In other words, we want the area under the curve for a particular frequency contour.</p>
+<p><em>Note</em> From Sound Analysis and Synthesis with R by Jerome Sueur</p>
+<p>The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256 = 187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.005s (1/187.5=0.005s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313)</p>
+<p>Below, we have summarized approaches taken by previous studies:</p>
+<p>Aide et al. 2017: We aggregated recordings at time scale of hour of day and used a frequency bin size of 86.13 Hz and an amplitude filtering threshold of 0.02. So if the sampling rate is 22000 Hz, that would mean - 22000/86.13 ~ 256 frequency bins to divide up the frequency space. In this paper, there would be 24hr*256 bins = 6144 time/frequency bins</p>
+<p>Campos-Cerqueira et al. 2019: We aggregated recordings at the time scale of hour of day (24 h), used a frequency bin size of 172 Hz, and an amplitude filtering threshold of 0.003. So if the sampling rate is 22000 Hz, that would mean - 22000/172 ~ 128 frequency bins. This resulted in a three‐dimensional (x = hour, y = acoustic frequency, z = proportion of all recordings in each time/frequency bin with a frequency peak value &gt; 0.003 amplitude) matrix of acoustic activity with a total of 3,072 time/frequency bins (24 h × 128 frequency bins).</p>
+<p>Campos-Cerqueira and Aide 2017: To calculate the amplitude, we used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a peak in each time/frequency class by the total number of recordings collected during each hourly interval.</p>
+<p>To calculate ASU in our study:</p>
+<ul>
+<li>We aggregate recordings for a multiple days across multiple sites (Keep only data that has been recorded continuously for a 24hr period)</li>
+</ul>
+<div class="sourceCode" id="cb51"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb51-1"><a href="acoustic-space-use.html#cb51-1"></a><span class="co"># List the path that contains all folders, which contain the audiomoth data</span></span>
+<span id="cb51-2"><a href="acoustic-space-use.html#cb51-2"></a>path &lt;-<span class="st"> &quot;D:</span><span class="ch">\\</span><span class="st">2020-summer</span><span class="ch">\\</span><span class="st">&quot;</span></span>
+<span id="cb51-3"><a href="acoustic-space-use.html#cb51-3"></a></span>
+<span id="cb51-4"><a href="acoustic-space-use.html#cb51-4"></a><span class="co"># Listing the folders within which .WAV files are stored</span></span>
+<span id="cb51-5"><a href="acoustic-space-use.html#cb51-5"></a>folders &lt;-<span class="st"> </span><span class="kw">dir</span>(path, <span class="dt">recursive=</span>F,<span class="dt">full.names=</span>T)</span>
+<span id="cb51-6"><a href="acoustic-space-use.html#cb51-6"></a></span>
+<span id="cb51-7"><a href="acoustic-space-use.html#cb51-7"></a><span class="co">###### Please note ######</span></span>
+<span id="cb51-8"><a href="acoustic-space-use.html#cb51-8"></a></span>
+<span id="cb51-9"><a href="acoustic-space-use.html#cb51-9"></a><span class="co"># The below set of lines need to be run only once for a given set of sites and days. </span></span>
+<span id="cb51-10"><a href="acoustic-space-use.html#cb51-10"></a><span class="co"># Let&#39;s first rename the files by name of each site (as prefix)</span></span>
+<span id="cb51-11"><a href="acoustic-space-use.html#cb51-11"></a></span>
+<span id="cb51-12"><a href="acoustic-space-use.html#cb51-12"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folders)){</span>
+<span id="cb51-13"><a href="acoustic-space-use.html#cb51-13"></a></span>
+<span id="cb51-14"><a href="acoustic-space-use.html#cb51-14"></a><span class="kw">setwd</span>(folders[i])</span>
+<span id="cb51-15"><a href="acoustic-space-use.html#cb51-15"></a>  </span>
+<span id="cb51-16"><a href="acoustic-space-use.html#cb51-16"></a><span class="co"># List the files within each folder and renaming the files with the prefix - SITE_ID</span></span>
+<span id="cb51-17"><a href="acoustic-space-use.html#cb51-17"></a>a &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">paste0</span>(path,<span class="kw">basename</span>(folders)[i],<span class="st">&quot;</span><span class="ch">\\</span><span class="st">&quot;</span>), <span class="dt">full.names =</span> T)</span>
+<span id="cb51-18"><a href="acoustic-space-use.html#cb51-18"></a><span class="kw">file.rename</span>(<span class="dt">from =</span> a, <span class="dt">to=</span><span class="kw">paste0</span>(<span class="kw">basename</span>(folders)[i],<span class="st">&quot;_&quot;</span>,<span class="kw">basename</span>(a)))</span>
+<span id="cb51-19"><a href="acoustic-space-use.html#cb51-19"></a>}</span>
+<span id="cb51-20"><a href="acoustic-space-use.html#cb51-20"></a></span>
+<span id="cb51-21"><a href="acoustic-space-use.html#cb51-21"></a><span class="co">###### Ending note here ######</span></span>
+<span id="cb51-22"><a href="acoustic-space-use.html#cb51-22"></a></span>
+<span id="cb51-23"><a href="acoustic-space-use.html#cb51-23"></a><span class="co"># Now get only those files for a full 24 hours across every unique site</span></span>
+<span id="cb51-24"><a href="acoustic-space-use.html#cb51-24"></a>files &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb51-25"><a href="acoustic-space-use.html#cb51-25"></a></span>
+<span id="cb51-26"><a href="acoustic-space-use.html#cb51-26"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folders)){</span>
+<span id="cb51-27"><a href="acoustic-space-use.html#cb51-27"></a></span>
+<span id="cb51-28"><a href="acoustic-space-use.html#cb51-28"></a>a &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">paste0</span>(path,<span class="kw">basename</span>(folders)[i],<span class="st">&quot;</span><span class="ch">\\</span><span class="st">&quot;</span>), <span class="dt">full.names =</span> T)</span>
+<span id="cb51-29"><a href="acoustic-space-use.html#cb51-29"></a>site_date &lt;-<span class="st"> </span><span class="kw">str_extract</span>(<span class="kw">basename</span>(a),<span class="st">&#39;</span><span class="ch">\\</span><span class="st">w+_</span><span class="ch">\\</span><span class="st">d+_&#39;</span>)</span>
+<span id="cb51-30"><a href="acoustic-space-use.html#cb51-30"></a></span>
+<span id="cb51-31"><a href="acoustic-space-use.html#cb51-31"></a><span class="co"># Choosing all 24 hours of data across every unique site (288 corresponds to 12 files every 1 hour)</span></span>
+<span id="cb51-32"><a href="acoustic-space-use.html#cb51-32"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(site_date))){</span>
+<span id="cb51-33"><a href="acoustic-space-use.html#cb51-33"></a>    dat &lt;-<span class="st"> </span>a[<span class="kw">str_detect</span>(a,<span class="kw">unique</span>(site_date)[j])]</span>
+<span id="cb51-34"><a href="acoustic-space-use.html#cb51-34"></a>    <span class="cf">if</span>((<span class="kw">length</span>(dat)<span class="op">&lt;</span><span class="dv">288</span>)<span class="op">==</span><span class="ot">TRUE</span>){</span>
+<span id="cb51-35"><a href="acoustic-space-use.html#cb51-35"></a>      <span class="cf">next</span></span>
+<span id="cb51-36"><a href="acoustic-space-use.html#cb51-36"></a>    } <span class="cf">else</span> {</span>
+<span id="cb51-37"><a href="acoustic-space-use.html#cb51-37"></a>      files &lt;-<span class="st"> </span><span class="kw">c</span>(files, dat) </span>
+<span id="cb51-38"><a href="acoustic-space-use.html#cb51-38"></a>    }</span>
+<span id="cb51-39"><a href="acoustic-space-use.html#cb51-39"></a>  }</span>
+<span id="cb51-40"><a href="acoustic-space-use.html#cb51-40"></a>}</span>
+<span id="cb51-41"><a href="acoustic-space-use.html#cb51-41"></a></span>
+<span id="cb51-42"><a href="acoustic-space-use.html#cb51-42"></a>files &lt;-<span class="st"> </span><span class="kw">unlist</span>(files)</span></code></pre></div>
+<ul>
+<li>Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs) and then loop it across multiple days</li>
+</ul>
+<p>ASU is being calculated for every one hour period and showcased for a 24 hour period of data. ASU here is defined as the overall area occupied by the frequency contour.In our case, the sampling rate of our signal is 48,000 Hz (in future iterations, this value can be changed depending on the range of frequency values for which we would want to estimate acoustic space use)</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb52-1"><a href="acoustic-space-use.html#cb52-1"></a><span class="co"># Select all unique site_date combinations for each unique site</span></span>
+<span id="cb52-2"><a href="acoustic-space-use.html#cb52-2"></a>site_date &lt;-<span class="st"> </span><span class="kw">str_extract</span>(<span class="kw">basename</span>(files),<span class="st">&#39;</span><span class="ch">\\</span><span class="st">w+_</span><span class="ch">\\</span><span class="st">d+_&#39;</span>)</span>
+<span id="cb52-3"><a href="acoustic-space-use.html#cb52-3"></a><span class="kw">unique</span>(site_date)</span>
+<span id="cb52-4"><a href="acoustic-space-use.html#cb52-4"></a></span>
+<span id="cb52-5"><a href="acoustic-space-use.html#cb52-5"></a><span class="co"># The only step that involves sub-selection (Selecting 5 days across each site; Note: IPTO06R has 3 days sampled and OLV110R has only 2 days sampled)</span></span>
+<span id="cb52-6"><a href="acoustic-space-use.html#cb52-6"></a>site_date &lt;-<span class="st"> </span><span class="kw">unique</span>(site_date)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">10</span><span class="op">:</span><span class="dv">14</span>,<span class="dv">19</span><span class="op">:</span><span class="dv">23</span>,<span class="dv">28</span><span class="op">:</span><span class="dv">47</span>,<span class="dv">52</span><span class="op">:</span><span class="dv">61</span>,<span class="dv">71</span><span class="op">:</span><span class="dv">75</span>,</span>
+<span id="cb52-7"><a href="acoustic-space-use.html#cb52-7"></a>                             <span class="dv">86</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">97</span><span class="op">:</span><span class="dv">101</span>,<span class="dv">107</span><span class="op">:</span><span class="dv">111</span>,<span class="dv">118</span><span class="op">:</span><span class="dv">122</span>,<span class="dv">130</span><span class="op">:</span><span class="dv">134</span>,</span>
+<span id="cb52-8"><a href="acoustic-space-use.html#cb52-8"></a>                             <span class="dv">141</span><span class="op">:</span><span class="dv">143</span>,<span class="dv">150</span><span class="op">:</span><span class="dv">154</span>,<span class="dv">161</span><span class="op">:</span><span class="dv">165</span>,<span class="dv">173</span><span class="op">:</span><span class="dv">177</span>,<span class="dv">188</span><span class="op">:</span><span class="dv">189</span>,</span>
+<span id="cb52-9"><a href="acoustic-space-use.html#cb52-9"></a>                             <span class="dv">193</span><span class="op">:</span><span class="dv">197</span>,<span class="dv">202</span><span class="op">:</span><span class="dv">206</span>,<span class="dv">211</span><span class="op">:</span><span class="dv">215</span>,<span class="dv">219</span><span class="op">:</span><span class="dv">223</span>,<span class="dv">225</span><span class="op">:</span><span class="dv">229</span>,</span>
+<span id="cb52-10"><a href="acoustic-space-use.html#cb52-10"></a>                             <span class="dv">231</span><span class="op">:</span><span class="dv">235</span>,<span class="dv">237</span><span class="op">:</span><span class="dv">241</span>,<span class="dv">249</span><span class="op">:</span><span class="dv">253</span>,<span class="dv">261</span><span class="op">:</span><span class="dv">265</span>,<span class="dv">269</span><span class="op">:</span><span class="dv">273</span>,</span>
+<span id="cb52-11"><a href="acoustic-space-use.html#cb52-11"></a>                             <span class="dv">281</span><span class="op">:</span><span class="dv">285</span>,<span class="dv">289</span><span class="op">:</span><span class="dv">293</span>,<span class="dv">300</span><span class="op">:</span><span class="dv">304</span>,<span class="dv">309</span><span class="op">:</span><span class="dv">313</span>,<span class="dv">319</span><span class="op">:</span><span class="dv">323</span>,</span>
+<span id="cb52-12"><a href="acoustic-space-use.html#cb52-12"></a>                             <span class="dv">329</span><span class="op">:</span><span class="dv">333</span>,<span class="dv">340</span><span class="op">:</span><span class="dv">344</span>,<span class="dv">351</span><span class="op">:</span><span class="dv">355</span>,<span class="dv">361</span><span class="op">:</span><span class="dv">365</span>,<span class="dv">370</span><span class="op">:</span><span class="dv">374</span>,</span>
+<span id="cb52-13"><a href="acoustic-space-use.html#cb52-13"></a>                             <span class="dv">378</span><span class="op">:</span><span class="dv">382</span>,<span class="dv">387</span><span class="op">:</span><span class="dv">391</span>,<span class="dv">396</span><span class="op">:</span><span class="dv">400</span>)]</span>
+<span id="cb52-14"><a href="acoustic-space-use.html#cb52-14"></a></span>
+<span id="cb52-15"><a href="acoustic-space-use.html#cb52-15"></a><span class="co"># Create a sequence of numbers to combine files by 1 hour</span></span>
+<span id="cb52-16"><a href="acoustic-space-use.html#cb52-16"></a>hour_seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>,<span class="dt">to=</span><span class="dv">288</span>, <span class="dt">by=</span><span class="dv">12</span>)</span>
+<span id="cb52-17"><a href="acoustic-space-use.html#cb52-17"></a></span>
+<span id="cb52-18"><a href="acoustic-space-use.html#cb52-18"></a><span class="co"># To name files with a suffix for each hour</span></span>
+<span id="cb52-19"><a href="acoustic-space-use.html#cb52-19"></a>time_of_day &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;00:00-01:00&quot;</span>,<span class="st">&quot;01:00-02:00&quot;</span>,<span class="st">&quot;02:00-03:00&quot;</span>,<span class="st">&quot;03:00-04:00&quot;</span>,</span>
+<span id="cb52-20"><a href="acoustic-space-use.html#cb52-20"></a>                 <span class="st">&quot;04:00-05:00&quot;</span>,<span class="st">&quot;05:00-06:00&quot;</span>,<span class="st">&quot;06:00-07:00&quot;</span>,<span class="st">&quot;07:00-08:00&quot;</span>,</span>
+<span id="cb52-21"><a href="acoustic-space-use.html#cb52-21"></a>                 <span class="st">&quot;08:00-09:00&quot;</span>,<span class="st">&quot;09:00-10:00&quot;</span>,<span class="st">&quot;10:00-11:00&quot;</span>,<span class="st">&quot;11:00-12:00&quot;</span>,</span>
+<span id="cb52-22"><a href="acoustic-space-use.html#cb52-22"></a>                 <span class="st">&quot;12:00-13:00&quot;</span>,<span class="st">&quot;13:00-14:00&quot;</span>,<span class="st">&quot;14:00-15:00&quot;</span>,<span class="st">&quot;15:00-16:00&quot;</span>,</span>
+<span id="cb52-23"><a href="acoustic-space-use.html#cb52-23"></a>                 <span class="st">&quot;16:00-17:00&quot;</span>,<span class="st">&quot;17:00-18:00&quot;</span>,<span class="st">&quot;18:00-19:00&quot;</span>,<span class="st">&quot;19:00-20:00&quot;</span>,</span>
+<span id="cb52-24"><a href="acoustic-space-use.html#cb52-24"></a>                 <span class="st">&quot;20:00-21:00&quot;</span>,<span class="st">&quot;21:00-22:00&quot;</span>,<span class="st">&quot;22:00-23:00&quot;</span>,<span class="st">&quot;23:00-24:00&quot;</span>)</span>
+<span id="cb52-25"><a href="acoustic-space-use.html#cb52-25"></a></span>
+<span id="cb52-26"><a href="acoustic-space-use.html#cb52-26"></a><span class="co"># Loading parameters necessary for the Short-term fourier transform to be performed on hourly aggregates of data for each site_date combination</span></span>
+<span id="cb52-27"><a href="acoustic-space-use.html#cb52-27"></a>f &lt;-<span class="st"> </span><span class="dv">48000</span></span>
+<span id="cb52-28"><a href="acoustic-space-use.html#cb52-28"></a>wl &lt;-<span class="st"> </span><span class="dv">256</span> <span class="co"># This window length should be changed as a function of the frequency resolution (ie. bin size) and temporal resolution (ie. time)</span></span>
+<span id="cb52-29"><a href="acoustic-space-use.html#cb52-29"></a>ovlp &lt;-<span class="st"> </span><span class="dv">50</span></span>
+<span id="cb52-30"><a href="acoustic-space-use.html#cb52-30"></a>wn &lt;-<span class="st"> &quot;hanning&quot;</span></span>
+<span id="cb52-31"><a href="acoustic-space-use.html#cb52-31"></a></span>
+<span id="cb52-32"><a href="acoustic-space-use.html#cb52-32"></a><span class="co"># Store the 24 hour acoustic space use data in a list and name it by a unique site and date</span></span>
+<span id="cb52-33"><a href="acoustic-space-use.html#cb52-33"></a>site_date_asu &lt;-<span class="st">  </span><span class="kw">list</span>()</span>
+<span id="cb52-34"><a href="acoustic-space-use.html#cb52-34"></a></span>
+<span id="cb52-35"><a href="acoustic-space-use.html#cb52-35"></a><span class="co"># Add a progress bar for the loop</span></span>
+<span id="cb52-36"><a href="acoustic-space-use.html#cb52-36"></a>pb &lt;-<span class="st"> </span><span class="kw">txtProgressBar</span>(</span>
+<span id="cb52-37"><a href="acoustic-space-use.html#cb52-37"></a>  <span class="dt">min =</span> <span class="dv">0</span>,</span>
+<span id="cb52-38"><a href="acoustic-space-use.html#cb52-38"></a>  <span class="dt">max =</span> <span class="kw">length</span>(<span class="kw">unique</span>(site_date)),</span>
+<span id="cb52-39"><a href="acoustic-space-use.html#cb52-39"></a>  <span class="dt">style =</span> <span class="dv">3</span></span>
+<span id="cb52-40"><a href="acoustic-space-use.html#cb52-40"></a>)</span>
+<span id="cb52-41"><a href="acoustic-space-use.html#cb52-41"></a></span>
+<span id="cb52-42"><a href="acoustic-space-use.html#cb52-42"></a><span class="co"># Select only 24 hours of data (00:00:00 to 23:55:00) for every unique site-date</span></span>
+<span id="cb52-43"><a href="acoustic-space-use.html#cb52-43"></a></span>
+<span id="cb52-44"><a href="acoustic-space-use.html#cb52-44"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(site_date))){ </span>
+<span id="cb52-45"><a href="acoustic-space-use.html#cb52-45"></a>  </span>
+<span id="cb52-46"><a href="acoustic-space-use.html#cb52-46"></a>  <span class="kw">tic</span>(<span class="st">&quot;Total time for a single site-day combination&quot;</span>)</span>
+<span id="cb52-47"><a href="acoustic-space-use.html#cb52-47"></a>  </span>
+<span id="cb52-48"><a href="acoustic-space-use.html#cb52-48"></a>  <span class="co"># Store the acoustic space use data in a data.frame for plotting and analysis</span></span>
+<span id="cb52-49"><a href="acoustic-space-use.html#cb52-49"></a>  space_use &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</span>
+<span id="cb52-50"><a href="acoustic-space-use.html#cb52-50"></a></span>
+<span id="cb52-51"><a href="acoustic-space-use.html#cb52-51"></a>  <span class="co"># Extract the strings first by site </span></span>
+<span id="cb52-52"><a href="acoustic-space-use.html#cb52-52"></a>  dat &lt;-<span class="st"> </span>files[stringr<span class="op">::</span><span class="kw">str_detect</span>(files,<span class="kw">unique</span>(site_date)[i])]</span>
+<span id="cb52-53"><a href="acoustic-space-use.html#cb52-53"></a>  </span>
+<span id="cb52-54"><a href="acoustic-space-use.html#cb52-54"></a>  <span class="co"># Parallelize the runs</span></span>
+<span id="cb52-55"><a href="acoustic-space-use.html#cb52-55"></a>  cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">6</span>, <span class="dt">type =</span> <span class="st">&quot;SOCK&quot;</span>)</span>
+<span id="cb52-56"><a href="acoustic-space-use.html#cb52-56"></a>  <span class="kw">registerDoSNOW</span>(cl)</span>
+<span id="cb52-57"><a href="acoustic-space-use.html#cb52-57"></a>  </span>
+<span id="cb52-58"><a href="acoustic-space-use.html#cb52-58"></a>  <span class="co"># Store the each hour of data for an entire day as a list here (raw audio files read by tuneR::readWave())</span></span>
+<span id="cb52-59"><a href="acoustic-space-use.html#cb52-59"></a>  <span class="kw">tic</span>(<span class="st">&quot;Reading in .WAV files&quot;</span>)</span>
+<span id="cb52-60"><a href="acoustic-space-use.html#cb52-60"></a>  dailydata &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">k=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(dat), <span class="dt">.combine =</span> <span class="st">&#39;c&#39;</span>, <span class="dt">.inorder =</span> T, <span class="dt">.packages =</span> <span class="st">&#39;tuneR&#39;</span>) <span class="op">%dopar%</span><span class="st"> </span>{</span>
+<span id="cb52-61"><a href="acoustic-space-use.html#cb52-61"></a>    r &lt;-<span class="st"> </span><span class="kw">readWave</span>(dat[k])</span>
+<span id="cb52-62"><a href="acoustic-space-use.html#cb52-62"></a>  }</span>
+<span id="cb52-63"><a href="acoustic-space-use.html#cb52-63"></a>  <span class="kw">toc</span>()</span>
+<span id="cb52-64"><a href="acoustic-space-use.html#cb52-64"></a>  <span class="kw">gc</span>()</span>
+<span id="cb52-65"><a href="acoustic-space-use.html#cb52-65"></a>  <span class="kw">stopCluster</span>(cl)</span>
+<span id="cb52-66"><a href="acoustic-space-use.html#cb52-66"></a>  </span>
+<span id="cb52-67"><a href="acoustic-space-use.html#cb52-67"></a>  <span class="co"># renaming the files to ensure that data is read in hour by hour and stored in a separate object called hourlydata</span></span>
+<span id="cb52-68"><a href="acoustic-space-use.html#cb52-68"></a>  <span class="co"># Below we read the first 12 files in and then save it after computing the STDFT and then repeating it for the next 12 files and so on</span></span>
+<span id="cb52-69"><a href="acoustic-space-use.html#cb52-69"></a>  </span>
+<span id="cb52-70"><a href="acoustic-space-use.html#cb52-70"></a>  <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(hour_seq)<span class="op">-</span><span class="dv">1</span>)) { <span class="co"># Every 12 files correspond to one hour </span></span>
+<span id="cb52-71"><a href="acoustic-space-use.html#cb52-71"></a>    <span class="kw">tic</span>(<span class="st">&quot;Computing Short-term fourier transforms for each hour&quot;</span>)</span>
+<span id="cb52-72"><a href="acoustic-space-use.html#cb52-72"></a>    <span class="cf">if</span> (t <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb52-73"><a href="acoustic-space-use.html#cb52-73"></a>    hourlydata &lt;-<span class="st"> </span>dailydata[hour_seq[t]<span class="op">:</span>hour_seq[t<span class="op">+</span><span class="dv">1</span>]]</span>
+<span id="cb52-74"><a href="acoustic-space-use.html#cb52-74"></a>    } <span class="cf">else</span> {</span>
+<span id="cb52-75"><a href="acoustic-space-use.html#cb52-75"></a>    hourlydata &lt;-<span class="st"> </span>dailydata[(hour_seq[t]<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>hour_seq[t<span class="op">+</span><span class="dv">1</span>]]</span>
+<span id="cb52-76"><a href="acoustic-space-use.html#cb52-76"></a>    }</span>
+<span id="cb52-77"><a href="acoustic-space-use.html#cb52-77"></a>    </span>
+<span id="cb52-78"><a href="acoustic-space-use.html#cb52-78"></a>  <span class="kw">gc</span>()</span>
+<span id="cb52-79"><a href="acoustic-space-use.html#cb52-79"></a>  </span>
+<span id="cb52-80"><a href="acoustic-space-use.html#cb52-80"></a>  <span class="co"># Parallelize the runs</span></span>
+<span id="cb52-81"><a href="acoustic-space-use.html#cb52-81"></a>  cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">6</span>, <span class="dt">type =</span> <span class="st">&quot;SOCK&quot;</span>)</span>
+<span id="cb52-82"><a href="acoustic-space-use.html#cb52-82"></a>  <span class="kw">registerDoSNOW</span>(cl)</span>
+<span id="cb52-83"><a href="acoustic-space-use.html#cb52-83"></a>  </span>
+<span id="cb52-84"><a href="acoustic-space-use.html#cb52-84"></a>  <span class="co"># Store every hour&#39;s ASU data here</span></span>
+<span id="cb52-85"><a href="acoustic-space-use.html#cb52-85"></a>  data_per_hour &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">z =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(hourlydata), <span class="dt">.combine =</span> <span class="st">&#39;rbind&#39;</span>,</span>
+<span id="cb52-86"><a href="acoustic-space-use.html#cb52-86"></a>                           <span class="dt">.inorder=</span>T, <span class="dt">.packages =</span> <span class="st">&#39;seewave&#39;</span>) <span class="op">%dopar%</span><span class="st"> </span>{</span>
+<span id="cb52-87"><a href="acoustic-space-use.html#cb52-87"></a>      wave &lt;-<span class="st"> </span>hourlydata[[z]] </span>
+<span id="cb52-88"><a href="acoustic-space-use.html#cb52-88"></a>      n &lt;-<span class="st"> </span><span class="kw">length</span>(wave)</span>
+<span id="cb52-89"><a href="acoustic-space-use.html#cb52-89"></a>        </span>
+<span id="cb52-90"><a href="acoustic-space-use.html#cb52-90"></a>      <span class="co">## Short-term Fourier transform (using a seewave internal function)</span></span>
+<span id="cb52-91"><a href="acoustic-space-use.html#cb52-91"></a>      m &lt;-<span class="st"> </span><span class="kw">sspectro</span>(wave, <span class="dt">f =</span> f, <span class="dt">wl =</span> wl, <span class="dt">ovlp =</span> ovlp, <span class="dt">wn =</span> wn)</span>
+<span id="cb52-92"><a href="acoustic-space-use.html#cb52-92"></a></span>
+<span id="cb52-93"><a href="acoustic-space-use.html#cb52-93"></a>      <span class="co"># Frequency selection and frequency axis</span></span>
+<span id="cb52-94"><a href="acoustic-space-use.html#cb52-94"></a>      <span class="co"># Here, want only a sequence of numbers that correspond to the length of rows       # of the short-time fourier transform and we divide it by 1000 to get values        # in kHz</span></span>
+<span id="cb52-95"><a href="acoustic-space-use.html#cb52-95"></a>      freq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, (f<span class="op">/</span><span class="dv">2</span>) <span class="op">-</span><span class="st"> </span>(f<span class="op">/</span>wl), <span class="dt">length.out =</span> <span class="kw">nrow</span>(m))<span class="op">/</span><span class="dv">1000</span></span>
+<span id="cb52-96"><a href="acoustic-space-use.html#cb52-96"></a>        </span>
+<span id="cb52-97"><a href="acoustic-space-use.html#cb52-97"></a>      <span class="co"># Calculate acoustic space use per frequency bin </span></span>
+<span id="cb52-98"><a href="acoustic-space-use.html#cb52-98"></a>      f.cont &lt;-<span class="st"> </span><span class="kw">apply</span>(m, <span class="dt">MARGIN =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> sum)</span>
+<span id="cb52-99"><a href="acoustic-space-use.html#cb52-99"></a>        </span>
+<span id="cb52-100"><a href="acoustic-space-use.html#cb52-100"></a>      <span class="co"># Store the space use data in a dataframe for plotting later</span></span>
+<span id="cb52-101"><a href="acoustic-space-use.html#cb52-101"></a>      a &lt;-<span class="st"> </span><span class="kw">data.frame</span>(freq, f.cont)</span>
+<span id="cb52-102"><a href="acoustic-space-use.html#cb52-102"></a>    }</span>
+<span id="cb52-103"><a href="acoustic-space-use.html#cb52-103"></a>  </span>
+<span id="cb52-104"><a href="acoustic-space-use.html#cb52-104"></a>  <span class="kw">rm</span>(hourlydata); <span class="kw">gc</span>()</span>
+<span id="cb52-105"><a href="acoustic-space-use.html#cb52-105"></a>    </span>
+<span id="cb52-106"><a href="acoustic-space-use.html#cb52-106"></a>  data_per_hour  &lt;-<span class="st"> </span>data_per_hour <span class="op">%&gt;%</span></span>
+<span id="cb52-107"><a href="acoustic-space-use.html#cb52-107"></a><span class="st">  </span><span class="kw">group_by</span>(freq) <span class="op">%&gt;%</span></span>
+<span id="cb52-108"><a href="acoustic-space-use.html#cb52-108"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">f.cont=</span><span class="kw">sum</span>(f.cont)) </span>
+<span id="cb52-109"><a href="acoustic-space-use.html#cb52-109"></a>  </span>
+<span id="cb52-110"><a href="acoustic-space-use.html#cb52-110"></a>  data_per_hour<span class="op">$</span>f.cont &lt;-<span class="st"> </span>(data_per_hour<span class="op">$</span>f.cont)<span class="op">/</span><span class="dv">12</span></span>
+<span id="cb52-111"><a href="acoustic-space-use.html#cb52-111"></a>  data_per_hour<span class="op">$</span>time_of_day &lt;-<span class="st"> </span>time_of_day[t]</span>
+<span id="cb52-112"><a href="acoustic-space-use.html#cb52-112"></a>  </span>
+<span id="cb52-113"><a href="acoustic-space-use.html#cb52-113"></a>  space_use &lt;-<span class="st"> </span><span class="kw">rbind</span>(data_per_hour, space_use)</span>
+<span id="cb52-114"><a href="acoustic-space-use.html#cb52-114"></a>  <span class="kw">stopCluster</span>(cl); <span class="kw">gc</span>()</span>
+<span id="cb52-115"><a href="acoustic-space-use.html#cb52-115"></a>  <span class="kw">toc</span>()</span>
+<span id="cb52-116"><a href="acoustic-space-use.html#cb52-116"></a>}</span>
+<span id="cb52-117"><a href="acoustic-space-use.html#cb52-117"></a>  space_use &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(space_use)</span>
+<span id="cb52-118"><a href="acoustic-space-use.html#cb52-118"></a>  site_date_asu &lt;-<span class="st"> </span><span class="kw">c</span>(site_date_asu,<span class="kw">list</span>(space_use))</span>
+<span id="cb52-119"><a href="acoustic-space-use.html#cb52-119"></a>  <span class="kw">names</span>(site_date_asu)[i] &lt;-<span class="st"> </span><span class="kw">unique</span>(site_date)[i] </span>
+<span id="cb52-120"><a href="acoustic-space-use.html#cb52-120"></a>  <span class="kw">rm</span>(space_use, dailydata, data_per_hour); <span class="kw">gc</span>()</span>
+<span id="cb52-121"><a href="acoustic-space-use.html#cb52-121"></a>  <span class="kw">setTxtProgressBar</span>(pb, i)</span>
+<span id="cb52-122"><a href="acoustic-space-use.html#cb52-122"></a>  <span class="kw">toc</span>()</span>
+<span id="cb52-123"><a href="acoustic-space-use.html#cb52-123"></a>}</span>
+<span id="cb52-124"><a href="acoustic-space-use.html#cb52-124"></a><span class="kw">close</span>(pb)</span>
+<span id="cb52-125"><a href="acoustic-space-use.html#cb52-125"></a></span>
+<span id="cb52-126"><a href="acoustic-space-use.html#cb52-126"></a><span class="co"># store the list object for later</span></span>
+<span id="cb52-127"><a href="acoustic-space-use.html#cb52-127"></a><span class="kw">list.save</span>(site_date_asu, <span class="st">&quot;data/site_date_asu.rdata&quot;</span>)</span>
+<span id="cb52-128"><a href="acoustic-space-use.html#cb52-128"></a></span>
+<span id="cb52-129"><a href="acoustic-space-use.html#cb52-129"></a><span class="co"># Save the list of dataframes for future analysis</span></span>
+<span id="cb52-130"><a href="acoustic-space-use.html#cb52-130"></a>siteByDayAsu &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(site_date_asu, <span class="dt">.id =</span> <span class="st">&quot;Site_Day&quot;</span>)</span>
+<span id="cb52-131"><a href="acoustic-space-use.html#cb52-131"></a></span>
+<span id="cb52-132"><a href="acoustic-space-use.html#cb52-132"></a><span class="co"># Write to .csv</span></span>
+<span id="cb52-133"><a href="acoustic-space-use.html#cb52-133"></a><span class="kw">write.csv</span>(siteByDayAsu, <span class="st">&quot;data/site-by-day-asu.csv&quot;</span>, <span class="dt">row.names =</span> F) </span></code></pre></div>
+<ul>
+<li>Now that we have calculated acoustic space use values for a given frequency bin size and time resolution for every unique site-date combination, we would like to obtain a single set of space use values for every unique site. In other words, we would like to average space use values across all frequency bins for seven days (a week approximately). This is done for comparison between sites and treatment types.</li>
+</ul>
+<div class="sourceCode" id="cb53"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb53-1"><a href="acoustic-space-use.html#cb53-1"></a><span class="co"># All unique sites</span></span>
+<span id="cb53-2"><a href="acoustic-space-use.html#cb53-2"></a>site &lt;-<span class="st"> </span><span class="kw">str_extract</span>(<span class="kw">basename</span>(files),<span class="st">&#39;^([[:alnum:]])+&#39;</span>)</span>
+<span id="cb53-3"><a href="acoustic-space-use.html#cb53-3"></a><span class="kw">unique</span>(site)</span>
+<span id="cb53-4"><a href="acoustic-space-use.html#cb53-4"></a></span>
+<span id="cb53-5"><a href="acoustic-space-use.html#cb53-5"></a><span class="co"># Store the site-wise ASU values</span></span>
+<span id="cb53-6"><a href="acoustic-space-use.html#cb53-6"></a>site_asu &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb53-7"><a href="acoustic-space-use.html#cb53-7"></a></span>
+<span id="cb53-8"><a href="acoustic-space-use.html#cb53-8"></a><span class="co"># Loop through site-wise data and average data for each site</span></span>
+<span id="cb53-9"><a href="acoustic-space-use.html#cb53-9"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(site))) {</span>
+<span id="cb53-10"><a href="acoustic-space-use.html#cb53-10"></a>  </span>
+<span id="cb53-11"><a href="acoustic-space-use.html#cb53-11"></a>  <span class="co"># Extract data needed for every unique site</span></span>
+<span id="cb53-12"><a href="acoustic-space-use.html#cb53-12"></a>  dat &lt;-<span class="st"> </span>site_date_asu[stringr<span class="op">::</span><span class="kw">str_detect</span>(<span class="kw">names</span>(site_date_asu),<span class="kw">unique</span>(site)[i])]</span>
+<span id="cb53-13"><a href="acoustic-space-use.html#cb53-13"></a>  </span>
+<span id="cb53-14"><a href="acoustic-space-use.html#cb53-14"></a>  <span class="co"># Sum up values of acoustic space use across X no. of days for every unique site</span></span>
+<span id="cb53-15"><a href="acoustic-space-use.html#cb53-15"></a>  asu_sum &lt;-<span class="st">  </span>dat <span class="op">%&gt;%</span></span>
+<span id="cb53-16"><a href="acoustic-space-use.html#cb53-16"></a><span class="st">    </span><span class="kw">bind_rows</span>(<span class="dt">.id=</span><span class="st">&quot;data&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb53-17"><a href="acoustic-space-use.html#cb53-17"></a><span class="st">    </span><span class="kw">group_by</span>(freq, time_of_day) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb53-18"><a href="acoustic-space-use.html#cb53-18"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">f.cont.sum=</span><span class="kw">sum</span>(f.cont))</span>
+<span id="cb53-19"><a href="acoustic-space-use.html#cb53-19"></a>  </span>
+<span id="cb53-20"><a href="acoustic-space-use.html#cb53-20"></a>  <span class="co"># Averaging data as a function of number of days for a given site over which data was summed</span></span>
+<span id="cb53-21"><a href="acoustic-space-use.html#cb53-21"></a>  asu_sum<span class="op">$</span>f.cont.sum &lt;-<span class="st"> </span>(asu_sum<span class="op">$</span>f.cont.sum)<span class="op">/</span><span class="kw">length</span>(dat)</span>
+<span id="cb53-22"><a href="acoustic-space-use.html#cb53-22"></a>  </span>
+<span id="cb53-23"><a href="acoustic-space-use.html#cb53-23"></a>  <span class="co"># Scaling the data between 0 to 1 for the sake of comparison across sites</span></span>
+<span id="cb53-24"><a href="acoustic-space-use.html#cb53-24"></a>  asu_sum<span class="op">$</span>f.cont.sum &lt;-<span class="st"> </span><span class="kw">range01</span>(asu_sum<span class="op">$</span>f.cont.sum)</span>
+<span id="cb53-25"><a href="acoustic-space-use.html#cb53-25"></a>  </span>
+<span id="cb53-26"><a href="acoustic-space-use.html#cb53-26"></a>  asu_sum &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(asu_sum)</span>
+<span id="cb53-27"><a href="acoustic-space-use.html#cb53-27"></a>  site_asu &lt;-<span class="st"> </span><span class="kw">c</span>(site_asu, <span class="kw">list</span>(asu_sum))</span>
+<span id="cb53-28"><a href="acoustic-space-use.html#cb53-28"></a>  <span class="kw">names</span>(site_asu)[i] &lt;-<span class="st"> </span><span class="kw">unique</span>(site)[i] </span>
+<span id="cb53-29"><a href="acoustic-space-use.html#cb53-29"></a>  <span class="kw">rm</span>(dat,asu_sum)</span>
+<span id="cb53-30"><a href="acoustic-space-use.html#cb53-30"></a>}</span>
+<span id="cb53-31"><a href="acoustic-space-use.html#cb53-31"></a></span>
+<span id="cb53-32"><a href="acoustic-space-use.html#cb53-32"></a><span class="co"># store the list object for later</span></span>
+<span id="cb53-33"><a href="acoustic-space-use.html#cb53-33"></a><span class="kw">list.save</span>(site_asu, <span class="st">&quot;data/site_asu.rdata&quot;</span>)</span>
+<span id="cb53-34"><a href="acoustic-space-use.html#cb53-34"></a></span>
+<span id="cb53-35"><a href="acoustic-space-use.html#cb53-35"></a><span class="co"># Save the list of dataframes for future analysis</span></span>
+<span id="cb53-36"><a href="acoustic-space-use.html#cb53-36"></a>siteWiseAsu &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(site_asu, <span class="dt">.id =</span> <span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb53-37"><a href="acoustic-space-use.html#cb53-37"></a></span>
+<span id="cb53-38"><a href="acoustic-space-use.html#cb53-38"></a><span class="co"># Write to .csv</span></span>
+<span id="cb53-39"><a href="acoustic-space-use.html#cb53-39"></a><span class="kw">write.csv</span>(siteWiseAsu, <span class="st">&quot;data/site-wise-asu.csv&quot;</span>, <span class="dt">row.names =</span> F)</span></code></pre></div>
+<p>Visualization of data</p>
+<p>We will use ggplot2 to plot and save individual ASU plots for each unique site-date combination. This will then be repeated for each unique site (calculated in the previous chunk of code)</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb54-1"><a href="acoustic-space-use.html#cb54-1"></a><span class="co"># Saving the ggplots to a folder for every unique site-date combination</span></span>
+<span id="cb54-2"><a href="acoustic-space-use.html#cb54-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(site_date_asu)){</span>
+<span id="cb54-3"><a href="acoustic-space-use.html#cb54-3"></a>  </span>
+<span id="cb54-4"><a href="acoustic-space-use.html#cb54-4"></a>  <span class="co"># Get the data out from a list to a datframe (else ggplot won&#39;t accept it)</span></span>
+<span id="cb54-5"><a href="acoustic-space-use.html#cb54-5"></a>  dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(site_date_asu[i])</span>
+<span id="cb54-6"><a href="acoustic-space-use.html#cb54-6"></a><span class="kw">names</span>(dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;freq&quot;</span>,<span class="st">&quot;f.cont&quot;</span>,<span class="st">&quot;time_of_day&quot;</span>)</span>
+<span id="cb54-7"><a href="acoustic-space-use.html#cb54-7"></a>  </span>
+<span id="cb54-8"><a href="acoustic-space-use.html#cb54-8"></a>  <span class="co"># Plot the data</span></span>
+<span id="cb54-9"><a href="acoustic-space-use.html#cb54-9"></a>  g1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(dat, <span class="kw">aes</span>(<span class="dt">x=</span>time_of_day, <span class="dt">y=</span>freq)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb54-10"><a href="acoustic-space-use.html#cb54-10"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> f.cont)) <span class="op">+</span></span>
+<span id="cb54-11"><a href="acoustic-space-use.html#cb54-11"></a><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Reds&quot;</span>))<span class="op">+</span></span>
+<span id="cb54-12"><a href="acoustic-space-use.html#cb54-12"></a><span class="st">    </span><span class="co"># scale_fill_scico(palette = &quot;vikO&quot;) +</span></span>
+<span id="cb54-13"><a href="acoustic-space-use.html#cb54-13"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb54-14"><a href="acoustic-space-use.html#cb54-14"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Time of Day (in hours)&quot;</span>,</span>
+<span id="cb54-15"><a href="acoustic-space-use.html#cb54-15"></a>       <span class="dt">y=</span><span class="st">&quot;Frequency (in kHz) &quot;</span>) <span class="op">+</span></span>
+<span id="cb54-16"><a href="acoustic-space-use.html#cb54-16"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb54-17"><a href="acoustic-space-use.html#cb54-17"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb54-18"><a href="acoustic-space-use.html#cb54-18"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb54-19"><a href="acoustic-space-use.html#cb54-19"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">vjust=</span><span class="fl">0.5</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>),</span>
+<span id="cb54-20"><a href="acoustic-space-use.html#cb54-20"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb54-21"><a href="acoustic-space-use.html#cb54-21"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb54-22"><a href="acoustic-space-use.html#cb54-22"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb54-23"><a href="acoustic-space-use.html#cb54-23"></a>  </span>
+<span id="cb54-24"><a href="acoustic-space-use.html#cb54-24"></a>  <span class="co"># Save the data to a folder</span></span>
+<span id="cb54-25"><a href="acoustic-space-use.html#cb54-25"></a>  <span class="kw">ggsave</span>(<span class="dt">filename=</span><span class="st">&quot;&quot;</span>,<span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>, </span>
+<span id="cb54-26"><a href="acoustic-space-use.html#cb54-26"></a>         <span class="dt">plot=</span>g1, <span class="dt">device=</span><span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">paste</span>(<span class="st">&quot;figs/siteByDayAsu/&quot;</span>,  <span class="kw">paste</span>(<span class="kw">names</span>(site_date_asu)[i], <span class="st">&quot;.png&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</span>
+<span id="cb54-27"><a href="acoustic-space-use.html#cb54-27"></a>}</span>
+<span id="cb54-28"><a href="acoustic-space-use.html#cb54-28"></a></span>
+<span id="cb54-29"><a href="acoustic-space-use.html#cb54-29"></a></span>
+<span id="cb54-30"><a href="acoustic-space-use.html#cb54-30"></a><span class="co"># Saving the ggplots to a folder for every unique site</span></span>
+<span id="cb54-31"><a href="acoustic-space-use.html#cb54-31"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(site_asu)){</span>
+<span id="cb54-32"><a href="acoustic-space-use.html#cb54-32"></a>  </span>
+<span id="cb54-33"><a href="acoustic-space-use.html#cb54-33"></a>  <span class="co"># Get the data out from a list to a .dataframe (else ggplot won&#39;t accept it)</span></span>
+<span id="cb54-34"><a href="acoustic-space-use.html#cb54-34"></a>  dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(site_asu[j])</span>
+<span id="cb54-35"><a href="acoustic-space-use.html#cb54-35"></a>  <span class="kw">names</span>(dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;freq&quot;</span>,<span class="st">&quot;time_of_day&quot;</span>,<span class="st">&quot;f.cont.sum&quot;</span>)</span>
+<span id="cb54-36"><a href="acoustic-space-use.html#cb54-36"></a>  </span>
+<span id="cb54-37"><a href="acoustic-space-use.html#cb54-37"></a>  <span class="co"># Plot the data</span></span>
+<span id="cb54-38"><a href="acoustic-space-use.html#cb54-38"></a>  g1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(dat, <span class="kw">aes</span>(<span class="dt">x=</span>time_of_day, <span class="dt">y=</span>freq)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb54-39"><a href="acoustic-space-use.html#cb54-39"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> f.cont.sum)) <span class="op">+</span></span>
+<span id="cb54-40"><a href="acoustic-space-use.html#cb54-40"></a><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Reds&quot;</span>))<span class="op">+</span></span>
+<span id="cb54-41"><a href="acoustic-space-use.html#cb54-41"></a><span class="st">    </span><span class="co"># scale_fill_scico(palette = &quot;vikO&quot;) +</span></span>
+<span id="cb54-42"><a href="acoustic-space-use.html#cb54-42"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb54-43"><a href="acoustic-space-use.html#cb54-43"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Time of Day (in hours)&quot;</span>,</span>
+<span id="cb54-44"><a href="acoustic-space-use.html#cb54-44"></a>       <span class="dt">y=</span><span class="st">&quot;Frequency (in kHz) &quot;</span>) <span class="op">+</span></span>
+<span id="cb54-45"><a href="acoustic-space-use.html#cb54-45"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb54-46"><a href="acoustic-space-use.html#cb54-46"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb54-47"><a href="acoustic-space-use.html#cb54-47"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb54-48"><a href="acoustic-space-use.html#cb54-48"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">vjust=</span><span class="fl">0.5</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>),</span>
+<span id="cb54-49"><a href="acoustic-space-use.html#cb54-49"></a>        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb54-50"><a href="acoustic-space-use.html#cb54-50"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb54-51"><a href="acoustic-space-use.html#cb54-51"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>))</span>
+<span id="cb54-52"><a href="acoustic-space-use.html#cb54-52"></a>  </span>
+<span id="cb54-53"><a href="acoustic-space-use.html#cb54-53"></a>  <span class="co"># Save the data to a folder</span></span>
+<span id="cb54-54"><a href="acoustic-space-use.html#cb54-54"></a>  <span class="kw">ggsave</span>(<span class="dt">filename=</span><span class="st">&quot;&quot;</span>,<span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>, </span>
+<span id="cb54-55"><a href="acoustic-space-use.html#cb54-55"></a>         <span class="dt">plot=</span>g1, <span class="dt">device=</span><span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">paste</span>(<span class="st">&quot;figs/siteWiseAsu/&quot;</span>,  <span class="kw">paste</span>(<span class="kw">names</span>(site_asu)[j], <span class="st">&quot;.png&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</span>
+<span id="cb54-56"><a href="acoustic-space-use.html#cb54-56"></a>}</span></code></pre></div>
+<p>Main text Figure 3</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb55-1"><a href="acoustic-space-use.html#cb55-1"></a><span class="co"># load .rdata to plot select figures for publication</span></span>
+<span id="cb55-2"><a href="acoustic-space-use.html#cb55-2"></a>site_asu &lt;-<span class="st"> </span><span class="kw">load</span>(<span class="st">&quot;data/site_asu.rdata&quot;</span>)</span>
+<span id="cb55-3"><a href="acoustic-space-use.html#cb55-3"></a></span>
+<span id="cb55-4"><a href="acoustic-space-use.html#cb55-4"></a>site_asu &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(site_asu, <span class="dt">.id=</span><span class="st">&quot;Site&quot;</span>)</span>
+<span id="cb55-5"><a href="acoustic-space-use.html#cb55-5"></a></span>
+<span id="cb55-6"><a href="acoustic-space-use.html#cb55-6"></a><span class="co"># Selecting three representative sites for Fig. 3 (PANMP1B, INBS04R, INBS04U)</span></span>
+<span id="cb55-7"><a href="acoustic-space-use.html#cb55-7"></a>bm &lt;-<span class="st"> </span>site_asu <span class="op">%&gt;%</span></span>
+<span id="cb55-8"><a href="acoustic-space-use.html#cb55-8"></a><span class="st">   </span><span class="kw">filter</span>(Site<span class="op">==</span><span class="st">&quot;PANMP1B&quot;</span>)</span>
+<span id="cb55-9"><a href="acoustic-space-use.html#cb55-9"></a> </span>
+<span id="cb55-10"><a href="acoustic-space-use.html#cb55-10"></a>ar &lt;-<span class="st"> </span>site_asu <span class="op">%&gt;%</span></span>
+<span id="cb55-11"><a href="acoustic-space-use.html#cb55-11"></a><span class="st">   </span><span class="kw">filter</span>(Site<span class="op">==</span><span class="st">&quot;INBS04R&quot;</span>)</span>
+<span id="cb55-12"><a href="acoustic-space-use.html#cb55-12"></a> </span>
+<span id="cb55-13"><a href="acoustic-space-use.html#cb55-13"></a>nr &lt;-<span class="st"> </span>site_asu <span class="op">%&gt;%</span></span>
+<span id="cb55-14"><a href="acoustic-space-use.html#cb55-14"></a><span class="st">   </span><span class="kw">filter</span>(Site<span class="op">==</span><span class="st">&quot;INBS04U&quot;</span>)</span>
+<span id="cb55-15"><a href="acoustic-space-use.html#cb55-15"></a></span>
+<span id="cb55-16"><a href="acoustic-space-use.html#cb55-16"></a><span class="co"># create separate figures for benchmark, active and passive sites and then patchwork them</span></span>
+<span id="cb55-17"><a href="acoustic-space-use.html#cb55-17"></a></span>
+<span id="cb55-18"><a href="acoustic-space-use.html#cb55-18"></a><span class="co"># benchmark site</span></span>
+<span id="cb55-19"><a href="acoustic-space-use.html#cb55-19"></a>fig_bm &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bm, <span class="kw">aes</span>(<span class="dt">x=</span>time_of_day, <span class="dt">y=</span>freq)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb55-20"><a href="acoustic-space-use.html#cb55-20"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> f.cont.sum)) <span class="op">+</span></span>
+<span id="cb55-21"><a href="acoustic-space-use.html#cb55-21"></a><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Reds&quot;</span>))<span class="op">+</span></span>
+<span id="cb55-22"><a href="acoustic-space-use.html#cb55-22"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb55-23"><a href="acoustic-space-use.html#cb55-23"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">fill =</span> <span class="st">&quot;Acoustic Space Use</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
+<span id="cb55-24"><a href="acoustic-space-use.html#cb55-24"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_blank</span>(), </span>
+<span id="cb55-25"><a href="acoustic-space-use.html#cb55-25"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb55-26"><a href="acoustic-space-use.html#cb55-26"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb55-27"><a href="acoustic-space-use.html#cb55-27"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">vjust=</span><span class="fl">0.5</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>),</span>
+<span id="cb55-28"><a href="acoustic-space-use.html#cb55-28"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb55-29"><a href="acoustic-space-use.html#cb55-29"></a>                                    <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb55-30"><a href="acoustic-space-use.html#cb55-30"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb55-31"><a href="acoustic-space-use.html#cb55-31"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>)) <span class="op">+</span></span>
+<span id="cb55-32"><a href="acoustic-space-use.html#cb55-32"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="kw">max</span>(bm<span class="op">$</span>time_of_day), <span class="dt">y =</span> <span class="dv">23</span>,  <span class="dt">label =</span> <span class="st">&quot;Benchmark site&quot;</span>, <span class="dt">hjust =</span> <span class="dv">1</span>, <span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>, <span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>)</span>
+<span id="cb55-33"><a href="acoustic-space-use.html#cb55-33"></a></span>
+<span id="cb55-34"><a href="acoustic-space-use.html#cb55-34"></a><span class="co"># actively restored site</span></span>
+<span id="cb55-35"><a href="acoustic-space-use.html#cb55-35"></a>fig_ar &lt;-<span class="st"> </span><span class="kw">ggplot</span>(ar, <span class="kw">aes</span>(<span class="dt">x=</span>time_of_day, <span class="dt">y=</span>freq)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb55-36"><a href="acoustic-space-use.html#cb55-36"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> f.cont.sum)) <span class="op">+</span></span>
+<span id="cb55-37"><a href="acoustic-space-use.html#cb55-37"></a><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Reds&quot;</span>))<span class="op">+</span></span>
+<span id="cb55-38"><a href="acoustic-space-use.html#cb55-38"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb55-39"><a href="acoustic-space-use.html#cb55-39"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">Time of Day (in hours)&quot;</span>,</span>
+<span id="cb55-40"><a href="acoustic-space-use.html#cb55-40"></a>       <span class="dt">fill =</span> <span class="st">&quot;Acoustic Space Use</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
+<span id="cb55-41"><a href="acoustic-space-use.html#cb55-41"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb55-42"><a href="acoustic-space-use.html#cb55-42"></a>                                    <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb55-43"><a href="acoustic-space-use.html#cb55-43"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb55-44"><a href="acoustic-space-use.html#cb55-44"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb55-45"><a href="acoustic-space-use.html#cb55-45"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">vjust=</span><span class="fl">0.5</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>),</span>
+<span id="cb55-46"><a href="acoustic-space-use.html#cb55-46"></a>        <span class="dt">axis.title.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb55-47"><a href="acoustic-space-use.html#cb55-47"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb55-48"><a href="acoustic-space-use.html#cb55-48"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="kw">max</span>(ar<span class="op">$</span>time_of_day), <span class="dt">y =</span> <span class="dv">23</span>,  <span class="dt">label =</span> <span class="st">&quot;Actively restored site&quot;</span>, <span class="dt">hjust =</span> <span class="dv">1</span>, <span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>, <span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>)</span>
+<span id="cb55-49"><a href="acoustic-space-use.html#cb55-49"></a></span>
+<span id="cb55-50"><a href="acoustic-space-use.html#cb55-50"></a><span class="co"># naturally regenerating site</span></span>
+<span id="cb55-51"><a href="acoustic-space-use.html#cb55-51"></a>fig_nr &lt;-<span class="st"> </span><span class="kw">ggplot</span>(nr, <span class="kw">aes</span>(<span class="dt">x=</span>time_of_day, <span class="dt">y=</span>freq)) <span class="op">+</span><span class="st">  </span></span>
+<span id="cb55-52"><a href="acoustic-space-use.html#cb55-52"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> f.cont.sum)) <span class="op">+</span></span>
+<span id="cb55-53"><a href="acoustic-space-use.html#cb55-53"></a><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Reds&quot;</span>))<span class="op">+</span></span>
+<span id="cb55-54"><a href="acoustic-space-use.html#cb55-54"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb55-55"><a href="acoustic-space-use.html#cb55-55"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Frequency (in kHz)</span><span class="ch">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb55-56"><a href="acoustic-space-use.html#cb55-56"></a>       <span class="dt">fill =</span> <span class="st">&quot;Acoustic Space Use</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
+<span id="cb55-57"><a href="acoustic-space-use.html#cb55-57"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb55-58"><a href="acoustic-space-use.html#cb55-58"></a>                                    <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb55-59"><a href="acoustic-space-use.html#cb55-59"></a>        <span class="dt">axis.ticks.length.x =</span> <span class="kw">unit</span>(.<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb55-60"><a href="acoustic-space-use.html#cb55-60"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb55-61"><a href="acoustic-space-use.html#cb55-61"></a>        <span class="dt">axis.title.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb55-62"><a href="acoustic-space-use.html#cb55-62"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">vjust=</span><span class="fl">0.5</span>, <span class="dt">hjust=</span><span class="fl">0.5</span>),</span>
+<span id="cb55-63"><a href="acoustic-space-use.html#cb55-63"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb55-64"><a href="acoustic-space-use.html#cb55-64"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="kw">max</span>(nr<span class="op">$</span>time_of_day), <span class="dt">y =</span> <span class="dv">23</span>,  <span class="dt">label =</span> <span class="st">&quot;Naturally regenerating site&quot;</span>, <span class="dt">hjust =</span> <span class="dv">1</span>, <span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>, <span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>)</span>
+<span id="cb55-65"><a href="acoustic-space-use.html#cb55-65"></a></span>
+<span id="cb55-66"><a href="acoustic-space-use.html#cb55-66"></a><span class="co"># patchwork the above three for the Fig. 3</span></span>
+<span id="cb55-67"><a href="acoustic-space-use.html#cb55-67"></a>fig_asu &lt;-<span class="st"> </span>fig_nr <span class="op">+</span><span class="st"> </span>fig_ar <span class="op">+</span><span class="st"> </span>fig_bm</span>
+<span id="cb55-68"><a href="acoustic-space-use.html#cb55-68"></a></span>
+<span id="cb55-69"><a href="acoustic-space-use.html#cb55-69"></a><span class="kw">ggsave</span>(fig_asu, <span class="dt">filename =</span> <span class="st">&quot;figs/fig3.png&quot;</span>, <span class="dt">width=</span><span class="dv">52</span>, <span class="dt">height=</span><span class="dv">17</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;cm&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span></code></pre></div>
+<div class="figure">
+<img src="figs/fig_03.png" alt="" />
+<p class="caption"><strong>Acoustic space use across a naturally regenerating, actively restored and benchmark site</strong>
+Acoustic space use (ASU) is the proportion of frequency space that is ‘used’ for a given time period (where ‘used’ refers to the frequency space that is occupied by vocalizations/sounds above a threshold amplitude). In this figure, we showcase ASU for a naturally regenerating site, an actively restored site and a benchmark site. We observed largely empty frequency bins between 12 kHz to 24 kHz for the majority of AR and NR sites. Our visual examination also highlighted well established diurnal and nocturnal activity patterns of birds and insects, with frequencies between 0 kHz to 12 kHz showing higher values of ASU during the day (6AM to 6PM), and frequencies between 12 kHz to 24 kHz showing higher values of ASU during the night (6PM to 6AM).</p>
+</div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="multiple-regression-on-distance-matrices.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/09_acoustic-space-use.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

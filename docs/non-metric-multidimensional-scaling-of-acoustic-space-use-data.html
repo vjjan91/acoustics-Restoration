@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 11 Non-metric multidimensional scaling of acoustic space use data | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 11 Non-metric multidimensional scaling of acoustic space use data | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 11 Non-metric multidimensional scaling of acoustic space use data | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 11 Non-metric multidimensional scaling of acoustic space use data | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="VA Akshay" />
+<meta name="author" content="Priyanka HariHaran" />
+<meta name="author" content="Pooja Choksi" />
+<meta name="author" content="Sarika Khanwilkar" />
+<meta name="author" content="Don J Melnick" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-11-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="acoustic-space-use.html"/>
+<link rel="next" href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.4</b> Main Text Figure 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness.html"><a href="species-richness.html"><i class="fa fa-check"></i><b>3</b> Species Richness</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-on-distance-matrices.html"><a href="multiple-regression-on-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression on distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>10</b> Acoustic space use</a></li>
+<li class="chapter" data-level="11" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>11</b> Non-metric multidimensional scaling of acoustic space use data</a></li>
+<li class="chapter" data-level="12" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>12</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a></li>
+<li class="chapter" data-level="13" data-path="multiple-regression-on-distance-matrices-acoustic-space-use.html"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html"><i class="fa fa-check"></i><b>13</b> Multiple regression on distance matrices (acoustic space use)</a></li>
+<li class="chapter" data-level="14" data-path="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><i class="fa fa-check"></i><b>14</b> Generalized linear modeling (acoustic space use and richness, and time since restoration)</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="non-metric-multidimensional-scaling-of-acoustic-space-use-data" class="section level1">
+<h1><span class="header-section-number">Section 11</span> Non-metric multidimensional scaling of acoustic space use data</h1>
+<p>Here, we will use ordinations as a method of analyzing how acoustic space use (defined in terms of frequency and time, across 24 hours in a day) to test if space use follows a similar pattern of direction of change that was observed for species richness with the direction of change observed as moving from naturally regenerating sites to actively restored to benchmark sites.</p>
+<p>Load necessary libraries for analysis</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb56-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb56-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb56-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb56-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb56-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb56-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb56-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-7"></a><span class="kw">library</span>(psych)</span>
+<span id="cb56-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-8"></a><span class="kw">library</span>(ecodist)</span>
+<span id="cb56-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-9"></a><span class="kw">library</span>(RColorBrewer)</span>
+<span id="cb56-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-10"></a><span class="kw">library</span>(ggforce)</span>
+<span id="cb56-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-11"></a><span class="kw">library</span>(ggalt)</span>
+<span id="cb56-12"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-12"></a></span>
+<span id="cb56-13"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-13"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb56-14"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb56-14"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>Load the necessary data for nmds calculations</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb57-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-1"></a><span class="co"># load the site-wise space use data</span></span>
+<span id="cb57-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-2"></a>siteWiseAsu &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/site-wise-asu.csv&quot;</span>)</span>
+<span id="cb57-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-3"></a></span>
+<span id="cb57-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-4"></a><span class="co"># load list of sites</span></span>
+<span id="cb57-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-5"></a>sites &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/list-of-sites.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb57-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-6"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="st">&quot;Site.code&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb57-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-7"></a><span class="st">  </span><span class="kw">filter</span>(Site.code <span class="op">!=</span><span class="st"> &quot;OLCAP5B&quot;</span>)</span>
+<span id="cb57-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-8"></a></span>
+<span id="cb57-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-9"></a><span class="co"># Add restoration type column to the space use data</span></span>
+<span id="cb57-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-10"></a>siteWiseAsu &lt;-<span class="st"> </span><span class="kw">left_join</span>(siteWiseAsu,sites, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site.code&quot;</span>))</span>
+<span id="cb57-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-11"></a></span>
+<span id="cb57-12"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-12"></a><span class="co"># Separate analysis: space use during certain times of day alone</span></span>
+<span id="cb57-13"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-13"></a><span class="co"># let&#39;s look only at dawn chorus to explore what the data looks like</span></span>
+<span id="cb57-14"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-14"></a>dawn &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;05:00-06:00&quot;</span>,<span class="st">&quot;06:00-07:00&quot;</span>,<span class="st">&quot;07:00-08:00&quot;</span>,<span class="st">&quot;08:00-09:00&quot;</span>,</span>
+<span id="cb57-15"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-15"></a>          <span class="st">&quot;09:00-10:00&quot;</span>)</span>
+<span id="cb57-16"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-16"></a>dawnChorusAsu &lt;-<span class="st"> </span>siteWiseAsu <span class="op">%&gt;%</span></span>
+<span id="cb57-17"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-17"></a><span class="st">  </span><span class="kw">filter</span>(time_of_day <span class="op">%in%</span><span class="st"> </span>dawn)</span>
+<span id="cb57-18"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-18"></a></span>
+<span id="cb57-19"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-19"></a><span class="co"># Separate analysis: space use during certain times of day alone</span></span>
+<span id="cb57-20"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-20"></a><span class="co"># let&#39;s look only at dusk chorus to explore what the data looks like</span></span>
+<span id="cb57-21"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-21"></a>dusk &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;16:00-17:00&quot;</span>,<span class="st">&quot;17:00-18:00&quot;</span>,<span class="st">&quot;18:00-19:00&quot;</span>,<span class="st">&quot;19:00-20:00&quot;</span>)</span>
+<span id="cb57-22"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-22"></a>duskChorusAsu &lt;-<span class="st"> </span>siteWiseAsu <span class="op">%&gt;%</span></span>
+<span id="cb57-23"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb57-23"></a><span class="st">  </span><span class="kw">filter</span>(time_of_day <span class="op">%in%</span><span class="st"> </span>dusk)</span></code></pre></div>
+<p>Preparing a dataframe of space use to run ordinations</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb58-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-1"></a></span>
+<span id="cb58-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-2"></a><span class="co"># Please note that while creating this dataframe for ordinations, the overall acoustic space use (sum of f.cont.sum column) was calculated by frequency bin, irrespective of the time of day for a given site. In other words, for 24 hours of data, a single value of space use was obtained for a given frequency bin. The frequency bin was pivoted from long to wide and each column essentially corresponded to a frequency bin. Within that frequency bin, grouped for each site, an overall value of space use was computed. </span></span>
+<span id="cb58-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-3"></a></span>
+<span id="cb58-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-4"></a>nmdsDat &lt;-<span class="st"> </span>siteWiseAsu <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># replace with dawnChorusAsu/duskChorusAsu </span></span>
+<span id="cb58-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-5"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, freq, f.cont.sum, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb58-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-6"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.type, freq) <span class="op">%&gt;%</span></span>
+<span id="cb58-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totSpaceuse =</span> <span class="kw">sum</span>(f.cont.sum)) <span class="op">%&gt;%</span></span>
+<span id="cb58-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-8"></a><span class="st">  </span><span class="kw">arrange</span>(Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb58-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-9"></a><span class="st">  </span><span class="kw">pivot_wider</span> (<span class="dt">names_from =</span> freq, <span class="dt">values_from =</span> totSpaceuse, <span class="dt">values_fill =</span> <span class="kw">list</span>(<span class="dt">totSpaceuse=</span><span class="dv">0</span>))</span>
+<span id="cb58-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-10"></a></span>
+<span id="cb58-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-11"></a><span class="co"># Convert to matrix form</span></span>
+<span id="cb58-12"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb58-12"></a>nmdsDatMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(nmdsDat[, <span class="dv">3</span><span class="op">:</span><span class="kw">ncol</span>(nmdsDat)])</span></code></pre></div>
+<p>Currently using a euclidean measure of estimating dissimilarity prior to running ordinations</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb59-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-1"></a><span class="co"># Run a euclidean dissimilarity distance and use metaMDS function from vegan to run ordinations</span></span>
+<span id="cb59-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-2"></a></span>
+<span id="cb59-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-3"></a>disEuclidean &lt;-<span class="st"> </span><span class="kw">vegdist</span>(nmdsDatMatrix, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</span>
+<span id="cb59-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-4"></a></span>
+<span id="cb59-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-5"></a>nmdsEuclidean &lt;-<span class="st"> </span><span class="kw">vegdist</span> (nmdsDatMatrix, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb59-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-6"></a><span class="st">  </span><span class="kw">metaMDS</span> (nmdsEuclidean, <span class="dt">k=</span><span class="dv">6</span>)</span>
+<span id="cb59-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-7"></a></span>
+<span id="cb59-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-8"></a><span class="co"># extract nmds scores</span></span>
+<span id="cb59-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-9"></a>nmdsScores &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">scores</span>(nmdsEuclidean))</span>
+<span id="cb59-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-10"></a></span>
+<span id="cb59-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-11"></a><span class="co"># Write the scores to a separate .csv</span></span>
+<span id="cb59-12"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-12"></a><span class="kw">write.csv</span>(nmdsScores, <span class="st">&quot;data/nmds-acousticSpaceUse.csv&quot;</span>, <span class="dt">row.names =</span> F)</span>
+<span id="cb59-13"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-13"></a></span>
+<span id="cb59-14"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb59-14"></a><span class="co"># With the above analysis, we note the stress is 0.008566905. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress &lt; 0.05 provides an excellent representation in reduced dimensions, &lt; 0.1 is great, &lt; 0.2 is good/ok, and stress &lt; 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!</span></span></code></pre></div>
+<p>Plotting the NMDS scores using ggplot2</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb60-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-1"></a><span class="co"># First let&#39;s add the treatment type back to the nmds scores</span></span>
+<span id="cb60-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-2"></a>nmdsScores<span class="op">$</span>Restoration.type &lt;-<span class="st"> </span>nmdsDat<span class="op">$</span>Restoration.type</span>
+<span id="cb60-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-3"></a></span>
+<span id="cb60-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-4"></a><span class="co"># Add a custom set of colors</span></span>
+<span id="cb60-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-5"></a>mycolors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">brewer.pal</span>(<span class="dt">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="dt">n =</span> <span class="dv">3</span>), <span class="kw">brewer.pal</span>(<span class="dt">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="dt">n =</span> <span class="dv">3</span>))</span>
+<span id="cb60-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-6"></a></span>
+<span id="cb60-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-7"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb60-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-8"></a>nmdsScores<span class="op">$</span>Restoration.type &lt;-<span class="st"> </span><span class="kw">factor</span>(nmdsScores<span class="op">$</span>Restoration.type, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb60-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-9"></a></span>
+<span id="cb60-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-10"></a>fig_nmds &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data=</span>nmdsScores) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb60-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-11"></a><span class="st">  </span><span class="kw">stat_ellipse</span>(<span class="kw">aes</span>(<span class="dt">x=</span>NMDS1,<span class="dt">y=</span>NMDS2,<span class="dt">colour=</span>Restoration.type),<span class="dt">level =</span> <span class="fl">0.50</span>) <span class="op">+</span></span>
+<span id="cb60-12"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-12"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>NMDS1,<span class="dt">y=</span>NMDS2,<span class="dt">shape=</span>Restoration.type,<span class="dt">colour=</span>Restoration.type),<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb60-13"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-13"></a><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb60-14"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-14"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">name=</span><span class="st">&quot;NMDS 1&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb60-15"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-15"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">name=</span><span class="st">&quot;NMDS 2&quot;</span>) <span class="op">+</span></span>
+<span id="cb60-16"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-16"></a><span class="st">  </span><span class="kw">scale_shape_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="dt">values=</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(nmdsScores<span class="op">$</span>Restoration.type)), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="op">+</span></span>
+<span id="cb60-17"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-17"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="dt">values=</span>mycolors, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="op">+</span><span class="st"> </span></span>
+<span id="cb60-18"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-18"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb60-19"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-19"></a>                                    <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb60-20"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-20"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb60-21"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-21"></a>                                    <span class="dt">size =</span> <span class="dv">12</span>),</span>
+<span id="cb60-22"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-22"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb60-23"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-23"></a>                                    <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb60-24"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-24"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb60-25"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-25"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>)) <span class="op">+</span></span>
+<span id="cb60-26"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-26"></a><span class="st">   </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="kw">max</span>(nmdsScores<span class="op">$</span>NMDS1), <span class="dt">y =</span> <span class="kw">max</span>(nmdsScores<span class="op">$</span>NMDS2),  <span class="dt">label =</span> <span class="st">&quot;Stress = 0.01&quot;</span>, <span class="dt">hjust =</span> <span class="dv">1</span>, <span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>)</span>
+<span id="cb60-27"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-27"></a></span>
+<span id="cb60-28"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-28"></a><span class="kw">ggsave</span>(fig_nmds, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_overallSpaceUse.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
+<span id="cb60-29"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-29"></a></span>
+<span id="cb60-30"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb60-30"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_nmds.png&quot;</span>)</span></code></pre></div>
+<div class="figure">
+<img src="figs/fig_05.png" alt="" />
+<p class="caption"><strong>NMDS ordinations of Acoustic Space Use</strong>
+Ordination analysis of average ASU data (stress = 0.1) revealed a distinct and large cluster of BM sites, while no clear clusters were observed for AR and NR sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.</p>
+</div>
+<p>Testing multivariate homogeneity of group dispersions</p>
+<p>One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median (both referred to as ‘centroid’ from now on unless stated otherwise) in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.</p>
+<p>Betadisper tests whether two or more groups (for example, restored and unrestored sites) are homogeneously dispersed in relation to their species in studied samples. This test can be done to see if one group has more compositional variance than another. Moreover, homogeneity of dispersion among groups is very advisable to have if you want to test if two or more groups have different compositions, which is tested by adonis.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb61-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-1"></a>nmdsVariance &lt;-<span class="st"> </span><span class="kw">betadisper</span>(disEuclidean, <span class="dt">group =</span> nmdsDat<span class="op">$</span>Restoration.type)</span>
+<span id="cb61-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-2"></a>nmdsVariance</span>
+<span id="cb61-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-3"></a></span>
+<span id="cb61-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-4"></a><span class="kw">anova</span>(nmdsVariance)</span>
+<span id="cb61-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-5"></a><span class="kw">permutest</span>(nmdsVariance, <span class="dt">pairwise =</span> <span class="ot">TRUE</span>, <span class="dt">permutations =</span> <span class="dv">999</span>)</span>
+<span id="cb61-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-6"></a><span class="kw">TukeyHSD</span>(nmdsVariance)</span>
+<span id="cb61-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-7"></a></span>
+<span id="cb61-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-8"></a><span class="co"># For overall space use, there is a significant difference in within group variance between one group and another (For Benchmark-Active sites and Passive-Benchmark sites)</span></span>
+<span id="cb61-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-9"></a></span>
+<span id="cb61-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-10"></a><span class="co"># For dawn ASU, there is no significant difference in within group variance across the three treatment types</span></span>
+<span id="cb61-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-11"></a></span>
+<span id="cb61-12"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb61-12"></a><span class="co"># For dusk ASU, there is a significant difference in within group variance between benchmark and active sites and benchmark and passive sites. </span></span></code></pre></div>
+<p>Visualizing the multivariate homogeneity of group dispersions</p>
+<p>The below lines of code have been adapted from: <a href="https://chrischizinski.github.io/rstats/adonis/" class="uri">https://chrischizinski.github.io/rstats/adonis/</a></p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb62-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-1"></a><span class="co"># extract the centroids and the site points in multivariate space.  </span></span>
+<span id="cb62-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-2"></a>centroids &lt;-<span class="kw">data.frame</span>(<span class="dt">grps=</span><span class="kw">rownames</span>(nmdsVariance<span class="op">$</span>centroids),</span>
+<span id="cb62-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-3"></a>                       <span class="kw">data.frame</span>(nmdsVariance<span class="op">$</span>centroids))</span>
+<span id="cb62-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-4"></a>vectors &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">group=</span>nmdsVariance<span class="op">$</span>group,</span>
+<span id="cb62-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-5"></a>                      <span class="kw">data.frame</span>(nmdsVariance<span class="op">$</span>vectors))</span>
+<span id="cb62-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-6"></a></span>
+<span id="cb62-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-7"></a><span class="co"># to create the lines from the centroids to each point we will put it in a format that ggplot can handle</span></span>
+<span id="cb62-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-8"></a>seg.data&lt;-<span class="kw">cbind</span>(vectors[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],centroids[<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(centroids),<span class="kw">as.data.frame</span>(<span class="kw">table</span>(vectors<span class="op">$</span>group))<span class="op">$</span>Freq),<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</span>
+<span id="cb62-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-9"></a><span class="kw">names</span>(seg.data)&lt;-<span class="kw">c</span>(<span class="st">&quot;group&quot;</span>,<span class="st">&quot;v.PCoA1&quot;</span>,<span class="st">&quot;v.PCoA2&quot;</span>,<span class="st">&quot;PCoA1&quot;</span>,<span class="st">&quot;PCoA2&quot;</span>)</span>
+<span id="cb62-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-10"></a></span>
+<span id="cb62-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-11"></a><span class="co"># create the convex hulls of the outermost points</span></span>
+<span id="cb62-12"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-12"></a>grp1.hull &lt;-<span class="st"> </span>seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Active&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>][<span class="kw">chull</span>(seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Active&quot;</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]),]</span>
+<span id="cb62-13"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-13"></a>grp2.hull &lt;-<span class="st"> </span>seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Benchmark&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>][<span class="kw">chull</span>(seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Benchmark&quot;</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]),]</span>
+<span id="cb62-14"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-14"></a>grp3.hull &lt;-<span class="st"> </span>seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Passive&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>][<span class="kw">chull</span>(seg.data[seg.data<span class="op">$</span>group<span class="op">==</span><span class="st">&quot;Passive&quot;</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]),]</span>
+<span id="cb62-15"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-15"></a>all.hull &lt;-<span class="st"> </span><span class="kw">rbind</span>(grp1.hull,grp2.hull,grp3.hull)</span>
+<span id="cb62-16"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-16"></a></span>
+<span id="cb62-17"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-17"></a><span class="co"># plot the panel and convex hulls</span></span>
+<span id="cb62-18"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-18"></a>fig_hull &lt;-<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb62-19"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-19"></a><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">data=</span> all.hull,<span class="kw">aes</span>(<span class="dt">x=</span>v.PCoA1,<span class="dt">y=</span>v.PCoA2),<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">alpha=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></span>
+<span id="cb62-20"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-20"></a><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>seg.data,<span class="kw">aes</span>(<span class="dt">x=</span>v.PCoA1,<span class="dt">xend=</span>PCoA1,<span class="dt">y=</span>v.PCoA2,<span class="dt">yend=</span>PCoA2),<span class="dt">alpha=</span><span class="fl">0.30</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb62-21"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-21"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>centroids[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="kw">aes</span>(<span class="dt">x=</span>PCoA1,<span class="dt">y=</span>PCoA2,<span class="dt">shape=</span>grps),<span class="dt">size=</span><span class="dv">4</span>,<span class="dt">colour=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb62-22"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-22"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>seg.data, <span class="kw">aes</span>(<span class="dt">x=</span>v.PCoA1,<span class="dt">y=</span>v.PCoA2,<span class="dt">shape=</span>group),<span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb62-23"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-23"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;All&quot;</span>,<span class="dt">x=</span><span class="st">&quot;&quot;</span>,<span class="dt">y=</span><span class="st">&quot;&quot;</span>) <span class="op">+</span></span>
+<span id="cb62-24"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-24"></a><span class="st">  </span><span class="co">#coord_cartesian(xlim = c(-0.2,0.2), ylim = c(-0.25,0.2)) +</span></span>
+<span id="cb62-25"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-25"></a><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb62-26"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb62-26"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p>Testing compositional dissimilarity between groups</p>
+<p>We will do this by using the vegan::adonis() function which allows you to do permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be seen as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb63-1"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-1"></a><span class="co"># We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity</span></span>
+<span id="cb63-2"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-2"></a>groups &lt;-<span class="st"> </span>nmdsScores<span class="op">$</span>Restoration.type</span>
+<span id="cb63-3"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-3"></a></span>
+<span id="cb63-4"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-4"></a>adonisNMDS &lt;-<span class="st"> </span><span class="kw">adonis</span>(nmdsDatMatrix <span class="op">~</span><span class="st"> </span>groups, <span class="dt">method=</span><span class="st">&quot;bray&quot;</span>,<span class="dt">perm=</span><span class="dv">999</span>)</span>
+<span id="cb63-5"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-5"></a>adonisNMDS</span>
+<span id="cb63-6"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-6"></a></span>
+<span id="cb63-7"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-7"></a><span class="co"># For overall ASU, the results suggest that there are significant differences in ASU between groups.</span></span>
+<span id="cb63-8"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-8"></a></span>
+<span id="cb63-9"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-9"></a><span class="co"># For dawn ASU, there is a significant difference in ASU between treatment types</span></span>
+<span id="cb63-10"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-10"></a></span>
+<span id="cb63-11"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#cb63-11"></a><span class="co"># For dusk ASU, there is a significant difference in ASU between treatment types</span></span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="acoustic-space-use.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/10_nmds-acoustic-space-use.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

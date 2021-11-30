@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 12 Generalized linear mixed modeling (acoustic space use and vegetation data) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 12 Generalized linear mixed modeling (acoustic space use and vegetation data) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 12 Generalized linear mixed modeling (acoustic space use and vegetation data) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 12 Generalized linear mixed modeling (acoustic space use and vegetation data) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="VA Akshay" />
+<meta name="author" content="Priyanka HariHaran" />
+<meta name="author" content="Pooja Choksi" />
+<meta name="author" content="Sarika Khanwilkar" />
+<meta name="author" content="Don J Melnick" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2021-11-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"/>
+<link rel="next" href="multiple-regression-on-distance-matrices-acoustic-space-use.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.4</b> Main Text Figure 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="splitting-large-wav-files-into-smaller-chunks.html"><a href="splitting-large-wav-files-into-smaller-chunks.html"><i class="fa fa-check"></i><b>2</b> Splitting large .wav files into smaller chunks</a></li>
+<li class="chapter" data-level="3" data-path="species-richness.html"><a href="species-richness.html"><i class="fa fa-check"></i><b>3</b> Species Richness</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>4</b> Acoustic Detections</a></li>
+<li class="chapter" data-level="5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>5</b> Jackknife estimates</a></li>
+<li class="chapter" data-level="6" data-path="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><a href="non-metric-multidimensional-scaling-and-indicator-species-analysis.html"><i class="fa fa-check"></i><b>6</b> Non-metric multidimensional scaling and indicator-species analysis</a></li>
+<li class="chapter" data-level="7" data-path="preparing-vegetation-data-for-glms.html"><a href="preparing-vegetation-data-for-glms.html"><i class="fa fa-check"></i><b>7</b> Preparing vegetation data for GLMs</a></li>
+<li class="chapter" data-level="8" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>8</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a></li>
+<li class="chapter" data-level="9" data-path="multiple-regression-on-distance-matrices.html"><a href="multiple-regression-on-distance-matrices.html"><i class="fa fa-check"></i><b>9</b> Multiple regression on distance matrices</a></li>
+<li class="chapter" data-level="10" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>10</b> Acoustic space use</a></li>
+<li class="chapter" data-level="11" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>11</b> Non-metric multidimensional scaling of acoustic space use data</a></li>
+<li class="chapter" data-level="12" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>12</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a></li>
+<li class="chapter" data-level="13" data-path="multiple-regression-on-distance-matrices-acoustic-space-use.html"><a href="multiple-regression-on-distance-matrices-acoustic-space-use.html"><i class="fa fa-check"></i><b>13</b> Multiple regression on distance matrices (acoustic space use)</a></li>
+<li class="chapter" data-level="14" data-path="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-richness-and-time-since-restoration.html"><i class="fa fa-check"></i><b>14</b> Generalized linear modeling (acoustic space use and richness, and time since restoration)</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data" class="section level1">
+<h1><span class="header-section-number">Section 12</span> Generalized linear mixed modeling (acoustic space use and vegetation data)</h1>
+<p>In this script, we run generalized linear models to test the association between acoustic space use values and restoration type. In addition, we run generalized linear mixed models to test associations between acoustic space use and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects.</p>
+<p>Install required libraries</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb64-1"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb64-2"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb64-3"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb64-4"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb64-5"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb64-6"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb64-7"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-7"></a><span class="kw">library</span>(psych)</span>
+<span id="cb64-8"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-8"></a><span class="kw">library</span>(rcompanion)</span>
+<span id="cb64-9"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-9"></a><span class="kw">library</span>(multcomp)</span>
+<span id="cb64-10"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-10"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb64-11"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-11"></a><span class="kw">library</span>(ggpubr)</span>
+<span id="cb64-12"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-12"></a><span class="kw">library</span>(sjPlot)</span>
+<span id="cb64-13"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-13"></a><span class="kw">library</span>(RColorBrewer)</span>
+<span id="cb64-14"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-14"></a></span>
+<span id="cb64-15"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-15"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb64-16"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb64-16"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>Load necessary data for statistical modeling</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb65-1"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-1"></a><span class="co"># load list of sites</span></span>
+<span id="cb65-2"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-2"></a>sites &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/list-of-sites.csv&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-3"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-3"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="st">&quot;Site.code&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb65-4"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-4"></a><span class="st">  </span><span class="kw">filter</span>(Site.code <span class="op">!=</span><span class="st"> &quot;OLCAP5B&quot;</span>)</span>
+<span id="cb65-5"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-5"></a></span>
+<span id="cb65-6"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-6"></a><span class="co"># load the entire asu data across all sites and days computed</span></span>
+<span id="cb65-7"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-7"></a>sitebyDayAsu &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/site-by-day-asu.csv&quot;</span>) </span>
+<span id="cb65-8"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-8"></a></span>
+<span id="cb65-9"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-9"></a><span class="co"># separate by Site and Date</span></span>
+<span id="cb65-10"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-10"></a>sitebyDayAsu &lt;-<span class="st"> </span><span class="kw">separate</span>(sitebyDayAsu, <span class="dt">col =</span> Site_Day, <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>, <span class="st">&quot;Date&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>) </span>
+<span id="cb65-11"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-11"></a></span>
+<span id="cb65-12"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-12"></a><span class="co"># Add restoration type column to the space use data</span></span>
+<span id="cb65-13"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-13"></a>sitebyDayAsu &lt;-<span class="st"> </span><span class="kw">left_join</span>(sitebyDayAsu, sites, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site.code&quot;</span>))</span>
+<span id="cb65-14"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-14"></a></span>
+<span id="cb65-15"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-15"></a><span class="co"># scale values per site/date for comparison between sites and treatment types</span></span>
+<span id="cb65-16"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-16"></a>sitebyDayAsu &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-17"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-17"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb65-18"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">f.cont.scaled =</span> <span class="kw">range01</span>(f.cont))</span>
+<span id="cb65-19"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-19"></a></span>
+<span id="cb65-20"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-20"></a><span class="co"># computing total number of days for which space use has been computed for each site (some sites have very few days. Eg. OLV110R, else rest have 5 days of audio data each)</span></span>
+<span id="cb65-21"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-21"></a>nSites_Days &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-22"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-22"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb65-23"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-23"></a><span class="st">  </span><span class="kw">distinct</span>() <span class="op">%&gt;%</span></span>
+<span id="cb65-24"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-24"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span></span>
+<span id="cb65-25"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-25"></a><span class="st">  </span><span class="kw">count</span>()</span>
+<span id="cb65-26"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-26"></a></span>
+<span id="cb65-27"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-27"></a><span class="co"># Let&#39;s look at data by restoration type</span></span>
+<span id="cb65-28"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-28"></a><span class="co"># This suggests that we have more data for benchmark sites relative to the other two treatment types</span></span>
+<span id="cb65-29"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-29"></a>nDays_siteType &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-30"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-30"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb65-31"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-31"></a><span class="st">  </span><span class="kw">distinct</span>() <span class="op">%&gt;%</span></span>
+<span id="cb65-32"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-32"></a><span class="st">  </span><span class="kw">group_by</span>(Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb65-33"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-33"></a><span class="st">  </span><span class="kw">count</span>()</span>
+<span id="cb65-34"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-34"></a>  </span>
+<span id="cb65-35"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-35"></a><span class="co"># Separate analysis: space use during certain times of day alone</span></span>
+<span id="cb65-36"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-36"></a><span class="co"># let&#39;s look only at dawn chorus to explore what the data looks like</span></span>
+<span id="cb65-37"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-37"></a>dawn &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;05:00-06:00&quot;</span>,<span class="st">&quot;06:00-07:00&quot;</span>,<span class="st">&quot;07:00-08:00&quot;</span>,<span class="st">&quot;08:00-09:00&quot;</span>,</span>
+<span id="cb65-38"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-38"></a>          <span class="st">&quot;09:00-10:00&quot;</span>)</span>
+<span id="cb65-39"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-39"></a>dawnChorusAsu &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-40"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-40"></a><span class="st">  </span><span class="kw">filter</span>(time_of_day <span class="op">%in%</span><span class="st"> </span>dawn)</span>
+<span id="cb65-41"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-41"></a></span>
+<span id="cb65-42"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-42"></a><span class="co"># Separate analysis: space use during certain times of day alone</span></span>
+<span id="cb65-43"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-43"></a><span class="co"># let&#39;s look only at dusk chorus to explore what the data looks like</span></span>
+<span id="cb65-44"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-44"></a>dusk &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;16:00-17:00&quot;</span>,<span class="st">&quot;17:00-18:00&quot;</span>,<span class="st">&quot;18:00-19:00&quot;</span>,<span class="st">&quot;19:00-20:00&quot;</span>)</span>
+<span id="cb65-45"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-45"></a>duskChorusAsu &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-46"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-46"></a><span class="st">  </span><span class="kw">filter</span>(time_of_day <span class="op">%in%</span><span class="st"> </span>dusk)</span>
+<span id="cb65-47"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-47"></a></span>
+<span id="cb65-48"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-48"></a><span class="co"># Prepare data for statistical modeling</span></span>
+<span id="cb65-49"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-49"></a><span class="co"># Calculating total space use across all frequency bins and times of day: 128*24 for each site-day combination</span></span>
+<span id="cb65-50"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-50"></a></span>
+<span id="cb65-51"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-51"></a>totSpaceUse &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-52"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-52"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb65-53"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-53"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totSpaceuse =</span> <span class="kw">sum</span>(f.cont.scaled)) <span class="op">%&gt;%</span></span>
+<span id="cb65-54"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-54"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-55"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-55"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb65-56"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-56"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb65-57"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-57"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode))</span>
+<span id="cb65-58"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-58"></a></span>
+<span id="cb65-59"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-59"></a><span class="co"># Calculating total space use for dawn chorus alone for each site-day combination</span></span>
+<span id="cb65-60"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-60"></a></span>
+<span id="cb65-61"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-61"></a>totSpaceUseDawn &lt;-<span class="st"> </span>dawnChorusAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-62"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-62"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb65-63"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-63"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totSpaceuse =</span> <span class="kw">sum</span>(f.cont.scaled)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-64"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-64"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-65"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-65"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb65-66"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-66"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb65-67"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-67"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode))</span>
+<span id="cb65-68"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-68"></a></span>
+<span id="cb65-69"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-69"></a><span class="co"># Calculating total space use for dusk chorus alone for each site-date combination</span></span>
+<span id="cb65-70"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-70"></a></span>
+<span id="cb65-71"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-71"></a>totSpaceUseDusk &lt;-<span class="st"> </span>duskChorusAsu <span class="op">%&gt;%</span></span>
+<span id="cb65-72"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-72"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb65-73"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-73"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totSpaceuse =</span> <span class="kw">sum</span>(f.cont.scaled)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-74"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-74"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-75"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-75"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb65-76"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-76"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb65-77"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-77"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode))</span>
+<span id="cb65-78"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-78"></a></span>
+<span id="cb65-79"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-79"></a><span class="co"># Load data from previous scripts for use in a GLM</span></span>
+<span id="cb65-80"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-80"></a>vegData &lt;-<span class="st">  </span><span class="kw">read.csv</span>(<span class="st">&quot;data/summaryVeg.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb65-81"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-81"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">str_detect</span>(Site_ID, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
+<span id="cb65-82"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-82"></a>vegPcaScores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/pcaVeg.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb65-83"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb65-83"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">str_detect</span>(Site_ID, <span class="st">&#39;OLCAP5B&#39;</span>))</span></code></pre></div>
+<p>Getting data ready in a format for linear modeling</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb66-1"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-1"></a><span class="co"># overall space use</span></span>
+<span id="cb66-2"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-2"></a>modelDataAll &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb66-3"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-3"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Site =</span> Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb66-4"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-4"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Restoration.type =</span> Site_type) <span class="op">%&gt;%</span></span>
+<span id="cb66-5"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="kw">across</span>(Restoration.type, factor))  <span class="op">%&gt;%</span></span>
+<span id="cb66-6"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-6"></a><span class="st">  </span><span class="kw">full_join</span>(totSpaceUse, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb66-7"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-7"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="st">&quot;roundSpaceuse&quot;</span> =<span class="st"> </span><span class="kw">round</span>(totSpaceuse))</span>
+<span id="cb66-8"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-8"></a></span>
+<span id="cb66-9"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-9"></a><span class="co"># dawn chorus space use</span></span>
+<span id="cb66-10"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-10"></a>modelDataDawn &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb66-11"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-11"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Site =</span> Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb66-12"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-12"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Restoration.type =</span> Site_type) <span class="op">%&gt;%</span></span>
+<span id="cb66-13"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-13"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="kw">across</span>(Restoration.type, factor))  <span class="op">%&gt;%</span></span>
+<span id="cb66-14"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-14"></a><span class="st">  </span><span class="kw">full_join</span>(totSpaceUseDawn, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb66-15"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-15"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="st">&quot;roundSpaceuse&quot;</span> =<span class="st"> </span><span class="kw">round</span>(totSpaceuse))</span>
+<span id="cb66-16"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-16"></a></span>
+<span id="cb66-17"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-17"></a><span class="co"># dusk chorus space use</span></span>
+<span id="cb66-18"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-18"></a>modelDataDusk &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb66-19"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-19"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Site =</span> Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb66-20"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-20"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Restoration.type =</span> Site_type) <span class="op">%&gt;%</span></span>
+<span id="cb66-21"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-21"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="kw">across</span>(Restoration.type, factor))  <span class="op">%&gt;%</span></span>
+<span id="cb66-22"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-22"></a><span class="st">  </span><span class="kw">full_join</span>(totSpaceUseDusk, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb66-23"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb66-23"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="st">&quot;roundSpaceuse&quot;</span> =<span class="st"> </span><span class="kw">round</span>(totSpaceuse))</span></code></pre></div>
+<p>Running the generalized linear mixed models</p>
+<p>We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb67-1"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-1"></a><span class="co"># overall space use</span></span>
+<span id="cb67-2"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-2"></a>glmm_allRestoration &lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>Restoration.type <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataAll, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link=</span>log))</span>
+<span id="cb67-3"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-3"></a></span>
+<span id="cb67-4"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-4"></a><span class="kw">summary</span>(glmm_allRestoration)</span>
+<span id="cb67-5"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-5"></a>tukey_glmmAllRestoration &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">glht</span>(glmm_allRestoration, <span class="dt">linfct=</span><span class="kw">mcp</span>(<span class="dt">Restoration.type =</span><span class="st">&quot;Tukey&quot;</span>)))</span>
+<span id="cb67-6"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-6"></a><span class="kw">cld</span>(tukey_glmmAllRestoration)</span>
+<span id="cb67-7"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-7"></a></span>
+<span id="cb67-8"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-8"></a><span class="co"># The above result suggests a significant difference in acoustic space use values across all three treatment types</span></span>
+<span id="cb67-9"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-9"></a></span>
+<span id="cb67-10"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-10"></a><span class="co"># dawn chorus</span></span>
+<span id="cb67-11"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-11"></a>glmm_dawnRestoration &lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>Restoration.type <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataDawn, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link=</span>log))</span>
+<span id="cb67-12"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-12"></a></span>
+<span id="cb67-13"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-13"></a><span class="kw">summary</span>(glmm_dawnRestoration)</span>
+<span id="cb67-14"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-14"></a>tukey_glmmdawnRestoration &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">glht</span>(glmm_dawnRestoration, <span class="dt">linfct=</span><span class="kw">mcp</span>(<span class="dt">Restoration.type =</span><span class="st">&quot;Tukey&quot;</span>)))</span>
+<span id="cb67-15"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-15"></a><span class="kw">cld</span>(tukey_glmmdawnRestoration)</span>
+<span id="cb67-16"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-16"></a></span>
+<span id="cb67-17"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-17"></a><span class="co"># When we look at only the dawn chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and actively restored sites and passively restored sites (but no difference between active-benchmark)</span></span>
+<span id="cb67-18"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-18"></a></span>
+<span id="cb67-19"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-19"></a><span class="co"># dusk chorus</span></span>
+<span id="cb67-20"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-20"></a>glmm_duskRestoration &lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>Restoration.type <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataDusk, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link=</span>log))</span>
+<span id="cb67-21"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-21"></a></span>
+<span id="cb67-22"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-22"></a><span class="kw">summary</span>(glmm_duskRestoration)</span>
+<span id="cb67-23"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-23"></a>tukey_glmmduskRestoration &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">glht</span>(glmm_duskRestoration, <span class="dt">linfct=</span><span class="kw">mcp</span>(<span class="dt">Restoration.type =</span><span class="st">&quot;Tukey&quot;</span>)))</span>
+<span id="cb67-24"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-24"></a><span class="kw">cld</span>(tukey_glmmduskRestoration)</span>
+<span id="cb67-25"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-25"></a></span>
+<span id="cb67-26"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-26"></a><span class="co"># For dusk chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and benchmark sites and actively restored sites (but no difference between active-passive)</span></span>
+<span id="cb67-27"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-27"></a></span>
+<span id="cb67-28"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-28"></a><span class="co"># Plotting the above results</span></span>
+<span id="cb67-29"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-29"></a></span>
+<span id="cb67-30"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-30"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb67-31"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-31"></a>totSpaceUse<span class="op">$</span>Restoration.type &lt;-<span class="st"> </span><span class="kw">factor</span>(totSpaceUse<span class="op">$</span>Restoration.type, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb67-32"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-32"></a></span>
+<span id="cb67-33"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-33"></a>fig_glmm_allRest &lt;-<span class="st"> </span><span class="kw">ggplot</span>(totSpaceUse, <span class="kw">aes</span>(Restoration.type, totSpaceuse, <span class="dt">group =</span> Restoration.type, <span class="dt">fill =</span> Restoration.type)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb67-34"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-34"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb67-35"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-35"></a><span class="st">  </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb67-36"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-36"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb67-37"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-37"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb67-38"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-38"></a>       <span class="dt">y=</span><span class="st">&quot;Acoustic Space Use</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
+<span id="cb67-39"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-39"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="op">+</span></span>
+<span id="cb67-40"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-40"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb67-41"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-41"></a>      <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb67-42"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-42"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb67-43"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-43"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb67-44"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-44"></a></span>
+<span id="cb67-45"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-45"></a><span class="kw">ggsave</span>(fig_glmm_allRest, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_glmm_overallAcousticSpace.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>);<span class="kw">dev.off</span>()</span>
+<span id="cb67-46"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-46"></a></span>
+<span id="cb67-47"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-47"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb67-48"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-48"></a>totSpaceUseDawn<span class="op">$</span>Restoration.type &lt;-<span class="st"> </span><span class="kw">factor</span>(totSpaceUseDawn<span class="op">$</span>Restoration.type, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb67-49"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-49"></a></span>
+<span id="cb67-50"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-50"></a>fig_glmm_dawnRest &lt;-<span class="st"> </span><span class="kw">ggplot</span>(totSpaceUseDawn, <span class="kw">aes</span>(Restoration.type, totSpaceuse, <span class="dt">group =</span> Restoration.type, <span class="dt">fill =</span> Restoration.type)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb67-51"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-51"></a><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb67-52"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-52"></a><span class="st">  </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb67-53"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-53"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb67-54"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-54"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb67-55"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-55"></a>       <span class="dt">y=</span><span class="st">&quot;Acoustic Space Use</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
+<span id="cb67-56"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-56"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="op">+</span></span>
+<span id="cb67-57"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-57"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb67-58"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-58"></a>      <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb67-59"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-59"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb67-60"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-60"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb67-61"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-61"></a></span>
+<span id="cb67-62"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-62"></a><span class="kw">ggsave</span>(fig_glmm_dawnRest, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_glmm_dawnAcousticSpaceUse.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>);<span class="kw">dev.off</span>()</span>
+<span id="cb67-63"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-63"></a></span>
+<span id="cb67-64"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-64"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb67-65"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-65"></a>totSpaceUseDusk<span class="op">$</span>Restoration.type &lt;-<span class="st"> </span><span class="kw">factor</span>(totSpaceUseDusk<span class="op">$</span>Restoration.type, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb67-66"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-66"></a></span>
+<span id="cb67-67"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-67"></a>fig_glmm_duskRest &lt;-<span class="st"> </span><span class="kw">ggplot</span>(totSpaceUseDusk, <span class="kw">aes</span>(Restoration.type, totSpaceuse, <span class="dt">group =</span> Restoration.type, <span class="dt">fill =</span> Restoration.type)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb67-68"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-68"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb67-69"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-69"></a><span class="st">  </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
+<span id="cb67-70"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-70"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb67-71"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-71"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb67-72"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-72"></a>       <span class="dt">y=</span><span class="st">&quot;Acoustic Space Use</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
+<span id="cb67-73"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-73"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="op">+</span></span>
+<span id="cb67-74"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-74"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb67-75"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-75"></a>      <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb67-76"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-76"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
+<span id="cb67-77"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-77"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb67-78"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-78"></a>  </span>
+<span id="cb67-79"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb67-79"></a><span class="kw">ggsave</span>(fig_glmm_duskRest, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_glmm_duskAcousticSpaceUse.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>);<span class="kw">dev.off</span>()</span></code></pre></div>
+<div class="figure">
+<img src="figs/fig_04.png" alt="" />
+<p class="caption"><strong>Overall acoustic space use across treatment types</strong>
+Analysis of ~4,128 hours of acoustic data across treatment types (for the 43 sites) revealed significant differences in ASU between treatment types (Tukey HSD P &lt; 0.05). ASU was significantly different across BM-AR, BM-NR and AR-NR sites, with the highest estimate in BM sites (mean ± SD: 413 ± 103), followed by AR sites (mean ± SD: 188 ± 78) and NR sites (mean ± SD: 182 ± 66). Mean and standard deviation were based on pooled values of ASU across 24 hours for every site-day combination. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.</p>
+</div>
+<p>We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb68-1"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-1"></a><span class="co"># overall space use</span></span>
+<span id="cb68-2"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-2"></a>glmm_allVeg&lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataAll, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb68-3"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-3"></a></span>
+<span id="cb68-4"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-4"></a><span class="kw">summary</span>(glmm_allVeg)</span>
+<span id="cb68-5"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-5"></a><span class="kw">plot_model</span>(glmm_allVeg, <span class="dt">type=</span><span class="st">&quot;pred&quot;</span>, <span class="dt">terms=</span><span class="kw">c</span>(<span class="st">&quot;PC1&quot;</span>,<span class="st">&quot;PC2&quot;</span>))</span>
+<span id="cb68-6"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-6"></a>report<span class="op">::</span><span class="kw">report</span>(glmm_allVeg)</span>
+<span id="cb68-7"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-7"></a></span>
+<span id="cb68-8"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-8"></a><span class="co"># There is a significant negative effect of PC1 and PC2 on acoustic space use</span></span>
+<span id="cb68-9"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-9"></a></span>
+<span id="cb68-10"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-10"></a><span class="co"># dawn chorus</span></span>
+<span id="cb68-11"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-11"></a>glmm_dawnVeg&lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataDawn, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb68-12"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-12"></a></span>
+<span id="cb68-13"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-13"></a><span class="kw">summary</span>(glmm_dawnVeg)</span>
+<span id="cb68-14"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-14"></a><span class="kw">plot_model</span>(glmm_dawnVeg, <span class="dt">type=</span><span class="st">&quot;pred&quot;</span>, <span class="dt">terms=</span><span class="kw">c</span>(<span class="st">&quot;PC2&quot;</span>,<span class="st">&quot;PC1&quot;</span>))</span>
+<span id="cb68-15"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-15"></a>report<span class="op">::</span><span class="kw">report</span>(glmm_dawnVeg)</span>
+<span id="cb68-16"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-16"></a></span>
+<span id="cb68-17"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-17"></a><span class="co"># There is a significant effect of PC1 and PC2 on dawn acoustic space use and a highly significant effect of PC2 on dawn acoustic space use</span></span>
+<span id="cb68-18"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-18"></a></span>
+<span id="cb68-19"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-19"></a><span class="co"># dawn chorus</span></span>
+<span id="cb68-20"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-20"></a>glmm_duskVeg&lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>PC1 <span class="op">+</span><span class="st"> </span>PC2 <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataDusk, <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> log))</span>
+<span id="cb68-21"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-21"></a></span>
+<span id="cb68-22"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-22"></a><span class="kw">summary</span>(glmm_duskVeg)</span>
+<span id="cb68-23"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-23"></a><span class="kw">plot_model</span>(glmm_duskVeg, <span class="dt">type=</span><span class="st">&quot;pred&quot;</span>, <span class="dt">terms=</span><span class="kw">c</span>(<span class="st">&quot;PC1&quot;</span>,<span class="st">&quot;PC2&quot;</span>))</span>
+<span id="cb68-24"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-24"></a>report<span class="op">::</span><span class="kw">report</span>(glmm_duskVeg)</span>
+<span id="cb68-25"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-25"></a></span>
+<span id="cb68-26"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#cb68-26"></a><span class="co"># There is a significant effect of PC1 on dusk acoustic space use</span></span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multiple-regression-on-distance-matrices-acoustic-space-use.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/11_glmms-acoustic-space-use-vegPca.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
