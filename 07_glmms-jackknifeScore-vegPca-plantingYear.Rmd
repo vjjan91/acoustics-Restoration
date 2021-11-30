@@ -1,11 +1,12 @@
 ---
-editor_options: 
+editor_options:
   chunk_output_type: console
+output: word_document
 ---
 
-# Generalized linear mixed modeling (species richness and vegetation data)
+# Generalized linear mixed modeling (species richness, vegetation data and planting year)
 
-In this script, we run generalized linear mixed models to test the association between first order jacknife scores and restoration type. In addition, we run generalized linear mixed models to test associations between species richness and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects.  
+In this script, we run generalized linear mixed models to test the association between first order jacknife scores and restoration type. In addition, we run generalized linear mixed models to test associations between species richness and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects. Lastly, we assess associations between year since restoration began and first order jackknife scores of birds.  
 
 Install required libraries
 ```{r}
@@ -201,7 +202,6 @@ glmmUnderStory <- nDetectionsTrait %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode)) %>%
   full_join(modelDataAll[,-8], by = c("Site","siteCode","Restoration.type"))
-
 ```
 
 Running the generalized linear mixed models
@@ -233,7 +233,7 @@ summary(glmm_openCountryJack)
 tukey_glmmOpenCountryJack <- summary(glht(glmm_openCountryJack, linfct=mcp(Restoration.type ="Tukey")))
 cld(tukey_glmmOpenCountryJack)
 
-# For open country birds, there is a significant difference in first-order jacknife estimates between each treatment type
+# For open country birds, there is a significant difference in first-order jacknife estimates between benchmark and passive sites and benchmark and active sites
 ```
 
 
@@ -303,6 +303,5 @@ openRestored <- modelData_openCountry %>%
 
 glmOpen <- glm(roundjk ~ yearSinceRestoration, data = openRestored, family = poisson(link = log))
 summary(glmOpen)
-
 ```
 
