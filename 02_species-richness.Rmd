@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Species Richness Calculations
+# Species Richness
 
 In this script, we will calculate:
 
@@ -19,7 +19,7 @@ library(vegan)
 library(ggplot2)
 library(scico)
 library(data.table)
-library(ggpubr)
+library(extrafont)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -127,19 +127,21 @@ tukeyAll <- TukeyHSD(anovaAll)
 
 # The above result suggests that there are no differences in overall species richness across treatment types
 
-# Create a boxplot of species richness by group (Here: group refers to Restoration Type)
+# Create a boxplot of species richness by Restoration Type
+
+# reordering factors for plotting
+richness$Restoration.type <- factor(richness$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
 fig_richness <- ggplot(richness, aes(x=Restoration.type, y=richness, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
-    labs(x="Restoration Type", 
-       y="Species Richness") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
+    labs(x="\nTreatment Type", 
+       y="Species Richness\n") +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+    theme(axis.title = element_text(family = "Century Gothic",
+      size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",size = 14),
+        legend.position = "none")
 
 ggsave(fig_richness, filename = "figs/fig_richness.png", width=12, height=7,
        device = png(), units="in", dpi = 300);dev.off()
@@ -164,7 +166,8 @@ richness_trait <- nDetections_Site %>%
 richness_trait <-  richness_trait %>%
   dplyr::select(Site, Restoration.type, Species_Code, Habitat, forRichness)%>%
   group_by(Site, Restoration.type, Habitat) %>%
-  summarise(richness = sum(forRichness))
+  summarise(richness = sum(forRichness)) %>%
+  drop_na()
 
 # Let's subset data for richness as a function of rainforest specialists and open-country generalists and test for significant differences (if any)
 richness_rainforest <- richness_trait %>%
@@ -176,46 +179,32 @@ richness_opencountry <- richness_trait %>%
 anova_rainforest <- aov(richness~Restoration.type, data = richness_rainforest)
 anova_opencountry <- aov(richness~Restoration.type, data = richness_opencountry)
 
-
 # Tukey test to study each pair of treatment - reveals no signficant difference across treatment types for rainforest birds, but a significant difference between benchmark-active and benchmark-passive sites for open country birds
 
 tukey_rainforest <- TukeyHSD(anova_rainforest)
 tukey_opencountry <- TukeyHSD(anova_opencountry)
 
+# reordering factors for plotting
+richness_trait$Restoration.type <- factor(richness_trait$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 # Plot the above result
 fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.type, y=richness, fill=Habitat)) +
-  #facet_wrap(vars(Habitat)) +
-    geom_boxplot(alpha=0.7) + 
-  scale_fill_scico_d(palette = "roma") +
+    geom_boxplot(alpha=0.7) +
+  scale_fill_scico_d(palette = "roma",
+                     labels=c("Open-country","Rainforest")) +
     theme_bw() +
-    labs(x="Restoration Type", 
-       y="Species Richness") +
-    theme(axis.title = element_text(size = 16, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 14),
-        legend.title = element_blank(),
+    labs(x="\nTreatment Type", 
+       y="Species Richness\n") +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+    theme(axis.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"), 
+        axis.text = element_text(family="Century Gothic",size = 14),
+        legend.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
         legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
+        legend.text = element_text(family="Century Gothic",size = 14))
 
-ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-
+ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.png", width=12, height=7, device =png(), units="in", dpi = 300); dev.off()
+ 
 knitr::include_graphics("figs/fig_richness_trait.png")
 ```
-
-To make final plots, please use a combination of ggpubr and cowplot (TO BE DONE)
-```{r}
-mycolours <- c("#440154FF", "#21908CFF", "orange")
-
-trial <- ggplot(richness_rainforest, aes(x=Restoration.Type, y=richness, fill = Restoration.Type)) + 
-  geom_boxplot(alpha = 0.75) + 
-  theme_bw() +
-  scale_x_discrete(labels = c('BM','AR','NR')) +
-  rremove("x.text") +
-  rremove("ylab") +
-  rremove("xlab") +
-  ylim (NA, 52) +
-  labs (x = "Rainforest species") +
-  scale_fill_manual(values = mycolours, name = "Strata", labels = c('BM','AR','NR')) + stat_summary(geom = 'text', label = c("a", "b", "b"), fun = max, vjust = -1)
-
-```
-
