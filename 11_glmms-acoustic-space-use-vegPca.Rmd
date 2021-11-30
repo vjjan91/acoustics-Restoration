@@ -176,59 +176,56 @@ cld(tukey_glmmduskRestoration)
 
 # Plotting the above results
 
-mycolours <- c("#440154FF", "#21908CFF", "orange")
-
-# Add a custom set of colors
-mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
+# reordering factors for plotting
+totSpaceUse$Restoration.type <- factor(totSpaceUse$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
 fig_glmm_allRest <- ggplot(totSpaceUse, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
-  geom_boxplot(alpha = 0.75) + 
-  theme_bw() +
-  scale_x_discrete(labels = c('Active','Benchmark','Passive')) +
-  labs(x = "Restoration Type", 
-       y="Acoustic Space Use") +
-  scale_fill_scico_d(palette = "roma") +  
-  stat_summary(geom = 'text', label = c("a", "b", "c"), fun = max, vjust = -1, size = 5.0) +
-  theme(axis.title = element_text(size = 14, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 12),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-  
+  geom_boxplot(alpha = 0.7) + 
+  scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="\nTreatment Type", 
+       y="Acoustic Space Use\n") +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+    theme(axis.title = element_text(family = "Century Gothic",
+      size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",size = 14),
+        legend.position = "none")
+
 ggsave(fig_glmm_allRest, filename = "figs/fig_glmm_overallAcousticSpace.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 
+knitr::include_graphics("figs/fig_glmm_overallAcousticSpace.png")
+
+# reordering factors for plotting
+totSpaceUseDawn$Restoration.type <- factor(totSpaceUseDawn$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 fig_glmm_dawnRest <- ggplot(totSpaceUseDawn, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
-  geom_boxplot(alpha = 0.75) + 
-  theme_bw() +
-  scale_x_discrete(labels = c('AR','BM','NR')) +
-  labs(x = "Restoration Type", 
-       y="Dawn acoustic space use") +
-  scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
-  stat_summary(geom = 'text', label = c("a", "a", "b"), fun = max, vjust = -1, size = 5.0) +
-  theme(axis.title = element_text(size = 14, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 12),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
-  
+ geom_boxplot(alpha = 0.7) + 
+  scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="\nTreatment Type", 
+       y="Acoustic Space Use\n") +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+    theme(axis.title = element_text(family = "Century Gothic",
+      size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",size = 14),
+        legend.position = "none")
+
 ggsave(fig_glmm_dawnRest, filename = "figs/fig_glmm_dawnAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 
+# reordering factors for plotting
+totSpaceUseDusk$Restoration.type <- factor(totSpaceUseDusk$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 fig_glmm_duskRest <- ggplot(totSpaceUseDusk, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
-  geom_boxplot(alpha = 0.75) + 
-  theme_bw() +
-  scale_x_discrete(labels = c('AR','BM','NR')) +
-  labs(x = "Restoration Type", 
-       y="Dusk acoustic space use") +
-  scale_fill_manual(values = mycolours, name = "Restoration type", labels = c('AR','BM','NR')) +
-  stat_summary(geom = 'text', label = c("a", "b", "a"), fun = max, vjust = -1, size = 5.0) +
-  theme(axis.title = element_text(size = 14, face = "bold"), 
-        axis.ticks.length.x = unit(.5, "cm"),
-        axis.text = element_text(size = 12),
-        legend.title = element_blank(),
-        legend.key.size = unit(1,"cm"),
-        legend.text = element_text(size = 12))
+  geom_boxplot(alpha = 0.7) + 
+  scale_fill_scico_d(palette = "roma") +
+    theme_bw() +
+    labs(x="\nTreatment Type", 
+       y="Acoustic Space Use\n") +
+  scale_x_discrete(labels = c('BM','AR','NR')) +
+    theme(axis.title = element_text(family = "Century Gothic",
+      size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",size = 14),
+        legend.position = "none")
   
 ggsave(fig_glmm_duskRest, filename = "figs/fig_glmm_duskAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 ```
