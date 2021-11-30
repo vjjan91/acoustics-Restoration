@@ -123,7 +123,7 @@ knitr::include_graphics("figs/fig_nmds.png")
 ```
 
 ![**NMDS ordinations of Acoustic Space Use**
-Ordination analysis of average ASU data (stress = 0.1) revealed a distinct and large cluster of BM sites, while no clear clusters were observed for AR and NR sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig_05.png)
+Ordination analysis of average ASU data (stress = 0.1) revealed a distinct and large cluster of BM sites, while no clear clusters were observed for AR and NR sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig05.png)
 
 Testing multivariate homogeneity of group dispersions
 
