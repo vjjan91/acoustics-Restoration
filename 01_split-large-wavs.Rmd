@@ -5,7 +5,7 @@ editor_options:
 
 # Splitting large .wav files into smaller chunks
 
-Here, we will first split the raw data which was collected for 24 hours at a site, for 7 days at a stretch. Deployment schedule was set to record for 4-minutes and switched off for 1-min. For the sake of analysis and future work, I will split the data into 10s chunks, which will be annotated manually using Raven Pro. 
+Here, we will first split the raw data which was collected for 24 hours at a site, for 7 days at a stretch. Deployment schedule was set to record for 4-minutes and switched off for 1-min. For the sake of analysis, data was split into 10s chunks and annotated manually using Raven Pro. 
 ```{r}
 # Loading required libraries
 library(warbleR)
@@ -25,7 +25,6 @@ Steps: 1. Load a list of .wav files in a given folder (will have to be done site
 3. Select only a random consecutive 16 min of data (to begin with)
 3. Split file into chunks of a given duration.
 4. Give unique names to each split file
-
 ```{r}
 # List the path that contains all folders, which contain the audiomoth data
 path <- "D:\\2020-summer\\"
@@ -85,7 +84,6 @@ final_subset <- unlist(subset_files)
 # Subset those files and copy it to a separate folder
 dir.create(paste0("C:\\data\\","subset"))
 file.copy(from = final_subset, to="C:\\data\\subset\\")
-
 ```
 
 Split the files and provide unique names to each file
@@ -124,4 +122,4 @@ orig_files <- list.files(subset_path, full.names = T, pattern = ".WAV$")
 file.remove(orig_files)
 ```
 
-Now, go ahead and begin the process of manual annotation :)
+Now, go ahead and begin the process of manual annotation!
