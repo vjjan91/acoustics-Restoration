@@ -193,8 +193,6 @@ fig_glmm_allRest <- ggplot(totSpaceUse, aes(Restoration.type, totSpaceuse, group
 
 ggsave(fig_glmm_allRest, filename = "figs/fig_glmm_overallAcousticSpace.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 
-knitr::include_graphics("figs/fig_glmm_overallAcousticSpace.png")
-
 # reordering factors for plotting
 totSpaceUseDawn$Restoration.type <- factor(totSpaceUseDawn$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
@@ -229,6 +227,9 @@ fig_glmm_duskRest <- ggplot(totSpaceUseDusk, aes(Restoration.type, totSpaceuse, 
   
 ggsave(fig_glmm_duskRest, filename = "figs/fig_glmm_duskAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 ```
+
+![**Overall acoustic space use across treatment types**
+Analysis of ~4,128 hours of acoustic data across treatment types (for the 43 sites) revealed significant differences in ASU between treatment types (Tukey HSD P < 0.05). ASU was significantly different across BM-AR, BM-NR and AR-NR sites, with the highest estimate in BM sites (mean ± SD: 413 ± 103), followed by AR sites (mean ± SD: 188 ± 78) and NR sites (mean ± SD: 182 ± 66). Mean and standard deviation were based on pooled values of ASU across 24 hours for every site-day combination. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig_04.png)
 
 
 We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.
