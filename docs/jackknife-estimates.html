@@ -300,9 +300,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb20-23"><a href="jackknife-estimates.html#cb20-23"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb20-24"><a href="jackknife-estimates.html#cb20-24"></a></span>
 <span id="cb20-25"><a href="jackknife-estimates.html#cb20-25"></a><span class="kw">ggsave</span>(fig_jackAll, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_jackAll.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,</span>
-<span id="cb20-26"><a href="jackknife-estimates.html#cb20-26"></a>       <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
-<span id="cb20-27"><a href="jackknife-estimates.html#cb20-27"></a></span>
-<span id="cb20-28"><a href="jackknife-estimates.html#cb20-28"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_jackAll.png&quot;</span>)</span></code></pre></div>
+<span id="cb20-26"><a href="jackknife-estimates.html#cb20-26"></a>       <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span></code></pre></div>
+<p><img src="figs/fig_jackAll.png" /></p>
 <p>Let’s test for significant differences in jacknife estimates as a function of species trait</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb21-1"><a href="jackknife-estimates.html#cb21-1"></a>anovaJack_rainForest &lt;-<span class="st"> </span><span class="kw">aov</span>(jack1<span class="op">~</span>Restoration.type, <span class="dt">data =</span> jack_rainForestScore)</span>
 <span id="cb21-2"><a href="jackknife-estimates.html#cb21-2"></a>anovaJack_openCountry &lt;-<span class="st"> </span><span class="kw">aov</span>(jack1<span class="op">~</span>Restoration.type, <span class="dt">data =</span> jack_openCountryScore)</span>
@@ -339,9 +338,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-33"><a href="jackknife-estimates.html#cb21-33"></a></span>
 <span id="cb21-34"><a href="jackknife-estimates.html#cb21-34"></a><span class="kw">ggsave</span>(fig_jackTrait, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_jackTrait.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
 <span id="cb21-35"><a href="jackknife-estimates.html#cb21-35"></a></span>
-<span id="cb21-36"><a href="jackknife-estimates.html#cb21-36"></a><span class="co"># Please note that this figure is required to create the Fig 2a in the next script.</span></span>
-<span id="cb21-37"><a href="jackknife-estimates.html#cb21-37"></a></span>
-<span id="cb21-38"><a href="jackknife-estimates.html#cb21-38"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_jackTrait.png&quot;</span>)</span></code></pre></div>
+<span id="cb21-36"><a href="jackknife-estimates.html#cb21-36"></a><span class="co"># Please note that this figure is required to create the Fig 2a in the next script.</span></span></code></pre></div>
+<p><img src="figs/fig_jackTrait.png" /></p>
 
 </div>
             </section>

@@ -306,9 +306,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-31"><a href="species-richness.html#cb8-31"></a><span class="kw">ggsave</span>(fig_richness, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_richness.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,</span>
 <span id="cb8-32"><a href="species-richness.html#cb8-32"></a>       <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>);<span class="kw">dev.off</span>()</span>
 <span id="cb8-33"><a href="species-richness.html#cb8-33"></a></span>
-<span id="cb8-34"><a href="species-richness.html#cb8-34"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_richness.png&quot;</span>)</span>
-<span id="cb8-35"><a href="species-richness.html#cb8-35"></a></span>
-<span id="cb8-36"><a href="species-richness.html#cb8-36"></a><span class="co"># We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches (But these differences are not significant)</span></span></code></pre></div>
+<span id="cb8-34"><a href="species-richness.html#cb8-34"></a><span class="co"># We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches (But these differences are not significant)</span></span></code></pre></div>
+<p><img src="figs/fig_richness.png" /></p>
 <p>Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.To do so: Add an additional column of species-trait data and group data based on the same.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb9-1"><a href="species-richness.html#cb9-1"></a><span class="co"># First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections&gt;0 as 1 else they are 0</span></span>
 <span id="cb9-2"><a href="species-richness.html#cb9-2"></a></span>
@@ -361,9 +360,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-49"><a href="species-richness.html#cb9-49"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
 <span id="cb9-50"><a href="species-richness.html#cb9-50"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>))</span>
 <span id="cb9-51"><a href="species-richness.html#cb9-51"></a></span>
-<span id="cb9-52"><a href="species-richness.html#cb9-52"></a><span class="kw">ggsave</span>(fig_richness_trait, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_richness_trait.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">device =</span><span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
-<span id="cb9-53"><a href="species-richness.html#cb9-53"></a> </span>
-<span id="cb9-54"><a href="species-richness.html#cb9-54"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/fig_richness_trait.png&quot;</span>)</span></code></pre></div>
+<span id="cb9-52"><a href="species-richness.html#cb9-52"></a><span class="kw">ggsave</span>(fig_richness_trait, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_richness_trait.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>, <span class="dt">device =</span><span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span></code></pre></div>
+<p><img src="figs/fig_richness_trait.png" /></p>
 
 </div>
             </section>
