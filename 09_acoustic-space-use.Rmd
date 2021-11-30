@@ -409,4 +409,5 @@ fig_asu <- fig_nr + fig_ar + fig_bm
 ggsave(fig_asu, filename = "figs/fig3.png", width=52, height=17,device = png(), units="cm", dpi = 300); dev.off()
 ```
 
-
+![**Acoustic space use across a naturally regenerating, actively restored and benchmark site**
+Acoustic space use (ASU) is the proportion of frequency space that is ‘used’ for a given time period (where ‘used’ refers to the frequency space that is occupied by vocalizations/sounds above a threshold amplitude). In this figure, we showcase ASU for a naturally regenerating site, an actively restored site and a benchmark site. We observed largely empty frequency bins between 12 kHz to 24 kHz for the majority of AR and NR sites. Our visual examination also highlighted well established diurnal and nocturnal activity patterns of birds and insects, with frequencies between 0 kHz to 12 kHz showing higher values of ASU during the day (6AM to 6PM), and frequencies between 12 kHz to 24 kHz showing higher values of ASU during the night (6PM to 6AM).](figs/fig_03.png)
