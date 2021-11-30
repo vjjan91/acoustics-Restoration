@@ -5,7 +5,6 @@ editor_options:
 
 # Multiple regression on distance matrices
 
-
 Load necessary libraries
 ```{r}
 library(tidyverse)
@@ -97,20 +96,6 @@ floraMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper =
 floraMatrix <- as.matrix(floraMatrix)
 ```
 
-
-Running mantel's tests on the dissimilarity matrices of bird detections (nmds scores), vegetation (pca scores) and flora abundance (nmds scores)
-Note: This analysis need not be run since MRM performs some of the tests that partial mantel's tests essentially does. 
-```{r}
-mantelBirdPca <- vegan::mantel(birdMatrix, vegPcaScores)
-mantelBirdFlora <- vegan::mantel(birdMatrix, floraMatrix)
-
-# Mantel's and partial mantel's tests suggest no strong relationship
-
-vegan::mantel.partial(birdMatrix, vegPcaScores, distMatrix)
-vegan::mantel.partial(birdMatrix, vegPcaScores, floraMatrix)
-```
-
-
 Running multiple regression on distance matrices
 
 ```{r}
@@ -142,10 +127,8 @@ MRM(dist(bird) ~ dist(flora) + dist(structure) + dist(distance), data = mrmData,
 # The above result suggests that bird compositional dissimilarity is not signficantly related to dissimilarity in habitat structure, geographic distance and florstics (Please note that the overall R2 values are very low)
 ```
 
-
 Hierarchical partitioning
 
 ```{r}
 hier.part(mrmData$bird, mrmData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
 ```
-
