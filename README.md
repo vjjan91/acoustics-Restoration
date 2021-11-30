@@ -36,7 +36,7 @@ We describe what each script of this repository is intended to achieve below.
 
 - _12_multiple-regression-distance-matrices-acoustic-space-use.Rmd:_. Running multiple regression on distance matrices to test for associations between dissimilarity in acoustic space use and dissimilarity in habitat structure, geographic distance and floristics.  
 
-- _11_glms-acoustic-space-use-richness-plantingYear.Rmd_: Running generalized linear models to test for associations between acoustic space use and bird species richness as well as year since restoration began.  
+- _13_glms-acoustic-space-use-richness-plantingYear.Rmd_: Running generalized linear models to test for associations between acoustic space use and bird species richness as well as year since restoration began.  
 
 ### Attribution
 
