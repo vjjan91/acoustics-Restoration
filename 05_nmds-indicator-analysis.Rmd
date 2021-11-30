@@ -168,9 +168,10 @@ fig_jack_ordinations <-
 
 # Expand the width to avoid compression
 ggsave(fig_jack_ordinations, filename = "figs/fig2.png", width=20, height=7,device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig2.png")
 ```
+
+![**Jackknife estimates of bird species richness and NMDS ordination results of bird species detections**
+(a) We observed no significant difference in the first-order jackknife scores across the three treatment types when we considered rainforest bird species. The jackknife estimate of open-country bird species varied significantly between BM-AR sites and BM-NR sites (Tukey HSD test, P < 0.05), with NR sites having the highest estimate (mean ± SD: 24 ± 5), followed by AR sites (mean ± SD: 20 ± 6) and BM sites (mean ± SD: 15 ± 4). (b) The ordination analysis of bird detections data (stress = 0.05) revealed distinct clusters of BM sites, but relatively loose clusters for AR and NR sites. However, AR sites occupied an intermediate position between BM and NR sites, indicating a direction of change in bird community composition toward BM sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig_02.png)
 
 
 Testing multivariate homogeneity of group dispersions
