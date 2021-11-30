@@ -1,11 +1,13 @@
 --- 
 knit: "bookdown::render_book"
-title: "Source code for _Using acoustics to evaluate the impact of forest restoration on bird communities in the Western Ghats_"
+title: "Source code for _Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats_"
 author:
     - Vijay Ramesh
-    - Akshay VA
-    - Priyanka Hari Haran
+    - VA Akshay
+    - Priyanka HariHaran
     - Pooja Choksi
+    - Sarika Khanwilkar
+    - Don J Melnick
     - VV Robin
     - Ruth DeFries
 date: "`r Sys.Date()`"
@@ -25,7 +27,7 @@ github-repo: vjjan91/acoustics-westernGhats
 
 # Introduction
 
-This is the readable version that showcases analyses carried out to test the impacts of forest restoration on bird communities in the Anamalai hills of the Western Ghats biodiversity hotspot. 
+This is the readable version that showcases analyses carried out to test the impacts of forest restoration on bird communities and other vocalizing biodiversity in the Anamalai hills of the Western Ghats biodiversity hotspot. 
 
 ## Attribution
 
@@ -41,3 +43,10 @@ The data used in this work will be archived and made public upon publication.
 ## Data processing
 
 The data processing for this project is described in the following sections. Navigate through them using the links in the sidebar.
+
+## Main Text Figure 1
+
+This figure was prepared using ArcGIS Pro. 
+
+![**Sites corresponding to acoustic recorder deployment locations across the Valparai plateau of the Anamalai hills**
+The above figure showcases a gradient of forest regeneration across the Valparai plateau. Sites shown in orange represent undisturbed benchmark rainforest sites, sites shown in blue represent actively restored forest sites and sites shown in white represent naturally regenerating forest sites. Ecological restoration is currently being carried out in cooperation with three plantation companies in the Valparai plateau. For more information with respect to the weeding and active restoration protocol, please see methods in Hariharan and Raman (2021) and Osuri et al. (2019). Over the last two decades, the ecological restoration efforts have resulted in restoration of over 100 ha of degraded forests. This map was prepared using 30m resolution SRTM data (Farr et al. 2007) and ESRI satellite imagery is used as a basemap.](figs/fig_01.png)
