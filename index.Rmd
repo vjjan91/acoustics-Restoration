@@ -48,5 +48,5 @@ The data processing for this project is described in the following sections. Nav
 
 This figure was prepared using ArcGIS Pro. 
 
-![**Sites corresponding to acoustic recorder deployment locations across the Valparai plateau of the Anamalai hills**
+![**Sites corresponding to acoustic recorder deployment locations across the Valparai plateau of the Anamalai hills.**
 The above figure showcases a gradient of forest regeneration across the Valparai plateau. Sites shown in orange represent undisturbed benchmark rainforest sites, sites shown in blue represent actively restored forest sites and sites shown in white represent naturally regenerating forest sites. Ecological restoration is currently being carried out in cooperation with three plantation companies in the Valparai plateau. For more information with respect to the weeding and active restoration protocol, please see methods in Hariharan and Raman (2021) and Osuri et al. (2019). Over the last two decades, the ecological restoration efforts have resulted in restoration of over 100 ha of degraded forests. This map was prepared using 30m resolution SRTM data (Farr et al. 2007) and ESRI satellite imagery is used as a basemap.](figs/fig01.png)

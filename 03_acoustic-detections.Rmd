@@ -170,9 +170,9 @@ fig_sumDetections10s <- ggplot(sum_Detections10s, aes(x=Restoration.type, y=sumD
         legend.position = "none")
 
 ggsave(fig_sumDetections10s, filename = "figs/fig_sumDetections10s.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig_sumDetections10s.png")
 ```
+
+![](figs/fig_sumDetections10s.png)
 
 How does the cumulative number of detections vary by treatment type, as a function of whether a species is a rainforest specialist or an open country generalist? (These calculations are repeated for different temporal durations to assess differences, if any)
 ```{r}
@@ -267,6 +267,6 @@ fig_detections_trait10s <- ggplot(detections_trait10s, aes(x=Restoration.type, y
 
 # Save the above plot
 ggsave(fig_detections_trait10s, filename = "figs/fig_detections_trait10s.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig_detections_trait10s.png")
 ```
+
+![](figs/fig_detections_trait10s.png)

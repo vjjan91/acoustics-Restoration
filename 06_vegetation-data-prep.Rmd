@@ -145,7 +145,6 @@ fig_pca <- ggplot(PCAvalues, aes(x = PC1, y = PC2, colour = Site_type)) +
         legend.text = element_text(family="Century Gothic",size = 14))
 
 ggsave(fig_pca, filename = "figs/fig_pca.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig_pca.png")
 ```
 
+![](figs/fig_pca.png)

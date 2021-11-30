@@ -145,9 +145,9 @@ fig_jackAll <- ggplot(jackAllScore, aes(x=Restoration.type, y=jack1, fill=Restor
 
 ggsave(fig_jackAll, filename = "figs/fig_jackAll.png", width=12, height=7,
        device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig_jackAll.png")
 ```
+
+![](figs/fig_jackAll.png)
 
 Let's test for significant differences in jacknife estimates as a function of species trait
 ```{r}
@@ -187,7 +187,6 @@ fig_jackTrait <- ggplot(jackTrait, aes(x=Restoration.type, y=jack1, fill=Habitat
 ggsave(fig_jackTrait, filename = "figs/fig_jackTrait.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
 # Please note that this figure is required to create the Fig 2a in the next script.
-
-knitr::include_graphics("figs/fig_jackTrait.png")
 ```
 
+![](figs/fig_jackTrait.png)

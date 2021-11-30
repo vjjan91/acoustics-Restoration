@@ -118,8 +118,6 @@ fig_nmds <- ggplot(data=nmdsScores) +
    annotate(geom = "text", x = max(nmdsScores$NMDS1), y = max(nmdsScores$NMDS2),  label = "Stress = 0.01", hjust = 1, family = "Century Gothic", size=5)
 
 ggsave(fig_nmds, filename = "figs/fig_overallSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-
-knitr::include_graphics("figs/fig_nmds.png")
 ```
 
 ![**NMDS ordinations of Acoustic Space Use**
