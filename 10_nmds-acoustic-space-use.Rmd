@@ -32,7 +32,7 @@ siteWiseAsu <- read.csv("data/site-wise-asu.csv")
 
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>%
-  select("Site.code","Restoration.type") %>%
+  dplyr::select("Site.code","Restoration.type") %>%
   filter(Site.code != "OLCAP5B")
 
 # Add restoration type column to the space use data
@@ -96,16 +96,28 @@ nmdsScores$Restoration.type <- nmdsDat$Restoration.type
 # Add a custom set of colors
 mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
+# reordering factors for plotting
+nmdsScores$Restoration.type <- factor(nmdsScores$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+
 fig_nmds <- ggplot(data=nmdsScores) + 
   stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
-  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=4) + 
+  geom_point(aes(x=NMDS1,y=NMDS2,shape=Restoration.type,colour=Restoration.type),size=5) + 
   theme_bw() +
   scale_x_continuous(name="NMDS 1") + 
   scale_y_continuous(name="NMDS 2") +
-  scale_shape_manual(values= 1:length(unique(nmdsScores$Restoration.type)))+
-  scale_color_manual(values=mycolors)+ theme(legend.key = element_blank(), legend.text = element_text(face = "italic"))
+  scale_shape_manual("Treatment type",values= 1:length(unique(nmdsScores$Restoration.type)), labels=c("BM","AR","NR"))+
+  scale_color_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR"))+ 
+  theme(axis.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        axis.text = element_text(family="Century Gothic",
+                                    size = 12),
+        legend.title = element_text(family="Century Gothic",
+                                    size = 14, face = "bold"),
+        legend.key.size = unit(1,"cm"),
+        legend.text = element_text(family="Century Gothic",size = 14)) +
+   annotate(geom = "text", x = max(nmdsScores$NMDS1), y = max(nmdsScores$NMDS2),  label = "Stress = 0.01", hjust = 1, family = "Century Gothic", size=5)
 
-ggsave(fig_nmds, filename = "figs/fig_nmds_overallSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_nmds, filename = "figs/fig_overallSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 
 knitr::include_graphics("figs/fig_nmds.png")
 ```
@@ -181,5 +193,3 @@ adonisNMDS
 
 # For dusk ASU, there is a significant difference in ASU between treatment types
 ```
-
-
