@@ -27,7 +27,7 @@ Steps: 1. Load a list of .wav files in a given folder (will have to be done site
 4. Give unique names to each split file
 ```{r}
 # List the path that contains all folders, which contain the audiomoth data
-path <- "D:\\2020-summer\\"
+path <- "C:\\data\\2020-winter\\"
 
 # Listing the folders within which .WAV files are stored
 folders <- dir(path, recursive=F,full.names=T)
@@ -41,8 +41,8 @@ setwd(folders[i])
 
 # Below code needs to be run only if we have to rename files
 # List the files within each folder and renaming the files with the prefix - SITE_ID
-# a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
-# file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
+a <- list.files(paste0(path,basename(folders)[i],"\\"), full.names = T)
+file.rename(from = a, to=paste0(basename(folders)[i],"_",basename(a)))
 
 # Extract the strings for .wav files between 6am and 10am
 time_str <- list.files(paste0(path,basename(folders)[i],"\\"),full.names = T) %>%
