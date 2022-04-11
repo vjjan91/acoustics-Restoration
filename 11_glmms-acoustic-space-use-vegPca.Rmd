@@ -144,11 +144,11 @@ modelDataDusk <- vegPcaScores %>%
 
 Running the generalized linear mixed models
 
-We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means. 
+We now run generalized linear mixed models (GLMM) assuming gaussian errors to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means. 
 
 ```{r}
 # overall space use
-glmm_allRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = poisson(link=log))
+glmm_allRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))
 
 summary(glmm_allRestoration)
 tukey_glmmAllRestoration <- summary(glht(glmm_allRestoration, linfct=mcp(Restoration.type ="Tukey")))
@@ -157,7 +157,7 @@ cld(tukey_glmmAllRestoration)
 # The above result suggests a significant difference in acoustic space use values across all three treatment types
 
 # dawn chorus
-glmm_dawnRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDawn, family = poisson(link=log))
+glmm_dawnRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="identity"))
 
 summary(glmm_dawnRestoration)
 tukey_glmmdawnRestoration <- summary(glht(glmm_dawnRestoration, linfct=mcp(Restoration.type ="Tukey")))
@@ -166,20 +166,20 @@ cld(tukey_glmmdawnRestoration)
 # When we look at only the dawn chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and actively restored sites and passively restored sites (but no difference between active-benchmark)
 
 # dusk chorus
-glmm_duskRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDusk, family = poisson(link=log))
+glmm_duskRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDusk, family=gaussian(link="identity"))
 
 summary(glmm_duskRestoration)
 tukey_glmmduskRestoration <- summary(glht(glmm_duskRestoration, linfct=mcp(Restoration.type ="Tukey")))
 cld(tukey_glmmduskRestoration)
 
-# For dusk chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and benchmark sites and actively restored sites (but no difference between active-passive)
+# For dusk chorus data, the above result suggests a significant difference in acoustic space use values across all three treatment types
 
 # Plotting the above results
 
 # reordering factors for plotting
-totSpaceUse$Restoration.type <- factor(totSpaceUse$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+modelDataAll$Restoration.type <- factor(modelDataAll$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
-fig_glmm_allRest <- ggplot(totSpaceUse, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+fig_glmm_allRest <- ggplot(modelDataAll, aes(Restoration.type, totSpaceuse, fill = Restoration.type)) + 
   geom_boxplot(alpha = 0.7) + 
   scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -194,9 +194,9 @@ fig_glmm_allRest <- ggplot(totSpaceUse, aes(Restoration.type, totSpaceuse, group
 ggsave(fig_glmm_allRest, filename = "figs/fig_glmm_overallAcousticSpace.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 
 # reordering factors for plotting
-totSpaceUseDawn$Restoration.type <- factor(totSpaceUseDawn$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+modelDataDawn$Restoration.type <- factor(modelDataDawn$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
-fig_glmm_dawnRest <- ggplot(totSpaceUseDawn, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+fig_glmm_dawnRest <- ggplot(modelDataDawn, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
  geom_boxplot(alpha = 0.7) + 
   scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -211,9 +211,9 @@ fig_glmm_dawnRest <- ggplot(totSpaceUseDawn, aes(Restoration.type, totSpaceuse, 
 ggsave(fig_glmm_dawnRest, filename = "figs/fig_glmm_dawnAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 
 # reordering factors for plotting
-totSpaceUseDusk$Restoration.type <- factor(totSpaceUseDusk$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+modelDataDusk$Restoration.type <- factor(modelDataDusk$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
-fig_glmm_duskRest <- ggplot(totSpaceUseDusk, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+fig_glmm_duskRest <- ggplot(modelDataDusk, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
   geom_boxplot(alpha = 0.7) + 
   scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -229,37 +229,56 @@ ggsave(fig_glmm_duskRest, filename = "figs/fig_glmm_duskAcousticSpaceUse.png", w
 ```
 
 ![**Overall acoustic space use across treatment types.**
-Analysis of ~4,128 hours of acoustic data across treatment types (for the 43 sites) revealed significant differences in ASU between treatment types (Tukey HSD P < 0.05). ASU was significantly different across BM-AR, BM-NR and AR-NR sites, with the highest estimate in BM sites (mean ± SD: 413 ± 103), followed by AR sites (mean ± SD: 188 ± 78) and NR sites (mean ± SD: 182 ± 66). Mean and standard deviation were based on pooled values of ASU across 24 hours for every site-day combination. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig04.png)
-
+Analysis of ~4,128 hours of acoustic data across treatment types (for the 43 sites) revealed significant differences in ASU between treatment types (Tukey HSD P < 0.05). ASU was significantly different across BM-AR, BM-NR and AR-NR sites, with the highest estimate in BM sites (mean ± SD: 413 ± 103), followed by AR sites (mean ± SD: 188 ± 78) and NR sites (mean ± SD: 182 ± 66). Mean and standard deviation were based on pooled values of ASU across 24 hours for every site-day combination. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig_glmm_overallAcousticSpace.png)  
 
 We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.
 
 ```{r}
 # overall space use
-glmm_allVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataAll, family = poisson(link = log))
+glmm_allVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))
 
 summary(glmm_allVeg)
 plot_model(glmm_allVeg, type="pred", terms=c("PC1","PC2"))
 report::report(glmm_allVeg)
 
-# There is a significant negative effect of PC1 and PC2 on acoustic space use
+# There is a significant negative effect of PC1 on acoustic space use
 
 # dawn chorus
-glmm_dawnVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDawn, family = poisson(link = log))
+glmm_dawnVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="identity"))
 
 summary(glmm_dawnVeg)
 plot_model(glmm_dawnVeg, type="pred", terms=c("PC2","PC1"))
 report::report(glmm_dawnVeg)
 
-# There is a significant effect of PC1 and PC2 on dawn acoustic space use and a highly significant effect of PC2 on dawn acoustic space use
+# There is a significant negative effect of PC1 on dawn acoustic space use
 
 # dawn chorus
-glmm_duskVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDusk, family = poisson(link = log))
+glmm_duskVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDusk, family = gaussian(link="identity"))
 
 summary(glmm_duskVeg)
 plot_model(glmm_duskVeg, type="pred", terms=c("PC1","PC2"))
 report::report(glmm_duskVeg)
 
-# There is a significant effect of PC1 on dusk acoustic space use
+# There is a significant negative effect of PC1 on dusk acoustic space use
+```
+
+Creating figure for publication
+```{r}
+# Patchworking nmds and glmm for acoustic space use to create part a and b for Fig. 4
+
+library(patchwork)
+
+fig_glmm_ordinations <-
+  wrap_plots(fig_glmm_allRest, fig_nmds,
+    design = "AABBBB"
+  ) +
+  plot_annotation(
+    tag_levels = "a",
+    tag_prefix = "(",
+    tag_suffix = ")"
+  )
+
+# Expand the width to avoid compression
+ggsave(fig_glmm_ordinations, filename = "figs/fig04.png", width=20, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
