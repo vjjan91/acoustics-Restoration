@@ -187,7 +187,7 @@ anova(nmdsVariance)
 permutest(nmdsVariance, pairwise = TRUE, permutations = 999)
 TukeyHSD(nmdsVariance)
 
-# These results suggest that there is no difference in variance between one group and another
+# These results suggest that there is no difference in within-group variance between one group and another
 ```
 
 
