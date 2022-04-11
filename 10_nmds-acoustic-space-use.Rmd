@@ -20,6 +20,8 @@ library(ecodist)
 library(RColorBrewer)
 library(ggforce)
 library(ggalt)
+library(extrafont)
+# loadfonts(device = "win") # run this prior to creating publication figures 
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -28,7 +30,10 @@ source("code/01_internal-functions.R")
 Load the necessary data for nmds calculations
 ```{r}
 # load the site-wise space use data
-siteWiseAsu <- read.csv("data/site-wise-asu.csv")
+sitebyDayAsu <- read.csv("data/site-by-day-asu.csv")
+
+# separate the columns
+sitebyDayAsu <- separate(sitebyDayAsu, col = Site_Day, into = c("Site","Day"), sep = "_")
 
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>%
@@ -36,19 +41,19 @@ sites <- read.csv("data/list-of-sites.csv") %>%
   filter(Site.code != "OLCAP5B")
 
 # Add restoration type column to the space use data
-siteWiseAsu <- left_join(siteWiseAsu,sites, by=c("Site"="Site.code"))
+sitebyDayAsu <- left_join(sitebyDayAsu,sites, by=c("Site"="Site.code"))
 
 # Separate analysis: space use during certain times of day alone
 # let's look only at dawn chorus to explore what the data looks like
 dawn <- c("05:00-06:00","06:00-07:00","07:00-08:00","08:00-09:00",
           "09:00-10:00")
-dawnChorusAsu <- siteWiseAsu %>%
+dawnChorusAsu <- sitebyDayAsu %>%
   filter(time_of_day %in% dawn)
 
 # Separate analysis: space use during certain times of day alone
 # let's look only at dusk chorus to explore what the data looks like
 dusk <- c("16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00")
-duskChorusAsu <- siteWiseAsu %>%
+duskChorusAsu <- sitebyDayAsu %>%
   filter(time_of_day %in% dusk)
 ```
 
@@ -57,10 +62,10 @@ Preparing a dataframe of space use to run ordinations
 
 # Please note that while creating this dataframe for ordinations, the overall acoustic space use (sum of f.cont.sum column) was calculated by frequency bin, irrespective of the time of day for a given site. In other words, for 24 hours of data, a single value of space use was obtained for a given frequency bin. The frequency bin was pivoted from long to wide and each column essentially corresponded to a frequency bin. Within that frequency bin, grouped for each site, an overall value of space use was computed. 
 
-nmdsDat <- siteWiseAsu %>% # replace with dawnChorusAsu/duskChorusAsu 
-  dplyr::select(Site, freq, f.cont.sum, Restoration.type) %>%
+nmdsDat <- sitebyDayAsu %>% # replace with dawnChorusAsu/duskChorusAsu
+  dplyr::select(Site, freq, f.cont, Restoration.type) %>%
   group_by(Site, Restoration.type, freq) %>%
-  summarise(totSpaceuse = sum(f.cont.sum)) %>%
+  summarise(totSpaceuse = sum(f.cont)) %>%
   arrange(Restoration.type) %>%
   pivot_wider (names_from = freq, values_from = totSpaceuse, values_fill = list(totSpaceuse=0))
 
@@ -84,7 +89,7 @@ nmdsScores <- as_tibble(scores(nmdsEuclidean))
 # Write the scores to a separate .csv
 write.csv(nmdsScores, "data/nmds-acousticSpaceUse.csv", row.names = F)
 
-# With the above analysis, we note the stress is 0.008566905. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+# With the above analysis, we note the stress is 0.009345172. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 ```
 
 
@@ -115,9 +120,9 @@ fig_nmds <- ggplot(data=nmdsScores) +
                                     size = 14, face = "bold"),
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(family="Century Gothic",size = 14)) +
-   annotate(geom = "text", x = max(nmdsScores$NMDS1), y = max(nmdsScores$NMDS2),  label = "Stress = 0.01", hjust = 1, family = "Century Gothic", size=5)
+   annotate(geom = "text", x = max(nmdsScores$NMDS1), y = max(nmdsScores$NMDS2),  label = "Stress = 0.009", hjust = 1, family = "Century Gothic", size=5)
 
-ggsave(fig_nmds, filename = "figs/fig_overallSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_nmds, filename = "figs/fig_nmds_overallSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
 ![**NMDS ordinations of Acoustic Space Use**
@@ -136,12 +141,9 @@ anova(nmdsVariance)
 permutest(nmdsVariance, pairwise = TRUE, permutations = 999)
 TukeyHSD(nmdsVariance)
 
-# For overall space use, there is a significant difference in within group variance between one group and another (For Benchmark-Active sites and Passive-Benchmark sites)
+# For overall space use, there is a significant difference in within group variance between one group and another (For Benchmark-Active sites and Passive-Benchmark sites, but not between Active-Passive)
 
-# For dawn ASU, there is no significant difference in within group variance across the three treatment types
-
-# For dusk ASU, there is a significant difference in within group variance between benchmark and active sites and benchmark and passive sites. 
-
+# This result suggests that there is heterogeneous variation and does not meet assumptions to run adonis
 ```
 
 
@@ -177,20 +179,3 @@ fig_hull <- ggplot() +
   theme(legend.position="none")
 ```
 
-Testing compositional dissimilarity between groups
-
-We will do this by using the vegan::adonis() function which allows you to do permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be seen as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.
-
-```{r}
-# We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity
-groups <- nmdsScores$Restoration.type
-
-adonisNMDS <- adonis(nmdsDatMatrix ~ groups, method="bray",perm=999)
-adonisNMDS
-
-# For overall ASU, the results suggest that there are significant differences in ASU between groups.
-
-# For dawn ASU, there is a significant difference in ASU between treatment types
-
-# For dusk ASU, there is a significant difference in ASU between treatment types
-```
