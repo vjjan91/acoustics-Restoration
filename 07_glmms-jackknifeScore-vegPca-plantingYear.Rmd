@@ -162,7 +162,7 @@ glmmOpencountry <- nDetectionsTrait %>%
 # canopy birds
 glmmCanopy <- nDetectionsTrait %>%
   group_by(Site, Restoration.type, Date) %>% 
-  filter (Habit == "CAN") %>%
+  filter (habit == "CAN") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
@@ -173,7 +173,7 @@ glmmCanopy <- nDetectionsTrait %>%
 # ground-feeding birds
 glmmGround <- nDetectionsTrait %>%
   group_by(Site, Restoration.type, Date) %>% 
-  filter (Habit == "GRD") %>%
+  filter (habit == "GRD") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
@@ -184,7 +184,7 @@ glmmGround <- nDetectionsTrait %>%
 # mid-storey birds
 glmmMidStorey <- nDetectionsTrait %>%
   group_by(Site, Restoration.type, Date) %>% 
-  filter (Habit == "MID") %>%
+  filter (habit == "MID") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
@@ -195,7 +195,7 @@ glmmMidStorey <- nDetectionsTrait %>%
 # understorey birds
 glmmUnderStory <- nDetectionsTrait %>%
   group_by(Site, Restoration.type, Date) %>% 
-  filter (Habit == "UND") %>%
+  filter (habit == "UND") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
