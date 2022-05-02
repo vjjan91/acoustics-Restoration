@@ -154,7 +154,7 @@ summary(glmm_allRestoration)
 tukey_glmmAllRestoration <- summary(glht(glmm_allRestoration, linfct=mcp(Restoration.type ="Tukey")))
 cld(tukey_glmmAllRestoration)
 
-# The above result suggests a significant difference in acoustic space use values across all three treatment types
+# The above result suggests a significant difference in acoustic space use between BM-AR and BM-NR sites, but no difference between AR and NR sites. 
 
 # dawn chorus
 glmm_dawnRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="identity"))
@@ -163,7 +163,7 @@ summary(glmm_dawnRestoration)
 tukey_glmmdawnRestoration <- summary(glht(glmm_dawnRestoration, linfct=mcp(Restoration.type ="Tukey")))
 cld(tukey_glmmdawnRestoration)
 
-# When we look at only the dawn chorus data, the above result suggests a significant difference in acoustic space use values for benchmark sites and passively restored sites and actively restored sites and passively restored sites (but no difference between active-benchmark)
+# When we look at only the dawn chorus data, there is no significant difference in acoustic space use across all treatment types highlighting similar levels of vocalizing biodiversity. 
 
 # dusk chorus
 glmm_duskRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDusk, family=gaussian(link="identity"))
@@ -172,7 +172,7 @@ summary(glmm_duskRestoration)
 tukey_glmmduskRestoration <- summary(glht(glmm_duskRestoration, linfct=mcp(Restoration.type ="Tukey")))
 cld(tukey_glmmduskRestoration)
 
-# For dusk chorus data, the above result suggests a significant difference in acoustic space use values across all three treatment types
+# For dusk chorus data, the above result suggests a significant difference between BM-AR and BM-NR sites, but no difference between AR and NR sites. 
 
 # Plotting the above results
 
