@@ -54,4 +54,4 @@ figs/siteByDayAsu
 *.svg
 
 # ignore elevation data
-data/elevation
+data/spatial/elevation
