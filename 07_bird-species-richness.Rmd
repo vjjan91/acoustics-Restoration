@@ -3,14 +3,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Species Richness
+# Bird Species Richness
 
 In this script, we will calculate:
 
 a) Site-wise species richness to understand if species composition across treatment types are distinctly different. 
-b) Repeat the above three calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.
+b) Repeat the above calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.  
 
-Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -25,9 +25,11 @@ library(extrafont)
 source("code/01_internal-functions.R")
 ```
 
+## Load manual annotations data
+
 To start with, we will compute species richness from 3 non-consecutive visits for each site for each season. Across two seasons, a total of 6 non-consecutive visits are chosen for each site. 
 
-We will use a excel sheet of annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations).
+We will use an excel sheet of manual annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations).
 ```{r}
 # Attach the annotation data for summer and winter
 summer_data <- read.csv("data/2020-summer-annotation-working-document.csv")
@@ -41,6 +43,7 @@ names(data)
 data <- data %>%
   relocate(c("BFO","SBEO", "JN", "AK", "HSWP"),  .after = "CR")                                                                     
 # Site-wise sorting of the 16-min of data
+
 # Split the file names into 4 columns : Site, Date, Time and Splits  
 data <- separate(data, col = Filename, into = c("Site", "Date", "Time", "Splits"), sep = "_")
 data
@@ -49,7 +52,9 @@ data
 trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
 
-How many visits (counted as number of unique days) to a site has been annotated? Please note that some sites have more than 6 visits to a site, and hence we ensure that we choose only 6 non-consecutive visits to a given site
+## Subset data
+
+How many visits (counted as number of unique days) to a site has been annotated? Please note that some sites have more than 6 visits to a site, and hence we ensure that we choose only 6 non-consecutive visits to a given site.  
 ```{r}
 # First we remove OLCAP5B - a site for which only 3 visits were made in summer and not sampled as a result of logistic reasons in winter
 data <- data %>%
@@ -101,7 +106,9 @@ datSubset <- rename(datSubset, Restoration.type = Restoration.Type..Benchmark.Ac
 write.csv(datSubset,"data/datSubset.csv", row.names = F)
 ```
 
-Now group the data by site and restoration type and sum the number of detections across sites. At the moment, we will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness below.
+## Total number of detections
+
+Now group the data by site and restoration type and sum the number of detections across sites. We will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness below.
 ```{r}
 # Calculate the overall number of detections for each site across 6 days of data (translates to ~ 96 min of data per site)
 
@@ -110,6 +117,8 @@ nDetections_Site <- datSubset %>%
   transform() %>% replace(is.na(.), 0) %>%
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) 
 ```
+
+## Calculate species richness
 
 Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall species richness for a 16-min to 48-min window.
 ```{r}
@@ -150,8 +159,9 @@ ggsave(fig_richness, filename = "figs/fig_richness.png", width=12, height=7,
 ```
 
 ![](figs/fig_richness.png)
+## Species richness by trait
 
-Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist.To do so: Add an additional column of species-trait data and group data based on the same.
+Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist. To do so: Add an additional column of species-trait data and group data based on the same.
 ```{r}
 # First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections>0 as 1 else they are 0
 
