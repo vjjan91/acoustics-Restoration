@@ -5,7 +5,15 @@ editor_options:
 
 # Acoustic space use
 
-Install necessary libraries
+In this study, acoustic space use reflects the amount and pattern of vocalizations within each frequency bin for a given time period.  
+
+Previous papers calculated acoustic space use by ascertaining the proportion of recordings in a particular time and frequency bin that is above a certain amplitude. However, this proportion was estimated by counting the number of frequency peaks within a given recording (seewave::fpeaks()) and then scaling it to go from 0 to 1. In our analysis, we want to obtain an understanding of the overall acoustic activity for a given time and frequency bin. In other words, we want the area under the curve for a particular frequency contour.  
+
+*Note* From Sound Analysis and Synthesis with R by Jerome Sueur
+
+The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256 = 187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.005s (1/187.5=0.005s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313).   
+
+## Install necessary libraries
 ```{r}
 library(seewave)
 library(warbleR)
@@ -24,28 +32,20 @@ library(patchwork)
 source("code/01_internal-functions.R")
 ```
 
-We are interested in creating a measure (3-dimensional matrix) of acoustic activity (x=hour, y=acoustic frequencies, z=proportion of all recordings in each time/frequency bin)
-
-Previous papers broadly calculated space use by ascertaining the proportion of recordings in a particular time and frequency bin that is above a certain amplitude. However, this proportion was estimated by counting the number of frequency peaks within a given recording (seewave::fpeaks()) and then scaling it to go from 0 to 1. In our analysis, we want to obtain an understanding of the overall acoustic activity for a given time and frequency bin. In other words, we want the area under the curve for a particular frequency contour. 
-
-*Note* From Sound Analysis and Synthesis with R by Jerome Sueur
-
-The basic premise in calculating ASU is that we compute a Short-time discrete fourier transform for a given frequency bin size (obtained by dividing the sampling frequency/window length over which the fourier transform is computed, for example 48000Hz/256 = 187.5 is the bin size). However, the size of the frequency bin is inversely proportional to time (Uncertainty principle; Pg.312) which would mean a bin size of 187.5 corresponds to a time duration of 0.005s (1/187.5=0.005s). Ultimately what matters is a compromise between frequency resolution and temporal resolution (Fig 11.3; Pg. 313) 
-
 Below, we have summarized approaches taken by previous studies: 
 
-Aide et al. 2017: We aggregated recordings at time scale of hour of day and used a frequency bin size of 86.13 Hz and an amplitude filtering threshold of 0.02. So if the sampling rate is 22000 Hz, that would mean - 22000/86.13 ~ 256 frequency bins to divide up the frequency space. In this paper, there would be 24hr*256 bins = 6144 time/frequency bins
+Aide et al. 2017 aggregated recordings at time scale of hour of day and used a frequency bin size of 86.13 Hz and an amplitude filtering threshold of 0.02. So if the sampling rate is 22000 Hz, that would mean - 22000/86.13 ~ 256 frequency bins to divide up the frequency space. In this paper, there would be 24hr*256 bins = 6144 time/frequency bins.  
 
-Campos-Cerqueira et al. 2019: We aggregated recordings at the time scale of hour of day (24 h), used a frequency bin size of 172 Hz, and an amplitude filtering threshold of 0.003. So if the sampling rate is 22000 Hz, that would mean - 22000/172 ~ 128 frequency bins. This resulted in a three‐dimensional (x = hour, y = acoustic frequency, z = proportion of all recordings in each time/frequency bin with a frequency peak value > 0.003 amplitude) matrix of acoustic activity with a total of 3,072 time/frequency bins (24 h × 128 frequency bins).
+Campos-Cerqueira et al. 2019 aggregated recordings at the time scale of hour of day (24 h), used a frequency bin size of 172 Hz, and an amplitude filtering threshold of 0.003. So if the sampling rate is 22000 Hz, that would mean - 22000/172 ~ 128 frequency bins. This resulted in a three‐dimensional (x = hour, y = acoustic frequency, z = proportion of all recordings in each time/frequency bin with a frequency peak value > 0.003 amplitude) matrix of acoustic activity with a total of 3,072 time/frequency bins (24 h × 128 frequency bins).  
 
-Campos-Cerqueira and Aide 2017: To calculate the amplitude, we used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a peak in each time/frequency class by the total number of recordings collected during each hourly interval.
+Campos-Cerqueira and Aide 2017 used the meanspec (f = 44,100, wl = 256, wn = “hanning”) and fpeaks (threshold = 0.1, freq = 172) function from the seewave package in R (Sueur et al., 2008a). The value of each peak was normalized using the maximum amplitude value within all recordings in the soundscape (i.e., site), and thus values ranged from 0 to 1. The number of frequency peaks was determined by counting the number of recordings with a peak within each of the 128 frequency bins that were equal or greater than the amplitude threshold. To control for the different number of recordings in each site and each time interval (i.e., hour), we divided the number of recordings with a peak in each time/frequency class by the total number of recordings collected during each hourly interval.
 
-To calculate ASU in our study:
+## Load recordings across multiple days and sites
 
-- We aggregate recordings for a multiple days across multiple sites (Keep only data that has been recorded continuously for a 24hr period)
+First, we examined all unique sites and dates for which we had a continuous 24 hours of recordings.  
 ```{r}
 # List the path that contains all folders, which contain the audiomoth data
-path <- "D:\\2020-summer\\"
+path <- "D:\\2020-summer\\" # change the path depending on where the raw data is
 
 # Listing the folders within which .WAV files are stored
 folders <- dir(path, recursive=F,full.names=T)
@@ -88,10 +88,11 @@ site_date <- str_extract(basename(a),'\\w+_\\d+_')
 files <- unlist(files)
 ```
 
+## Short-time discrete fourier transform (STDFT)
 
-- Aggregate recordings for any single day for every unique site and sort it in order (between 00:00:00 to 23:55:00 hrs) and then loop it across multiple days
+To compute an STDFT, we shall begin with an audio recording that has a sampling rate of s  = 48,000 Hz and a window length (for the STDFT) wl  = 256 samples, which results in a frequency bin size of z = 187.5 Hz (where z = s/wl). Given the sampling rate s, our Nyquist frequency f  = 24,000 Hz (where f  = s/2), and therefore, the total number of frequency bins across which an STDFT was run is n = 128 frequency bins (n = f/z). The final output of an STDFT corresponds to a matrix of N * m fourier coefficients (N = length of the audio recording and m = number of frequency bins). In this study, we computed STDFT across 24 hours of audio recordings, which translates to a matrix of 3072 (24 hours * 128 bins) fourier coefficients (Campos-Cerqueira et al. 2019). This matrix of coefficients essentially corresponds to ASU (or a measure of space ‘used, for every hour of a day across the 128 bins in this study). Prior to computing STDFTs and ASU values, we set a threshold amplitude of 0.003 dB for audio recordings (following Campos-Cerqueira et al. 2019 and examination of our data). 
 
-ASU is being calculated for every one hour period and showcased for a 24 hour period of data. ASU here is defined as the overall area occupied by the frequency contour.In our case, the sampling rate of our signal is 48,000 Hz (in future iterations, this value can be changed depending on the range of frequency values for which we would want to estimate acoustic space use)
+To calculate ASU, we selected five consecutive days of acoustic data (24 continuous hours of data) across each site. Five days was the minimum number of days of consecutive sampling without disruptions across sites (eg. memory card switching/battery replacements/failure of equipment etc.).  
 ```{r}
 # Select all unique site_date combinations for each unique site
 site_date <- str_extract(basename(files),'\\w+_\\d+_')
@@ -228,9 +229,9 @@ siteByDayAsu <- bind_rows(site_date_asu, .id = "Site_Day")
 write.csv(siteByDayAsu, "data/site-by-day-asu.csv", row.names = F) 
 ```
 
+##  Average acoustic space use
 
-- Now that we have calculated acoustic space use values for a given frequency bin size and time resolution for every unique site-date combination, we would like to obtain a single set of space use values for every unique site. In other words, we would like to average space use values across all frequency bins for seven days (a week approximately). This is done for comparison between sites and treatment types. 
-
+Now that we have calculated acoustic space use values for a given frequency bin size and time resolution for every unique site-date combination, we would like to obtain a single set of space use values for every unique site. In other words, we would like to average space use values across all frequency bins for five days. 
 ```{r}
 # All unique sites
 site <- str_extract(basename(files),'^([[:alnum:]])+')
@@ -273,15 +274,14 @@ siteWiseAsu <- bind_rows(site_asu, .id = "Site")
 write.csv(siteWiseAsu, "data/site-wise-asu.csv", row.names = F)
 ```
 
-
-Visualization of data
+## Visual examination of ASU
 
 We will use ggplot2 to plot and save individual ASU plots for each unique site-date combination. This will then be repeated for each unique site (calculated in the previous chunk of code) 
 ```{r}
 # Saving the ggplots to a folder for every unique site-date combination
 for(i in 1:length(site_date_asu)){
   
-  # Get the data out from a list to a datframe (else ggplot won't accept it)
+  # Get the data out from a list to a dataframe (else ggplot won't accept it)
   dat <- data.frame(site_date_asu[i])
 names(dat) <- c("freq","f.cont","time_of_day")
   
@@ -336,14 +336,15 @@ for(j in 1:length(site_asu)){
 }
 ```
 
-Main text Figure 3
+## Representative figure for publication
+
 ```{r}
 # load .rdata to plot select figures for publication
 site_asu <- load("data/site_asu.rdata")
 
 site_asu <- bind_rows(site_asu, .id="Site")
 
-# Selecting three representative sites for Fig. 3 (PANMP1B, INBS04R, INBS04U)
+# Selecting three representative sites (PANMP1B, INBS04R, INBS04U)
 bm <- site_asu %>%
    filter(Site=="PANMP1B")
  
@@ -409,5 +410,5 @@ fig_asu <- fig_nr + fig_ar + fig_bm
 ggsave(fig_asu, filename = "figs/fig3.png", width=52, height=17,device = png(), units="cm", dpi = 300); dev.off()
 ```
 
-![**Acoustic space use across a naturally regenerating, actively restored and benchmark site**
-Acoustic space use (ASU) is the proportion of frequency space that is ‘used’ for a given time period (where ‘used’ refers to the frequency space that is occupied by vocalizations/sounds above a threshold amplitude). In this figure, we showcase ASU for a naturally regenerating site, an actively restored site and a benchmark site. We observed largely empty frequency bins between 12 kHz to 24 kHz for the majority of AR and NR sites. Our visual examination also highlighted well established diurnal and nocturnal activity patterns of birds and insects, with frequencies between 0 kHz to 12 kHz showing higher values of ASU during the day (6AM to 6PM), and frequencies between 12 kHz to 24 kHz showing higher values of ASU during the night (6PM to 6AM).](figs/fig03.png)
+![**Visual examination of acoustic space use across a naturally regenerating, actively restored and benchmark site**
+In this figure, we visually examined ASU for each of the 128 frequency bins and 24 hours across each site and treatment type. Shown here are representative figures for an NR, AR, and BM site. In this visualization, we estimated the proportion of frequency space (values between 0 to 1) that was occupied by vocalizations/sounds above 0.003 dB for every single hour of recording across 24 hours in a day. We observed largely empty frequency bins between 12 kHz to 24 kHz for the majority of AR and NR sites.](figs/fig03.png)
