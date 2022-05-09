@@ -3,11 +3,12 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Preparing vegetation data for GLMs
+# Processing vegetation data 
 
-Here, we prepare the vegetation data to run GLMMs in the next series of scripts. 
+In this script, we process vegetation data and examine differences in vegetation structure and composition across treatment types. Note: this analysis is provided as supporting information to showcase differences between AR, NR, and BM sites. In addition, we save results of principal component analyses for future statistical models. 
 
-Install required libraries
+## Install required libraries
+
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -21,28 +22,27 @@ library(psych)
 source("code/01_internal-functions.R")
 ```
 
+## Load the vegetation data
 
-Load the vegetation data
 ```{r}
+# load the .csv containing different vegetation variables (data collected by the Nature Conservation Foundation)
+
 veg <- read.csv("data/2020-vegetation-data.csv")
 veg$Site_ID <- str_remove(veg$Site_ID,"_")
 
-# We load the subset data
-datSubset <- read.csv("data/datSubset.csv")
-sites_needed <- data.frame(unique(datSubset$Site))
-names(sites_needed) <- "Site_ID"
+# load list of sites
+sites <- read.csv("data/list-of-sites.csv") %>%
+  filter(Site.code != "OLCAP5B")
 
-# Obtain a subset of the data which have the sites visited 
-veg <- merge(veg, sites_needed, by.x = "Site_ID", by.y="Site_ID")
+# join dataframes to obtain vegetation data for only the required list of sites
+veg <- right_join(veg,sites, by=c("Site_ID"="Site.code"))
 
-# renaming restoration type
+# renaming restoration type column
 veg$Site_type[veg$Site_type=="Unrestored"] <- "Passive"
 veg$Site_type[veg$Site_type=="Restored"] <- "Active"
-
-# Load species-trait data to essentially run GLMs
-trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
 
+## Process habitat structure variables
 
 Carrying out exploratory analysis and preparing a dataframe for further steps
 ```{r}
@@ -94,8 +94,8 @@ allVeg <- basal_area %>%
 write.csv(allVeg, "data/summaryVeg.csv", row.names = F)
 ```
 
+## Principal component analysis of vegetation data
 
-Running a PCA of the vegetation data
 ```{r}
 # Check for correlations among vegetation predictors
 pairs.panels(allVeg[,3:9])
