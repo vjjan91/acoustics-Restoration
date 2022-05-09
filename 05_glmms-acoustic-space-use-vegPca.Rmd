@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we run generalized linear models to test the association between acoustic space use values and restoration type. In addition, we run generalized linear mixed models to test associations between acoustic space use and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects.  
 
-Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -27,7 +27,7 @@ library(RColorBrewer)
 source("code/01_internal-functions.R")
 ```
 
-Load necessary data for statistical modeling
+## Load necessary data for statistical modeling
 ```{r}
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>% 
@@ -114,8 +114,7 @@ vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
 ```
 
-
-Getting data ready in a format for linear modeling
+## Getting data ready in a format for linear modeling
 ```{r}
 # overall space use
 modelDataAll <- vegPcaScores %>% 
@@ -142,10 +141,9 @@ modelDataDusk <- vegPcaScores %>%
   mutate("roundSpaceuse" = round(totSpaceuse))
 ```
 
-Running the generalized linear mixed models
+## Running the generalized linear mixed models
 
 We now run generalized linear mixed models (GLMM) assuming gaussian errors to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means. 
-
 ```{r}
 # overall space use
 glmm_allRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))
@@ -229,10 +227,9 @@ ggsave(fig_glmm_duskRest, filename = "figs/fig_glmm_duskAcousticSpaceUse.png", w
 ```
 
 ![**Overall acoustic space use across treatment types.**
-Analysis of ~4,128 hours of acoustic data across treatment types (for the 43 sites) revealed significant differences in ASU between treatment types (Tukey HSD P < 0.05). ASU was significantly different across BM-AR, BM-NR and AR-NR sites, with the highest estimate in BM sites (mean ± SD: 413 ± 103), followed by AR sites (mean ± SD: 188 ± 78) and NR sites (mean ± SD: 182 ± 66). Mean and standard deviation were based on pooled values of ASU across 24 hours for every site-day combination. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig_glmm_overallAcousticSpace.png)  
+Analysis of ~4,128 hours of acoustic data across treatment types (for the 43 sites) revealed significant differences in ASU between treatment types (Tukey HSD P < 0.05). ASU was significantly different across BM-AR, BM-NR and AR-NR sites, with the highest estimate in BM sites (mean ± SD: 413 ± 103), followed by AR sites (mean ± SD: 188 ± 78) and NR sites (mean ± SD: 182 ± 66). In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig_glmm_overallAcousticSpace.png)  
 
-We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.
-
+We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.  
 ```{r}
 # overall space use
 glmm_allVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))
@@ -262,10 +259,9 @@ report::report(glmm_duskVeg)
 # There is a significant negative effect of PC1 on dusk acoustic space use
 ```
 
-Creating figure for publication
+## Creating figure for publication
 ```{r}
 # Patchworking nmds and glmm for acoustic space use to create part a and b for Fig. 4
-
 library(patchwork)
 
 fig_glmm_ordinations <-
