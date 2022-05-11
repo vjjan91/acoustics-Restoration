@@ -3,11 +3,10 @@ knit: "bookdown::render_book"
 title: "Source code for _Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats_"
 author:
     - Vijay Ramesh
-    - VA Akshay
     - Priyanka HariHaran
+    - VA Akshay
     - Pooja Choksi
     - Sarika Khanwilkar
-    - Don J Melnick
     - VV Robin
     - Ruth DeFries
 date: "`r Sys.Date()`"
