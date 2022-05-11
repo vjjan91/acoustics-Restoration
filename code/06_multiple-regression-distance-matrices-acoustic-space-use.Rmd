@@ -1,0 +1,177 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Multiple regression on distance matrices (acoustic space use)
+
+
+## Load necessary libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(sf)
+library(sna)
+library(hier.part)
+library(ecodist)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+
+## Load necessary data and create dissimilarity matrices
+```{r}
+# estimating geographic distance (euclidean) between sites
+sites <- read.csv("data/list-of-sites.csv") %>%
+  filter(!str_detect(Site.code, 'OLCAP5B'))
+
+sites <- st_as_sf(sites, coords = c("Longitude","Latitude"), crs=4326)
+sites <- st_transform(sites, 32643)
+
+distanceData <- dist(st_coordinates(sites), method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+distMatrix <- as.matrix(distanceData)
+
+# getting vegetation PCA scores as a matrix
+vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
+
+vegPcaScores <- dist(vegPcaScores, method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+vegPcaScores <- as.matrix(vegPcaScores)
+
+# load NMDS scores (run on bird detections)
+nmdsScoresBird <- read.csv("data/nmdsBrayCurtis-bird-detections.csv")
+birdMatrix <- dist(nmdsScoresBird[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+birdMatrix <- as.matrix(birdMatrix)
+
+# load NMDS scores (run on acoustic space use)
+nmdsScoresAll <- read.csv("data/nmds-acousticSpaceUse.csv")
+nmdsScoresDawn <- read.csv("data/nmds-acousticSpaceUse-dawn.csv") 
+nmdsScoresDusk <- read.csv("data/nmds-acousticSpaceUse-dawn.csv")  
+
+overallspaceUseMatrix <- dist(nmdsScoresAll[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+overallspaceUseMatrix <- as.matrix(overallspaceUseMatrix)
+
+dawnspaceUseMatrix <- dist(nmdsScoresDawn[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+dawnspaceUseMatrix <- as.matrix(dawnspaceUseMatrix)
+
+duskspaceUseMatrix <- dist(nmdsScoresDusk[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+duskspaceUseMatrix <- as.matrix(duskspaceUseMatrix)
+```
+
+
+## Extracting floristic data and running NMDS ordinations on the same
+```{r}
+# getting floristic data as a matrix, using NMDS scores
+# to do the above, we need to reload the vegetation data and process it
+
+veg <- read.csv("data/2020-vegetation-data.csv")
+veg$Site_ID <- str_remove(veg$Site_ID,"_")
+
+# We load the subset data
+datSubset <- read.csv("data/datSubset.csv") %>%
+  filter(!str_detect(Site, 'OLCAP5B'))
+sites_needed <- data.frame(unique(datSubset$Site))
+names(sites_needed) <- "Site_ID"
+
+# Obtain a subset of the data which have the sites visited 
+veg <- merge(veg, sites_needed, by.x = "Site_ID", by.y="Site_ID")
+
+# renaming restoration type
+veg$Site_type[veg$Site_type=="Unrestored"] <- "Passive"
+veg$Site_type[veg$Site_type=="Restored"] <- "Active"
+
+# now extract floristics data (tree species abundance)
+floraData <- veg %>% 
+  dplyr::select(Site_ID, tree_species, Site_type) %>% 
+  mutate(Number = 1) %>%
+  group_by(tree_species, Site_ID, Site_type) %>% 
+  summarise (totalAbun = sum(Number)) %>% 
+  pivot_wider (names_from = tree_species, values_from = totalAbun, values_fill = list(totalAbun=0)) %>%
+  arrange(.,Site_ID)
+
+# Convert to matrix form
+nmdsDatMatrix <- as.matrix(floraData[, 3:ncol(floraData)])
+
+# Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations
+disBrayCurtis <- vegdist(nmdsDatMatrix, method = "bray")
+
+nmdsBrayCurtis <- vegdist (nmdsDatMatrix, method = "bray") %>% 
+  metaMDS (nmdsBrayCurtis, k=6)
+
+# extract nmds scores
+nmdsScores <- as.tibble(scores(nmdsBrayCurtis))
+
+# stress is lowest at around 6 dimensions with value of 0.06350522. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+
+# create a distance matrix on the nmds scores of the flora data
+floraMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper = TRUE, p = 2)
+floraMatrix <- as.matrix(floraMatrix)
+```
+
+
+## Running multiple regression on distance matrices
+```{r}
+# First we get rid of redundant duplicate values, then make the diagonal zeros NA, unfold each matrix into a vector, and then omit rows with 0 in them
+
+overallspaceUseVector <- upper.tri.remove(overallspaceUseMatrix)
+diag(overallspaceUseVector) <- NA
+overallspaceUseVector <- cbind(c(overallspaceUseVector)) %>% na.omit()
+
+dawnspaceUseVector <- upper.tri.remove(dawnspaceUseMatrix)
+diag(dawnspaceUseVector) <- NA
+dawnspaceUseVector <- cbind(c(dawnspaceUseVector)) %>% na.omit()
+
+duskspaceUseVector <- upper.tri.remove(duskspaceUseMatrix)
+diag(duskspaceUseVector) <- NA
+duskspaceUseVector <- cbind(c(duskspaceUseVector)) %>% na.omit()
+
+floraVector <- upper.tri.remove(floraMatrix)
+diag(floraVector) <- NA
+floraVector <- cbind(c(floraVector)) %>% na.omit()
+
+pcaVector <- upper.tri.remove(vegPcaScores)
+diag(pcaVector) <- NA
+pcaVector <- cbind(c(pcaVector)) %>% na.omit() 
+
+distanceVector <- upper.tri.remove(distMatrix)
+diag(distanceVector) <- NA
+distanceVector <- cbind(c(distanceVector)) %>% na.omit() %>%
+  scale
+
+#arranging data for MRM
+mrmAllData <- bind_cols (overallspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
+
+mrmDawnData <- bind_cols (dawnspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
+
+mrmDuskData <- bind_cols (duskspaceUseVector, floraVector, pcaVector, distanceVector) %>% rename (spaceUse = ...1, flora = ...2, structure = ...3, distance = ...4)
+
+# run the analysis
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmAllData, method = "linear", nperm = 1000)
+
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmDawnData, method = "linear", nperm = 1000)
+
+MRM(dist(spaceUse) ~ dist(flora) + dist(structure) + dist(distance), data = mrmDuskData, method = "linear", nperm = 1000)
+
+# Overall space use is not signficantly related to dissimilarity in habitat structure, geographic distance and floristics
+
+# dawn space use is positively and significantly related to dissimilarity in habitat structure (Please note that the overall R2 values are very low)
+
+# dusk space use is also positively and significantly related to dissimilarity in habitat structure(Please note that the overall R2 values are very low)
+```
+
+
+## Hierarchical partitioning
+
+```{r}
+hier.part(mrmAllData$spaceUse, mrmAllData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+
+hier.part(mrmDawnData$spaceUse, mrmDawnData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+
+hier.part(mrmDuskData$spaceUse, mrmDuskData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
+```
+
