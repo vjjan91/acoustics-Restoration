@@ -8,7 +8,7 @@ output: word_document
 
 In this script, we run generalized linear mixed models to test the association between first order jacknife scores and restoration type. In addition, we run generalized linear mixed models to test associations between species richness and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects. Lastly, we assess associations between year since restoration began and first order jackknife scores of birds.  
 
-Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -27,7 +27,7 @@ source("code/01_internal-functions.R")
 ```
 
 
-Load the necessary data for statistical modeling
+## Load the necessary data for statistical modeling
 ```{r}
 # We load the subset data
 datSubset <- read.csv("data/datSubset.csv")
@@ -93,7 +93,7 @@ jackOpencountry <- read.csv("data/jackOpencountry.csv")
 ```
 
 
-Getting data ready in a format for generalized linear modeling
+## Getting data ready in a format for generalized linear modeling
 ```{r}
 # All birds
 modelDataAll <- vegPcaScores %>%  
@@ -130,7 +130,7 @@ modelData_openCountry <- vegPcaScores %>%
   mutate ("roundjk" = round(jacknife))
 ```
 
-Getting data ready for generalized linear mixed modeling with richness data as well as visits. 
+## Getting data ready for generalized linear mixed modeling with richness data as well as visits. 
 ```{r}
 # data for the GLMM (overall richness)
 glmmAll <- richnessPerVisit[,-2] %>%
@@ -139,7 +139,7 @@ glmmAll <- richnessPerVisit[,-2] %>%
 # rainforest birds richness for glmm
 glmmRainforest <- nDetectionsTrait %>%
   group_by(Site, Restoration.type, Date) %>% 
-  filter (Habitat == "RF") %>%
+  filter (habitat == "RF") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
@@ -150,7 +150,7 @@ glmmRainforest <- nDetectionsTrait %>%
 # open-country birds
 glmmOpencountry <- nDetectionsTrait %>%
   group_by(Site, Restoration.type, Date) %>% 
-  filter (Habitat == "OC") %>%
+  filter (habitat == "OC") %>%
   summarise(richness = sum(forRichness)) %>%
   group_by(Site) %>% 
   mutate(visit = row_number()) %>%
@@ -204,7 +204,7 @@ glmmUnderStory <- nDetectionsTrait %>%
   full_join(modelDataAll[,-8], by = c("Site","siteCode","Restoration.type"))
 ```
 
-Running the generalized linear mixed models
+## Running the generalized linear mixed models
 
 We now run generalized linear models (GLM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
 ```{r}
@@ -237,7 +237,7 @@ cld(tukey_glmmOpenCountryJack)
 ```
 
 
-Running generalized linear mixed models
+## Testing the role of habitat
 
 Testing the role of habitat (vegetation structure) and foraging habit on species richness within a generalized linear modeling framework
 ```{r}
@@ -247,16 +247,27 @@ Testing the role of habitat (vegetation structure) and foraging habit on species
 glmm_allBirds <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmAll, family = poisson(link = log))
 summary(glmm_allBirds)
 
+plot_model(glmm_allBirds, type="pred", terms=c("PC1","PC2"))
+report::report(glmm_allBirds)
+
 # significant negative association with PC2
 
 # rainforest birds
 glmm_Rainforest <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmRainforest, family = poisson(link = log))
 summary(glmm_Rainforest)
 
-# Results above suggest PC2 is significantly negatively associated with richness of rainforest birds. A similar result is seen below for open-country bird species richness and PC1
+plot_model(glmm_Rainforest, type="pred", terms=c("PC1","PC2"))
+report::report(glmm_Rainforest)
+
+# Results above suggest PC2 is significantly negatively associated with richness of rainforest birds. 
 
 glmm_openCountry <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = glmmOpencountry, family = poisson(link = log))
 summary(glmm_openCountry)
+
+plot_model(glmm_openCountry, type="pred", terms=c("PC1","PC2"))
+report::report(glmm_openCountry)
+
+# statistically significant positive association with PC1 and significant negative association with PC2
 
 # Testing the role of foraging habit
 
@@ -277,31 +288,48 @@ glmm_Understory <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data =
 summary(glmm_Understory)
 ```
 
+## Effect of planting year
+
 Lastly, running a generalized linear model to test the effect of year since restoration on jacknife estimates of species richness
 ```{r}
 # Let's look at overall species richness first
 # filter only data for restored sites
-allRestored <- modelDataAll %>%
+allRestored <- glmmAll %>%
   filter(Restoration.type=="Active") %>%
-  mutate(yearSinceRestoration = (2021-year))
+  mutate(yearSinceRestoration = (2022-year))
 
-glmAll <- glm(richness ~ yearSinceRestoration, data = allRestored, family = poisson(link = log))
-summary(glmAll)
+glmmAllRest <- glmer(roundjk ~ yearSinceRestoration + (1|visit), data = allRestored, family = poisson(link = log))
+summary(glmmAllRest)
+
+plot_model(glmmAllRest, type="pred")
+report::report(glmmAllRest)
+
+# no significant association for overall richness
 
 # rainforest bird richness
-rainRestored <- modelData_rainForest %>%
+rainRestored <- glmmRainforest %>%
   filter(Restoration.type=="Active") %>%
-  mutate(yearSinceRestoration = (2021-year))
+  mutate(yearSinceRestoration = (2022-year))
 
-glmRain <- glm(roundjk ~ yearSinceRestoration, data = rainRestored, family = poisson(link = log))
-summary(glmRain)
+glmmRain <- glmer(roundjk ~ yearSinceRestoration + (1|visit), data = rainRestored, family = poisson(link = log))
+summary(glmmRain)
+
+plot_model(glmmRain, type="pred")
+report::report(glmmRain)
+
+# no significant association for rainforest bird species richness
 
 # open-country richness
-openRestored <- modelData_openCountry %>%
+openRestored <- glmmOpencountry %>%
   filter(Restoration.type=="Active") %>%
-  mutate(yearSinceRestoration = (2021-year))
+  mutate(yearSinceRestoration = (2022-year))
 
-glmOpen <- glm(roundjk ~ yearSinceRestoration, data = openRestored, family = poisson(link = log))
-summary(glmOpen)
+glmmOpen <- glmer(roundjk ~ yearSinceRestoration + (1|visit), data = openRestored, family = poisson(link = log))
+summary(glmmOpen)
+
+plot_model(glmmOpen, type="pred")
+report::report(glmmOpen)
+
+# The effect of yearSinceRestoration is statistically significant and positive for open country birds (beta = 0.02, 95% CI [4.05e-03, 0.04], p = 0.016; Std. beta = 0.06, 95% CI [0.01, 0.11])
 ```
 
