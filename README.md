@@ -10,6 +10,8 @@ This repository contains code and analysis for a manuscript that uses acoustic d
 
 A readable version of this analysis is available in bookdown format by clicking on the heading above.
 
+### ** IN CONSTRUCTION BELOW **
+
 We describe what each script of this repository is intended to achieve below.
 
 - _01_split-large-wavs.Rmd:_. Raw audio data is divided into smaller chunks for the purpose of annotation and downstream processing.
