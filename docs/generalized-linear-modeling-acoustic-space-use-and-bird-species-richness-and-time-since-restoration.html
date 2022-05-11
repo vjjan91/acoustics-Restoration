@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 14 Generalized linear modeling (acoustic space use and bird species richness, and time since restoration) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</title>
+  <meta name="description" content="Section 14 Generalized linear modeling (acoustic space use and bird species richness, and time since restoration) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 14 Generalized linear modeling (acoustic space use and bird species richness, and time since restoration) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 14 Generalized linear modeling (acoustic space use and bird species richness, and time since restoration) | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Priyanka HariHaran" />
+<meta name="author" content="VA Akshay" />
+<meta name="author" content="Pooja Choksi" />
+<meta name="author" content="Sarika Khanwilkar" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2022-05-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.4</b> Main Text Figure 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="site-selection.html"><a href="site-selection.html"><i class="fa fa-check"></i><b>2</b> Site selection</a><ul>
+<li class="chapter" data-level="2.1" data-path="site-selection.html"><a href="site-selection.html#install-required-libraries"><i class="fa fa-check"></i><b>2.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="site-selection.html"><a href="site-selection.html#load-list-of-sites"><i class="fa fa-check"></i><b>2.2</b> Load list of sites</a></li>
+<li class="chapter" data-level="2.3" data-path="site-selection.html"><a href="site-selection.html#extract-elevation"><i class="fa fa-check"></i><b>2.3</b> Extract elevation</a></li>
+<li class="chapter" data-level="2.4" data-path="site-selection.html"><a href="site-selection.html#distance-to-nearest-road"><i class="fa fa-check"></i><b>2.4</b> Distance to nearest road</a></li>
+<li class="chapter" data-level="2.5" data-path="site-selection.html"><a href="site-selection.html#distance-between-ar-nr-site-pairs"><i class="fa fa-check"></i><b>2.5</b> Distance between AR-NR site pairs</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html"><i class="fa fa-check"></i><b>3</b> Processing vegetation data</a><ul>
+<li class="chapter" data-level="3.1" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#install-required-libraries-1"><i class="fa fa-check"></i><b>3.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#load-the-vegetation-data"><i class="fa fa-check"></i><b>3.2</b> Load the vegetation data</a></li>
+<li class="chapter" data-level="3.3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#process-habitat-structure-variables"><i class="fa fa-check"></i><b>3.3</b> Process habitat structure variables</a></li>
+<li class="chapter" data-level="3.4" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#principal-component-analysis-of-vegetation-data"><i class="fa fa-check"></i><b>3.4</b> Principal component analysis of vegetation data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>4</b> Acoustic space use</a><ul>
+<li class="chapter" data-level="4.1" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#install-necessary-libraries"><i class="fa fa-check"></i><b>4.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#load-recordings-across-multiple-days-and-sites"><i class="fa fa-check"></i><b>4.2</b> Load recordings across multiple days and sites</a></li>
+<li class="chapter" data-level="4.3" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#short-time-discrete-fourier-transform-stdft"><i class="fa fa-check"></i><b>4.3</b> Short-time discrete fourier transform (STDFT)</a></li>
+<li class="chapter" data-level="4.4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#average-acoustic-space-use"><i class="fa fa-check"></i><b>4.4</b> Average acoustic space use</a></li>
+<li class="chapter" data-level="4.5" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#visual-examination-of-asu"><i class="fa fa-check"></i><b>4.5</b> Visual examination of ASU</a></li>
+<li class="chapter" data-level="4.6" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#representative-figure-for-publication"><i class="fa fa-check"></i><b>4.6</b> Representative figure for publication</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>5</b> Non-metric multidimensional scaling of acoustic space use data</a><ul>
+<li class="chapter" data-level="5.1" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-necessary-libraries-for-analysis"><i class="fa fa-check"></i><b>5.1</b> Load necessary libraries for analysis</a></li>
+<li class="chapter" data-level="5.2" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-the-necessary-data-for-nmds-calculations"><i class="fa fa-check"></i><b>5.2</b> Load the necessary data for nmds calculations</a></li>
+<li class="chapter" data-level="5.3" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#preparing-a-dataframe-of-space-use-to-run-ordinations"><i class="fa fa-check"></i><b>5.3</b> Preparing a dataframe of space use to run ordinations</a></li>
+<li class="chapter" data-level="5.4" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#plotting-the-nmds-scores"><i class="fa fa-check"></i><b>5.4</b> Plotting the NMDS scores</a></li>
+<li class="chapter" data-level="5.5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#testing-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.5</b> Testing multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="5.6" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#visualizing-the-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.6</b> Visualizing the multivariate homogeneity of group dispersions</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>6</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a><ul>
+<li class="chapter" data-level="6.1" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#install-required-libraries-2"><i class="fa fa-check"></i><b>6.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="6.2" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#load-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>6.2</b> Load necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="6.3" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#getting-data-ready-in-a-format-for-linear-modeling"><i class="fa fa-check"></i><b>6.3</b> Getting data ready in a format for linear modeling</a></li>
+<li class="chapter" data-level="6.4" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#running-the-generalized-linear-mixed-models"><i class="fa fa-check"></i><b>6.4</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="6.5" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#creating-figure-for-publication"><i class="fa fa-check"></i><b>6.5</b> Creating figure for publication</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html"><i class="fa fa-check"></i><b>7</b> Splitting large .wav files</a><ul>
+<li class="chapter" data-level="7.1" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#load-required-libraries"><i class="fa fa-check"></i><b>7.1</b> Load required libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="selecting-the-dawn-chorus.html"><a href="selecting-the-dawn-chorus.html"><i class="fa fa-check"></i><b>8</b> Selecting the dawn chorus</a><ul>
+<li class="chapter" data-level="8.1" data-path="selecting-the-dawn-chorus.html"><a href="selecting-the-dawn-chorus.html#split-the-files"><i class="fa fa-check"></i><b>8.1</b> Split the files</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="bird-species-richness.html"><a href="bird-species-richness.html"><i class="fa fa-check"></i><b>9</b> Bird Species Richness</a><ul>
+<li class="chapter" data-level="9.1" data-path="bird-species-richness.html"><a href="bird-species-richness.html#install-required-libraries-3"><i class="fa fa-check"></i><b>9.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="9.2" data-path="bird-species-richness.html"><a href="bird-species-richness.html#load-manual-annotations-data"><i class="fa fa-check"></i><b>9.2</b> Load manual annotations data</a></li>
+<li class="chapter" data-level="9.3" data-path="bird-species-richness.html"><a href="bird-species-richness.html#subset-data"><i class="fa fa-check"></i><b>9.3</b> Subset data</a></li>
+<li class="chapter" data-level="9.4" data-path="bird-species-richness.html"><a href="bird-species-richness.html#total-number-of-detections"><i class="fa fa-check"></i><b>9.4</b> Total number of detections</a></li>
+<li class="chapter" data-level="9.5" data-path="bird-species-richness.html"><a href="bird-species-richness.html#calculate-species-richness"><i class="fa fa-check"></i><b>9.5</b> Calculate species richness</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>10</b> Acoustic Detections</a><ul>
+<li class="chapter" data-level="10.1" data-path="acoustic-detections.html"><a href="acoustic-detections.html#install-required-libraries-4"><i class="fa fa-check"></i><b>10.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="10.2" data-path="acoustic-detections.html"><a href="acoustic-detections.html#load-data"><i class="fa fa-check"></i><b>10.2</b> Load data</a></li>
+<li class="chapter" data-level="10.3" data-path="acoustic-detections.html"><a href="acoustic-detections.html#overall-number-of-detections"><i class="fa fa-check"></i><b>10.3</b> Overall number of detections</a></li>
+<li class="chapter" data-level="10.4" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-treatment-type"><i class="fa fa-check"></i><b>10.4</b> Detections by treatment type</a></li>
+<li class="chapter" data-level="10.5" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-species-traits"><i class="fa fa-check"></i><b>10.5</b> Detections by species traits</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>11</b> Jackknife estimates</a><ul>
+<li class="chapter" data-level="11.1" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#install-required-libraries-5"><i class="fa fa-check"></i><b>11.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="11.2" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#load-the-necessary-data-to-calculate-jackknife-scores"><i class="fa fa-check"></i><b>11.2</b> Load the necessary data to calculate Jackknife scores</a></li>
+<li class="chapter" data-level="11.3" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#preparing-dataframe-to-extract-jacknife-scores"><i class="fa fa-check"></i><b>11.3</b> Preparing dataframe to extract jacknife scores</a></li>
+<li class="chapter" data-level="11.4" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#save-scores-locally"><i class="fa fa-check"></i><b>11.4</b> Save scores locally</a></li>
+<li class="chapter" data-level="11.5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#looking-at-correlations-between-jacknife-scores-and-bootstrap-estimates"><i class="fa fa-check"></i><b>11.5</b> Looking at correlations between jacknife scores and bootstrap estimates</a></li>
+<li class="chapter" data-level="11.6" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#testing-for-differences-between-treatment-types"><i class="fa fa-check"></i><b>11.6</b> Testing for differences between treatment types</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html"><i class="fa fa-check"></i><b>12</b> Non-metric multidimensional scaling</a><ul>
+<li class="chapter" data-level="12.1" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#install-required-libraries-6"><i class="fa fa-check"></i><b>12.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="12.2" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#load-the-necessary-data-for-nmds-calculations-1"><i class="fa fa-check"></i><b>12.2</b> Load the necessary data for NMDS calculations</a></li>
+<li class="chapter" data-level="12.3" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#preparing-dataframe-of-traits-and-species-to-be-used-for-nmds-later-on"><i class="fa fa-check"></i><b>12.3</b> Preparing dataframe of traits and species to be used for NMDS later on</a></li>
+<li class="chapter" data-level="12.4" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#preparing-a-dataframe-of-detections-to-run-ordinations"><i class="fa fa-check"></i><b>12.4</b> Preparing a dataframe of detections to run ordinations</a></li>
+<li class="chapter" data-level="12.5" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#bray-curtis-dissimilarity-index"><i class="fa fa-check"></i><b>12.5</b> Bray-Curtis dissimilarity index</a></li>
+<li class="chapter" data-level="12.6" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#plotting-the-nmds-scores-1"><i class="fa fa-check"></i><b>12.6</b> Plotting the NMDS scores</a></li>
+<li class="chapter" data-level="12.7" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#main-text-figure-2"><i class="fa fa-check"></i><b>12.7</b> Main text Figure 2</a></li>
+<li class="chapter" data-level="12.8" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#testing-multivariate-homogeneity-of-group-dispersions-1"><i class="fa fa-check"></i><b>12.8</b> Testing multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="12.9" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#testing-compositional-dissimilarity-between-groups"><i class="fa fa-check"></i><b>12.9</b> Testing compositional dissimilarity between groups</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>13</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a><ul>
+<li class="chapter" data-level="13.1" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#install-required-libraries-7"><i class="fa fa-check"></i><b>13.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="13.2" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#load-the-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>13.2</b> Load the necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="13.3" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-in-a-format-for-generalized-linear-modeling"><i class="fa fa-check"></i><b>13.3</b> Getting data ready in a format for generalized linear modeling</a></li>
+<li class="chapter" data-level="13.4" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-for-generalized-linear-mixed-modeling-with-richness-data-as-well-as-visits."><i class="fa fa-check"></i><b>13.4</b> Getting data ready for generalized linear mixed modeling with richness data as well as visits.</a></li>
+<li class="chapter" data-level="13.5" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#running-the-generalized-linear-mixed-models-1"><i class="fa fa-check"></i><b>13.5</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="13.6" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#testing-the-role-of-habitat"><i class="fa fa-check"></i><b>13.6</b> Testing the role of habitat</a></li>
+<li class="chapter" data-level="13.7" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#effect-of-planting-year"><i class="fa fa-check"></i><b>13.7</b> Effect of planting year</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><i class="fa fa-check"></i><b>14</b> Generalized linear modeling (acoustic space use and bird species richness, and time since restoration)</a><ul>
+<li class="chapter" data-level="14.1" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#install-required-libraries-8"><i class="fa fa-check"></i><b>14.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="14.2" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#load-necessary-data-for-statistical-modeling-1"><i class="fa fa-check"></i><b>14.2</b> Load necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="14.3" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#getting-data-ready-in-a-format-for-linear-modeling-1"><i class="fa fa-check"></i><b>14.3</b> Getting data ready in a format for linear modeling</a></li>
+<li class="chapter" data-level="14.4" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#bird-species-richness-1"><i class="fa fa-check"></i><b>14.4</b> Bird species richness</a></li>
+<li class="chapter" data-level="14.5" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#year-since-restoration"><i class="fa fa-check"></i><b>14.5</b> Year since restoration</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration" class="section level1">
+<h1><span class="header-section-number">Section 14</span> Generalized linear modeling (acoustic space use and bird species richness, and time since restoration)</h1>
+<p>In this script, we run generalized linear models to test the association between acoustic space use values and species richness, and time since restoration.</p>
+<div id="install-required-libraries-8" class="section level2">
+<h2><span class="header-section-number">14.1</span> Install required libraries</h2>
+<div class="sourceCode" id="cb68"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb68-1"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb68-2"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb68-3"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-3"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb68-4"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-4"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb68-5"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb68-6"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-6"></a><span class="kw">library</span>(scico)</span>
+<span id="cb68-7"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-7"></a><span class="kw">library</span>(psych)</span>
+<span id="cb68-8"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-8"></a><span class="kw">library</span>(rcompanion)</span>
+<span id="cb68-9"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-9"></a><span class="kw">library</span>(multcomp)</span>
+<span id="cb68-10"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-10"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb68-11"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-11"></a><span class="kw">library</span>(ggpubr)</span>
+<span id="cb68-12"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-12"></a><span class="kw">library</span>(sjPlot)</span>
+<span id="cb68-13"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-13"></a></span>
+<span id="cb68-14"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-14"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb68-15"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb68-15"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+</div>
+<div id="load-necessary-data-for-statistical-modeling-1" class="section level2">
+<h2><span class="header-section-number">14.2</span> Load necessary data for statistical modeling</h2>
+<div class="sourceCode" id="cb69"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb69-1"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-1"></a><span class="co"># load list of sites</span></span>
+<span id="cb69-2"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-2"></a>sites &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/list-of-sites.csv&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb69-3"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-3"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="st">&quot;Site.code&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb69-4"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-4"></a><span class="st">  </span><span class="kw">filter</span>(Site.code <span class="op">!=</span><span class="st"> &quot;OLCAP5B&quot;</span>)</span>
+<span id="cb69-5"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-5"></a></span>
+<span id="cb69-6"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-6"></a><span class="co"># loading jacknife scores </span></span>
+<span id="cb69-7"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-7"></a>jackAll &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/jackAll.csv&quot;</span>)</span>
+<span id="cb69-8"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-8"></a>jack_rainForest &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/jackRainforest.csv&quot;</span>)</span>
+<span id="cb69-9"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-9"></a>jack_openCountry &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/jackOpencountry.csv&quot;</span>)</span>
+<span id="cb69-10"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-10"></a></span>
+<span id="cb69-11"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-11"></a><span class="co"># Load vegetation data from previous scripts </span></span>
+<span id="cb69-12"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-12"></a>vegData &lt;-<span class="st">  </span><span class="kw">read.csv</span>(<span class="st">&quot;data/summaryVeg.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb69-13"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-13"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">str_detect</span>(Site_ID, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
+<span id="cb69-14"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-14"></a>vegPcaScores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/pcaVeg.csv&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb69-15"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-15"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">str_detect</span>(Site_ID, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
+<span id="cb69-16"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-16"></a></span>
+<span id="cb69-17"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-17"></a><span class="co"># Attach the annotation data</span></span>
+<span id="cb69-18"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-18"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>)</span>
+<span id="cb69-19"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-19"></a></span>
+<span id="cb69-20"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-20"></a><span class="co"># Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip</span></span>
+<span id="cb69-21"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-21"></a>nDetections &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
+<span id="cb69-22"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-22"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb69-23"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-23"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb69-24"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-24"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="dt">.funs =</span> sum) </span>
+<span id="cb69-25"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-25"></a></span>
+<span id="cb69-26"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-26"></a><span class="co"># total number of detections at each site</span></span>
+<span id="cb69-27"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-27"></a>totDetections &lt;-<span class="st">  </span>nDetections <span class="op">%&gt;%</span></span>
+<span id="cb69-28"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-28"></a><span class="st">   </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb69-29"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-29"></a><span class="st">   </span><span class="kw">summarise</span>(<span class="dt">totDetections =</span> <span class="kw">sum</span>(<span class="kw">c_across</span>(IP<span class="op">:</span>HSWP)))</span>
+<span id="cb69-30"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-30"></a></span>
+<span id="cb69-31"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-31"></a><span class="co"># load the entire asu data across all sites and days computed</span></span>
+<span id="cb69-32"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-32"></a>sitebyDayAsu &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/site-by-day-asu.csv&quot;</span>) </span>
+<span id="cb69-33"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-33"></a></span>
+<span id="cb69-34"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-34"></a><span class="co"># separate by Site and Date</span></span>
+<span id="cb69-35"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-35"></a>sitebyDayAsu &lt;-<span class="st"> </span><span class="kw">separate</span>(sitebyDayAsu, <span class="dt">col =</span> Site_Day, <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>, <span class="st">&quot;Date&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>) </span>
+<span id="cb69-36"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-36"></a></span>
+<span id="cb69-37"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-37"></a><span class="co"># Add restoration type column to the space use data</span></span>
+<span id="cb69-38"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-38"></a>sitebyDayAsu &lt;-<span class="st"> </span><span class="kw">left_join</span>(sitebyDayAsu, sites, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site.code&quot;</span>))</span>
+<span id="cb69-39"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-39"></a></span>
+<span id="cb69-40"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-40"></a><span class="co"># scale values per site/date for comparison between sites and treatment types</span></span>
+<span id="cb69-41"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-41"></a>sitebyDayAsu &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb69-42"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-42"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb69-43"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-43"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">f.cont.scaled =</span> <span class="kw">range01</span>(f.cont))</span>
+<span id="cb69-44"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-44"></a></span>
+<span id="cb69-45"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-45"></a><span class="co"># computing total number of days for which space use has been computed for each site (some sites have very few days. Eg. OLV110R, else rest have 5 days of audio data each)</span></span>
+<span id="cb69-46"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-46"></a>nSites_Days &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb69-47"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-47"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb69-48"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-48"></a><span class="st">  </span><span class="kw">distinct</span>() <span class="op">%&gt;%</span></span>
+<span id="cb69-49"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-49"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span></span>
+<span id="cb69-50"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-50"></a><span class="st">  </span><span class="kw">count</span>()</span>
+<span id="cb69-51"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-51"></a></span>
+<span id="cb69-52"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-52"></a><span class="co"># Let&#39;s look at data by restoration type</span></span>
+<span id="cb69-53"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-53"></a><span class="co"># This suggests that we have more data for benchmark sites relative to the other two treatment types</span></span>
+<span id="cb69-54"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-54"></a>nDays_siteType &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb69-55"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-55"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb69-56"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-56"></a><span class="st">  </span><span class="kw">distinct</span>() <span class="op">%&gt;%</span></span>
+<span id="cb69-57"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-57"></a><span class="st">  </span><span class="kw">group_by</span>(Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb69-58"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-58"></a><span class="st">  </span><span class="kw">count</span>()</span>
+<span id="cb69-59"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-59"></a>  </span>
+<span id="cb69-60"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-60"></a><span class="co"># Prepare data for statistical modeling</span></span>
+<span id="cb69-61"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-61"></a><span class="co"># Calculating total space use across all frequency bins and times of day: 128*24 for each site-day combination</span></span>
+<span id="cb69-62"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-62"></a></span>
+<span id="cb69-63"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-63"></a>totSpaceUse &lt;-<span class="st"> </span>sitebyDayAsu <span class="op">%&gt;%</span></span>
+<span id="cb69-64"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-64"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type) <span class="op">%&gt;%</span></span>
+<span id="cb69-65"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-65"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totSpaceuse =</span> <span class="kw">sum</span>(f.cont.scaled)) <span class="op">%&gt;%</span></span>
+<span id="cb69-66"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-66"></a><span class="st">  </span><span class="kw">group_by</span>(Site) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb69-67"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-67"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">visit =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb69-68"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-68"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">str_extract</span>(Site, <span class="dt">pattern =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+</span><span class="ch">\\</span><span class="st">d+&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb69-69"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-69"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">siteCode =</span> <span class="kw">factor</span>(siteCode)) <span class="op">%&gt;%</span></span>
+<span id="cb69-70"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb69-70"></a><span class="st">  </span><span class="kw">full_join</span>(vegData, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site_ID&quot;</span>))</span></code></pre></div>
+</div>
+<div id="getting-data-ready-in-a-format-for-linear-modeling-1" class="section level2">
+<h2><span class="header-section-number">14.3</span> Getting data ready in a format for linear modeling</h2>
+<div class="sourceCode" id="cb70"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb70-1"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-1"></a><span class="co"># overall space use</span></span>
+<span id="cb70-2"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-2"></a>modelDataAll &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb70-3"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-3"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Site =</span> Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb70-4"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-4"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Restoration.type =</span> Site_type) <span class="op">%&gt;%</span></span>
+<span id="cb70-5"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="kw">across</span>(Restoration.type, factor))  <span class="op">%&gt;%</span></span>
+<span id="cb70-6"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-6"></a><span class="st">  </span><span class="kw">full_join</span>(totSpaceUse, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb70-7"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-7"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="st">&quot;roundSpaceuse&quot;</span> =<span class="st"> </span><span class="kw">round</span>(totSpaceuse)) <span class="op">%&gt;%</span></span>
+<span id="cb70-8"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-8"></a><span class="st">  </span><span class="kw">full_join</span>(jackAll, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb70-9"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-9"></a><span class="st">  </span><span class="kw">mutate</span> (<span class="st">&quot;roundjk&quot;</span> =<span class="st"> </span><span class="kw">round</span>(jack1)) <span class="op">%&gt;%</span></span>
+<span id="cb70-10"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-10"></a><span class="st">  </span><span class="kw">full_join</span>(vegData, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site_ID&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb70-11"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-11"></a><span class="st">  </span><span class="kw">full_join</span>(totDetections, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site&quot;</span>))</span>
+<span id="cb70-12"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-12"></a></span>
+<span id="cb70-13"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-13"></a><span class="co"># overall space use and rainforest birds</span></span>
+<span id="cb70-14"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-14"></a>modelDataRain &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb70-15"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-15"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Site =</span> Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb70-16"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-16"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Restoration.type =</span> Site_type) <span class="op">%&gt;%</span></span>
+<span id="cb70-17"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-17"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="kw">across</span>(Restoration.type, factor))  <span class="op">%&gt;%</span></span>
+<span id="cb70-18"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-18"></a><span class="st">  </span><span class="kw">full_join</span>(totSpaceUse, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb70-19"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-19"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="st">&quot;roundSpaceuse&quot;</span> =<span class="st"> </span><span class="kw">round</span>(totSpaceuse)) <span class="op">%&gt;%</span></span>
+<span id="cb70-20"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-20"></a><span class="st">  </span><span class="kw">full_join</span>(jack_rainForest, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb70-21"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-21"></a><span class="st">  </span><span class="kw">mutate</span> (<span class="st">&quot;roundjk&quot;</span> =<span class="st"> </span><span class="kw">round</span>(jack1)) <span class="op">%&gt;%</span></span>
+<span id="cb70-22"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-22"></a><span class="st">  </span><span class="kw">full_join</span>(vegData, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site_ID&quot;</span>))</span>
+<span id="cb70-23"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-23"></a></span>
+<span id="cb70-24"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-24"></a><span class="co"># overall space use and open country birds</span></span>
+<span id="cb70-25"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-25"></a>modelDataOpen &lt;-<span class="st"> </span>vegPcaScores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb70-26"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-26"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Site =</span> Site_ID) <span class="op">%&gt;%</span></span>
+<span id="cb70-27"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-27"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Restoration.type =</span> Site_type) <span class="op">%&gt;%</span></span>
+<span id="cb70-28"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-28"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="kw">across</span>(Restoration.type, factor))  <span class="op">%&gt;%</span></span>
+<span id="cb70-29"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-29"></a><span class="st">  </span><span class="kw">full_join</span>(totSpaceUse, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb70-30"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-30"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="st">&quot;roundSpaceuse&quot;</span> =<span class="st"> </span><span class="kw">round</span>(totSpaceuse)) <span class="op">%&gt;%</span></span>
+<span id="cb70-31"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-31"></a><span class="st">  </span><span class="kw">full_join</span>(jack_openCountry, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Restoration.type&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb70-32"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-32"></a><span class="st">  </span><span class="kw">mutate</span> (<span class="st">&quot;roundjk&quot;</span> =<span class="st"> </span><span class="kw">round</span>(jack1)) <span class="op">%&gt;%</span></span>
+<span id="cb70-33"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb70-33"></a><span class="st">  </span><span class="kw">full_join</span>(vegData, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Site&quot;</span>=<span class="st">&quot;Site_ID&quot;</span>))</span></code></pre></div>
+</div>
+<div id="bird-species-richness-1" class="section level2">
+<h2><span class="header-section-number">14.4</span> Bird species richness</h2>
+<p>Let’s first explore richness (as measured through first order jacknife scores and test for associations with space use)</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb71-1"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-1"></a><span class="co"># running generalized linear models</span></span>
+<span id="cb71-2"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-2"></a>glmm_overallRichnessSpace &lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>roundjk <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataAll, <span class="dt">family =</span> <span class="kw">gaussian</span>(<span class="dt">link=</span><span class="st">&quot;identity&quot;</span>))</span>
+<span id="cb71-3"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-3"></a></span>
+<span id="cb71-4"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-4"></a><span class="kw">summary</span>(glmm_overallRichnessSpace)</span>
+<span id="cb71-5"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-5"></a><span class="kw">plot_model</span>(glmm_overallRichnessSpace, <span class="dt">type=</span><span class="st">&quot;pred&quot;</span>)</span>
+<span id="cb71-6"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-6"></a>report<span class="op">::</span><span class="kw">report</span>(glmm_overallRichnessSpace)</span>
+<span id="cb71-7"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-7"></a></span>
+<span id="cb71-8"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-8"></a><span class="co"># The results suggest a statistically non-significant and postive association between overall space use and first-order jacknife scores</span></span>
+<span id="cb71-9"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-9"></a></span>
+<span id="cb71-10"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-10"></a><span class="co"># Rainforest species</span></span>
+<span id="cb71-11"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-11"></a>glmm_RainRichnessSpace &lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>roundjk <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataRain, <span class="dt">family =</span> <span class="kw">gaussian</span>(<span class="dt">link=</span><span class="st">&quot;identity&quot;</span>))</span>
+<span id="cb71-12"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-12"></a></span>
+<span id="cb71-13"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-13"></a><span class="kw">summary</span>(glmm_RainRichnessSpace)</span>
+<span id="cb71-14"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-14"></a><span class="kw">plot_model</span>(glmm_RainRichnessSpace, <span class="dt">type=</span><span class="st">&quot;pred&quot;</span>)</span>
+<span id="cb71-15"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-15"></a>report<span class="op">::</span><span class="kw">report</span>(glmm_RainRichnessSpace)</span>
+<span id="cb71-16"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-16"></a></span>
+<span id="cb71-17"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-17"></a><span class="co"># for rainforest species,  The effect of roundjk is statistically significant and positive (beta = 5.30, 95% CI [1.98, 8.62], t(205) = 3.15, p = 0.002; Std. beta = 0.24, 95% CI [0.09, 0.40])</span></span>
+<span id="cb71-18"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-18"></a></span>
+<span id="cb71-19"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-19"></a><span class="co"># open country species</span></span>
+<span id="cb71-20"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-20"></a>glmm_OpenRichnessSpace &lt;-<span class="st"> </span><span class="kw">glmer</span>(roundSpaceuse <span class="op">~</span><span class="st"> </span>roundjk <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>siteCode) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> modelDataOpen, <span class="dt">family =</span> <span class="kw">gaussian</span>(<span class="dt">link=</span><span class="st">&quot;identity&quot;</span>))</span>
+<span id="cb71-21"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-21"></a></span>
+<span id="cb71-22"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-22"></a><span class="kw">summary</span>(glmm_OpenRichnessSpace)</span>
+<span id="cb71-23"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-23"></a><span class="kw">plot_model</span>(glmm_OpenRichnessSpace, <span class="dt">type=</span><span class="st">&quot;pred&quot;</span>)</span>
+<span id="cb71-24"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-24"></a>report<span class="op">::</span><span class="kw">report</span>(glmm_OpenRichnessSpace)</span>
+<span id="cb71-25"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-25"></a></span>
+<span id="cb71-26"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb71-26"></a><span class="co"># For open country birds, The effect of roundjk is statistically non-significant and negative (beta = -1.56, 95% CI [-4.29, 1.18], t(205) = -1.12, p = 0.263; Std. beta = -0.07, 95% CI [-0.19, 0.05])</span></span></code></pre></div>
+</div>
+<div id="year-since-restoration" class="section level2">
+<h2><span class="header-section-number">14.5</span> Year since restoration</h2>
+<p>Let’s look at year since restoration and ask if space use has a significant association with time</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb72-1"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-1"></a>allRestored &lt;-<span class="st"> </span>totSpaceUse <span class="op">%&gt;%</span></span>
+<span id="cb72-2"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-2"></a><span class="st">  </span><span class="kw">filter</span>(Restoration.type<span class="op">==</span><span class="st">&quot;Active&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb72-3"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yearSinceRestoration =</span> (<span class="dv">2022</span><span class="op">-</span>plantingYear))</span>
+<span id="cb72-4"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-4"></a></span>
+<span id="cb72-5"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-5"></a>glmmAllYear &lt;-<span class="st"> </span><span class="kw">glmer</span>(totSpaceuse <span class="op">~</span><span class="st"> </span>yearSinceRestoration <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>visit), <span class="dt">data =</span> allRestored, <span class="dt">family =</span> <span class="kw">gaussian</span>(<span class="dt">link=</span><span class="st">&quot;identity&quot;</span>))</span>
+<span id="cb72-6"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-6"></a><span class="kw">summary</span>(glmmAllYear)</span>
+<span id="cb72-7"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-7"></a></span>
+<span id="cb72-8"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-8"></a><span class="kw">plot_model</span>(glmmAllYear, <span class="dt">type=</span><span class="st">&quot;pred&quot;</span>)</span>
+<span id="cb72-9"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-9"></a>report<span class="op">::</span><span class="kw">report</span>(glmmAllYear)</span>
+<span id="cb72-10"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-10"></a></span>
+<span id="cb72-11"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#cb72-11"></a><span class="co"># The effect of yearSinceRestoration is statistically significant and negative (beta = -10.07, 95% CI [-16.66, -3.47], t(61) = -3.05, p = 0.003; Std. beta = -0.35, 95% CI [-0.58, -0.12])</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/12_glmms-acoustic-space-use-birdRichness-plantingYear.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
