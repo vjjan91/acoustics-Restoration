@@ -51,7 +51,7 @@ vignettes/*.pdf
 
 # Ignoring very large image files (space use)
 figs/siteByDayAsu
-figs/*.svg
+*.svg
 
 # ignore elevation data
 data/spatial/elevation
