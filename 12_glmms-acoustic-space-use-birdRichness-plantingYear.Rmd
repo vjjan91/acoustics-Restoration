@@ -3,11 +3,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Generalized linear modeling (acoustic space use and richness, and time since restoration)
+# Generalized linear modeling (acoustic space use and bird species richness, and time since restoration)
 
-In this script, we run generalized linear models to test the association between acoustic space use values and species richness, vocal activity (total calling rate at each site, which is a proxy for the total number of vocal detections/unit of recording time) and time since restoration. 
+In this script, we run generalized linear models to test the association between acoustic space use values and species richness, and time since restoration. 
 
-Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -26,7 +26,7 @@ library(sjPlot)
 source("code/01_internal-functions.R")
 ```
 
-Load necessary data for statistical modeling
+## Load necessary data for statistical modeling
 ```{r}
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>% 
@@ -102,7 +102,7 @@ totSpaceUse <- sitebyDayAsu %>%
 ```
 
 
-Getting data ready in a format for linear modeling
+## Getting data ready in a format for linear modeling
 ```{r}
 # overall space use
 modelDataAll <- vegPcaScores %>% 
@@ -140,6 +140,7 @@ modelDataOpen <- vegPcaScores %>%
 
 ```
 
+## Bird species richness
 
 Let's first explore richness (as measured through first order jacknife scores and test for associations with space use)
 ```{r}
@@ -171,6 +172,7 @@ report::report(glmm_OpenRichnessSpace)
 # For open country birds, The effect of roundjk is statistically non-significant and negative (beta = -1.56, 95% CI [-4.29, 1.18], t(205) = -1.12, p = 0.263; Std. beta = -0.07, 95% CI [-0.19, 0.05])
 ```
 
+## Year since restoration
 
 Let's look at year since restoration and ask if space use has a significant association with time
 ```{r}
