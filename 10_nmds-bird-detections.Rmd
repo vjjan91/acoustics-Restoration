@@ -3,18 +3,18 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Non-metric multidimensional scaling and indicator-species analysis
+# Non-metric multidimensional scaling 
 
 Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.
 
-One tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Coordinates Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below). 
+One tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Component Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below). 
 
 NMDS does not use the absolute abundances of species in communities, but rather their rank orders. The use of ranks omits some of the issues associated with using absolute distance (e.g., sensitivity to transformation), and as a result is much more flexible technique that accepts a variety of types of data. (It’s also where the “non-metric” part of the name comes from).
 
 A wonderful tutorial is presented in this link: https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/
 
 
-Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -36,7 +36,7 @@ source("code/01_internal-functions.R")
 ```
 
 
-Load the necessary data for NMDS calculations
+## Load the necessary data for NMDS calculations
 ```{r}
 # We load the subset data
 datSubset <- read.csv("data/datSubset.csv")
@@ -59,7 +59,7 @@ richness <- datSummary %>%
 ```
 
 
-Preparing dataframe of traits and species to be used for NMDS later on
+## Preparing dataframe of traits and species to be used for NMDS later on
 ```{r}
 # Calculate the overall number of detections for each site. Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
 
@@ -78,7 +78,7 @@ nDetections_trait <- nDetections_site_date %>%
 ```
 
 
-Preparing a dataframe of detections to run ordinations
+## Preparing a dataframe of detections to run ordinations
 ```{r}
 # We will prepare a community matrix data that can be used to run dissimilarity indices
 
@@ -93,6 +93,8 @@ nmdsDat <- nDetections_trait %>%
 nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
 ```
 
+
+## Bray-Curtis dissimilarity index
 
 Run a bray-curtis dissimilarity index and identify least stressed configuration for the ordinations. Bray-curtis is a statistic used to quantify the compositional dissimilarity between two different sites, based on counts at each site. Ecologists use the Bray-Curtis dissimilarity calculation, which has a number of ideal properties:
 1. It is invariant to changes in units.
@@ -119,7 +121,7 @@ write.csv(nmdsScores, "data/nmdsBrayCurtis-bird-detections.csv", row.names = F)
 ```
 
 
-Plotting the NMDS scores using ggplot2
+## Plotting the NMDS scores 
 ```{r}
 # First let's add the treatment type back to the nmds scores
 nmdsScores$Restoration.type <- nmdsDat$Restoration.type
@@ -153,7 +155,7 @@ ggsave(fig_nmds, filename = "figs/fig_nmds_birdDetections.png", width=12, height
 
 ![](figs/fig_nmds_birdDetections.png)
 
-Main text Figure 2
+## Main text Figure 2
 ```{r}
 # reload previous figures to create part A and B for the main text Fig. 2
 fig_jack_ordinations <-
@@ -174,9 +176,9 @@ ggsave(fig_jack_ordinations, filename = "figs/fig2.png", width=20, height=7,devi
 (a) We observed no significant difference in the first-order jackknife scores across the three treatment types when we considered rainforest bird species. The jackknife estimate of open-country bird species varied significantly between BM-AR sites and BM-NR sites (Tukey HSD test, P < 0.05), with NR sites having the highest estimate (mean ± SD: 24 ± 5), followed by AR sites (mean ± SD: 20 ± 6) and BM sites (mean ± SD: 15 ± 4). (b) The ordination analysis of bird detections data (stress = 0.05) revealed distinct clusters of BM sites, but relatively loose clusters for AR and NR sites. However, AR sites occupied an intermediate position between BM and NR sites, indicating a direction of change in bird community composition toward BM sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig02.png)
 
 
-Testing multivariate homogeneity of group dispersions
+## Testing multivariate homogeneity of group dispersions
 
-One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median (both referred to as 'centroid' from now on unless stated otherwise) in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.
+One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.
 
 Betadisper tests whether two or more groups (for example, restored and unrestored sites) are homogeneously dispersed in relation to their species in studied samples. This test can be done to see if one group has more compositional variance than another. Moreover, homogeneity of dispersion among groups is very advisable to have if you want to test if two or more groups have different compositions, which is tested by adonis. 
 ```{r}
@@ -224,7 +226,7 @@ fig_hull <- ggplot() +
 ```
 
 
-Testing compositional dissimilarity between groups
+## Testing compositional dissimilarity between groups
 
 We will do this by using the vegan::adonis() function which allows you to run permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be thought of as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.
 
@@ -236,43 +238,6 @@ adonisNMDS <- adonis(nmdsDatMatrix ~ groups, method="bray",perm=999)
 adonisNMDS
 
 # The results suggest that there are significant compositional differences between groups.
-```
-
-
-Indicator species analysis
-
-This analysis aims to identify what species are “indicators” of groups of samples or treatment type. For instance: 
-
-• A perfect indicator species will only occur in one group.
-• Generalist species will occur across multiple groups and
-therefore not a good indicator.
-• Rare species are not sampled often, also not a good
-indicator.
-• Indicator values range from 0 to 1 but may also be
-expressed as a percentage.
-• Each species is assigned an indicator value for each
-group and the significance of values can be assessed through permutations
-
-For more information, visit this link: https://ichthyology.usm.edu/courses/multivariate/apr_11.pdf
-
-Please note that when the aim is to determine which species can be used as indicators of certain site group, an approach commonly used in ecology is the Indicator Value [Dufrˆene and Legendre, 1997]. These authors defined an Indicator
-Value (IndVal) index to measure the association between a species and a
-site group. The method of Dufrˆene and Legendre [1997] calculates the IndVal index between the species and each site group and then looks for the
-group corresponding to the highest association value. Finally, the statistical
-significance of this relationship is tested using a permutation test.
-
-Diagnostic (or indicator) species are an important tool in vegetation science, because these species can be used to characterize and indicate specific plant community types. A statistic commonly used to determine the association (also known
-as fidelity, not to be confounded with the indicator value component) between species and vegetation types is Pearson’s phi coefficient of association
-[Chytr´y et al., 2002]. This coefficient is a measure of the correlation between two binary vectors. The abundance-based counterpart of the phi coefficient is called the point biserial correlation coefficient (which is defined as "r.g")
-
-See: https://cran.r-project.org/web/packages/indicspecies/vignettes/indicspeciesTutorial.pdf
-
-```{r}
-# Running the multi-pattern analysis across combinations of groups
-indicSpec <- multipatt(nmdsDat[, 3:ncol(nmdsDat)], nmdsDat$Restoration.type, func = "r.g", control = how(nperm=999))
-
-# looking at associations with stratum/pairs of strata
-summary(indicSpec)
 ```
 
 
