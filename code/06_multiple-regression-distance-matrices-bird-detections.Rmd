@@ -22,7 +22,7 @@ source("code/01_internal-functions.R")
 ```
 
 
-Load necessary data and create dissimilarity matrices to run MRM analyses
+## Load necessary data and create dissimilarity matrices to run MRM analyses
 ```{r}
 # estimating geographic distance (euclidean) between sites
 sites <- read.csv("data/list-of-sites.csv") %>%
@@ -48,7 +48,7 @@ birdMatrix <- as.matrix(birdMatrix)
 ```
 
 
-Extracting floristic data and running NMDS ordinations on the same
+## Extracting floristic data and running NMDS ordinations on the same
 ```{r}
 # getting floristic data as a matrix, using NMDS scores
 # to do the above, we need to reload the vegetation data and process it
@@ -96,7 +96,7 @@ floraMatrix <- dist(nmdsScores[,1:2], method = "euclidean", diag = TRUE, upper =
 floraMatrix <- as.matrix(floraMatrix)
 ```
 
-Running multiple regression on distance matrices
+## Running multiple regression on distance matrices
 
 ```{r}
 # First we get rid of redundant duplicate values, then make the diagonal zeros NA, unfold each matrix into a vector, and then omit rows with 0 in them
@@ -127,7 +127,7 @@ MRM(dist(bird) ~ dist(flora) + dist(structure) + dist(distance), data = mrmData,
 # The above result suggests that bird compositional dissimilarity is not signficantly related to dissimilarity in habitat structure, geographic distance and florstics (Please note that the overall R2 values are very low)
 ```
 
-Hierarchical partitioning
+## Hierarchical partitioning
 
 ```{r}
 hier.part(mrmData$bird, mrmData[2:4], family = "gaussian", gof = "Rsqu", barplot = TRUE)
