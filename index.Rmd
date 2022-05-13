@@ -1,9 +1,9 @@
 --- 
 knit: "bookdown::render_book"
-title: "Source code for _Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats_"
+title: "Source code and supporting information for _Using passive acoustic monitoring to examine the impacts of active restoration on vocalizing biodiversity in the Western Ghats_"
 author:
     - Vijay Ramesh
-    - Priyanka HariHaran
+    - Priyanka Hariharan
     - VA Akshay
     - Pooja Choksi
     - Sarika Khanwilkar
@@ -26,7 +26,7 @@ github-repo: vjjan91/acoustics-westernGhats
 
 # Introduction
 
-This is the readable version that showcases analyses carried out to test the impacts of forest restoration on bird communities and other vocalizing biodiversity in the Anamalai hills of the Western Ghats biodiversity hotspot. 
+This is the readable version that showcases analyses carried out to test the impacts of forest restoration on vocalizing biodiversity in the Anamalai hills of the Western Ghats biodiversity hotspot. 
 
 ## Attribution
 
@@ -43,9 +43,12 @@ The data used in this work will be archived and made public upon publication.
 
 The data processing for this project is described in the following sections. Navigate through them using the links in the sidebar.
 
-## Main Text Figure 1
-
-This figure was prepared using ArcGIS Pro. 
+### Main Text Figure 1
 
 ![**Sites corresponding to acoustic recorder deployment locations across the Valparai plateau of the Anamalai hills.**
-The above figure showcases a gradient of forest regeneration across the Valparai plateau. Sites shown in orange represent undisturbed benchmark rainforest sites, sites shown in blue represent actively restored forest sites and sites shown in white represent naturally regenerating forest sites. Ecological restoration is currently being carried out in cooperation with three plantation companies in the Valparai plateau. For more information with respect to the weeding and active restoration protocol, please see methods in Hariharan and Raman (2021) and Osuri et al. (2019). Over the last two decades, the ecological restoration efforts have resulted in restoration of over 100 ha of degraded forests. This map was prepared using 30m resolution SRTM data (Farr et al. 2007) and ESRI satellite imagery is used as a basemap.](figs/fig01.png)
+The above figure showcases a gradient of forest regeneration across the Valparai plateau. Sites shown in orange represent undisturbed benchmark rainforest sites, sites shown in blue represent actively restored forest sites and sites shown in white represent naturally regenerating forest sites. Ecological restoration is currently being carried out in cooperation with three plantation companies in the Valparai plateau. For more information with respect to the weeding and active restoration protocol, please see methods in Hariharan and Raman (2021) and Osuri et al. (2019). Over the last two decades, the ecological restoration efforts have resulted in restoration of over 100 ha of degraded forests. This map was prepared using 30m resolution SRTM data (Farr et al. 2007) and ESRI satellite imagery is used as a basemap.](figs/fig01.png)  
+
+### Main Text Figure 2
+
+![**Ecological restoration across the Valparai plateau of the Anamalai hills.** 
+(a) Images of an actively restored forest fragment (Selaliparai) were taken in 2007 and in 2021. Habitat and vegetation structure has responded positively to active restoration (Osuri et al. 2019) (Photo credit: T R Shankar Raman). (b) AudioMoth audio recorders were deployed across naturally regenerating, actively restored, and benchmark (not shown in picture) sites across the Valparai plateau (Photo credit: Vijay Ramesh).](figs/fig02.png)  
