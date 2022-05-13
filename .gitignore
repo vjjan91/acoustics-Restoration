@@ -9,10 +9,6 @@
 # User-specific files
 .Ruserdata
 
-# Ignore excel files
-*.csv
-*.xlsx
-
 # Ignore .gpx files
 *.gpx
 
