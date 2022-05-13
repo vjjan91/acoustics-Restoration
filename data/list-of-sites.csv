@@ -1,0 +1,52 @@
+﻿Forest name,Site code,Restoration type,Longitude,Latitude,Year Active,"No.
+saplings planted","No.
+species planted","Planted
+area (ha)","Distance to
+continuous forest (m)",Remnant area (ha),Notes
+HP Bend 36,HP36P1B,Benchmark,76.997687,10.36448,NA,NA,NA,NA,0,>1000,
+HP Bend 36,HP36P3B,Benchmark,76.997352,10.366579,NA,NA,NA,NA,0,>1000,
+HP Bend 36,HP36P4B,Benchmark,76.995389,10.369326,NA,NA,NA,NA,,,
+HP Bend 37,HP37P1B,Benchmark,76.993891,10.372652,NA,NA,NA,NA,0,>1000,
+HP Bend 37,HP37P2B,Benchmark,76.993471,10.374513,NA,NA,NA,NA,0,>1000,
+HP Bend 37,HP37P4B,Benchmark,76.990928,10.37459,NA,NA,NA,NA,0,>1000,
+HP Bend 40,HP4008R,Active,76.994411,10.367818,2008,1195,79,1,219,>1000,
+HP Bend 40,HP4008U,Passive,76.990652,10.368136,NA,,,,,,
+Injiparai,INBS04R,Active,76.927314,10.324047,2004,1923,82,1,1604,18.6,Bus stop plot
+Injiparai,INBS04U,Passive,76.926155,10.324962,NA,,,,,,
+Injiparai,INME03R,Active,76.930319,10.320642,2003,599,64,0.25,1791,18.6,Maesopsis-Eucalyptus plot
+Injiparai,INME03U,Passive,76.923506,10.32326,NA,,,,,,
+Injiparai,INOA03R,Active,76.926351,10.322687,2003,609,45,0.25,1646,18.6,Open area plot
+Iyerpadi Top,IPTO04R,Active,76.993409,10.352544,2004,1174,56,0.4,758,90.2,Just above the restoration site board
+Iyerpadi Top,IPTO04U,Passive,76.989792,10.351394,NA,,,,,,
+Iyerpadi Top,IPTO06R,Active,76.992185,10.351258,2006,550,50,0.5,892,90.2,To the left of 04 plot
+Iyerpadi Top,IPTO06U,Passive,76.990814,10.349921,NA,,,,,,
+Old Cavarakal,OLCAP2B,Benchmark,76.973267,10.370863,NA,NA,NA,NA,146,>1000,
+Old Cavarakal,OLCAP3B,Benchmark,76.97502,10.370292,NA,NA,NA,NA,146,>1000,
+Old Cavarakal,OLCAP5B,Benchmark,76.976516,10.371327,NA,NA,NA,NA,,,
+Old Valparai,OLV110R,Active,76.933438,10.346574,2010,213,41,1,1093,36.4,Inner plot to the right of the path just beyond fragment boundary
+Old Valparai,OLV110U,Passive,76.93673,10.350635,NA,,,,,,
+Old Valparai,OLV208R,Active,76.934836,10.348646,2008,1666,80,3,1218,36.4,U-bend plot
+Old Valparai,OLV208U,Passive,76.938111,10.351733,NA,,,,,,
+Pannimade,PANMP1B,Benchmark,76.893264,10.297782,NA,NA,NA,NA,1831,70,
+Pannimade,PANMP2B,Benchmark,76.891309,10.298449,NA,NA,NA,NA,1634,70,
+Pannimade,PANMP3B,Benchmark,76.891975,10.296309,NA,NA,NA,NA,,,
+Selaliparai,SEL107R,Active,76.935885,10.337667,2007,804,76,4,1450,1.8,
+Selaliparai,SEL107U,Passive,76.934281,10.337905,NA,,,,,,
+Selaliparai,SEL207R,Active,76.933714,10.342564,2007,486,62,1,1097,0.8,
+Selaliparai,SEL207U,Passive,76.933587,10.344028,NA,,,,,,
+Stanmore,STIN02R,Active,76.932344,10.327294,2002,479,55,0.25,1700,4.3,Stanmore inner
+Stanmore,STIN02U,Passive,76.932849,10.329044,NA,,,,,,
+Thenmalai,THEN10U,Passive,76.939725,10.354579,NA,,,,,,
+"Upper
+Manamboli",UPMAP1B,Benchmark,76.896217,10.347723,NA,NA,NA,NA,0,>1000,
+Upper Manamboli,UPMAP3B,Benchmark,76.893645,10.347225,NA,NA,NA,NA,0,>1000,
+Upper Manamboli,UPMAP4B,Benchmark,76.892316,10.348295,NA,NA,NA,NA,0,>1000,
+"Upper
+Manamboli",UPMAP5B,Benchmark,76.890573,10.348693,NA,NA,NA,NA,0,>1000,
+"Upper
+Manamboli",UPMAP6B,Benchmark,76.890551,10.346768,NA,NA,NA,NA,,,
+Varatuparai,VAR210R,Active,76.930077,10.355491,2010,150,40,0.5,292,23.4,
+Varatuparai,VAR310R,Active,76.929053,10.352754,2010,160,41,0.5,304,23.4,"Up tea-forest boundary, left turn as the boundary path bends right"
+Varatuparai,VAR310U,Passive,76.919272,10.348762,NA,,,,,,
+Varatuparai,VAR410R,Active,76.92241,10.345181,2010,702,65,3,236,10.1,Sliver between Tata coffee and reservoir
+Varatuparai,VAR410U,Passive,76.920711,10.346621,NA,,,,,,
