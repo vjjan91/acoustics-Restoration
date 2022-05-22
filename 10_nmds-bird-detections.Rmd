@@ -39,7 +39,7 @@ source("code/01_internal-functions.R")
 ## Load the necessary data for NMDS calculations
 ```{r}
 # We load the subset data
-datSubset <- read.csv("data/datSubset.csv")
+datSubset <- read.csv("results/datSubset.csv")
 
 # Load species-trait data to essentially check for associations by habitat type
 trait_dat <- read.csv("data/species-trait-dat.csv")

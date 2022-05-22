@@ -103,7 +103,7 @@ names(datSubset)
 datSubset <- rename(datSubset, Restoration.type = Restoration.Type..Benchmark.Active.Passive.)
 
 # Save this data as a .csv for future analysis (later scripts)
-write.csv(datSubset,"data/datSubset.csv", row.names = F)
+write.csv(datSubset,"results/datSubset.csv", row.names = F)
 ```
 
 ## Total number of detections

@@ -34,18 +34,18 @@ sites <- read.csv("data/list-of-sites.csv") %>%
   filter(Site.code != "OLCAP5B")
 
 # loading jacknife scores 
-jackAll <- read.csv("data/jackAll.csv")
-jack_rainForest <- read.csv("data/jackRainforest.csv")
-jack_openCountry <- read.csv("data/jackOpencountry.csv")
+jackAll <- read.csv("results/jackAll.csv")
+jack_rainForest <- read.csv("results/jackRainforest.csv")
+jack_openCountry <- read.csv("results/jackOpencountry.csv")
 
 # Load vegetation data from previous scripts 
-vegData <-  read.csv("data/summaryVeg.csv") %>%
+vegData <-  read.csv("results/summaryVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
-vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
+vegPcaScores <- read.csv("results/pcaVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
 
 # Attach the annotation data
-datSubset <- read.csv("data/datSubset.csv")
+datSubset <- read.csv("results/datSubset.csv")
 
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip
 nDetections <- datSubset %>%
@@ -59,7 +59,7 @@ totDetections <-  nDetections %>%
    summarise(totDetections = sum(c_across(IP:HSWP)))
 
 # load the entire asu data across all sites and days computed
-sitebyDayAsu <- read.csv("data/site-by-day-asu.csv") 
+sitebyDayAsu <- read.csv("results/site-by-day-asu.csv") 
 
 # separate by Site and Date
 sitebyDayAsu <- separate(sitebyDayAsu, col = Site_Day, into = c("Site", "Date"), sep = "_") 
@@ -187,5 +187,4 @@ plot_model(glmmAllYear, type="pred")
 report::report(glmmAllYear)
 
 # The effect of yearSinceRestoration is statistically significant and negative (beta = -10.07, 95% CI [-16.66, -3.47], t(61) = -3.05, p = 0.003; Std. beta = -0.35, 95% CI [-0.58, -0.12])
-
 ```

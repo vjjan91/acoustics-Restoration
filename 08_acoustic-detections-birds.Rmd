@@ -26,7 +26,7 @@ library(extrafont)
 We will use the data that was subset previously for further analysis.
 ```{r}
 # Attach the annotated data 
-datSubset <- read.csv("data/datSubset.csv")
+datSubset <- read.csv("results/datSubset.csv")
 
 # Load the species-trait-data
 trait_dat <- read.csv("data/species-trait-dat.csv")
