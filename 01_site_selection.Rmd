@@ -94,7 +94,9 @@ ggsave(fig_elevAll, filename = "figs/fig_elev.png", width=12, height=7,
 Calculate distance to nearest road for each site and examine differences across treatment types. 
 ```{r distance_to_road}
 # add roads data
-roads <- st_read("data/spatial/roads_studysite_2019/roads_studysite_2019.shp") %>%
+# Note: This shapefile was downloaded from Open Street Map at http://download.geofabrik.de/asia/india/southern-zone.html 
+# This file is not uploaded to GitHub as it is extremely large and can be obtained from the link above
+roads <- st_read("data/spatial/roadsShapefiles/osm_roads_southIndia.shp") %>%
   st_transform(32643)
 
 # get index of the nearest road to a particular site
@@ -105,7 +107,7 @@ distToRoad <- as.numeric(st_distance(sites, roads[index,], by_element=TRUE))
 sites <- cbind(sites, distToRoad)
 
 # Test if there are significant differences in distance to roads across treatment types
-anovaDistAll <- aov(dist~Restoration.type, data = sites)
+anovaDistAll <- aov(distToRoad~Restoration.type, data = sites)
 
 # Tukey test to study each pair of treatment - no significant difference between AR-NR sites but a significant difference in distance to road between AR-BM and NR-BM sites
 tukeyDistAll <- TukeyHSD(anovaDistAll)
@@ -115,7 +117,7 @@ tukeyDistAll <- TukeyHSD(anovaDistAll)
 # reordering factors for plotting
 sites$Restoration.type <- factor(sites$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
-fig_distRoad <- ggplot(sites, aes(x=Restoration.type, y=dist, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
+fig_distRoad <- ggplot(sites, aes(x=Restoration.type, y=distToRoad, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma") +
     theme_bw() +
     labs(x="\nTreatment Type", 
