@@ -13,8 +13,7 @@ NMDS does not use the absolute abundances of species in communities, but rather 
 
 A wonderful tutorial is presented in this link: https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/
 
-
-## Install required libraries
+### Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -27,7 +26,6 @@ library(ecodist)
 library(RColorBrewer)
 library(ggforce)
 library(ggalt)
-library(indicspecies)
 library(patchwork)
 library(sjPlot)
 
@@ -35,8 +33,7 @@ library(sjPlot)
 source("code/01_internal-functions.R")
 ```
 
-
-## Load the necessary data for NMDS calculations
+### Load the necessary data for NMDS calculations
 ```{r}
 # We load the subset data
 datSubset <- read.csv("results/datSubset.csv")
