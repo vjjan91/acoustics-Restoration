@@ -47,3 +47,6 @@ figs/siteByDayAsu
 
 # ignore elevation data
 data/spatial/elevation
+
+# ignore shapefiles
+data/spatial/roadsShapefiles
