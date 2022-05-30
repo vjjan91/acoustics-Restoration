@@ -1,7 +1,6 @@
 ---
-editor_options:
+editor_options: 
   chunk_output_type: console
-output: word_document
 ---
 
 # Generalized linear mixed modeling (species richness, vegetation data and planting year)
@@ -35,23 +34,6 @@ datSubset <- read.csv("results/datSubset.csv")
 # Load species-trait data to essentially check for associations by habitat type
 trait_dat <- read.csv("data/species-trait-dat.csv")
 
-# Total number of detections
-totalDetections <- datSubset %>%
-  group_by(Site, Restoration.type) %>%
-  transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) %>%
-  summarise(totalDetections = sum(c_across("IP":"HSWP")))
-
-# richness
-richness <- datSubset %>%
-  group_by(Site, Restoration.type) %>%
-  transform() %>% replace(is.na(.), 0) %>%
-  summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) %>% 
-  mutate_at(vars(c("IP":"HSWP")),~ replace(., . > 0, 1)) %>%
-  rowwise() %>% 
-  mutate(richness = sum(c_across(IP:HSWP))) %>%
-  dplyr::select(Site, Restoration.type, richness)
-
 # richness by Visit
 # this data basically gives you richness per visit and adds a visit number for each consecutive visit to that site
 richnessPerVisit <- datSubset %>%
@@ -67,11 +49,6 @@ richnessPerVisit <- datSubset %>%
   mutate(siteCode = factor(siteCode)) %>%
   dplyr::select(Site, Restoration.type, Date, richness, visit, siteCode)
 
-# We further estimate the number of detections per point count
-datSummary <- totalDetections %>%
-  left_join(richness) %>%
-  mutate(pointDetections = totalDetections/3)
-
 # combine the Detections dataframe with the trait dataset
 nDetectionsTrait <- datSubset %>%
   group_by(Site, Restoration.type, Date) %>%
@@ -83,13 +60,13 @@ nDetectionsTrait <- datSubset %>%
   rename(., nDetections = count)
 
 # Load data from previous scripts for use in a GLM
-vegData <-  read.csv("data/summaryVeg.csv") %>%
+vegData <-  read.csv("results/summaryVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
-vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
+vegPcaScores <- read.csv("results/pcaVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
-jackAll <- read.csv("data/jackAll.csv")
-jackRainforest <- read.csv("data/jackRainforest.csv")
-jackOpencountry <- read.csv("data/jackOpencountry.csv")
+jackAll <- read.csv("results/jackAll.csv")
+jackRainforest <- read.csv("results/jackRainforest.csv")
+jackOpencountry <- read.csv("results/jackOpencountry.csv")
 ```
 
 
@@ -103,8 +80,7 @@ modelDataAll <- vegPcaScores %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
   add_column(jacknife = jackAll$jack1,
-             year = vegData$plantingYear,
-             richness = richness$richness) %>% 
+             year = vegData$plantingYear) %>% 
   mutate ("roundjk" = round(jacknife))
 
 # rainforest birds
@@ -206,7 +182,7 @@ glmmUnderStory <- nDetectionsTrait %>%
 
 ## Running the generalized linear mixed models
 
-We now run generalized linear models (GLM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
+We now run generalized linear mixed models (GLMM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
 ```{r}
 # all birds
 glmm_alljk <- glmer(roundjk ~ Restoration.type +(1|siteCode), data = modelDataAll, family = poisson(link = log))
