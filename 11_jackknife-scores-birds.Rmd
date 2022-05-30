@@ -66,7 +66,7 @@ jacknifeAll <- nDetections_trait %>%
 # Prepare a dataframe of rainforest species for jacknifing
 
 jacknife_rainForest <- nDetections_trait %>%
-  filter(Habitat=="RF") %>%
+  filter(habitat=="RF") %>%
   dplyr::select(Site, Date, Species_Code, nDetections, Restoration.type) %>%
   group_by(Site, Date, Restoration.type, Species_Code) %>%
   summarise(totDetections = sum(nDetections)) %>%
@@ -75,7 +75,7 @@ jacknife_rainForest <- nDetections_trait %>%
 # Prepare a dataframe of open-country species for jacknifing
 
 jacknife_openCountry <- nDetections_trait %>%
-  filter(Habitat=="OC") %>%
+  filter(habitat=="OC") %>%
   dplyr::select(Site, Date, Species_Code, nDetections, Restoration.type) %>%
   group_by(Site, Date, Restoration.type, Species_Code) %>%
   summarise(totDetections = sum(nDetections)) %>%
