@@ -35,7 +35,7 @@ sites <- read.csv("data/list-of-sites.csv") %>%
   filter(Site.code != "OLCAP5B")
 
 # load the entire asu data across all sites and days computed
-sitebyDayAsu <- read.csv("data/site-by-day-asu.csv") 
+sitebyDayAsu <- read.csv("results/site-by-day-asu.csv") 
 
 # separate by Site and Date
 sitebyDayAsu <- separate(sitebyDayAsu, col = Site_Day, into = c("Site", "Date"), sep = "_") 
@@ -63,18 +63,19 @@ nDays_siteType <- sitebyDayAsu %>%
   group_by(Restoration.type) %>%
   count()
   
-# Separate analysis: space use during certain times of day alone
-# let's look only at dawn chorus to explore what the data looks like
-dawn <- c("05:00-06:00","06:00-07:00","07:00-08:00","08:00-09:00",
-          "09:00-10:00")
-dawnChorusAsu <- sitebyDayAsu %>%
-  filter(time_of_day %in% dawn)
+# Separate analysis: space use during diurnal and nocturnal periods
+diurnal <- c("06:00-07:00","07:00-08:00","08:00-09:00",
+          "09:00-10:00","10:00-11:00","11:00-12:00",
+          "12:00-13:00","13:00-14:00","14:00-15:00",
+          "15:00-16:00","16:00-17:00","17:00-18:00")
+diurnalAsu <- sitebyDayAsu %>%
+  filter(time_of_day %in% diurnal)
 
-# Separate analysis: space use during certain times of day alone
-# let's look only at dusk chorus to explore what the data looks like
-dusk <- c("16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00")
-duskChorusAsu <- sitebyDayAsu %>%
-  filter(time_of_day %in% dusk)
+nocturnal <- c("18:00-19:00","19:00-20:00","20:00-21:00","21:00-22:00",
+               "22:00-23:00","23:00-00:00","00:00-01:00","01:00-02:00",
+               "02:00-03:00","03:00-04:00","04:00-05:00","05:00-06:00")
+nocturnalAsu <- sitebyDayAsu %>%
+  filter(time_of_day %in% nocturnal)
 
 # Prepare data for statistical modeling
 # Calculating total space use across all frequency bins and times of day: 128*24 for each site-day combination
@@ -87,9 +88,9 @@ totSpaceUse <- sitebyDayAsu %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode))
 
-# Calculating total space use for dawn chorus alone for each site-day combination
+# Calculating total space use for diurnal times for each site-day combination
 
-totSpaceUseDawn <- dawnChorusAsu %>%
+totSpaceUseDiurnal <- diurnalAsu %>%
   group_by(Site, Date, Restoration.type) %>%
   summarise(totSpaceuse = sum(f.cont.scaled)) %>% 
   group_by(Site) %>% 
@@ -97,9 +98,9 @@ totSpaceUseDawn <- dawnChorusAsu %>%
   mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
   mutate(siteCode = factor(siteCode))
 
-# Calculating total space use for dusk chorus alone for each site-date combination
+# Calculating total space use for nocturnal times for each site-date combination
 
-totSpaceUseDusk <- duskChorusAsu %>%
+totSpaceUseNocturnal <- nocturnalAsu %>%
   group_by(Site, Date, Restoration.type) %>%
   summarise(totSpaceuse = sum(f.cont.scaled)) %>% 
   group_by(Site) %>% 
@@ -108,9 +109,9 @@ totSpaceUseDusk <- duskChorusAsu %>%
   mutate(siteCode = factor(siteCode))
 
 # Load data from previous scripts for use in a GLM
-vegData <-  read.csv("data/summaryVeg.csv") %>%
+vegData <-  read.csv("results/summaryVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
-vegPcaScores <- read.csv("data/pcaVeg.csv") %>%
+vegPcaScores <- read.csv("results/pcaVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
 ```
 
@@ -124,20 +125,20 @@ modelDataAll <- vegPcaScores %>%
   full_join(totSpaceUse, by=c("Site","Restoration.type")) %>%
   mutate("roundSpaceuse" = round(totSpaceuse))
 
-# dawn chorus space use
-modelDataDawn <- vegPcaScores %>% 
+# diurnal space use
+modelDataDiurnal <- vegPcaScores %>% 
   rename(Site = Site_ID) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  full_join(totSpaceUseDawn, by=c("Site","Restoration.type")) %>%
+  full_join(totSpaceUseDiurnal, by=c("Site","Restoration.type")) %>%
   mutate("roundSpaceuse" = round(totSpaceuse))
 
-# dusk chorus space use
-modelDataDusk <- vegPcaScores %>% 
+# nocturnal space use
+modelDataNocturnal <- vegPcaScores %>% 
   rename(Site = Site_ID) %>%
   rename(Restoration.type = Site_type) %>%
   mutate(across(Restoration.type, factor))  %>%
-  full_join(totSpaceUseDusk, by=c("Site","Restoration.type")) %>%
+  full_join(totSpaceUseNocturnal, by=c("Site","Restoration.type")) %>%
   mutate("roundSpaceuse" = round(totSpaceuse))
 ```
 
@@ -154,23 +155,23 @@ cld(tukey_glmmAllRestoration)
 
 # The above result suggests a significant difference in acoustic space use between BM-AR and BM-NR sites, but no difference between AR and NR sites. 
 
-# dawn chorus
-glmm_dawnRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="identity"))
+# diurnal
+glmm_diurnalRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDiurnal, family = gaussian(link="identity"))
 
-summary(glmm_dawnRestoration)
-tukey_glmmdawnRestoration <- summary(glht(glmm_dawnRestoration, linfct=mcp(Restoration.type ="Tukey")))
-cld(tukey_glmmdawnRestoration)
+summary(glmm_diurnalRestoration)
+tukey_glmmDiurnalRestoration <- summary(glht(glmm_diurnalRestoration, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmDiurnalRestoration)
 
-# When we look at only the dawn chorus data, there is no significant difference in acoustic space use across all treatment types highlighting similar levels of vocalizing biodiversity. 
+# When we look at only the diurnal data, there is a significant difference in acoustic space use between BM-AR and BM-NR sites, but no difference between AR and NR sites. 
 
-# dusk chorus
-glmm_duskRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataDusk, family=gaussian(link="identity"))
+# nocturnal data
+glmm_nocturnalRestoration <- glmer(roundSpaceuse ~ Restoration.type + (1|siteCode) + (1|visit), data = modelDataNocturnal, family=gaussian(link="identity"))
 
-summary(glmm_duskRestoration)
-tukey_glmmduskRestoration <- summary(glht(glmm_duskRestoration, linfct=mcp(Restoration.type ="Tukey")))
-cld(tukey_glmmduskRestoration)
+summary(glmm_nocturnalRestoration)
+tukey_glmmNocturnalRestoration <- summary(glht(glmm_nocturnalRestoration, linfct=mcp(Restoration.type ="Tukey")))
+cld(tukey_glmmNocturnalRestoration)
 
-# For dusk chorus data, the above result suggests a significant difference between BM-AR and BM-NR sites, but no difference between AR and NR sites. 
+# When we look at only the diurnal data, there is a significant difference in acoustic space use between BM-AR and BM-NR sites, but no difference between AR and NR sites.  
 
 # Plotting the above results
 
@@ -192,9 +193,9 @@ fig_glmm_allRest <- ggplot(modelDataAll, aes(Restoration.type, totSpaceuse, fill
 ggsave(fig_glmm_allRest, filename = "figs/fig_glmm_overallAcousticSpace.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 
 # reordering factors for plotting
-modelDataDawn$Restoration.type <- factor(modelDataDawn$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+modelDataDiurnal$Restoration.type <- factor(modelDataDiurnal$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
-fig_glmm_dawnRest <- ggplot(modelDataDawn, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+fig_glmm_diurnalRest <- ggplot(modelDataDiurnal, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
  geom_boxplot(alpha = 0.7) + 
   scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -206,12 +207,12 @@ fig_glmm_dawnRest <- ggplot(modelDataDawn, aes(Restoration.type, totSpaceuse, gr
         axis.text = element_text(family="Century Gothic",size = 14),
         legend.position = "none")
 
-ggsave(fig_glmm_dawnRest, filename = "figs/fig_glmm_dawnAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
+ggsave(fig_glmm_diurnalRest, filename = "figs/fig_glmm_diurnalAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 
 # reordering factors for plotting
-modelDataDusk$Restoration.type <- factor(modelDataDusk$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+modelDataNocturnal$Restoration.type <- factor(modelDataNocturnal$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
-fig_glmm_duskRest <- ggplot(modelDataDusk, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
+fig_glmm_nocturnalRest <- ggplot(modelDataNocturnal, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
   geom_boxplot(alpha = 0.7) + 
   scale_fill_scico_d(palette = "roma") +
     theme_bw() +
@@ -223,7 +224,7 @@ fig_glmm_duskRest <- ggplot(modelDataDusk, aes(Restoration.type, totSpaceuse, gr
         axis.text = element_text(family="Century Gothic",size = 14),
         legend.position = "none")
   
-ggsave(fig_glmm_duskRest, filename = "figs/fig_glmm_duskAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
+ggsave(fig_glmm_nocturnalRest, filename = "figs/fig_glmm_nocturnalAcousticSpaceUse.png", width=12, height=7, device = png(), units="in", dpi = 300);dev.off()
 ```
 
 ![**Overall acoustic space use across treatment types.**
@@ -240,23 +241,23 @@ report::report(glmm_allVeg)
 
 # There is a significant negative effect of PC1 on acoustic space use
 
-# dawn chorus
-glmm_dawnVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDawn, family = gaussian(link="identity"))
+# diurnal
+glmm_diurnalVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDiurnal, family = gaussian(link="identity"))
 
-summary(glmm_dawnVeg)
-plot_model(glmm_dawnVeg, type="pred", terms=c("PC2","PC1"))
-report::report(glmm_dawnVeg)
+summary(glmm_diurnalVeg)
+plot_model(glmm_diurnalVeg, type="pred", terms=c("PC2","PC1"))
+report::report(glmm_diurnalVeg)
 
-# There is a significant negative effect of PC1 on dawn acoustic space use
+# There is a significant negative effect of PC1 on diurnal acoustic space use
 
-# dawn chorus
-glmm_duskVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDusk, family = gaussian(link="identity"))
+# nocturnal
+glmm_nocturnalVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataNocturnal, family = gaussian(link="identity"))
 
-summary(glmm_duskVeg)
-plot_model(glmm_duskVeg, type="pred", terms=c("PC1","PC2"))
-report::report(glmm_duskVeg)
+summary(glmm_nocturnalVeg)
+plot_model(glmm_nocturnalVeg, type="pred", terms=c("PC1","PC2"))
+report::report(glmm_nocturnalVeg)
 
-# There is a significant negative effect of PC1 on dusk acoustic space use
+# There is a significant negative effect of both PC1 and PC2 on the nocturnal acoustic space use
 ```
 
 ## Creating figure for publication
