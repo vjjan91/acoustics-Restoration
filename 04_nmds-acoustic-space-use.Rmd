@@ -193,7 +193,7 @@ fig_nmds_nocturnal <- ggplot(data=nmdsScoresNocturnal) +
 
 ggsave(fig_nmds, filename = "figs/fig_nmds_overallSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ggsave(fig_nmds_diurnal, filename = "figs/fig_nmds_diurnalSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
-ggsave(fig_nmds_nocturnal, filename = "figs/fig_nmds_NocturnalSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_nmds_nocturnal, filename = "figs/fig_nmds_nocturnalSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
 ## Testing multivariate homogeneity of group dispersions
