@@ -152,7 +152,7 @@ ggsave(fig_nmds, filename = "figs/fig_nmds_birdDetections.png", width=12, height
 
 ![](figs/fig_nmds_birdDetections.png)
 
-## Main text Figure 4
+## Main text Figure 5
 ```{r}
 # reload previous figures to create part A and B for the main text Fig. 4
 
@@ -170,7 +170,7 @@ fig_prop_ordinations <-
   )
 
 # Expand the width to avoid compression
-ggsave(fig_prop_ordinations, filename = "figs/fig04.png", width=15, height=12,device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_prop_ordinations, filename = "figs/fig05.png", width=15, height=12,device = png(), units="in", dpi = 300); dev.off()
 ```
 
 ![**Proportion of acoustic detections of rainforest and open-country bird species and NMDS ordination results of bird species detections**
