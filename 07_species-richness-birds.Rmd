@@ -55,6 +55,8 @@ trait_dat <- read.csv("data/species-trait-dat.csv")
 ## Subset data
 
 How many visits (counted as number of unique days) to a site has been annotated? Please note that some sites have more than 6 visits to a site, and hence we ensure that we choose only 6 non-consecutive visits to a given site.  
+
+NOTE: You need to run this only once and if you have already run it, move to the next chunk of code and load datSubset. 
 ```{r}
 # First we remove OLCAP5B - a site for which only 3 visits were made in summer and not sampled as a result of logistic reasons in winter
 data <- data %>%
@@ -110,6 +112,9 @@ write.csv(datSubset,"results/datSubset.csv", row.names = F)
 
 Now group the data by site and restoration type and sum the number of detections across sites. We will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness below.
 ```{r}
+# If you have already processed subsetting of data, read it in directly
+datSubset <- read.csv("results/datSubset.csv")
+
 # Calculate the overall number of detections for each site across 6 days of data (translates to ~ 96 min of data per site)
 
 nDetections_Site <- datSubset %>%
@@ -140,9 +145,11 @@ tukeyAll <- TukeyHSD(anovaAll)
 
 # reordering factors for plotting
 richness$Restoration.type <- factor(richness$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_richness <- ggplot(richness, aes(x=Restoration.type, y=richness, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+  scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) + 
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Species Richness\n") +
@@ -174,16 +181,16 @@ richness_trait <- nDetections_Site %>%
 # Calculate overall richness for each site as a function of rainforest species and open-country species
 
 richness_trait <-  richness_trait %>%
-  dplyr::select(Site, Restoration.type, Species_Code, Habitat, forRichness)%>%
-  group_by(Site, Restoration.type, Habitat) %>%
+  dplyr::select(Site, Restoration.type, Species_Code, habitat, forRichness)%>%
+  group_by(Site, Restoration.type, habitat) %>%
   summarise(richness = sum(forRichness)) %>%
   drop_na()
 
 # Let's subset data for richness as a function of rainforest specialists and open-country generalists and test for significant differences (if any)
 richness_rainforest <- richness_trait %>%
-  filter(Habitat=="RF")
+  filter(habitat=="RF")
 richness_opencountry <- richness_trait %>%
-  filter(Habitat=="OC")
+  filter(habitat=="OC")
 
 # Test if there are significant differences in richness across treatment types as a function of species trait
 anova_rainforest <- aov(richness~Restoration.type, data = richness_rainforest)
@@ -198,10 +205,10 @@ tukey_opencountry <- TukeyHSD(anova_opencountry)
 richness_trait$Restoration.type <- factor(richness_trait$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
 # Plot the above result
-fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.type, y=richness, fill=Habitat)) +
+fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.type, y=richness, fill=habitat)) +
     geom_boxplot(alpha=0.7) +
   scale_fill_scico_d(palette = "roma",
-                     labels=c("Open-country","Rainforest")) +
+                     labels=c("Open country","Rainforest")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Species Richness\n") +
