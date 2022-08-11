@@ -22,6 +22,7 @@ library(lme4)
 library(ggpubr)
 library(sjPlot)
 library(RColorBrewer)
+library(extrafont)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
@@ -177,10 +178,12 @@ cld(tukey_glmmNocturnalRestoration)
 
 # reordering factors for plotting
 modelDataAll$Restoration.type <- factor(modelDataAll$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_glmm_allRest <- ggplot(modelDataAll, aes(Restoration.type, totSpaceuse, fill = Restoration.type)) + 
-  geom_boxplot(alpha = 0.7) + 
-  scale_fill_scico_d(palette = "roma") +
+  geom_boxplot(alpha=0.7) + 
+  scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR"))+ 
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Acoustic Space Use\n") +
@@ -197,7 +200,7 @@ modelDataDiurnal$Restoration.type <- factor(modelDataDiurnal$Restoration.type, l
 
 fig_glmm_diurnalRest <- ggplot(modelDataDiurnal, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
  geom_boxplot(alpha = 0.7) + 
-  scale_fill_scico_d(palette = "roma") +
+  scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Acoustic Space Use\n") +
@@ -214,7 +217,7 @@ modelDataNocturnal$Restoration.type <- factor(modelDataNocturnal$Restoration.typ
 
 fig_glmm_nocturnalRest <- ggplot(modelDataNocturnal, aes(Restoration.type, totSpaceuse, group = Restoration.type, fill = Restoration.type)) + 
   geom_boxplot(alpha = 0.7) + 
-  scale_fill_scico_d(palette = "roma") +
+  scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Acoustic Space Use\n") +
