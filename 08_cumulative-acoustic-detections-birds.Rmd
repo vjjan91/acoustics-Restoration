@@ -157,14 +157,16 @@ sum_Detections4min <- nDetections_4min %>%
   dplyr::select(Site, Restoration.type, sumDetections)
 
 # Plotting the above (multiple plots for each temporal duration)
-# Note: the cumulative number of detections aHSWPoss all species was obtained by summing every 16-min to 48-min set of detections aHSWPoss each site, including all species.
+# Note: the cumulative number of detections across all species was obtained by summing every 16-min to 48-min set of detections across each site, including all species.
 
 # reordering factors for plotting
 sum_Detections10s$Restoration.type <- factor(sum_Detections10s$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_sumDetections10s <- ggplot(sum_Detections10s, aes(x=Restoration.type, y=sumDetections, fill=Restoration.type)) +  
     geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+  scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) +
     theme_bw() +
      labs(x="\nTreatment Type", 
        y="Cumulative number of detections\n") +
@@ -208,16 +210,16 @@ detections_trait4min <- nDetections_4min %>%
 # Calculate overall number of detections for each site as a function of rainforest species and open-country species and test for differences across treatment types (Calculated only for the smallest temporal duration - 10s)
 
 detections_trait10s <-  detections_trait10s %>%
-  dplyr::select(Site, Restoration.type, Species_Code, Habitat, count) %>%
-  group_by(Site, Restoration.type, Habitat) %>%
+  dplyr::select(Site, Restoration.type, Species_Code, habitat, count) %>%
+  group_by(Site, Restoration.type, habitat) %>%
   summarise(sumDetections = sum(count)) %>%
   drop_na()
 
 # Split the above data into rainforest species and open country
 detections_10s_rainforest <- detections_trait10s %>%
-  filter(Habitat=="RF")
+  filter(habitat=="RF")
 detections_10s_openCountry <- detections_trait10s %>% 
-  filter(Habitat=="OC")
+  filter(habitat=="OC")
 
 # Test if there are significant differences in detections across treatment types as a function of species trait
 anova_rainforestDet <- aov(sumDetections~Restoration.type, data = detections_10s_rainforest)
@@ -232,23 +234,23 @@ tukey_opencountryDet <- TukeyHSD(anova_opencountryDet)
 
 # Calculating overall number of detections for other temporal durations as a function of species trait
 detections_trait30s <-  detections_trait30s %>%
-  dplyr::select(Site, Restoration.type, Species_Code, Habitat, count) %>%
-  group_by(Site, Restoration.type, Habitat) %>%
+  dplyr::select(Site, Restoration.type, Species_Code, habitat, count) %>%
+  group_by(Site, Restoration.type, habitat) %>%
   summarise(sumDetections = sum(count))
 
 detections_trait1min <-  detections_trait1min %>%
-  dplyr::select(Site, Restoration.type, Species_Code, Habitat, count) %>%
-  group_by(Site, Restoration.type, Habitat) %>%
+  dplyr::select(Site, Restoration.type, Species_Code, habitat, count) %>%
+  group_by(Site, Restoration.type, habitat) %>%
   summarise(sumDetections = sum(count))
 
 detections_trait2min <-  detections_trait2min %>%
-  dplyr::select(Site, Restoration.type, Species_Code, Habitat, count) %>%
-  group_by(Site, Restoration.type, Habitat) %>%
+  dplyr::select(Site, Restoration.type, Species_Code, habitat, count) %>%
+  group_by(Site, Restoration.type, habitat) %>%
   summarise(sumDetections = sum(count))
 
 detections_trait4min <-  detections_trait4min %>%
-  dplyr::select(Site, Restoration.type, Species_Code, Habitat, count) %>%
-  group_by(Site, Restoration.type, Habitat) %>%
+  dplyr::select(Site, Restoration.type, Species_Code, habitat, count) %>%
+  group_by(Site, Restoration.type, habitat) %>%
   summarise(sumDetections = sum(count))
 
 # Plot the figures
@@ -256,10 +258,10 @@ detections_trait4min <-  detections_trait4min %>%
 # reordering factors for plotting
 detections_trait10s$Restoration.type <- factor(detections_trait10s$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
-fig_detections_trait10s <- ggplot(detections_trait10s, aes(x=Restoration.type, y=sumDetections, fill=Habitat)) +
+fig_detections_trait10s <- ggplot(detections_trait10s, aes(x=Restoration.type, y=sumDetections, fill=habitat)) +
     geom_boxplot(alpha=0.7) + 
     scale_fill_scico_d(palette = "roma",
-                     labels=c("Open-country","Rainforest")) +
+                     labels=c("Open country","Rainforest")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Cumulative number of detections\n") +
