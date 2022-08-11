@@ -5,7 +5,7 @@ editor_options:
 
 # Species proportions
 
-In this script, we will calculate the proportion of rainforest and open-country bird species that was detected across the three treatment types.  
+In this script, we will calculate the proportion of rainforest and open-country bird species that was detected across the three treatment types for a given period of time. Species richness may only give us a broader understanding of the overall levels of diversity, but getting at a measure of abundance (where we calculate the proportion of rainforest and open-country birds that were vocal in a given habitat type for a given period of time) may provide insights on the use of a particular habitat - an important question that needs to be answered, given that we would like to understand if fauna are using actively restored habitats.  
 
 ### Install required libraries
 ```{r}
@@ -91,9 +91,11 @@ tukeyPropOC <- TukeyHSD(anovaPropOC)
 
 # reordering factors for plotting
 prop$Restoration.type <- factor(prop$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_propRF <- ggplot(prop, aes(x=Restoration.type, y=propRF, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+    scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Proportion of rainforest species detections\n") +
@@ -103,11 +105,10 @@ fig_propRF <- ggplot(prop, aes(x=Restoration.type, y=propRF, fill=Restoration.ty
         axis.text = element_text(family="Century Gothic",size = 14),
         legend.position = "none")
 
-ggsave(fig_propRF, filename = "figs/fig_acousticDetections_propRF.png", width=12, height=7,
-       device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_propRF, filename = "figs/fig_acousticDetections_propRF.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 
 fig_propOC <- ggplot(prop, aes(x=Restoration.type, y=propOC, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+    scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Proportion of open-country species detections\n") +
@@ -166,7 +167,7 @@ tukeyOC <- TukeyHSD(anovaOC)
 propVisit$Restoration.type <- factor(propVisit$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
 fig_RF <- ggplot(propVisit, aes(x=Restoration.type, y=propRF, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+    scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Proportion of rainforest species detections\n") +
@@ -179,7 +180,7 @@ fig_RF <- ggplot(propVisit, aes(x=Restoration.type, y=propRF, fill=Restoration.t
 ggsave(fig_RF, filename = "figs/fig_acousticPointCount_propRF.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 
 fig_OC <- ggplot(propVisit, aes(x=Restoration.type, y=propOC, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+    scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR")) +
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Proportion of open-country species detections\n") +
