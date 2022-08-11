@@ -61,7 +61,7 @@ modelData <- prepBirdData %>%
 
 ### Running the generalized linear mixed models
 
-We now run generalized linear mixed models (GLMM) assuming gaussian errors to examine the effects of restoration type (benchmark, actively restored and passively restored) on bird species proportions (for rainforest and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
+We now run generalized linear mixed models (GLMM) assuming gaussian errors to examine the effects of restoration type (benchmark, actively restored and passively restored) on the proportion of bird species detections (for rainforest and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
 
 ### Examining effect of restoration type on proportion of rainforest and open-country species detections
 
