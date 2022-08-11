@@ -263,7 +263,7 @@ report::report(glmm_nocturnalVeg)
 # There is a significant negative effect of both PC1 and PC2 on the nocturnal acoustic space use
 ```
 
-## Creating figure for publication
+## Main Text Figure 3
 ```{r}
 # Patchworking nmds and glmm for acoustic space use to create part a and b for Fig. 4
 library(patchwork)
@@ -279,6 +279,6 @@ fig_glmm_ordinations <-
   )
 
 # Expand the width to avoid compression
-ggsave(fig_glmm_ordinations, filename = "figs/fig04.png", width=20, height=7,device = png(), units="in", dpi = 300); dev.off()
+ggsave(fig_glmm_ordinations, filename = "figs/fig03.png", width=20, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
