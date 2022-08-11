@@ -1,0 +1,180 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Generalized linear modeling (acoustic space use and proportion of bird species detections and time since restoration)
+
+In this script, we run generalized linear models to test the association between acoustic space use values and species richness, and time since restoration. 
+
+## Install required libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(psych)
+library(rcompanion)
+library(multcomp)
+library(lme4)
+library(ggpubr)
+library(sjPlot)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+## Load necessary data for statistical modeling
+```{r}
+# load list of sites
+sites <- read.csv("data/list-of-sites.csv") %>% 
+  dplyr::select("Site.code","Restoration.type") %>%
+  filter(Site.code != "OLCAP5B")
+
+# loading jacknife scores 
+jackAll <- read.csv("results/jackAll.csv")
+jack_rainForest <- read.csv("results/jackRainforest.csv")
+jack_openCountry <- read.csv("results/jackOpencountry.csv")
+
+# Load vegetation data from previous scripts 
+vegData <-  read.csv("results/summaryVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
+vegPcaScores <- read.csv("results/pcaVeg.csv") %>%
+  filter(!str_detect(Site_ID, 'OLCAP5B'))
+
+# proportion of acoustic detections of rainforest and open-country birds across visits
+propVisit <- read.csv("results/acoustic-detections-across-visits.csv")
+# convert date column to character for left_join
+propVisit$Date <- as.character(propVisit$Date)
+
+# load the entire asu data across all sites and days computed
+sitebyDayAsu <- read.csv("results/site-by-day-asu.csv") 
+
+# separate by Site and Date
+sitebyDayAsu <- separate(sitebyDayAsu, col = Site_Day, into = c("Site", "Date"), sep = "_") 
+
+# Add restoration type column to the space use data
+sitebyDayAsu <- left_join(sitebyDayAsu, sites, by=c("Site"="Site.code"))
+
+# scale values per site/date for comparison between sites and treatment types
+sitebyDayAsu <- sitebyDayAsu %>%
+  group_by(Site, Date, Restoration.type) %>%
+  mutate(f.cont.scaled = range01(f.cont))
+
+# Let's look at data by restoration type
+# This suggests that we have more data for benchmark sites relative to the other two treatment types
+nDays_siteType <- sitebyDayAsu %>%
+  dplyr::select(Site, Date, Restoration.type) %>%
+  distinct() %>%
+  group_by(Restoration.type) %>%
+  count()
+  
+# Prepare data for statistical modeling
+# Calculating total space use across all frequency bins and times of day: 128*24 for each site-day combination
+
+totSpaceUse <- sitebyDayAsu %>%
+  group_by(Site, Date, Restoration.type) %>%
+  summarise(totSpaceuse = sum(f.cont.scaled)) %>%
+  group_by(Site) %>% 
+  mutate(visit = row_number()) %>%
+  mutate(siteCode = str_extract(Site, pattern = "\\w+\\d+")) %>%
+  mutate(siteCode = factor(siteCode)) %>%
+  full_join(vegData, by=c("Site"="Site_ID")) %>%
+  ungroup()
+
+```
+
+
+## Getting data ready in a format for linear modeling
+```{r}
+# overall space use and bird species detections
+modelDataAll <- vegPcaScores %>% 
+  rename(Site = Site_ID) %>%
+  rename(Restoration.type = Site_type) %>%
+  mutate(across(Restoration.type, factor))  %>%
+  full_join(totSpaceUse, by=c("Site","Restoration.type")) %>%
+  mutate("roundSpaceuse" = round(totSpaceuse)) %>%
+  full_join(propVisit[,-2], by=c("Site","Restoration.type")) %>%
+  distinct(.)
+```
+
+## Acoustic space use and proportion of bird species detections
+
+```{r}
+# rainforest bird species detections
+glmm_detectionsRF_space <- glmer(roundSpaceuse ~ propRF + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))
+
+summary(glmm_detectionsRF_space)
+plot_model(glmm_detectionsRF_space, type="pred")
+report::report(glmm_detectionsRF_space)
+
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict roundSpaceuse with propRF (formula: roundSpaceuse ~ propRF). The model included siteCode and visit as random effects (formula: list(~1 | siteCode, ~1 | visit)). The model's total explanatory power is substantial (conditional R2 = 0.84) and the part related to the fixed effects alone (marginal R2) is of 1.99e-04. The model's intercept, corresponding to propRF = 0, is at 289.91 (95% CI [233.66, 346.16], t(1215) = 10.11, p < .001). Within this model:
+
+#  - The effect of propRF is statistically non-significant and positive (beta = 15.96, 95% CI [-18.66, 50.57], t(1215) = 0.90, p = 0.366; Std. beta = 0.01, 95% CI [-0.02, 0.05])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
+
+# open-country bird species detections
+glmm_detectionsOC_space <- glmer(roundSpaceuse ~ propOC + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))
+
+summary(glmm_detectionsOC_space)
+plot_model(glmm_detectionsOC_space, type="pred")
+report::report(glmm_detectionsOC_space)
+
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict roundSpaceuse with propOC (formula: roundSpaceuse ~ propOC). The model included siteCode and visit as random effects (formula: list(~1 | siteCode, ~1 | visit)). The model's total explanatory power is substantial (conditional R2 = 0.84) and the part related to the fixed effects alone (marginal R2) is of 1.99e-04. The model's intercept, corresponding to propOC = 0, is at 305.87 (95% CI [257.26, 354.48], t(1215) = 12.35, p < .001). Within this model:
+
+#  - The effect of propOC is statistically non-significant and negative (beta = -15.96, 95% CI [-50.57, 18.66], t(1215) = -0.90, p = 0.366; Std. beta = -0.01, 95% CI [-0.05, 0.02])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. 
+```
+
+## Year since restoration
+
+Let's look at year since restoration and its effect on acoustic space use and the proportion of rainforest and open country bird species detections
+```{r}
+# prep dataframe
+allRestored <- modelDataAll %>%
+  filter(Restoration.type=="Active") %>%
+  mutate(yearSinceRestoration = (2022-plantingYear))
+
+## acoustic space use
+glmmYearSpace <- glmer(totSpaceuse ~ yearSinceRestoration + (1|visit), data = allRestored, family = gaussian(link="identity"))
+summary(glmmYearSpace)
+
+plot_model(glmmYearSpace, type="pred")
+report::report(glmmYearSpace)
+
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict totSpaceuse with yearSinceRestoration (formula: totSpaceuse ~ yearSinceRestoration). The model included visit as random effect (formula: ~1 | visit). The model's total explanatory power is moderate (conditional R2 = 0.16) and the part related to the fixed effects alone (marginal R2) is of 0.12. The model's intercept, corresponding to yearSinceRestoration = 0, is at 343.91 (95% CI [238.78, 449.04], t(61) = 6.54, p < .001). Within this model:
+
+#  - The effect of yearSinceRestoration is statistically significant and negative (beta = -10.07, 95% CI [-16.66, -3.47], t(61) = -3.05, p = 0.003; Std. beta = -0.35, 95% CI [-0.58, -0.12])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
+
+## rainforest bird species detections
+glmmYearRF <- glmer(propRF ~ yearSinceRestoration + (1|visit), data = allRestored, family = gaussian(link="identity"))
+summary(glmmYearRF)
+
+plot_model(glmmYearRF, type="pred")
+report::report(glmmYearRF)
+
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict propRF with yearSinceRestoration (formula: propRF ~ yearSinceRestoration). The model included visit as random effect (formula: ~1 | visit). The model's explanatory power related to the fixed effects alone (marginal R2) is 3.67e-09. The model's intercept, corresponding to yearSinceRestoration = 0, is at 0.77 (95% CI [0.71, 0.83], t(366) = 24.62, p < .001). Within this model:
+
+#  - The effect of yearSinceRestoration is statistically non-significant and negative (beta = -2.33e-06, 95% CI [-3.94e-03, 3.93e-03], t(366) = -1.16e-03, p > .999; Std. beta = -6.07e-05, 95% CI [-0.10, 0.10])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. 
+
+## open country bird species detections
+glmmYearOC <- glmer(propOC ~ yearSinceRestoration + (1|visit), data = allRestored, family = gaussian(link="identity"))
+summary(glmmYearOC)
+
+plot_model(glmmYearOC, type="pred")
+report::report(glmmYearOC)
+
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict propOC with yearSinceRestoration (formula: propOC ~ yearSinceRestoration). The model included visit as random effect (formula: ~1 | visit). The model's explanatory power related to the fixed effects alone (marginal R2) is 3.67e-09. The model's intercept, corresponding to yearSinceRestoration = 0, is at 0.23 (95% CI [0.17, 0.29], t(366) = 7.32, p < .001). Within this model:
+
+#  - The effect of yearSinceRestoration is statistically non-significant and positive (beta = 2.33e-06, 95% CI [-3.93e-03, 3.94e-03], t(366) = 1.16e-03, p > .999; Std. beta = 6.07e-05, 95% CI [-0.10, 0.10])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. 
+```
