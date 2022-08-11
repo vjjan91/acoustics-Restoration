@@ -192,4 +192,3 @@ fig_OC <- ggplot(propVisit, aes(x=Restoration.type, y=propOC, fill=Restoration.t
 
 ggsave(fig_OC, filename = "figs/fig_acousticPointCount_propOC.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 ```
-
