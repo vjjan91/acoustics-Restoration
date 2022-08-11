@@ -70,9 +70,11 @@ tukeyElevAll <- TukeyHSD(anovaElevAll)
 
 # reordering factors for plotting
 sites$Restoration.type <- factor(sites$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
+# Add a custom set of colors
+mycolors <- c(brewer.pal(name="Dark2", n = 3), brewer.pal(name="Paired", n = 3))
 
 fig_elevAll <- ggplot(sites, aes(x=Restoration.type, y=elev, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+  scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR"))+ 
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Elevation (in meters)\n") +
@@ -118,7 +120,7 @@ tukeyDistAll <- TukeyHSD(anovaDistAll)
 sites$Restoration.type <- factor(sites$Restoration.type, levels = c("Benchmark", "Active", "Passive"))
 
 fig_distRoad <- ggplot(sites, aes(x=Restoration.type, y=distToRoad, fill=Restoration.type)) +  geom_boxplot(alpha=0.7) + 
-    scale_fill_scico_d(palette = "roma") +
+  scale_fill_manual("Treatment type",values=mycolors, labels=c("BM","AR","NR"))+
     theme_bw() +
     labs(x="\nTreatment Type", 
        y="Distance to nearest road (in meters)\n") +
