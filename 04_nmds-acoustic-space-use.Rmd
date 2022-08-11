@@ -112,7 +112,7 @@ nmdsScoresNocturnal <- as_tibble(scores(nmdsEuclideanNocturnal, display = "site"
 # Write the scores to a separate .csv
 write.csv(nmdsScores, "results/nmds-acousticSpaceUse.csv", row.names = F)
 
-# With the above analysis, we note the stress is 0.007478165. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
+# With the above analysis, we note the stress is 0.008131476. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 
 # write scores for diurnal and nocturnal data
 write.csv(nmdsScoresDiurnal, "results/nmds-acousticSpaceUse-diurnal.csv", 
@@ -153,7 +153,7 @@ fig_nmds <- ggplot(data=nmdsScores) +
                                     size = 14, face = "bold"),
         legend.key.size = unit(1,"cm"),
         legend.text = element_text(family="Century Gothic",size = 14)) +
-   annotate(geom = "text", x = max(nmdsScores$NMDS1), y = max(nmdsScores$NMDS2),  label = "Stress = 0.007", hjust = 1, family = "Century Gothic", size=5)
+   annotate(geom = "text", x = max(nmdsScores$NMDS1), y = max(nmdsScores$NMDS2),  label = "Stress = 0.008", hjust = 1, family = "Century Gothic", size=5)
 
 fig_nmds_diurnal <- ggplot(data=nmdsScoresDiurnal) + 
   stat_ellipse(aes(x=NMDS1,y=NMDS2,colour=Restoration.type),level = 0.50) +
