@@ -242,7 +242,12 @@ summary(glmm_allVeg)
 plot_model(glmm_allVeg, type="pred", terms=c("PC1","PC2"))
 report::report(glmm_allVeg)
 
-# There is a significant negative effect of PC1 on acoustic space use
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict roundSpaceuse with PC1 and PC2 (formula: roundSpaceuse ~ PC1 + PC2). The model included siteCode and visit as random effects (formula: list(~1 | siteCode, ~1 | visit)). The model's total explanatory power is substantial (conditional R2 = 0.77) and the part related to the fixed effects alone (marginal R2) is of 0.10. The model's intercept, corresponding to PC1 = 0 and PC2 = 0, is at 294.12 (95% CI [254.39, 333.84], t(204) = 14.60, p < .001). Within this model:
+
+#  - The effect of PC1 is statistically significant and negative (beta = -20.20, 95% CI [-29.35, -11.04], t(204) = -4.35, p < .001; Std. beta = -0.28, 95% CI [-0.41, -0.15])
+#  - The effect of PC2 is statistically non-significant and negative (beta = -12.66, 95% CI [-26.83, 1.51], t(204) = -1.76, p = 0.080; Std. beta = -0.10, 95% CI [-0.22, 0.01])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation
 
 # diurnal
 glmm_diurnalVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataDiurnal, family = gaussian(link="identity"))
@@ -251,7 +256,12 @@ summary(glmm_diurnalVeg)
 plot_model(glmm_diurnalVeg, type="pred", terms=c("PC2","PC1"))
 report::report(glmm_diurnalVeg)
 
-# There is a significant negative effect of PC1 on diurnal acoustic space use
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict roundSpaceuse with PC1 and PC2 (formula: roundSpaceuse ~ PC1 + PC2). The model included siteCode and visit as random effects (formula: list(~1 | siteCode, ~1 | visit)). The model's explanatory power related to the fixed effects alone (marginal R2) is 0.26. The model's intercept, corresponding to PC1 = 0 and PC2 = 0, is at 145.60 (95% CI [122.30, 168.89], t(204) = 12.32, p < .001). Within this model:
+
+#  - The effect of PC1 is statistically significant and negative (beta = -12.91, 95% CI [-18.99, -6.82], t(204) = -4.18, p < .001; Std. beta = -0.29, 95% CI [-0.43, -0.15])
+#  - The effect of PC2 is statistically non-significant and negative (beta = -1.10, 95% CI [-10.62, 8.43], t(204) = -0.23, p = 0.821; Std. beta = -0.01, 95% CI [-0.14, 0.11])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
 
 # nocturnal
 glmm_nocturnalVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataNocturnal, family = gaussian(link="identity"))
@@ -260,7 +270,12 @@ summary(glmm_nocturnalVeg)
 plot_model(glmm_nocturnalVeg, type="pred", terms=c("PC1","PC2"))
 report::report(glmm_nocturnalVeg)
 
-# There is a significant negative effect of both PC1 and PC2 on the nocturnal acoustic space use
+# We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict roundSpaceuse with PC1 and PC2 (formula: roundSpaceuse ~ PC1 + PC2). The model included siteCode and visit as random effects (formula: list(~1 | siteCode, ~1 | visit)). The model's total explanatory power is substantial (conditional R2 = 0.80) and the part related to the fixed effects alone (marginal R2) is of 0.05. The model's intercept, corresponding to PC1 = 0 and PC2 = 0, is at 134.62 (95% CI [110.39, 158.85], t(204) = 10.96, p < .001). Within this model:
+
+#  - The effect of PC1 is statistically significant and negative (beta = -6.95, 95% CI [-12.04, -1.87], t(204) = -2.70, p = 0.008; Std. beta = -0.19, 95% CI [-0.32, -0.05])
+#  - The effect of PC2 is statistically significant and negative (beta = -10.09, 95% CI [-17.89, -2.28], t(204) = -2.55, p = 0.012; Std. beta = -0.16, 95% CI [-0.28, -0.04])
+
+# Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. 
 ```
 
 ## Main Text Figure 4
