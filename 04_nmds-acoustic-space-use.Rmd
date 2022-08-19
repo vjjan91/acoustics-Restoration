@@ -3,11 +3,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Non-metric multidimensional scaling of acoustic space use data
+## Non-metric multidimensional scaling of acoustic space use data
 
 Here, we will use ordinations as a method of analyzing how acoustic space use (defined in terms of frequency and time, across 24 hours in a day) varies between treatment types.  
 
-## Load necessary libraries for analysis
+### Load necessary libraries for analysis
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -27,7 +27,7 @@ library(extrafont)
 source("code/01_internal-functions.R")
 ```
 
-## Load the necessary data for nmds calculations
+### Load the necessary data for nmds calculations
 ```{r}
 # load the site-wise space use data
 sitebyDayAsu <- read.csv("results/site-by-day-asu.csv")
@@ -43,7 +43,7 @@ sites <- read.csv("data/list-of-sites.csv") %>%
 # Add restoration type column to the space use data
 sitebyDayAsu <- left_join(sitebyDayAsu,sites, by=c("Site"="Site.code"))
 
-# Separate analysis: space use during diurnal and nocturnal periods
+# Supplementary analysis: space use during diurnal and nocturnal periods
 diurnal <- c("06:00-07:00","07:00-08:00","08:00-09:00",
           "09:00-10:00","10:00-11:00","11:00-12:00",
           "12:00-13:00","13:00-14:00","14:00-15:00",
@@ -58,7 +58,7 @@ nocturnalAsu <- sitebyDayAsu %>%
   filter(time_of_day %in% nocturnal)
 ```
 
-## Preparing a dataframe of space use to run ordinations
+### Preparing a dataframe of space use to run ordinations
 ```{r}
 # Please note that while creating this dataframe for ordinations, the overall acoustic space use (sum of f.cont.sum column) was calculated by frequency bin, irrespective of the time of day for a given site. In other words, for 24 hours of data, a single value of space use was obtained for a given frequency bin. The frequency bin was pivoted from long to wide and each column essentially corresponded to a frequency bin. Within that frequency bin, grouped for each site, an overall value of space use was computed. 
 
@@ -122,7 +122,7 @@ write.csv(nmdsScoresNocturnal, "results/nmds-acousticSpaceUse-nocturnal.csv",
 ```
 
 
-## Plotting the NMDS scores
+### Plotting the NMDS scores
 ```{r}
 # First let's add the treatment type back to the nmds scores
 nmdsScores$Restoration.type <- nmdsDat$Restoration.type
@@ -196,7 +196,12 @@ ggsave(fig_nmds_diurnal, filename = "figs/fig_nmds_diurnalSpaceUse.png", width=1
 ggsave(fig_nmds_nocturnal, filename = "figs/fig_nmds_nocturnalSpaceUse.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
-## Testing multivariate homogeneity of group dispersions
+![NMDS ordination of overall acoustic space use values revealed a distinct cluster for BM sites but overlapping clusters for AR and NR sites](figs/fig_nmds_overallSpaceUse.png)
+
+![NMDS ordination of diurnal acoustic space use values revealed similar results as seen for overall acoustic space use. However, there was slightly more overlap observed across the three treatment types.](figs/fig_nmds_diurnalSpaceUse.png)
+![NMDS ordination of nocturnal acoustic space use values revealed similar results as seen for overall acoustic space use. However, there the BM sites were distinctly different in ordination space when compared to AR and NR sites.](figs/fig_nmds_nocturnalSpaceUse.png)
+
+### Testing multivariate homogeneity of group dispersions
 
 One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.
 
@@ -233,7 +238,7 @@ TukeyHSD(nmdsVarianceNocturnal)
 ```
 
 
-## Visualizing the multivariate homogeneity of group dispersions
+### Visualizing the multivariate homogeneity of group dispersions
 
 The below lines of code have been adapted from: https://chrischizinski.github.io/rstats/adonis/
 ```{r}
