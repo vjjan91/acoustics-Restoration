@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Non-metric multidimensional scaling of bird species detections
+## Non-metric multidimensional scaling of bird species detections
 
 Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.
 
@@ -55,8 +55,7 @@ richness <- datSummary %>%
   dplyr::select(Site, Restoration.type, richness)
 ```
 
-
-## Preparing dataframe of traits and species to be used for NMDS later on
+### Preparing dataframe of traits and species to be used for NMDS later on
 ```{r}
 # Calculate the overall number of detections for each site. Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
 
@@ -74,8 +73,7 @@ nDetections_trait <- nDetections_site_date %>%
   rename(., nDetections = count)
 ```
 
-
-## Preparing a dataframe of detections to run ordinations
+### Preparing a dataframe of detections to run ordinations
 ```{r}
 # We will prepare a community matrix data that can be used to run dissimilarity indices
 
@@ -90,8 +88,7 @@ nmdsDat <- nDetections_trait %>%
 nmdsDatMatrix <- as.matrix(nmdsDat[, 3:ncol(nmdsDat)])
 ```
 
-
-## Bray-Curtis dissimilarity index
+### Bray-Curtis dissimilarity index
 
 Run a bray-curtis dissimilarity index and identify least stressed configuration for the ordinations. Bray-curtis is a statistic used to quantify the compositional dissimilarity between two different sites, based on counts at each site. Ecologists use the Bray-Curtis dissimilarity calculation, which has a number of ideal properties:
 1. It is invariant to changes in units.
@@ -117,8 +114,7 @@ write.csv(nmdsScores, "data/nmdsBrayCurtis-bird-detections.csv", row.names = F)
 # With the above analysis, we note the stress is 0.001537865. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress < 0.05 provides an excellent representation in reduced dimensions, < 0.1 is great, < 0.2 is good/ok, and stress < 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!
 ```
 
-
-## Plotting the NMDS scores 
+### Plotting the NMDS scores 
 ```{r}
 # First let's add the treatment type back to the nmds scores
 nmdsScores$Restoration.type <- nmdsDat$Restoration.type
@@ -150,9 +146,9 @@ fig_nmds <- ggplot(data=nmdsScores) +
 ggsave(fig_nmds, filename = "figs/fig_nmds_birdDetections.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
-![](figs/fig_nmds_birdDetections.png)
+![AR sites are transitioning toward BM sites](figs/fig_nmds_birdDetections.png)
 
-## Main text Figure 5
+### Main text Figure 5
 ```{r}
 # reload previous figures to create part A and B for the main text Fig. 4
 
@@ -174,9 +170,9 @@ ggsave(fig_prop_ordinations, filename = "figs/fig05.png", width=15, height=12,de
 ```
 
 ![**Proportion of acoustic detections of rainforest and open-country bird species and NMDS ordination results of bird species detections**
-(a) We observed significant differences in the proportion of rainforest bird species detections across each of the three treatment types (Tukey HSD test, P < 0.05). BM sites had the highest proportion of rainforest bird species detections (mean ± SD: 0.97 ± 0.04), followed by AR sites (mean ± SD: 0.81 ± 0.12), and NR sites (mean ± SD: 0.71 ± 0.17). (b) We observed significant differences in the proportion of open-country bird species detections across each of the three treatment type (Tukey HSD test, P < 0.05). NR sites had the highest proportion of open-country bird species detections (mean ± SD: 0.28 ± 0.17), followed by AR sites (mean ± SD: 0.18 ± 0.12), and BM sites (mean ± SD: 0.02 ± 0.04). (b) The ordination analysis of bird detections data (stress = 0.001) revealed distinct clusters of BM sites, but relatively loose clusters for AR and NR sites. However, AR sites occupied an intermediate position between BM and NR sites, indicating a direction of change in bird community composition toward BM sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig04.png)
+(a) We observed significant differences in the proportion of rainforest bird species detections across each of the three treatment types (Tukey HSD test, P < 0.05). BM sites had the highest proportion of rainforest bird species detections (mean ± SD: 0.97 ± 0.04), followed by AR sites (mean ± SD: 0.81 ± 0.12), and NR sites (mean ± SD: 0.71 ± 0.17). (b) We observed significant differences in the proportion of open-country bird species detections across each of the three treatment type (Tukey HSD test, P < 0.05). NR sites had the highest proportion of open-country bird species detections (mean ± SD: 0.28 ± 0.17), followed by AR sites (mean ± SD: 0.18 ± 0.12), and BM sites (mean ± SD: 0.02 ± 0.04). (b) The ordination analysis of bird detections data (stress = 0.001) revealed distinct clusters of BM sites, but relatively loose clusters for AR and NR sites. However, AR sites occupied an intermediate position between BM and NR sites, indicating a direction of change in bird community composition toward BM sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig05.png)
 
-## Testing multivariate homogeneity of group dispersions
+### Testing multivariate homogeneity of group dispersions
 
 One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.
 
@@ -192,8 +188,7 @@ TukeyHSD(nmdsVariance)
 # These results suggest that there is no difference in within-group variance between one group and another
 ```
 
-
-Visualizing the multivariate homogeneity of group dispersions
+### Visualizing the multivariate homogeneity of group dispersions
 
 The below lines of code have been adapted from: https://chrischizinski.github.io/rstats/adonis/
 ```{r}
@@ -226,7 +221,7 @@ fig_hull <- ggplot() +
 ```
 
 
-## Testing compositional dissimilarity between groups
+### Testing compositional dissimilarity between groups
 
 We will do this by using the vegan::adonis() function which allows you to run permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be thought of as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.
 
@@ -240,8 +235,7 @@ adonisNMDS
 # The results suggest that there are significant compositional differences between groups.
 ```
 
-
-Separate analysis: Instead of using bird detections, using richness to run nmds ordinations
+### Separate analysis: Instead of using bird detections, using richness to run nmds ordinations
 ```{r}
 nmdsDatRichness <- datSummary %>% 
   mutate_at(vars(c("IP":"HSWP")),~ replace(., . > 0, 1))
@@ -289,4 +283,4 @@ fig_nmds_richness <- ggplot(data=nmdsScoresRichness) +
 ggsave(fig_nmds_richness, filename = "figs/fig_nmds_birdRichness.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
-![](figs/fig_nmds_birdRichness.png)
+![Similar results as that of bird species detections were observed.](figs/fig_nmds_birdRichness.png)
