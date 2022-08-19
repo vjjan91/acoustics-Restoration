@@ -4,25 +4,24 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 11 Jackknife estimates | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</title>
-  <meta name="description" content="Section 11 Jackknife estimates | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <title>Section 12 Jackknife estimates | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats</title>
+  <meta name="description" content="Section 12 Jackknife estimates | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 11 Jackknife estimates | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta property="og:title" content="Section 12 Jackknife estimates | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats" />
   <meta property="og:type" content="book" />
   
   
-  
-  <meta name="github-repo" content="vjjan91/acoustics-westernGhats" />
+  <meta name="github-repo" content="vjjan91/acoustics-Restoration" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 11 Jackknife estimates | Source code for Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats" />
+  <meta name="twitter:title" content="Section 12 Jackknife estimates | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats" />
   
   
   
 
 <meta name="author" content="Vijay Ramesh" />
-<meta name="author" content="Priyanka HariHaran" />
+<meta name="author" content="Priyanka Hariharan" />
 <meta name="author" content="VA Akshay" />
 <meta name="author" content="Pooja Choksi" />
 <meta name="author" content="Sarika Khanwilkar" />
@@ -30,15 +29,15 @@
 <meta name="author" content="Ruth DeFries" />
 
 
-<meta name="date" content="2022-05-11" />
+<meta name="date" content="2022-08-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="acoustic-detections.html"/>
-<link rel="next" href="non-metric-multidimensional-scaling.html"/>
+<link rel="prev" href="non-metric-multidimensional-scaling-of-bird-species-detections.html"/>
+<link rel="next" href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -56,24 +55,24 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -93,7 +92,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -140,102 +139,139 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.4</b> Main Text Figure 1</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.0.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.0.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.0.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.0.2</b> Data access</a></li>
+<li class="chapter" data-level="1.0.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.0.3</b> Data processing</a></li>
+<li class="chapter" data-level="1.0.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.0.4</b> Main Text Figure 1</a></li>
+<li class="chapter" data-level="1.0.5" data-path="index.html"><a href="index.html#main-text-figure-2"><i class="fa fa-check"></i><b>1.0.5</b> Main Text Figure 2</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="site-selection.html"><a href="site-selection.html"><i class="fa fa-check"></i><b>2</b> Site selection</a><ul>
-<li class="chapter" data-level="2.1" data-path="site-selection.html"><a href="site-selection.html#install-required-libraries"><i class="fa fa-check"></i><b>2.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="2.2" data-path="site-selection.html"><a href="site-selection.html#load-list-of-sites"><i class="fa fa-check"></i><b>2.2</b> Load list of sites</a></li>
-<li class="chapter" data-level="2.3" data-path="site-selection.html"><a href="site-selection.html#extract-elevation"><i class="fa fa-check"></i><b>2.3</b> Extract elevation</a></li>
-<li class="chapter" data-level="2.4" data-path="site-selection.html"><a href="site-selection.html#distance-to-nearest-road"><i class="fa fa-check"></i><b>2.4</b> Distance to nearest road</a></li>
-<li class="chapter" data-level="2.5" data-path="site-selection.html"><a href="site-selection.html#distance-between-ar-nr-site-pairs"><i class="fa fa-check"></i><b>2.5</b> Distance between AR-NR site pairs</a></li>
+<li class="chapter" data-level="2" data-path="site-selection.html"><a href="site-selection.html"><i class="fa fa-check"></i><b>2</b> Site selection</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="site-selection.html"><a href="site-selection.html#install-required-libraries"><i class="fa fa-check"></i><b>2.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="2.1" data-path="site-selection.html"><a href="site-selection.html#load-list-of-sites"><i class="fa fa-check"></i><b>2.1</b> Load list of sites</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="site-selection.html"><a href="site-selection.html#extract-elevation"><i class="fa fa-check"></i><b>2.1.1</b> Extract elevation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="site-selection.html"><a href="site-selection.html#distance-to-nearest-road"><i class="fa fa-check"></i><b>2.1.2</b> Distance to nearest road</a></li>
+<li class="chapter" data-level="2.1.3" data-path="site-selection.html"><a href="site-selection.html#distance-between-ar-nr-site-pairs"><i class="fa fa-check"></i><b>2.1.3</b> Distance between AR-NR site pairs</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html"><i class="fa fa-check"></i><b>3</b> Processing vegetation data</a><ul>
-<li class="chapter" data-level="3.1" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#install-required-libraries-1"><i class="fa fa-check"></i><b>3.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="3.2" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#load-the-vegetation-data"><i class="fa fa-check"></i><b>3.2</b> Load the vegetation data</a></li>
-<li class="chapter" data-level="3.3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#process-habitat-structure-variables"><i class="fa fa-check"></i><b>3.3</b> Process habitat structure variables</a></li>
-<li class="chapter" data-level="3.4" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#principal-component-analysis-of-vegetation-data"><i class="fa fa-check"></i><b>3.4</b> Principal component analysis of vegetation data</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>4</b> Acoustic space use</a><ul>
-<li class="chapter" data-level="4.1" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#install-necessary-libraries"><i class="fa fa-check"></i><b>4.1</b> Install necessary libraries</a></li>
-<li class="chapter" data-level="4.2" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#load-recordings-across-multiple-days-and-sites"><i class="fa fa-check"></i><b>4.2</b> Load recordings across multiple days and sites</a></li>
-<li class="chapter" data-level="4.3" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#short-time-discrete-fourier-transform-stdft"><i class="fa fa-check"></i><b>4.3</b> Short-time discrete fourier transform (STDFT)</a></li>
-<li class="chapter" data-level="4.4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#average-acoustic-space-use"><i class="fa fa-check"></i><b>4.4</b> Average acoustic space use</a></li>
-<li class="chapter" data-level="4.5" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#visual-examination-of-asu"><i class="fa fa-check"></i><b>4.5</b> Visual examination of ASU</a></li>
-<li class="chapter" data-level="4.6" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#representative-figure-for-publication"><i class="fa fa-check"></i><b>4.6</b> Representative figure for publication</a></li>
+<li class="chapter" data-level="3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html"><i class="fa fa-check"></i><b>3</b> Processing vegetation data</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#install-required-libraries-1"><i class="fa fa-check"></i><b>3.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="3.0.2" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#load-the-vegetation-data"><i class="fa fa-check"></i><b>3.0.2</b> Load the vegetation data</a></li>
+<li class="chapter" data-level="3.0.3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#process-habitat-structure-variables"><i class="fa fa-check"></i><b>3.0.3</b> Process habitat structure variables</a></li>
+<li class="chapter" data-level="3.0.4" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#principal-component-analysis-of-vegetation-data"><i class="fa fa-check"></i><b>3.0.4</b> Principal component analysis of vegetation data</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>5</b> Non-metric multidimensional scaling of acoustic space use data</a><ul>
-<li class="chapter" data-level="5.1" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-necessary-libraries-for-analysis"><i class="fa fa-check"></i><b>5.1</b> Load necessary libraries for analysis</a></li>
-<li class="chapter" data-level="5.2" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-the-necessary-data-for-nmds-calculations"><i class="fa fa-check"></i><b>5.2</b> Load the necessary data for nmds calculations</a></li>
-<li class="chapter" data-level="5.3" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#preparing-a-dataframe-of-space-use-to-run-ordinations"><i class="fa fa-check"></i><b>5.3</b> Preparing a dataframe of space use to run ordinations</a></li>
-<li class="chapter" data-level="5.4" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#plotting-the-nmds-scores"><i class="fa fa-check"></i><b>5.4</b> Plotting the NMDS scores</a></li>
-<li class="chapter" data-level="5.5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#testing-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.5</b> Testing multivariate homogeneity of group dispersions</a></li>
-<li class="chapter" data-level="5.6" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#visualizing-the-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.6</b> Visualizing the multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>4</b> Acoustic space use</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#install-necessary-libraries"><i class="fa fa-check"></i><b>4.0.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="4.0.2" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#load-recordings-across-multiple-days-and-sites"><i class="fa fa-check"></i><b>4.0.2</b> Load recordings across multiple days and sites</a></li>
+<li class="chapter" data-level="4.0.3" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#short-time-discrete-fourier-transform-stdft"><i class="fa fa-check"></i><b>4.0.3</b> Short-time discrete fourier transform (STDFT)</a></li>
+<li class="chapter" data-level="4.0.4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#average-acoustic-space-use"><i class="fa fa-check"></i><b>4.0.4</b> Average acoustic space use</a></li>
+<li class="chapter" data-level="4.0.5" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#visual-examination-of-asu"><i class="fa fa-check"></i><b>4.0.5</b> Visual examination of ASU</a></li>
+<li class="chapter" data-level="4.0.6" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#representative-figure-for-publication"><i class="fa fa-check"></i><b>4.0.6</b> Representative figure for publication</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>6</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a><ul>
-<li class="chapter" data-level="6.1" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#install-required-libraries-2"><i class="fa fa-check"></i><b>6.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="6.2" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#load-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>6.2</b> Load necessary data for statistical modeling</a></li>
-<li class="chapter" data-level="6.3" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#getting-data-ready-in-a-format-for-linear-modeling"><i class="fa fa-check"></i><b>6.3</b> Getting data ready in a format for linear modeling</a></li>
-<li class="chapter" data-level="6.4" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#running-the-generalized-linear-mixed-models"><i class="fa fa-check"></i><b>6.4</b> Running the generalized linear mixed models</a></li>
-<li class="chapter" data-level="6.5" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#creating-figure-for-publication"><i class="fa fa-check"></i><b>6.5</b> Creating figure for publication</a></li>
+<li class="chapter" data-level="5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>5</b> Non-metric multidimensional scaling of acoustic space use data</a>
+<ul>
+<li class="chapter" data-level="5.0.1" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-necessary-libraries-for-analysis"><i class="fa fa-check"></i><b>5.0.1</b> Load necessary libraries for analysis</a></li>
+<li class="chapter" data-level="5.0.2" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-the-necessary-data-for-nmds-calculations"><i class="fa fa-check"></i><b>5.0.2</b> Load the necessary data for nmds calculations</a></li>
+<li class="chapter" data-level="5.0.3" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#preparing-a-dataframe-of-space-use-to-run-ordinations"><i class="fa fa-check"></i><b>5.0.3</b> Preparing a dataframe of space use to run ordinations</a></li>
+<li class="chapter" data-level="5.0.4" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#plotting-the-nmds-scores"><i class="fa fa-check"></i><b>5.0.4</b> Plotting the NMDS scores</a></li>
+<li class="chapter" data-level="5.0.5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#testing-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.0.5</b> Testing multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="5.0.6" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#visualizing-the-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.0.6</b> Visualizing the multivariate homogeneity of group dispersions</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html"><i class="fa fa-check"></i><b>7</b> Splitting large .wav files</a><ul>
-<li class="chapter" data-level="7.1" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#load-required-libraries"><i class="fa fa-check"></i><b>7.1</b> Load required libraries</a></li>
+<li class="chapter" data-level="6" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>6</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a>
+<ul>
+<li class="chapter" data-level="6.0.1" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#install-required-libraries-2"><i class="fa fa-check"></i><b>6.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="6.0.2" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#load-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>6.0.2</b> Load necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="6.0.3" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#getting-data-ready-in-a-format-for-linear-modeling"><i class="fa fa-check"></i><b>6.0.3</b> Getting data ready in a format for linear modeling</a></li>
+<li class="chapter" data-level="6.0.4" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#running-the-generalized-linear-mixed-models"><i class="fa fa-check"></i><b>6.0.4</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="6.0.5" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#we-now-run-generalized-linear-mixed-models-glmm-assuming-gaussian-errors-and-using-log-link-functions-to-examine-the-effects-of-habitat-vegetation-structure-on-acoustic-space-use."><i class="fa fa-check"></i><b>6.0.5</b> We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.</a></li>
+<li class="chapter" data-level="6.1" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#main-text-figure-4"><i class="fa fa-check"></i><b>6.1</b> Main Text Figure 4</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="selecting-the-dawn-chorus.html"><a href="selecting-the-dawn-chorus.html"><i class="fa fa-check"></i><b>8</b> Selecting the dawn chorus</a><ul>
-<li class="chapter" data-level="8.1" data-path="selecting-the-dawn-chorus.html"><a href="selecting-the-dawn-chorus.html#split-the-files"><i class="fa fa-check"></i><b>8.1</b> Split the files</a></li>
+<li class="chapter" data-level="7" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html"><i class="fa fa-check"></i><b>7</b> Splitting large .wav files</a>
+<ul>
+<li class="chapter" data-level="7.0.1" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#load-required-libraries"><i class="fa fa-check"></i><b>7.0.1</b> Load required libraries</a></li>
+<li class="chapter" data-level="7.0.2" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#selecting-dawn-acoustic-data"><i class="fa fa-check"></i><b>7.0.2</b> Selecting dawn acoustic data</a></li>
+<li class="chapter" data-level="7.0.3" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#split-the-files"><i class="fa fa-check"></i><b>7.0.3</b> Split the files</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="bird-species-richness.html"><a href="bird-species-richness.html"><i class="fa fa-check"></i><b>9</b> Bird Species Richness</a><ul>
-<li class="chapter" data-level="9.1" data-path="bird-species-richness.html"><a href="bird-species-richness.html#install-required-libraries-3"><i class="fa fa-check"></i><b>9.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="9.2" data-path="bird-species-richness.html"><a href="bird-species-richness.html#load-manual-annotations-data"><i class="fa fa-check"></i><b>9.2</b> Load manual annotations data</a></li>
-<li class="chapter" data-level="9.3" data-path="bird-species-richness.html"><a href="bird-species-richness.html#subset-data"><i class="fa fa-check"></i><b>9.3</b> Subset data</a></li>
-<li class="chapter" data-level="9.4" data-path="bird-species-richness.html"><a href="bird-species-richness.html#total-number-of-detections"><i class="fa fa-check"></i><b>9.4</b> Total number of detections</a></li>
-<li class="chapter" data-level="9.5" data-path="bird-species-richness.html"><a href="bird-species-richness.html#calculate-species-richness"><i class="fa fa-check"></i><b>9.5</b> Calculate species richness</a></li>
+<li class="chapter" data-level="8" data-path="bird-species-richness.html"><a href="bird-species-richness.html"><i class="fa fa-check"></i><b>8</b> Bird Species Richness</a>
+<ul>
+<li class="chapter" data-level="8.0.1" data-path="bird-species-richness.html"><a href="bird-species-richness.html#install-required-libraries-3"><i class="fa fa-check"></i><b>8.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="8.0.2" data-path="bird-species-richness.html"><a href="bird-species-richness.html#load-manual-annotations-data"><i class="fa fa-check"></i><b>8.0.2</b> Load manual annotations data</a></li>
+<li class="chapter" data-level="8.0.3" data-path="bird-species-richness.html"><a href="bird-species-richness.html#subset-data"><i class="fa fa-check"></i><b>8.0.3</b> Subset data</a></li>
+<li class="chapter" data-level="8.0.4" data-path="bird-species-richness.html"><a href="bird-species-richness.html#total-number-of-detections"><i class="fa fa-check"></i><b>8.0.4</b> Total number of detections</a></li>
+<li class="chapter" data-level="8.0.5" data-path="bird-species-richness.html"><a href="bird-species-richness.html#calculate-species-richness"><i class="fa fa-check"></i><b>8.0.5</b> Calculate species richness</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>10</b> Acoustic Detections</a><ul>
-<li class="chapter" data-level="10.1" data-path="acoustic-detections.html"><a href="acoustic-detections.html#install-required-libraries-4"><i class="fa fa-check"></i><b>10.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="10.2" data-path="acoustic-detections.html"><a href="acoustic-detections.html#load-data"><i class="fa fa-check"></i><b>10.2</b> Load data</a></li>
-<li class="chapter" data-level="10.3" data-path="acoustic-detections.html"><a href="acoustic-detections.html#overall-number-of-detections"><i class="fa fa-check"></i><b>10.3</b> Overall number of detections</a></li>
-<li class="chapter" data-level="10.4" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-treatment-type"><i class="fa fa-check"></i><b>10.4</b> Detections by treatment type</a></li>
-<li class="chapter" data-level="10.5" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-species-traits"><i class="fa fa-check"></i><b>10.5</b> Detections by species traits</a></li>
+<li class="chapter" data-level="9" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>9</b> Acoustic Detections</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="acoustic-detections.html"><a href="acoustic-detections.html#install-required-libraries-4"><i class="fa fa-check"></i><b>9.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="9.0.2" data-path="acoustic-detections.html"><a href="acoustic-detections.html#load-data"><i class="fa fa-check"></i><b>9.0.2</b> Load data</a></li>
+<li class="chapter" data-level="9.0.3" data-path="acoustic-detections.html"><a href="acoustic-detections.html#overall-number-of-detections"><i class="fa fa-check"></i><b>9.0.3</b> Overall number of detections</a></li>
+<li class="chapter" data-level="9.0.4" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-treatment-type"><i class="fa fa-check"></i><b>9.0.4</b> Detections by treatment type</a></li>
+<li class="chapter" data-level="9.0.5" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-species-traits"><i class="fa fa-check"></i><b>9.0.5</b> Detections by species traits</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>11</b> Jackknife estimates</a><ul>
-<li class="chapter" data-level="11.1" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#install-required-libraries-5"><i class="fa fa-check"></i><b>11.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="11.2" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#load-the-necessary-data-to-calculate-jackknife-scores"><i class="fa fa-check"></i><b>11.2</b> Load the necessary data to calculate Jackknife scores</a></li>
-<li class="chapter" data-level="11.3" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#preparing-dataframe-to-extract-jacknife-scores"><i class="fa fa-check"></i><b>11.3</b> Preparing dataframe to extract jacknife scores</a></li>
-<li class="chapter" data-level="11.4" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#save-scores-locally"><i class="fa fa-check"></i><b>11.4</b> Save scores locally</a></li>
-<li class="chapter" data-level="11.5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#looking-at-correlations-between-jacknife-scores-and-bootstrap-estimates"><i class="fa fa-check"></i><b>11.5</b> Looking at correlations between jacknife scores and bootstrap estimates</a></li>
-<li class="chapter" data-level="11.6" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#testing-for-differences-between-treatment-types"><i class="fa fa-check"></i><b>11.6</b> Testing for differences between treatment types</a></li>
+<li class="chapter" data-level="10" data-path="species-proportions.html"><a href="species-proportions.html"><i class="fa fa-check"></i><b>10</b> Species proportions</a>
+<ul>
+<li class="chapter" data-level="10.0.1" data-path="species-proportions.html"><a href="species-proportions.html#install-required-libraries-5"><i class="fa fa-check"></i><b>10.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="10.0.2" data-path="species-proportions.html"><a href="species-proportions.html#load-the-necessary-data-to-calculate-proportions"><i class="fa fa-check"></i><b>10.0.2</b> Load the necessary data to calculate proportions</a></li>
+<li class="chapter" data-level="10.0.3" data-path="species-proportions.html"><a href="species-proportions.html#proportion-of-acoustic-detections-across-all-10-s-chunks-for-every-site-date-combination"><i class="fa fa-check"></i><b>10.0.3</b> Proportion of acoustic detections across all 10-s chunks for every site-date combination</a></li>
+<li class="chapter" data-level="10.0.4" data-path="species-proportions.html"><a href="species-proportions.html#testing-for-differences-in-species-acoustic-detections-across-treatment-types"><i class="fa fa-check"></i><b>10.0.4</b> Testing for differences in species acoustic detections across treatment types</a></li>
+<li class="chapter" data-level="10.0.5" data-path="species-proportions.html"><a href="species-proportions.html#proportion-of-detections-across-acoustic-point-counts"><i class="fa fa-check"></i><b>10.0.5</b> Proportion of detections across acoustic point counts</a></li>
+<li class="chapter" data-level="10.0.6" data-path="species-proportions.html"><a href="species-proportions.html#testing-for-differences-in-rainforest-and-open-country-species-detections-across-acoustic-point-counts"><i class="fa fa-check"></i><b>10.0.6</b> Testing for differences in rainforest and open-country species detections across acoustic point counts</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html"><i class="fa fa-check"></i><b>12</b> Non-metric multidimensional scaling</a><ul>
-<li class="chapter" data-level="12.1" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#install-required-libraries-6"><i class="fa fa-check"></i><b>12.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="12.2" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#load-the-necessary-data-for-nmds-calculations-1"><i class="fa fa-check"></i><b>12.2</b> Load the necessary data for NMDS calculations</a></li>
-<li class="chapter" data-level="12.3" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#preparing-dataframe-of-traits-and-species-to-be-used-for-nmds-later-on"><i class="fa fa-check"></i><b>12.3</b> Preparing dataframe of traits and species to be used for NMDS later on</a></li>
-<li class="chapter" data-level="12.4" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#preparing-a-dataframe-of-detections-to-run-ordinations"><i class="fa fa-check"></i><b>12.4</b> Preparing a dataframe of detections to run ordinations</a></li>
-<li class="chapter" data-level="12.5" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#bray-curtis-dissimilarity-index"><i class="fa fa-check"></i><b>12.5</b> Bray-Curtis dissimilarity index</a></li>
-<li class="chapter" data-level="12.6" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#plotting-the-nmds-scores-1"><i class="fa fa-check"></i><b>12.6</b> Plotting the NMDS scores</a></li>
-<li class="chapter" data-level="12.7" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#main-text-figure-2"><i class="fa fa-check"></i><b>12.7</b> Main text Figure 2</a></li>
-<li class="chapter" data-level="12.8" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#testing-multivariate-homogeneity-of-group-dispersions-1"><i class="fa fa-check"></i><b>12.8</b> Testing multivariate homogeneity of group dispersions</a></li>
-<li class="chapter" data-level="12.9" data-path="non-metric-multidimensional-scaling.html"><a href="non-metric-multidimensional-scaling.html#testing-compositional-dissimilarity-between-groups"><i class="fa fa-check"></i><b>12.9</b> Testing compositional dissimilarity between groups</a></li>
+<li class="chapter" data-level="11" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html"><i class="fa fa-check"></i><b>11</b> Non-metric multidimensional scaling of bird species detections</a>
+<ul>
+<li class="chapter" data-level="11.0.1" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#install-required-libraries-6"><i class="fa fa-check"></i><b>11.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="11.0.2" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#load-the-necessary-data-for-nmds-calculations-1"><i class="fa fa-check"></i><b>11.0.2</b> Load the necessary data for NMDS calculations</a></li>
+<li class="chapter" data-level="11.0.3" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#preparing-dataframe-of-traits-and-species-to-be-used-for-nmds-later-on"><i class="fa fa-check"></i><b>11.0.3</b> Preparing dataframe of traits and species to be used for NMDS later on</a></li>
+<li class="chapter" data-level="11.0.4" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#preparing-a-dataframe-of-detections-to-run-ordinations"><i class="fa fa-check"></i><b>11.0.4</b> Preparing a dataframe of detections to run ordinations</a></li>
+<li class="chapter" data-level="11.0.5" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#bray-curtis-dissimilarity-index"><i class="fa fa-check"></i><b>11.0.5</b> Bray-Curtis dissimilarity index</a></li>
+<li class="chapter" data-level="11.0.6" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#plotting-the-nmds-scores-1"><i class="fa fa-check"></i><b>11.0.6</b> Plotting the NMDS scores</a></li>
+<li class="chapter" data-level="11.0.7" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#main-text-figure-5"><i class="fa fa-check"></i><b>11.0.7</b> Main text Figure 5</a></li>
+<li class="chapter" data-level="11.0.8" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#testing-multivariate-homogeneity-of-group-dispersions-1"><i class="fa fa-check"></i><b>11.0.8</b> Testing multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="11.0.9" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#visualizing-the-multivariate-homogeneity-of-group-dispersions-1"><i class="fa fa-check"></i><b>11.0.9</b> Visualizing the multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="11.0.10" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#testing-compositional-dissimilarity-between-groups"><i class="fa fa-check"></i><b>11.0.10</b> Testing compositional dissimilarity between groups</a></li>
+<li class="chapter" data-level="11.0.11" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#separate-analysis-instead-of-using-bird-detections-using-richness-to-run-nmds-ordinations"><i class="fa fa-check"></i><b>11.0.11</b> Separate analysis: Instead of using bird detections, using richness to run nmds ordinations</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>13</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a><ul>
-<li class="chapter" data-level="13.1" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#install-required-libraries-7"><i class="fa fa-check"></i><b>13.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="13.2" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#load-the-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>13.2</b> Load the necessary data for statistical modeling</a></li>
-<li class="chapter" data-level="13.3" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-in-a-format-for-generalized-linear-modeling"><i class="fa fa-check"></i><b>13.3</b> Getting data ready in a format for generalized linear modeling</a></li>
-<li class="chapter" data-level="13.4" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-for-generalized-linear-mixed-modeling-with-richness-data-as-well-as-visits."><i class="fa fa-check"></i><b>13.4</b> Getting data ready for generalized linear mixed modeling with richness data as well as visits.</a></li>
-<li class="chapter" data-level="13.5" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#running-the-generalized-linear-mixed-models-1"><i class="fa fa-check"></i><b>13.5</b> Running the generalized linear mixed models</a></li>
-<li class="chapter" data-level="13.6" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#testing-the-role-of-habitat"><i class="fa fa-check"></i><b>13.6</b> Testing the role of habitat</a></li>
-<li class="chapter" data-level="13.7" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#effect-of-planting-year"><i class="fa fa-check"></i><b>13.7</b> Effect of planting year</a></li>
+<li class="chapter" data-level="12" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>12</b> Jackknife estimates</a>
+<ul>
+<li class="chapter" data-level="12.0.1" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#install-required-libraries-7"><i class="fa fa-check"></i><b>12.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="12.0.2" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#load-the-necessary-data-to-calculate-jackknife-scores"><i class="fa fa-check"></i><b>12.0.2</b> Load the necessary data to calculate Jackknife scores</a></li>
+<li class="chapter" data-level="12.0.3" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#preparing-dataframe-to-extract-jacknife-scores"><i class="fa fa-check"></i><b>12.0.3</b> Preparing dataframe to extract jacknife scores</a></li>
+<li class="chapter" data-level="12.0.4" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#save-scores-locally"><i class="fa fa-check"></i><b>12.0.4</b> Save scores locally</a></li>
+<li class="chapter" data-level="12.0.5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#looking-at-correlations-between-jacknife-scores-and-bootstrap-estimates"><i class="fa fa-check"></i><b>12.0.5</b> Looking at correlations between jacknife scores and bootstrap estimates</a></li>
+<li class="chapter" data-level="12.0.6" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#testing-for-differences-between-treatment-types"><i class="fa fa-check"></i><b>12.0.6</b> Testing for differences between treatment types</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><i class="fa fa-check"></i><b>14</b> Generalized linear modeling (acoustic space use and bird species richness, and time since restoration)</a><ul>
-<li class="chapter" data-level="14.1" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#install-required-libraries-8"><i class="fa fa-check"></i><b>14.1</b> Install required libraries</a></li>
-<li class="chapter" data-level="14.2" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#load-necessary-data-for-statistical-modeling-1"><i class="fa fa-check"></i><b>14.2</b> Load necessary data for statistical modeling</a></li>
-<li class="chapter" data-level="14.3" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#getting-data-ready-in-a-format-for-linear-modeling-1"><i class="fa fa-check"></i><b>14.3</b> Getting data ready in a format for linear modeling</a></li>
-<li class="chapter" data-level="14.4" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#bird-species-richness-1"><i class="fa fa-check"></i><b>14.4</b> Bird species richness</a></li>
-<li class="chapter" data-level="14.5" data-path="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-bird-species-richness-and-time-since-restoration.html#year-since-restoration"><i class="fa fa-check"></i><b>14.5</b> Year since restoration</a></li>
+<li class="chapter" data-level="13" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>13</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a>
+<ul>
+<li class="chapter" data-level="13.0.1" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#install-required-libraries-8"><i class="fa fa-check"></i><b>13.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="13.0.2" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#load-the-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>13.0.2</b> Load the necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="13.0.3" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-in-a-format-for-generalized-linear-modeling"><i class="fa fa-check"></i><b>13.0.3</b> Getting data ready in a format for generalized linear modeling</a></li>
+<li class="chapter" data-level="13.0.4" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-for-generalized-linear-mixed-modeling-with-richness-data-as-well-as-visits."><i class="fa fa-check"></i><b>13.0.4</b> Getting data ready for generalized linear mixed modeling with richness data as well as visits.</a></li>
+<li class="chapter" data-level="13.0.5" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#running-the-generalized-linear-mixed-models-1"><i class="fa fa-check"></i><b>13.0.5</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="13.0.6" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#testing-the-role-of-habitat"><i class="fa fa-check"></i><b>13.0.6</b> Testing the role of habitat</a></li>
+<li class="chapter" data-level="13.0.7" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#effect-of-planting-year"><i class="fa fa-check"></i><b>13.0.7</b> Effect of planting year</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>14</b> Generalized linear mixed modeling (species proportions, vegetation data and planting year)</a>
+<ul>
+<li class="chapter" data-level="14.0.1" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#install-required-libraries-9"><i class="fa fa-check"></i><b>14.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="14.0.2" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#load-the-necessary-data-for-statistical-modeling-1"><i class="fa fa-check"></i><b>14.0.2</b> Load the necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="14.0.3" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#getting-data-ready-in-a-format-for-generalized-linear-mixed-modeling"><i class="fa fa-check"></i><b>14.0.3</b> Getting data ready in a format for generalized linear mixed modeling</a></li>
+<li class="chapter" data-level="14.0.4" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#running-the-generalized-linear-mixed-models-2"><i class="fa fa-check"></i><b>14.0.4</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="14.0.5" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#examining-effect-of-restoration-type-on-proportion-of-rainforest-and-open-country-species-detections"><i class="fa fa-check"></i><b>14.0.5</b> Examining effect of restoration type on proportion of rainforest and open-country species detections</a></li>
+<li class="chapter" data-level="14.0.6" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#testing-the-role-of-habitat-1"><i class="fa fa-check"></i><b>14.0.6</b> Testing the role of habitat</a></li>
+<li class="chapter" data-level="14.0.7" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#effect-of-planting-year-1"><i class="fa fa-check"></i><b>14.0.7</b> Effect of planting year</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><i class="fa fa-check"></i><b>15</b> Generalized linear modeling (acoustic space use and proportion of bird species detections and time since restoration)</a>
+<ul>
+<li class="chapter" data-level="15.0.1" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#install-required-libraries-10"><i class="fa fa-check"></i><b>15.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="15.0.2" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#load-necessary-data-for-statistical-modeling-1"><i class="fa fa-check"></i><b>15.0.2</b> Load necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="15.0.3" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#getting-data-ready-in-a-format-for-linear-modeling-1"><i class="fa fa-check"></i><b>15.0.3</b> Getting data ready in a format for linear modeling</a></li>
+<li class="chapter" data-level="15.0.4" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#acoustic-space-use-and-proportion-of-bird-species-detections"><i class="fa fa-check"></i><b>15.0.4</b> Acoustic space use and proportion of bird species detections</a></li>
+<li class="chapter" data-level="15.0.5" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#year-since-restoration"><i class="fa fa-check"></i><b>15.0.5</b> Year since restoration</a></li>
 </ul></li>
 </ul>
 
@@ -246,7 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code for <em>Using acoustics to assess the impacts of forest restoration on bird communities in the Western Ghats</em></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code and supporting information for <em>Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats</em></a>
           </h1>
         </div>
 
@@ -254,182 +290,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="jackknife-estimates" class="section level1">
-<h1><span class="header-section-number">Section 11</span> Jackknife estimates</h1>
+<div id="jackknife-estimates" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Section 12</span> Jackknife estimates<a href="jackknife-estimates.html#jackknife-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In this script, we will extract jackknife scores, which essentially extrapolates species richness for a given species pool. This calculation is based on the number of sites and the number of visits to each site and the number of singletons/doubletons (detecting a species only once/site and twice/site respectively).</p>
-<div id="install-required-libraries-5" class="section level2">
-<h2><span class="header-section-number">11.1</span> Install required libraries</h2>
-<div class="sourceCode" id="cb43"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb43-1"><a href="jackknife-estimates.html#cb43-1"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb43-2"><a href="jackknife-estimates.html#cb43-2"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb43-3"><a href="jackknife-estimates.html#cb43-3"></a><span class="kw">library</span>(stringr)</span>
-<span id="cb43-4"><a href="jackknife-estimates.html#cb43-4"></a><span class="kw">library</span>(vegan)</span>
-<span id="cb43-5"><a href="jackknife-estimates.html#cb43-5"></a><span class="kw">library</span>(ggplot2)</span>
-<span id="cb43-6"><a href="jackknife-estimates.html#cb43-6"></a><span class="kw">library</span>(scico)</span>
-<span id="cb43-7"><a href="jackknife-estimates.html#cb43-7"></a><span class="kw">library</span>(psych)</span>
-<span id="cb43-8"><a href="jackknife-estimates.html#cb43-8"></a></span>
-<span id="cb43-9"><a href="jackknife-estimates.html#cb43-9"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
-<span id="cb43-10"><a href="jackknife-estimates.html#cb43-10"></a><span class="kw">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<div id="install-required-libraries-7" class="section level3 hasAnchor" number="12.0.1">
+<h3><span class="header-section-number">12.0.1</span> Install required libraries<a href="jackknife-estimates.html#install-required-libraries-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb60"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb60-1"><a href="jackknife-estimates.html#cb60-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb60-2"><a href="jackknife-estimates.html#cb60-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb60-3"><a href="jackknife-estimates.html#cb60-3"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb60-4"><a href="jackknife-estimates.html#cb60-4"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb60-5"><a href="jackknife-estimates.html#cb60-5"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb60-6"><a href="jackknife-estimates.html#cb60-6"></a><span class="fu">library</span>(scico)</span>
+<span id="cb60-7"><a href="jackknife-estimates.html#cb60-7"></a><span class="fu">library</span>(psych)</span>
+<span id="cb60-8"><a href="jackknife-estimates.html#cb60-8"></a></span>
+<span id="cb60-9"><a href="jackknife-estimates.html#cb60-9"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb60-10"><a href="jackknife-estimates.html#cb60-10"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
 </div>
-<div id="load-the-necessary-data-to-calculate-jackknife-scores" class="section level2">
-<h2><span class="header-section-number">11.2</span> Load the necessary data to calculate Jackknife scores</h2>
-<div class="sourceCode" id="cb44"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb44-1"><a href="jackknife-estimates.html#cb44-1"></a><span class="co"># We load the subset data</span></span>
-<span id="cb44-2"><a href="jackknife-estimates.html#cb44-2"></a>datSubset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/datSubset.csv&quot;</span>)</span>
-<span id="cb44-3"><a href="jackknife-estimates.html#cb44-3"></a></span>
-<span id="cb44-4"><a href="jackknife-estimates.html#cb44-4"></a><span class="co"># Load species-trait data to essentially check for associations by habitat type</span></span>
-<span id="cb44-5"><a href="jackknife-estimates.html#cb44-5"></a>trait_dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span>
-<span id="cb44-6"><a href="jackknife-estimates.html#cb44-6"></a></span>
-<span id="cb44-7"><a href="jackknife-estimates.html#cb44-7"></a><span class="co"># Site-summary (Number of detections across all sites)</span></span>
-<span id="cb44-8"><a href="jackknife-estimates.html#cb44-8"></a>datSummary &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
-<span id="cb44-9"><a href="jackknife-estimates.html#cb44-9"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.type) <span class="op">%&gt;%</span></span>
-<span id="cb44-10"><a href="jackknife-estimates.html#cb44-10"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
-<span id="cb44-11"><a href="jackknife-estimates.html#cb44-11"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="dt">.funs =</span> sum)</span></code></pre></div>
+<div id="load-the-necessary-data-to-calculate-jackknife-scores" class="section level3 hasAnchor" number="12.0.2">
+<h3><span class="header-section-number">12.0.2</span> Load the necessary data to calculate Jackknife scores<a href="jackknife-estimates.html#load-the-necessary-data-to-calculate-jackknife-scores" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb61"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb61-1"><a href="jackknife-estimates.html#cb61-1"></a><span class="co"># We load the subset data</span></span>
+<span id="cb61-2"><a href="jackknife-estimates.html#cb61-2"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/datSubset.csv&quot;</span>)</span>
+<span id="cb61-3"><a href="jackknife-estimates.html#cb61-3"></a></span>
+<span id="cb61-4"><a href="jackknife-estimates.html#cb61-4"></a><span class="co"># Load species-trait data to essentially check for associations by habitat type</span></span>
+<span id="cb61-5"><a href="jackknife-estimates.html#cb61-5"></a>trait_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span>
+<span id="cb61-6"><a href="jackknife-estimates.html#cb61-6"></a></span>
+<span id="cb61-7"><a href="jackknife-estimates.html#cb61-7"></a><span class="co"># Site-summary (Number of detections across all sites)</span></span>
+<span id="cb61-8"><a href="jackknife-estimates.html#cb61-8"></a>datSummary <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
+<span id="cb61-9"><a href="jackknife-estimates.html#cb61-9"></a>  <span class="fu">group_by</span>(Site, Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb61-10"><a href="jackknife-estimates.html#cb61-10"></a>  <span class="fu">transform</span>() <span class="sc">%&gt;%</span> <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb61-11"><a href="jackknife-estimates.html#cb61-11"></a>  <span class="fu">summarise_at</span>(<span class="at">.vars =</span> <span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="at">.funs =</span> sum)</span></code></pre></div>
 </div>
-<div id="preparing-dataframe-to-extract-jacknife-scores" class="section level2">
-<h2><span class="header-section-number">11.3</span> Preparing dataframe to extract jacknife scores</h2>
-<div class="sourceCode" id="cb45"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb45-1"><a href="jackknife-estimates.html#cb45-1"></a><span class="co"># Calculate the overall number of detections for each site across 6 days of data (translates to ~96-min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. </span></span>
-<span id="cb45-2"><a href="jackknife-estimates.html#cb45-2"></a></span>
-<span id="cb45-3"><a href="jackknife-estimates.html#cb45-3"></a>nDetections_site_date &lt;-<span class="st"> </span>datSubset <span class="op">%&gt;%</span></span>
-<span id="cb45-4"><a href="jackknife-estimates.html#cb45-4"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Restoration.type, Date) <span class="op">%&gt;%</span></span>
-<span id="cb45-5"><a href="jackknife-estimates.html#cb45-5"></a><span class="st">  </span><span class="kw">transform</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">replace</span>(<span class="kw">is.na</span>(.), <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
-<span id="cb45-6"><a href="jackknife-estimates.html#cb45-6"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="kw">c</span>(<span class="st">&quot;IP&quot;</span><span class="op">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="dt">.funs =</span> sum)</span>
-<span id="cb45-7"><a href="jackknife-estimates.html#cb45-7"></a>  </span>
-<span id="cb45-8"><a href="jackknife-estimates.html#cb45-8"></a><span class="co"># Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates</span></span>
-<span id="cb45-9"><a href="jackknife-estimates.html#cb45-9"></a></span>
-<span id="cb45-10"><a href="jackknife-estimates.html#cb45-10"></a>nDetections_trait &lt;-<span class="st"> </span>nDetections_site_date <span class="op">%&gt;%</span></span>
-<span id="cb45-11"><a href="jackknife-estimates.html#cb45-11"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols=</span>IP<span class="op">:</span>HSWP, <span class="dt">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb45-12"><a href="jackknife-estimates.html#cb45-12"></a><span class="st">  </span><span class="kw">left_join</span>(.,trait_dat, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;Species_Code&quot;</span>=<span class="st">&quot;species_annotation_codes&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb45-13"><a href="jackknife-estimates.html#cb45-13"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">forRichness =</span> <span class="kw">case_when</span>(count<span class="op">&gt;</span><span class="dv">0</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span>,count<span class="op">==</span><span class="dv">0</span> <span class="op">~</span><span class="st"> </span><span class="dv">0</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb45-14"><a href="jackknife-estimates.html#cb45-14"></a><span class="st">  </span><span class="kw">rename</span>(., <span class="dt">nDetections =</span> count)</span>
-<span id="cb45-15"><a href="jackknife-estimates.html#cb45-15"></a></span>
-<span id="cb45-16"><a href="jackknife-estimates.html#cb45-16"></a><span class="co"># Extract jackknife scores</span></span>
-<span id="cb45-17"><a href="jackknife-estimates.html#cb45-17"></a><span class="co"># To do the same, we first prepare the dataframe in a manner where we have a matrix of Site by Date by Species name</span></span>
-<span id="cb45-18"><a href="jackknife-estimates.html#cb45-18"></a></span>
-<span id="cb45-19"><a href="jackknife-estimates.html#cb45-19"></a>jacknifeAll &lt;-<span class="st"> </span>nDetections_trait <span class="op">%&gt;%</span></span>
-<span id="cb45-20"><a href="jackknife-estimates.html#cb45-20"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Date, Species_Code, nDetections, Restoration.type) <span class="op">%&gt;%</span></span>
-<span id="cb45-21"><a href="jackknife-estimates.html#cb45-21"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type, Species_Code) <span class="op">%&gt;%</span></span>
-<span id="cb45-22"><a href="jackknife-estimates.html#cb45-22"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totDetections =</span> <span class="kw">sum</span>(nDetections)) <span class="op">%&gt;%</span></span>
-<span id="cb45-23"><a href="jackknife-estimates.html#cb45-23"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> Species_Code, <span class="dt">values_from =</span> totDetections, <span class="dt">values_fill =</span> <span class="kw">list</span>(<span class="dt">totDetections=</span><span class="dv">0</span>))</span>
-<span id="cb45-24"><a href="jackknife-estimates.html#cb45-24"></a></span>
-<span id="cb45-25"><a href="jackknife-estimates.html#cb45-25"></a><span class="co"># Prepare a dataframe of rainforest species for jacknifing</span></span>
-<span id="cb45-26"><a href="jackknife-estimates.html#cb45-26"></a></span>
-<span id="cb45-27"><a href="jackknife-estimates.html#cb45-27"></a>jacknife_rainForest &lt;-<span class="st"> </span>nDetections_trait <span class="op">%&gt;%</span></span>
-<span id="cb45-28"><a href="jackknife-estimates.html#cb45-28"></a><span class="st">  </span><span class="kw">filter</span>(Habitat<span class="op">==</span><span class="st">&quot;RF&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb45-29"><a href="jackknife-estimates.html#cb45-29"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Date, Species_Code, nDetections, Restoration.type) <span class="op">%&gt;%</span></span>
-<span id="cb45-30"><a href="jackknife-estimates.html#cb45-30"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type, Species_Code) <span class="op">%&gt;%</span></span>
-<span id="cb45-31"><a href="jackknife-estimates.html#cb45-31"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totDetections =</span> <span class="kw">sum</span>(nDetections)) <span class="op">%&gt;%</span></span>
-<span id="cb45-32"><a href="jackknife-estimates.html#cb45-32"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> Species_Code, <span class="dt">values_from =</span> totDetections, <span class="dt">values_fill =</span> <span class="kw">list</span>(<span class="dt">totDetections=</span><span class="dv">0</span>))</span>
-<span id="cb45-33"><a href="jackknife-estimates.html#cb45-33"></a></span>
-<span id="cb45-34"><a href="jackknife-estimates.html#cb45-34"></a><span class="co"># Prepare a dataframe of open-country species for jacknifing</span></span>
-<span id="cb45-35"><a href="jackknife-estimates.html#cb45-35"></a></span>
-<span id="cb45-36"><a href="jackknife-estimates.html#cb45-36"></a>jacknife_openCountry &lt;-<span class="st"> </span>nDetections_trait <span class="op">%&gt;%</span></span>
-<span id="cb45-37"><a href="jackknife-estimates.html#cb45-37"></a><span class="st">  </span><span class="kw">filter</span>(Habitat<span class="op">==</span><span class="st">&quot;OC&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb45-38"><a href="jackknife-estimates.html#cb45-38"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Site, Date, Species_Code, nDetections, Restoration.type) <span class="op">%&gt;%</span></span>
-<span id="cb45-39"><a href="jackknife-estimates.html#cb45-39"></a><span class="st">  </span><span class="kw">group_by</span>(Site, Date, Restoration.type, Species_Code) <span class="op">%&gt;%</span></span>
-<span id="cb45-40"><a href="jackknife-estimates.html#cb45-40"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">totDetections =</span> <span class="kw">sum</span>(nDetections)) <span class="op">%&gt;%</span></span>
-<span id="cb45-41"><a href="jackknife-estimates.html#cb45-41"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> Species_Code, <span class="dt">values_from =</span> totDetections, <span class="dt">values_fill =</span> <span class="kw">list</span>(<span class="dt">totDetections=</span><span class="dv">0</span>))</span></code></pre></div>
+<div id="preparing-dataframe-to-extract-jacknife-scores" class="section level3 hasAnchor" number="12.0.3">
+<h3><span class="header-section-number">12.0.3</span> Preparing dataframe to extract jacknife scores<a href="jackknife-estimates.html#preparing-dataframe-to-extract-jacknife-scores" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb62"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb62-1"><a href="jackknife-estimates.html#cb62-1"></a><span class="co"># Calculate the overall number of detections for each site across 6 days of data (translates to ~96-min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. </span></span>
+<span id="cb62-2"><a href="jackknife-estimates.html#cb62-2"></a></span>
+<span id="cb62-3"><a href="jackknife-estimates.html#cb62-3"></a>nDetections_site_date <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
+<span id="cb62-4"><a href="jackknife-estimates.html#cb62-4"></a>  <span class="fu">group_by</span>(Site, Restoration.type, Date) <span class="sc">%&gt;%</span></span>
+<span id="cb62-5"><a href="jackknife-estimates.html#cb62-5"></a>  <span class="fu">transform</span>() <span class="sc">%&gt;%</span> <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-6"><a href="jackknife-estimates.html#cb62-6"></a>  <span class="fu">summarise_at</span>(<span class="at">.vars =</span> <span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="at">.funs =</span> sum)</span>
+<span id="cb62-7"><a href="jackknife-estimates.html#cb62-7"></a>  </span>
+<span id="cb62-8"><a href="jackknife-estimates.html#cb62-8"></a><span class="co"># Combine the nDetections and trait based data to obtain a dataframe for jackknife estimates</span></span>
+<span id="cb62-9"><a href="jackknife-estimates.html#cb62-9"></a></span>
+<span id="cb62-10"><a href="jackknife-estimates.html#cb62-10"></a>nDetections_trait <span class="ot">&lt;-</span> nDetections_site_date <span class="sc">%&gt;%</span></span>
+<span id="cb62-11"><a href="jackknife-estimates.html#cb62-11"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span>IP<span class="sc">:</span>HSWP, <span class="at">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-12"><a href="jackknife-estimates.html#cb62-12"></a>  <span class="fu">left_join</span>(.,trait_dat, <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Species_Code&quot;</span><span class="ot">=</span><span class="st">&quot;species_annotation_codes&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb62-13"><a href="jackknife-estimates.html#cb62-13"></a>  <span class="fu">mutate</span>(<span class="at">forRichness =</span> <span class="fu">case_when</span>(count<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,count<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb62-14"><a href="jackknife-estimates.html#cb62-14"></a>  <span class="fu">rename</span>(., <span class="at">nDetections =</span> count)</span>
+<span id="cb62-15"><a href="jackknife-estimates.html#cb62-15"></a></span>
+<span id="cb62-16"><a href="jackknife-estimates.html#cb62-16"></a><span class="co"># Extract jackknife scores</span></span>
+<span id="cb62-17"><a href="jackknife-estimates.html#cb62-17"></a><span class="co"># To do the same, we first prepare the dataframe in a manner where we have a matrix of Site by Date by Species name</span></span>
+<span id="cb62-18"><a href="jackknife-estimates.html#cb62-18"></a></span>
+<span id="cb62-19"><a href="jackknife-estimates.html#cb62-19"></a>jacknifeAll <span class="ot">&lt;-</span> nDetections_trait <span class="sc">%&gt;%</span></span>
+<span id="cb62-20"><a href="jackknife-estimates.html#cb62-20"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Date, Species_Code, nDetections, Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb62-21"><a href="jackknife-estimates.html#cb62-21"></a>  <span class="fu">group_by</span>(Site, Date, Restoration.type, Species_Code) <span class="sc">%&gt;%</span></span>
+<span id="cb62-22"><a href="jackknife-estimates.html#cb62-22"></a>  <span class="fu">summarise</span>(<span class="at">totDetections =</span> <span class="fu">sum</span>(nDetections)) <span class="sc">%&gt;%</span></span>
+<span id="cb62-23"><a href="jackknife-estimates.html#cb62-23"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Species_Code, <span class="at">values_from =</span> totDetections, <span class="at">values_fill =</span> <span class="fu">list</span>(<span class="at">totDetections=</span><span class="dv">0</span>))</span>
+<span id="cb62-24"><a href="jackknife-estimates.html#cb62-24"></a></span>
+<span id="cb62-25"><a href="jackknife-estimates.html#cb62-25"></a><span class="co"># Prepare a dataframe of rainforest species for jacknifing</span></span>
+<span id="cb62-26"><a href="jackknife-estimates.html#cb62-26"></a></span>
+<span id="cb62-27"><a href="jackknife-estimates.html#cb62-27"></a>jacknife_rainForest <span class="ot">&lt;-</span> nDetections_trait <span class="sc">%&gt;%</span></span>
+<span id="cb62-28"><a href="jackknife-estimates.html#cb62-28"></a>  <span class="fu">filter</span>(habitat<span class="sc">==</span><span class="st">&quot;RF&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-29"><a href="jackknife-estimates.html#cb62-29"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Date, Species_Code, nDetections, Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb62-30"><a href="jackknife-estimates.html#cb62-30"></a>  <span class="fu">group_by</span>(Site, Date, Restoration.type, Species_Code) <span class="sc">%&gt;%</span></span>
+<span id="cb62-31"><a href="jackknife-estimates.html#cb62-31"></a>  <span class="fu">summarise</span>(<span class="at">totDetections =</span> <span class="fu">sum</span>(nDetections)) <span class="sc">%&gt;%</span></span>
+<span id="cb62-32"><a href="jackknife-estimates.html#cb62-32"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Species_Code, <span class="at">values_from =</span> totDetections, <span class="at">values_fill =</span> <span class="fu">list</span>(<span class="at">totDetections=</span><span class="dv">0</span>))</span>
+<span id="cb62-33"><a href="jackknife-estimates.html#cb62-33"></a></span>
+<span id="cb62-34"><a href="jackknife-estimates.html#cb62-34"></a><span class="co"># Prepare a dataframe of open-country species for jacknifing</span></span>
+<span id="cb62-35"><a href="jackknife-estimates.html#cb62-35"></a></span>
+<span id="cb62-36"><a href="jackknife-estimates.html#cb62-36"></a>jacknife_openCountry <span class="ot">&lt;-</span> nDetections_trait <span class="sc">%&gt;%</span></span>
+<span id="cb62-37"><a href="jackknife-estimates.html#cb62-37"></a>  <span class="fu">filter</span>(habitat<span class="sc">==</span><span class="st">&quot;OC&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-38"><a href="jackknife-estimates.html#cb62-38"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Date, Species_Code, nDetections, Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb62-39"><a href="jackknife-estimates.html#cb62-39"></a>  <span class="fu">group_by</span>(Site, Date, Restoration.type, Species_Code) <span class="sc">%&gt;%</span></span>
+<span id="cb62-40"><a href="jackknife-estimates.html#cb62-40"></a>  <span class="fu">summarise</span>(<span class="at">totDetections =</span> <span class="fu">sum</span>(nDetections)) <span class="sc">%&gt;%</span></span>
+<span id="cb62-41"><a href="jackknife-estimates.html#cb62-41"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Species_Code, <span class="at">values_from =</span> totDetections, <span class="at">values_fill =</span> <span class="fu">list</span>(<span class="at">totDetections=</span><span class="dv">0</span>))</span></code></pre></div>
 </div>
-<div id="save-scores-locally" class="section level2">
-<h2><span class="header-section-number">11.4</span> Save scores locally</h2>
-<div class="sourceCode" id="cb46"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb46-1"><a href="jackknife-estimates.html#cb46-1"></a>jackAllScore &lt;-<span class="st"> </span><span class="kw">specpool</span>(jacknifeAll[,<span class="dv">4</span><span class="op">:</span><span class="kw">ncol</span>(jacknifeAll)],</span>
-<span id="cb46-2"><a href="jackknife-estimates.html#cb46-2"></a>                       <span class="dt">pool =</span> jacknifeAll<span class="op">$</span>Site) <span class="op">%&gt;%</span></span>
-<span id="cb46-3"><a href="jackknife-estimates.html#cb46-3"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="st">&quot;Site&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb46-4"><a href="jackknife-estimates.html#cb46-4"></a><span class="st">  </span><span class="kw">add_column</span> (<span class="dt">Restoration.type =</span> datSummary<span class="op">$</span>Restoration.type)</span>
-<span id="cb46-5"><a href="jackknife-estimates.html#cb46-5"></a></span>
-<span id="cb46-6"><a href="jackknife-estimates.html#cb46-6"></a><span class="co"># write out results</span></span>
-<span id="cb46-7"><a href="jackknife-estimates.html#cb46-7"></a><span class="kw">write.csv</span>(jackAllScore, <span class="st">&quot;data/jackAll.csv&quot;</span>, <span class="dt">row.names=</span>F)</span>
-<span id="cb46-8"><a href="jackknife-estimates.html#cb46-8"></a></span>
-<span id="cb46-9"><a href="jackknife-estimates.html#cb46-9"></a>jack_rainForestScore &lt;-<span class="st"> </span><span class="kw">specpool</span>(jacknife_rainForest[,<span class="dv">4</span><span class="op">:</span><span class="kw">ncol</span>(jacknife_rainForest)],</span>
-<span id="cb46-10"><a href="jackknife-estimates.html#cb46-10"></a>                       <span class="dt">pool =</span> jacknife_rainForest<span class="op">$</span>Site) <span class="op">%&gt;%</span></span>
-<span id="cb46-11"><a href="jackknife-estimates.html#cb46-11"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="st">&quot;Site&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb46-12"><a href="jackknife-estimates.html#cb46-12"></a><span class="st">  </span><span class="kw">add_column</span> (<span class="dt">Restoration.type =</span> datSummary<span class="op">$</span>Restoration.type) <span class="op">%&gt;%</span></span>
-<span id="cb46-13"><a href="jackknife-estimates.html#cb46-13"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Habitat =</span> <span class="st">&quot;RF&quot;</span>)</span>
-<span id="cb46-14"><a href="jackknife-estimates.html#cb46-14"></a></span>
-<span id="cb46-15"><a href="jackknife-estimates.html#cb46-15"></a><span class="co"># write out results</span></span>
-<span id="cb46-16"><a href="jackknife-estimates.html#cb46-16"></a><span class="kw">write.csv</span>(jack_rainForestScore,<span class="st">&quot;data/jackRainforest.csv&quot;</span>, <span class="dt">row.names =</span> F)</span>
-<span id="cb46-17"><a href="jackknife-estimates.html#cb46-17"></a></span>
-<span id="cb46-18"><a href="jackknife-estimates.html#cb46-18"></a>jack_openCountryScore &lt;-<span class="kw">specpool</span>(jacknife_openCountry[,<span class="dv">4</span><span class="op">:</span><span class="kw">ncol</span>(jacknife_openCountry)],</span>
-<span id="cb46-19"><a href="jackknife-estimates.html#cb46-19"></a>                       <span class="dt">pool =</span> jacknife_openCountry<span class="op">$</span>Site) <span class="op">%&gt;%</span></span>
-<span id="cb46-20"><a href="jackknife-estimates.html#cb46-20"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="st">&quot;Site&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb46-21"><a href="jackknife-estimates.html#cb46-21"></a><span class="st">  </span><span class="kw">add_column</span> (<span class="dt">Restoration.type =</span> datSummary<span class="op">$</span>Restoration.type) <span class="op">%&gt;%</span></span>
-<span id="cb46-22"><a href="jackknife-estimates.html#cb46-22"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Habitat =</span> <span class="st">&quot;OC&quot;</span>)</span>
-<span id="cb46-23"><a href="jackknife-estimates.html#cb46-23"></a></span>
-<span id="cb46-24"><a href="jackknife-estimates.html#cb46-24"></a><span class="co"># write out results</span></span>
-<span id="cb46-25"><a href="jackknife-estimates.html#cb46-25"></a><span class="kw">write.csv</span>(jack_openCountryScore, <span class="st">&quot;data/jackOpencountry.csv&quot;</span>, <span class="dt">row.names =</span> F)</span></code></pre></div>
+<div id="save-scores-locally" class="section level3 hasAnchor" number="12.0.4">
+<h3><span class="header-section-number">12.0.4</span> Save scores locally<a href="jackknife-estimates.html#save-scores-locally" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb63"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb63-1"><a href="jackknife-estimates.html#cb63-1"></a>jackAllScore <span class="ot">&lt;-</span> <span class="fu">specpool</span>(jacknifeAll[,<span class="dv">4</span><span class="sc">:</span><span class="fu">ncol</span>(jacknifeAll)],</span>
+<span id="cb63-2"><a href="jackknife-estimates.html#cb63-2"></a>                       <span class="at">pool =</span> jacknifeAll<span class="sc">$</span>Site) <span class="sc">%&gt;%</span></span>
+<span id="cb63-3"><a href="jackknife-estimates.html#cb63-3"></a>  <span class="fu">rownames_to_column</span>(<span class="st">&quot;Site&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-4"><a href="jackknife-estimates.html#cb63-4"></a>  <span class="fu">add_column</span> (<span class="at">Restoration.type =</span> datSummary<span class="sc">$</span>Restoration.type)</span>
+<span id="cb63-5"><a href="jackknife-estimates.html#cb63-5"></a></span>
+<span id="cb63-6"><a href="jackknife-estimates.html#cb63-6"></a><span class="co"># write out results</span></span>
+<span id="cb63-7"><a href="jackknife-estimates.html#cb63-7"></a><span class="fu">write.csv</span>(jackAllScore, <span class="st">&quot;data/jackAll.csv&quot;</span>, <span class="at">row.names=</span>F)</span>
+<span id="cb63-8"><a href="jackknife-estimates.html#cb63-8"></a></span>
+<span id="cb63-9"><a href="jackknife-estimates.html#cb63-9"></a>jack_rainForestScore <span class="ot">&lt;-</span> <span class="fu">specpool</span>(jacknife_rainForest[,<span class="dv">4</span><span class="sc">:</span><span class="fu">ncol</span>(jacknife_rainForest)],</span>
+<span id="cb63-10"><a href="jackknife-estimates.html#cb63-10"></a>                       <span class="at">pool =</span> jacknife_rainForest<span class="sc">$</span>Site) <span class="sc">%&gt;%</span></span>
+<span id="cb63-11"><a href="jackknife-estimates.html#cb63-11"></a>  <span class="fu">rownames_to_column</span>(<span class="st">&quot;Site&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-12"><a href="jackknife-estimates.html#cb63-12"></a>  <span class="fu">add_column</span> (<span class="at">Restoration.type =</span> datSummary<span class="sc">$</span>Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb63-13"><a href="jackknife-estimates.html#cb63-13"></a>  <span class="fu">mutate</span>(<span class="at">Habitat =</span> <span class="st">&quot;RF&quot;</span>)</span>
+<span id="cb63-14"><a href="jackknife-estimates.html#cb63-14"></a></span>
+<span id="cb63-15"><a href="jackknife-estimates.html#cb63-15"></a><span class="co"># write out results</span></span>
+<span id="cb63-16"><a href="jackknife-estimates.html#cb63-16"></a><span class="fu">write.csv</span>(jack_rainForestScore,<span class="st">&quot;data/jackRainforest.csv&quot;</span>, <span class="at">row.names =</span> F)</span>
+<span id="cb63-17"><a href="jackknife-estimates.html#cb63-17"></a></span>
+<span id="cb63-18"><a href="jackknife-estimates.html#cb63-18"></a>jack_openCountryScore <span class="ot">&lt;-</span><span class="fu">specpool</span>(jacknife_openCountry[,<span class="dv">4</span><span class="sc">:</span><span class="fu">ncol</span>(jacknife_openCountry)],</span>
+<span id="cb63-19"><a href="jackknife-estimates.html#cb63-19"></a>                       <span class="at">pool =</span> jacknife_openCountry<span class="sc">$</span>Site) <span class="sc">%&gt;%</span></span>
+<span id="cb63-20"><a href="jackknife-estimates.html#cb63-20"></a>  <span class="fu">rownames_to_column</span>(<span class="st">&quot;Site&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-21"><a href="jackknife-estimates.html#cb63-21"></a>  <span class="fu">add_column</span> (<span class="at">Restoration.type =</span> datSummary<span class="sc">$</span>Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb63-22"><a href="jackknife-estimates.html#cb63-22"></a>  <span class="fu">mutate</span>(<span class="at">Habitat =</span> <span class="st">&quot;OC&quot;</span>)</span>
+<span id="cb63-23"><a href="jackknife-estimates.html#cb63-23"></a></span>
+<span id="cb63-24"><a href="jackknife-estimates.html#cb63-24"></a><span class="co"># write out results</span></span>
+<span id="cb63-25"><a href="jackknife-estimates.html#cb63-25"></a><span class="fu">write.csv</span>(jack_openCountryScore, <span class="st">&quot;data/jackOpencountry.csv&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
 </div>
-<div id="looking-at-correlations-between-jacknife-scores-and-bootstrap-estimates" class="section level2">
-<h2><span class="header-section-number">11.5</span> Looking at correlations between jacknife scores and bootstrap estimates</h2>
-<div class="sourceCode" id="cb47"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb47-1"><a href="jackknife-estimates.html#cb47-1"></a><span class="co"># This plot suggests an almost 1:1 correlation between jacknife estimates and bootstrap scores</span></span>
-<span id="cb47-2"><a href="jackknife-estimates.html#cb47-2"></a><span class="kw">plot</span>(jackAllScore<span class="op">$</span>jack1, jackAllScore<span class="op">$</span>boot)</span></code></pre></div>
+<div id="looking-at-correlations-between-jacknife-scores-and-bootstrap-estimates" class="section level3 hasAnchor" number="12.0.5">
+<h3><span class="header-section-number">12.0.5</span> Looking at correlations between jacknife scores and bootstrap estimates<a href="jackknife-estimates.html#looking-at-correlations-between-jacknife-scores-and-bootstrap-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb64"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb64-1"><a href="jackknife-estimates.html#cb64-1"></a><span class="co"># This plot suggests an almost 1:1 correlation between jacknife estimates and bootstrap scores</span></span>
+<span id="cb64-2"><a href="jackknife-estimates.html#cb64-2"></a><span class="fu">plot</span>(jackAllScore<span class="sc">$</span>jack1, jackAllScore<span class="sc">$</span>boot)</span></code></pre></div>
 </div>
-<div id="testing-for-differences-between-treatment-types" class="section level2">
-<h2><span class="header-section-number">11.6</span> Testing for differences between treatment types</h2>
+<div id="testing-for-differences-between-treatment-types" class="section level3 hasAnchor" number="12.0.6">
+<h3><span class="header-section-number">12.0.6</span> Testing for differences between treatment types<a href="jackknife-estimates.html#testing-for-differences-between-treatment-types" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Plotting jacknife estimates and testing for any significant differences between treatment types</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb48-1"><a href="jackknife-estimates.html#cb48-1"></a><span class="co"># Test if there are significant differences in jacknife estimates across treatment types</span></span>
-<span id="cb48-2"><a href="jackknife-estimates.html#cb48-2"></a>anovaJackAll &lt;-<span class="st"> </span><span class="kw">aov</span>(jack1<span class="op">~</span>Restoration.type, <span class="dt">data =</span> jackAllScore)</span>
-<span id="cb48-3"><a href="jackknife-estimates.html#cb48-3"></a></span>
-<span id="cb48-4"><a href="jackknife-estimates.html#cb48-4"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types</span></span>
-<span id="cb48-5"><a href="jackknife-estimates.html#cb48-5"></a>tukeyJackAll &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(anovaJackAll)</span>
-<span id="cb48-6"><a href="jackknife-estimates.html#cb48-6"></a></span>
-<span id="cb48-7"><a href="jackknife-estimates.html#cb48-7"></a><span class="co"># The above result suggests that there is no significant different in jacknife scores between treatment types</span></span>
-<span id="cb48-8"><a href="jackknife-estimates.html#cb48-8"></a></span>
-<span id="cb48-9"><a href="jackknife-estimates.html#cb48-9"></a><span class="co"># Create a boxplot of jacknife estimates by group (Here: group refers to Restoration Type)</span></span>
-<span id="cb48-10"><a href="jackknife-estimates.html#cb48-10"></a></span>
-<span id="cb48-11"><a href="jackknife-estimates.html#cb48-11"></a><span class="co"># reordering factors for plotting</span></span>
-<span id="cb48-12"><a href="jackknife-estimates.html#cb48-12"></a>jackAllScore<span class="op">$</span>Restoration.type &lt;-<span class="st"> </span><span class="kw">factor</span>(jackAllScore<span class="op">$</span>Restoration.type, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
-<span id="cb48-13"><a href="jackknife-estimates.html#cb48-13"></a></span>
-<span id="cb48-14"><a href="jackknife-estimates.html#cb48-14"></a>fig_jackAll &lt;-<span class="st"> </span><span class="kw">ggplot</span>(jackAllScore, <span class="kw">aes</span>(<span class="dt">x=</span>Restoration.type, <span class="dt">y=</span>jack1, <span class="dt">fill=</span>Restoration.type)) <span class="op">+</span><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb48-15"><a href="jackknife-estimates.html#cb48-15"></a><span class="st">    </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>) <span class="op">+</span></span>
-<span id="cb48-16"><a href="jackknife-estimates.html#cb48-16"></a><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
-<span id="cb48-17"><a href="jackknife-estimates.html#cb48-17"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">Treatment Type&quot;</span>, </span>
-<span id="cb48-18"><a href="jackknife-estimates.html#cb48-18"></a>       <span class="dt">y=</span><span class="st">&quot;Jackknife estimates</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
-<span id="cb48-19"><a href="jackknife-estimates.html#cb48-19"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="op">+</span></span>
-<span id="cb48-20"><a href="jackknife-estimates.html#cb48-20"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb48-21"><a href="jackknife-estimates.html#cb48-21"></a>      <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb48-22"><a href="jackknife-estimates.html#cb48-22"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
-<span id="cb48-23"><a href="jackknife-estimates.html#cb48-23"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb48-24"><a href="jackknife-estimates.html#cb48-24"></a></span>
-<span id="cb48-25"><a href="jackknife-estimates.html#cb48-25"></a><span class="kw">ggsave</span>(fig_jackAll, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_jackAll.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,</span>
-<span id="cb48-26"><a href="jackknife-estimates.html#cb48-26"></a>       <span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span></code></pre></div>
-<p><img src="figs/fig_jackAll.png" />
-## Jacknife scores by species traits</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb65-1"><a href="jackknife-estimates.html#cb65-1"></a><span class="co"># Test if there are significant differences in jacknife estimates across treatment types</span></span>
+<span id="cb65-2"><a href="jackknife-estimates.html#cb65-2"></a>anovaJackAll <span class="ot">&lt;-</span> <span class="fu">aov</span>(jack1<span class="sc">~</span>Restoration.type, <span class="at">data =</span> jackAllScore)</span>
+<span id="cb65-3"><a href="jackknife-estimates.html#cb65-3"></a></span>
+<span id="cb65-4"><a href="jackknife-estimates.html#cb65-4"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types</span></span>
+<span id="cb65-5"><a href="jackknife-estimates.html#cb65-5"></a>tukeyJackAll <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaJackAll)</span>
+<span id="cb65-6"><a href="jackknife-estimates.html#cb65-6"></a></span>
+<span id="cb65-7"><a href="jackknife-estimates.html#cb65-7"></a><span class="co"># The above result suggests that there is no significant different in jacknife scores between treatment types</span></span>
+<span id="cb65-8"><a href="jackknife-estimates.html#cb65-8"></a></span>
+<span id="cb65-9"><a href="jackknife-estimates.html#cb65-9"></a><span class="co"># Create a boxplot of jacknife estimates by group (Here: group refers to Restoration Type)</span></span>
+<span id="cb65-10"><a href="jackknife-estimates.html#cb65-10"></a></span>
+<span id="cb65-11"><a href="jackknife-estimates.html#cb65-11"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb65-12"><a href="jackknife-estimates.html#cb65-12"></a>jackAllScore<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(jackAllScore<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb65-13"><a href="jackknife-estimates.html#cb65-13"></a><span class="co"># Add a custom set of colors</span></span>
+<span id="cb65-14"><a href="jackknife-estimates.html#cb65-14"></a>mycolors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>), <span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>))</span>
+<span id="cb65-15"><a href="jackknife-estimates.html#cb65-15"></a></span>
+<span id="cb65-16"><a href="jackknife-estimates.html#cb65-16"></a>fig_jackAll <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(jackAllScore, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>jack1, <span class="at">fill=</span>Restoration.type)) <span class="sc">+</span>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb65-17"><a href="jackknife-estimates.html#cb65-17"></a>   <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span> </span>
+<span id="cb65-18"><a href="jackknife-estimates.html#cb65-18"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb65-19"><a href="jackknife-estimates.html#cb65-19"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb65-20"><a href="jackknife-estimates.html#cb65-20"></a>       <span class="at">y=</span><span class="st">&quot;Jackknife estimates</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb65-21"><a href="jackknife-estimates.html#cb65-21"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb65-22"><a href="jackknife-estimates.html#cb65-22"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb65-23"><a href="jackknife-estimates.html#cb65-23"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb65-24"><a href="jackknife-estimates.html#cb65-24"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb65-25"><a href="jackknife-estimates.html#cb65-25"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb65-26"><a href="jackknife-estimates.html#cb65-26"></a></span>
+<span id="cb65-27"><a href="jackknife-estimates.html#cb65-27"></a><span class="fu">ggsave</span>(fig_jackAll, <span class="at">filename =</span> <span class="st">&quot;figs/fig_jackAll.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,</span>
+<span id="cb65-28"><a href="jackknife-estimates.html#cb65-28"></a>       <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
+<p><img src="figs/fig_jackAll.png" alt="No significant differences across treatment types were observed." />
+### Jacknife scores by species traits</p>
 <p>Let’s test for significant differences in jacknife estimates as a function of species trait</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb49-1"><a href="jackknife-estimates.html#cb49-1"></a>anovaJack_rainForest &lt;-<span class="st"> </span><span class="kw">aov</span>(jack1<span class="op">~</span>Restoration.type, <span class="dt">data =</span> jack_rainForestScore)</span>
-<span id="cb49-2"><a href="jackknife-estimates.html#cb49-2"></a>anovaJack_openCountry &lt;-<span class="st"> </span><span class="kw">aov</span>(jack1<span class="op">~</span>Restoration.type, <span class="dt">data =</span> jack_openCountryScore)</span>
-<span id="cb49-3"><a href="jackknife-estimates.html#cb49-3"></a></span>
-<span id="cb49-4"><a href="jackknife-estimates.html#cb49-4"></a><span class="co"># Tukey test to study each pair of treatment </span></span>
-<span id="cb49-5"><a href="jackknife-estimates.html#cb49-5"></a>tukeyJack_rainForest &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(anovaJack_rainForest)</span>
-<span id="cb49-6"><a href="jackknife-estimates.html#cb49-6"></a>tukeyJack_openCountry &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(anovaJack_openCountry)</span>
-<span id="cb49-7"><a href="jackknife-estimates.html#cb49-7"></a></span>
-<span id="cb49-8"><a href="jackknife-estimates.html#cb49-8"></a><span class="co"># For rainforest species - there is no significant difference in jacknife estimates between any treatment types, while for open-country birds; there is a significant difference in jacknife estimates across active-benchmark and passive-benchmark</span></span>
-<span id="cb49-9"><a href="jackknife-estimates.html#cb49-9"></a></span>
-<span id="cb49-10"><a href="jackknife-estimates.html#cb49-10"></a><span class="co"># Plot the above results</span></span>
-<span id="cb49-11"><a href="jackknife-estimates.html#cb49-11"></a></span>
-<span id="cb49-12"><a href="jackknife-estimates.html#cb49-12"></a>jackTrait &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(jack_rainForestScore, jack_openCountryScore)</span>
-<span id="cb49-13"><a href="jackknife-estimates.html#cb49-13"></a></span>
-<span id="cb49-14"><a href="jackknife-estimates.html#cb49-14"></a><span class="co"># reordering factors for plotting</span></span>
-<span id="cb49-15"><a href="jackknife-estimates.html#cb49-15"></a>jackTrait<span class="op">$</span>Restoration.type &lt;-<span class="st"> </span><span class="kw">factor</span>(jackTrait<span class="op">$</span>Restoration.type, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
-<span id="cb49-16"><a href="jackknife-estimates.html#cb49-16"></a></span>
-<span id="cb49-17"><a href="jackknife-estimates.html#cb49-17"></a><span class="co"># Rainforest species</span></span>
-<span id="cb49-18"><a href="jackknife-estimates.html#cb49-18"></a>fig_jackTrait &lt;-<span class="st"> </span><span class="kw">ggplot</span>(jackTrait, <span class="kw">aes</span>(<span class="dt">x=</span>Restoration.type, <span class="dt">y=</span>jack1, <span class="dt">fill=</span>Habitat)) <span class="op">+</span></span>
-<span id="cb49-19"><a href="jackknife-estimates.html#cb49-19"></a><span class="st">    </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb49-20"><a href="jackknife-estimates.html#cb49-20"></a><span class="st">    </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;roma&quot;</span>,</span>
-<span id="cb49-21"><a href="jackknife-estimates.html#cb49-21"></a>                     <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Open-country&quot;</span>,<span class="st">&quot;Rainforest&quot;</span>)) <span class="op">+</span></span>
-<span id="cb49-22"><a href="jackknife-estimates.html#cb49-22"></a><span class="st">     </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
-<span id="cb49-23"><a href="jackknife-estimates.html#cb49-23"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">Treatment Type&quot;</span>, </span>
-<span id="cb49-24"><a href="jackknife-estimates.html#cb49-24"></a>       <span class="dt">y=</span><span class="st">&quot;Jackknife estimates</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></span>
-<span id="cb49-25"><a href="jackknife-estimates.html#cb49-25"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="op">+</span></span>
-<span id="cb49-26"><a href="jackknife-estimates.html#cb49-26"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb49-27"><a href="jackknife-estimates.html#cb49-27"></a>                                    <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
-<span id="cb49-28"><a href="jackknife-estimates.html#cb49-28"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>),</span>
-<span id="cb49-29"><a href="jackknife-estimates.html#cb49-29"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb49-30"><a href="jackknife-estimates.html#cb49-30"></a>                                    <span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb49-31"><a href="jackknife-estimates.html#cb49-31"></a>        <span class="dt">legend.key.size =</span> <span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
-<span id="cb49-32"><a href="jackknife-estimates.html#cb49-32"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="dt">size =</span> <span class="dv">14</span>))</span>
-<span id="cb49-33"><a href="jackknife-estimates.html#cb49-33"></a></span>
-<span id="cb49-34"><a href="jackknife-estimates.html#cb49-34"></a><span class="kw">ggsave</span>(fig_jackTrait, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_jackTrait.png&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">7</span>,<span class="dt">device =</span> <span class="kw">png</span>(), <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">dpi =</span> <span class="dv">300</span>); <span class="kw">dev.off</span>()</span>
-<span id="cb49-35"><a href="jackknife-estimates.html#cb49-35"></a></span>
-<span id="cb49-36"><a href="jackknife-estimates.html#cb49-36"></a><span class="co"># Please note that this figure is required to create the Fig 4a in the next script.</span></span></code></pre></div>
-<p><img src="figs/fig_jackTrait.png" /></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb66-1"><a href="jackknife-estimates.html#cb66-1"></a>anovaJack_rainForest <span class="ot">&lt;-</span> <span class="fu">aov</span>(jack1<span class="sc">~</span>Restoration.type, <span class="at">data =</span> jack_rainForestScore)</span>
+<span id="cb66-2"><a href="jackknife-estimates.html#cb66-2"></a>anovaJack_openCountry <span class="ot">&lt;-</span> <span class="fu">aov</span>(jack1<span class="sc">~</span>Restoration.type, <span class="at">data =</span> jack_openCountryScore)</span>
+<span id="cb66-3"><a href="jackknife-estimates.html#cb66-3"></a></span>
+<span id="cb66-4"><a href="jackknife-estimates.html#cb66-4"></a><span class="co"># Tukey test to study each pair of treatment </span></span>
+<span id="cb66-5"><a href="jackknife-estimates.html#cb66-5"></a>tukeyJack_rainForest <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaJack_rainForest)</span>
+<span id="cb66-6"><a href="jackknife-estimates.html#cb66-6"></a>tukeyJack_openCountry <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaJack_openCountry)</span>
+<span id="cb66-7"><a href="jackknife-estimates.html#cb66-7"></a></span>
+<span id="cb66-8"><a href="jackknife-estimates.html#cb66-8"></a><span class="co"># For rainforest species - there is no significant difference in jacknife estimates between any treatment types, while for open-country birds; there is a significant difference in jacknife estimates across active-benchmark and passive-benchmark</span></span>
+<span id="cb66-9"><a href="jackknife-estimates.html#cb66-9"></a></span>
+<span id="cb66-10"><a href="jackknife-estimates.html#cb66-10"></a><span class="co"># Plot the above results</span></span>
+<span id="cb66-11"><a href="jackknife-estimates.html#cb66-11"></a></span>
+<span id="cb66-12"><a href="jackknife-estimates.html#cb66-12"></a>jackTrait <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(jack_rainForestScore, jack_openCountryScore)</span>
+<span id="cb66-13"><a href="jackknife-estimates.html#cb66-13"></a></span>
+<span id="cb66-14"><a href="jackknife-estimates.html#cb66-14"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb66-15"><a href="jackknife-estimates.html#cb66-15"></a>jackTrait<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(jackTrait<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb66-16"><a href="jackknife-estimates.html#cb66-16"></a></span>
+<span id="cb66-17"><a href="jackknife-estimates.html#cb66-17"></a><span class="co"># Rainforest species</span></span>
+<span id="cb66-18"><a href="jackknife-estimates.html#cb66-18"></a>fig_jackTrait <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(jackTrait, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>jack1, <span class="at">fill=</span>Habitat)) <span class="sc">+</span></span>
+<span id="cb66-19"><a href="jackknife-estimates.html#cb66-19"></a>    <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb66-20"><a href="jackknife-estimates.html#cb66-20"></a>    <span class="fu">scale_fill_scico_d</span>(<span class="at">palette =</span> <span class="st">&quot;roma&quot;</span>,</span>
+<span id="cb66-21"><a href="jackknife-estimates.html#cb66-21"></a>                     <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Open-country&quot;</span>,<span class="st">&quot;Rainforest&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb66-22"><a href="jackknife-estimates.html#cb66-22"></a>     <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb66-23"><a href="jackknife-estimates.html#cb66-23"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb66-24"><a href="jackknife-estimates.html#cb66-24"></a>       <span class="at">y=</span><span class="st">&quot;Jackknife estimates</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb66-25"><a href="jackknife-estimates.html#cb66-25"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb66-26"><a href="jackknife-estimates.html#cb66-26"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb66-27"><a href="jackknife-estimates.html#cb66-27"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb66-28"><a href="jackknife-estimates.html#cb66-28"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb66-29"><a href="jackknife-estimates.html#cb66-29"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb66-30"><a href="jackknife-estimates.html#cb66-30"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb66-31"><a href="jackknife-estimates.html#cb66-31"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb66-32"><a href="jackknife-estimates.html#cb66-32"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>))</span>
+<span id="cb66-33"><a href="jackknife-estimates.html#cb66-33"></a></span>
+<span id="cb66-34"><a href="jackknife-estimates.html#cb66-34"></a><span class="fu">ggsave</span>(fig_jackTrait, <span class="at">filename =</span> <span class="st">&quot;figs/fig_jackTrait.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,<span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span>
+<span id="cb66-35"><a href="jackknife-estimates.html#cb66-35"></a></span>
+<span id="cb66-36"><a href="jackknife-estimates.html#cb66-36"></a><span class="co"># Please note that this figure is required to create the Fig 4a in the next script.</span></span></code></pre></div>
+<div class="figure">
+<img src="figs/fig_jackTrait.png" alt="" />
+<p class="caption">No significant differences were observed for rainforest bird species across treatment types but the jacknife estimates of open-country bird species varied between BM-NR and BM-AR site pairs.</p>
+</div>
 
 </div>
 </div>
@@ -438,8 +479,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="acoustic-detections.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="non-metric-multidimensional-scaling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -460,7 +501,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/09_jackknife-scores-birds.Rmd",
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/11_jackknife-scores-birds.Rmd",
 "text": "Edit"
 },
 "history": {

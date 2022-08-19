@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 11 Non-metric multidimensional scaling of bird species detections | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats</title>
+  <meta name="description" content="Section 11 Non-metric multidimensional scaling of bird species detections | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 11 Non-metric multidimensional scaling of bird species detections | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="vjjan91/acoustics-Restoration" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 11 Non-metric multidimensional scaling of bird species detections | Source code and supporting information for Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Priyanka Hariharan" />
+<meta name="author" content="VA Akshay" />
+<meta name="author" content="Pooja Choksi" />
+<meta name="author" content="Sarika Khanwilkar" />
+<meta name="author" content="VV Robin" />
+<meta name="author" content="Ruth DeFries" />
+
+
+<meta name="date" content="2022-08-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="species-proportions.html"/>
+<link rel="next" href="jackknife-estimates.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.0.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.0.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.0.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.0.2</b> Data access</a></li>
+<li class="chapter" data-level="1.0.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.0.3</b> Data processing</a></li>
+<li class="chapter" data-level="1.0.4" data-path="index.html"><a href="index.html#main-text-figure-1"><i class="fa fa-check"></i><b>1.0.4</b> Main Text Figure 1</a></li>
+<li class="chapter" data-level="1.0.5" data-path="index.html"><a href="index.html#main-text-figure-2"><i class="fa fa-check"></i><b>1.0.5</b> Main Text Figure 2</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="site-selection.html"><a href="site-selection.html"><i class="fa fa-check"></i><b>2</b> Site selection</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="site-selection.html"><a href="site-selection.html#install-required-libraries"><i class="fa fa-check"></i><b>2.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="2.1" data-path="site-selection.html"><a href="site-selection.html#load-list-of-sites"><i class="fa fa-check"></i><b>2.1</b> Load list of sites</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="site-selection.html"><a href="site-selection.html#extract-elevation"><i class="fa fa-check"></i><b>2.1.1</b> Extract elevation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="site-selection.html"><a href="site-selection.html#distance-to-nearest-road"><i class="fa fa-check"></i><b>2.1.2</b> Distance to nearest road</a></li>
+<li class="chapter" data-level="2.1.3" data-path="site-selection.html"><a href="site-selection.html#distance-between-ar-nr-site-pairs"><i class="fa fa-check"></i><b>2.1.3</b> Distance between AR-NR site pairs</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html"><i class="fa fa-check"></i><b>3</b> Processing vegetation data</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#install-required-libraries-1"><i class="fa fa-check"></i><b>3.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="3.0.2" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#load-the-vegetation-data"><i class="fa fa-check"></i><b>3.0.2</b> Load the vegetation data</a></li>
+<li class="chapter" data-level="3.0.3" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#process-habitat-structure-variables"><i class="fa fa-check"></i><b>3.0.3</b> Process habitat structure variables</a></li>
+<li class="chapter" data-level="3.0.4" data-path="processing-vegetation-data.html"><a href="processing-vegetation-data.html#principal-component-analysis-of-vegetation-data"><i class="fa fa-check"></i><b>3.0.4</b> Principal component analysis of vegetation data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html"><i class="fa fa-check"></i><b>4</b> Acoustic space use</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#install-necessary-libraries"><i class="fa fa-check"></i><b>4.0.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="4.0.2" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#load-recordings-across-multiple-days-and-sites"><i class="fa fa-check"></i><b>4.0.2</b> Load recordings across multiple days and sites</a></li>
+<li class="chapter" data-level="4.0.3" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#short-time-discrete-fourier-transform-stdft"><i class="fa fa-check"></i><b>4.0.3</b> Short-time discrete fourier transform (STDFT)</a></li>
+<li class="chapter" data-level="4.0.4" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#average-acoustic-space-use"><i class="fa fa-check"></i><b>4.0.4</b> Average acoustic space use</a></li>
+<li class="chapter" data-level="4.0.5" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#visual-examination-of-asu"><i class="fa fa-check"></i><b>4.0.5</b> Visual examination of ASU</a></li>
+<li class="chapter" data-level="4.0.6" data-path="acoustic-space-use.html"><a href="acoustic-space-use.html#representative-figure-for-publication"><i class="fa fa-check"></i><b>4.0.6</b> Representative figure for publication</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><i class="fa fa-check"></i><b>5</b> Non-metric multidimensional scaling of acoustic space use data</a>
+<ul>
+<li class="chapter" data-level="5.0.1" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-necessary-libraries-for-analysis"><i class="fa fa-check"></i><b>5.0.1</b> Load necessary libraries for analysis</a></li>
+<li class="chapter" data-level="5.0.2" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#load-the-necessary-data-for-nmds-calculations"><i class="fa fa-check"></i><b>5.0.2</b> Load the necessary data for nmds calculations</a></li>
+<li class="chapter" data-level="5.0.3" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#preparing-a-dataframe-of-space-use-to-run-ordinations"><i class="fa fa-check"></i><b>5.0.3</b> Preparing a dataframe of space use to run ordinations</a></li>
+<li class="chapter" data-level="5.0.4" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#plotting-the-nmds-scores"><i class="fa fa-check"></i><b>5.0.4</b> Plotting the NMDS scores</a></li>
+<li class="chapter" data-level="5.0.5" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#testing-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.0.5</b> Testing multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="5.0.6" data-path="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html"><a href="non-metric-multidimensional-scaling-of-acoustic-space-use-data.html#visualizing-the-multivariate-homogeneity-of-group-dispersions"><i class="fa fa-check"></i><b>5.0.6</b> Visualizing the multivariate homogeneity of group dispersions</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><i class="fa fa-check"></i><b>6</b> Generalized linear mixed modeling (acoustic space use and vegetation data)</a>
+<ul>
+<li class="chapter" data-level="6.0.1" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#install-required-libraries-2"><i class="fa fa-check"></i><b>6.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="6.0.2" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#load-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>6.0.2</b> Load necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="6.0.3" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#getting-data-ready-in-a-format-for-linear-modeling"><i class="fa fa-check"></i><b>6.0.3</b> Getting data ready in a format for linear modeling</a></li>
+<li class="chapter" data-level="6.0.4" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#running-the-generalized-linear-mixed-models"><i class="fa fa-check"></i><b>6.0.4</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="6.0.5" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#we-now-run-generalized-linear-mixed-models-glmm-assuming-gaussian-errors-and-using-log-link-functions-to-examine-the-effects-of-habitat-vegetation-structure-on-acoustic-space-use."><i class="fa fa-check"></i><b>6.0.5</b> We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.</a></li>
+<li class="chapter" data-level="6.1" data-path="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html"><a href="generalized-linear-mixed-modeling-acoustic-space-use-and-vegetation-data.html#main-text-figure-4"><i class="fa fa-check"></i><b>6.1</b> Main Text Figure 4</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html"><i class="fa fa-check"></i><b>7</b> Splitting large .wav files</a>
+<ul>
+<li class="chapter" data-level="7.0.1" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#load-required-libraries"><i class="fa fa-check"></i><b>7.0.1</b> Load required libraries</a></li>
+<li class="chapter" data-level="7.0.2" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#selecting-dawn-acoustic-data"><i class="fa fa-check"></i><b>7.0.2</b> Selecting dawn acoustic data</a></li>
+<li class="chapter" data-level="7.0.3" data-path="splitting-large-.wav-files.html"><a href="splitting-large-.wav-files.html#split-the-files"><i class="fa fa-check"></i><b>7.0.3</b> Split the files</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="bird-species-richness.html"><a href="bird-species-richness.html"><i class="fa fa-check"></i><b>8</b> Bird Species Richness</a>
+<ul>
+<li class="chapter" data-level="8.0.1" data-path="bird-species-richness.html"><a href="bird-species-richness.html#install-required-libraries-3"><i class="fa fa-check"></i><b>8.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="8.0.2" data-path="bird-species-richness.html"><a href="bird-species-richness.html#load-manual-annotations-data"><i class="fa fa-check"></i><b>8.0.2</b> Load manual annotations data</a></li>
+<li class="chapter" data-level="8.0.3" data-path="bird-species-richness.html"><a href="bird-species-richness.html#subset-data"><i class="fa fa-check"></i><b>8.0.3</b> Subset data</a></li>
+<li class="chapter" data-level="8.0.4" data-path="bird-species-richness.html"><a href="bird-species-richness.html#total-number-of-detections"><i class="fa fa-check"></i><b>8.0.4</b> Total number of detections</a></li>
+<li class="chapter" data-level="8.0.5" data-path="bird-species-richness.html"><a href="bird-species-richness.html#calculate-species-richness"><i class="fa fa-check"></i><b>8.0.5</b> Calculate species richness</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="acoustic-detections.html"><a href="acoustic-detections.html"><i class="fa fa-check"></i><b>9</b> Acoustic Detections</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="acoustic-detections.html"><a href="acoustic-detections.html#install-required-libraries-4"><i class="fa fa-check"></i><b>9.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="9.0.2" data-path="acoustic-detections.html"><a href="acoustic-detections.html#load-data"><i class="fa fa-check"></i><b>9.0.2</b> Load data</a></li>
+<li class="chapter" data-level="9.0.3" data-path="acoustic-detections.html"><a href="acoustic-detections.html#overall-number-of-detections"><i class="fa fa-check"></i><b>9.0.3</b> Overall number of detections</a></li>
+<li class="chapter" data-level="9.0.4" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-treatment-type"><i class="fa fa-check"></i><b>9.0.4</b> Detections by treatment type</a></li>
+<li class="chapter" data-level="9.0.5" data-path="acoustic-detections.html"><a href="acoustic-detections.html#detections-by-species-traits"><i class="fa fa-check"></i><b>9.0.5</b> Detections by species traits</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="species-proportions.html"><a href="species-proportions.html"><i class="fa fa-check"></i><b>10</b> Species proportions</a>
+<ul>
+<li class="chapter" data-level="10.0.1" data-path="species-proportions.html"><a href="species-proportions.html#install-required-libraries-5"><i class="fa fa-check"></i><b>10.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="10.0.2" data-path="species-proportions.html"><a href="species-proportions.html#load-the-necessary-data-to-calculate-proportions"><i class="fa fa-check"></i><b>10.0.2</b> Load the necessary data to calculate proportions</a></li>
+<li class="chapter" data-level="10.0.3" data-path="species-proportions.html"><a href="species-proportions.html#proportion-of-acoustic-detections-across-all-10-s-chunks-for-every-site-date-combination"><i class="fa fa-check"></i><b>10.0.3</b> Proportion of acoustic detections across all 10-s chunks for every site-date combination</a></li>
+<li class="chapter" data-level="10.0.4" data-path="species-proportions.html"><a href="species-proportions.html#testing-for-differences-in-species-acoustic-detections-across-treatment-types"><i class="fa fa-check"></i><b>10.0.4</b> Testing for differences in species acoustic detections across treatment types</a></li>
+<li class="chapter" data-level="10.0.5" data-path="species-proportions.html"><a href="species-proportions.html#proportion-of-detections-across-acoustic-point-counts"><i class="fa fa-check"></i><b>10.0.5</b> Proportion of detections across acoustic point counts</a></li>
+<li class="chapter" data-level="10.0.6" data-path="species-proportions.html"><a href="species-proportions.html#testing-for-differences-in-rainforest-and-open-country-species-detections-across-acoustic-point-counts"><i class="fa fa-check"></i><b>10.0.6</b> Testing for differences in rainforest and open-country species detections across acoustic point counts</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html"><i class="fa fa-check"></i><b>11</b> Non-metric multidimensional scaling of bird species detections</a>
+<ul>
+<li class="chapter" data-level="11.0.1" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#install-required-libraries-6"><i class="fa fa-check"></i><b>11.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="11.0.2" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#load-the-necessary-data-for-nmds-calculations-1"><i class="fa fa-check"></i><b>11.0.2</b> Load the necessary data for NMDS calculations</a></li>
+<li class="chapter" data-level="11.0.3" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#preparing-dataframe-of-traits-and-species-to-be-used-for-nmds-later-on"><i class="fa fa-check"></i><b>11.0.3</b> Preparing dataframe of traits and species to be used for NMDS later on</a></li>
+<li class="chapter" data-level="11.0.4" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#preparing-a-dataframe-of-detections-to-run-ordinations"><i class="fa fa-check"></i><b>11.0.4</b> Preparing a dataframe of detections to run ordinations</a></li>
+<li class="chapter" data-level="11.0.5" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#bray-curtis-dissimilarity-index"><i class="fa fa-check"></i><b>11.0.5</b> Bray-Curtis dissimilarity index</a></li>
+<li class="chapter" data-level="11.0.6" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#plotting-the-nmds-scores-1"><i class="fa fa-check"></i><b>11.0.6</b> Plotting the NMDS scores</a></li>
+<li class="chapter" data-level="11.0.7" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#main-text-figure-5"><i class="fa fa-check"></i><b>11.0.7</b> Main text Figure 5</a></li>
+<li class="chapter" data-level="11.0.8" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#testing-multivariate-homogeneity-of-group-dispersions-1"><i class="fa fa-check"></i><b>11.0.8</b> Testing multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="11.0.9" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#visualizing-the-multivariate-homogeneity-of-group-dispersions-1"><i class="fa fa-check"></i><b>11.0.9</b> Visualizing the multivariate homogeneity of group dispersions</a></li>
+<li class="chapter" data-level="11.0.10" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#testing-compositional-dissimilarity-between-groups"><i class="fa fa-check"></i><b>11.0.10</b> Testing compositional dissimilarity between groups</a></li>
+<li class="chapter" data-level="11.0.11" data-path="non-metric-multidimensional-scaling-of-bird-species-detections.html"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#separate-analysis-instead-of-using-bird-detections-using-richness-to-run-nmds-ordinations"><i class="fa fa-check"></i><b>11.0.11</b> Separate analysis: Instead of using bird detections, using richness to run nmds ordinations</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html"><i class="fa fa-check"></i><b>12</b> Jackknife estimates</a>
+<ul>
+<li class="chapter" data-level="12.0.1" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#install-required-libraries-7"><i class="fa fa-check"></i><b>12.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="12.0.2" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#load-the-necessary-data-to-calculate-jackknife-scores"><i class="fa fa-check"></i><b>12.0.2</b> Load the necessary data to calculate Jackknife scores</a></li>
+<li class="chapter" data-level="12.0.3" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#preparing-dataframe-to-extract-jacknife-scores"><i class="fa fa-check"></i><b>12.0.3</b> Preparing dataframe to extract jacknife scores</a></li>
+<li class="chapter" data-level="12.0.4" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#save-scores-locally"><i class="fa fa-check"></i><b>12.0.4</b> Save scores locally</a></li>
+<li class="chapter" data-level="12.0.5" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#looking-at-correlations-between-jacknife-scores-and-bootstrap-estimates"><i class="fa fa-check"></i><b>12.0.5</b> Looking at correlations between jacknife scores and bootstrap estimates</a></li>
+<li class="chapter" data-level="12.0.6" data-path="jackknife-estimates.html"><a href="jackknife-estimates.html#testing-for-differences-between-treatment-types"><i class="fa fa-check"></i><b>12.0.6</b> Testing for differences between treatment types</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>13</b> Generalized linear mixed modeling (species richness, vegetation data and planting year)</a>
+<ul>
+<li class="chapter" data-level="13.0.1" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#install-required-libraries-8"><i class="fa fa-check"></i><b>13.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="13.0.2" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#load-the-necessary-data-for-statistical-modeling"><i class="fa fa-check"></i><b>13.0.2</b> Load the necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="13.0.3" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-in-a-format-for-generalized-linear-modeling"><i class="fa fa-check"></i><b>13.0.3</b> Getting data ready in a format for generalized linear modeling</a></li>
+<li class="chapter" data-level="13.0.4" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#getting-data-ready-for-generalized-linear-mixed-modeling-with-richness-data-as-well-as-visits."><i class="fa fa-check"></i><b>13.0.4</b> Getting data ready for generalized linear mixed modeling with richness data as well as visits.</a></li>
+<li class="chapter" data-level="13.0.5" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#running-the-generalized-linear-mixed-models-1"><i class="fa fa-check"></i><b>13.0.5</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="13.0.6" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#testing-the-role-of-habitat"><i class="fa fa-check"></i><b>13.0.6</b> Testing the role of habitat</a></li>
+<li class="chapter" data-level="13.0.7" data-path="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-richness-vegetation-data-and-planting-year.html#effect-of-planting-year"><i class="fa fa-check"></i><b>13.0.7</b> Effect of planting year</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><i class="fa fa-check"></i><b>14</b> Generalized linear mixed modeling (species proportions, vegetation data and planting year)</a>
+<ul>
+<li class="chapter" data-level="14.0.1" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#install-required-libraries-9"><i class="fa fa-check"></i><b>14.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="14.0.2" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#load-the-necessary-data-for-statistical-modeling-1"><i class="fa fa-check"></i><b>14.0.2</b> Load the necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="14.0.3" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#getting-data-ready-in-a-format-for-generalized-linear-mixed-modeling"><i class="fa fa-check"></i><b>14.0.3</b> Getting data ready in a format for generalized linear mixed modeling</a></li>
+<li class="chapter" data-level="14.0.4" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#running-the-generalized-linear-mixed-models-2"><i class="fa fa-check"></i><b>14.0.4</b> Running the generalized linear mixed models</a></li>
+<li class="chapter" data-level="14.0.5" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#examining-effect-of-restoration-type-on-proportion-of-rainforest-and-open-country-species-detections"><i class="fa fa-check"></i><b>14.0.5</b> Examining effect of restoration type on proportion of rainforest and open-country species detections</a></li>
+<li class="chapter" data-level="14.0.6" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#testing-the-role-of-habitat-1"><i class="fa fa-check"></i><b>14.0.6</b> Testing the role of habitat</a></li>
+<li class="chapter" data-level="14.0.7" data-path="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html"><a href="generalized-linear-mixed-modeling-species-proportions-vegetation-data-and-planting-year.html#effect-of-planting-year-1"><i class="fa fa-check"></i><b>14.0.7</b> Effect of planting year</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><i class="fa fa-check"></i><b>15</b> Generalized linear modeling (acoustic space use and proportion of bird species detections and time since restoration)</a>
+<ul>
+<li class="chapter" data-level="15.0.1" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#install-required-libraries-10"><i class="fa fa-check"></i><b>15.0.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="15.0.2" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#load-necessary-data-for-statistical-modeling-1"><i class="fa fa-check"></i><b>15.0.2</b> Load necessary data for statistical modeling</a></li>
+<li class="chapter" data-level="15.0.3" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#getting-data-ready-in-a-format-for-linear-modeling-1"><i class="fa fa-check"></i><b>15.0.3</b> Getting data ready in a format for linear modeling</a></li>
+<li class="chapter" data-level="15.0.4" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#acoustic-space-use-and-proportion-of-bird-species-detections"><i class="fa fa-check"></i><b>15.0.4</b> Acoustic space use and proportion of bird species detections</a></li>
+<li class="chapter" data-level="15.0.5" data-path="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html"><a href="generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration.html#year-since-restoration"><i class="fa fa-check"></i><b>15.0.5</b> Year since restoration</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code and supporting information for <em>Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="non-metric-multidimensional-scaling-of-bird-species-detections" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">Section 11</span> Non-metric multidimensional scaling of bird species detections<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#non-metric-multidimensional-scaling-of-bird-species-detections" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.</p>
+<p>One tool to do this is non-metric multidimensional scaling, or NMDS. The goal of NMDS is to collapse information from multiple dimensions (e.g, from multiple communities, sites, etc.) into just a few, so that they can be visualized and interpreted. Unlike other ordination techniques that rely on (primarily Euclidean) distances, such as Principal Component Analysis, NMDS uses rank orders, and thus is an extremely flexible technique that can accommodate a variety of different kinds of data (The text above was copied from the link below).</p>
+<p>NMDS does not use the absolute abundances of species in communities, but rather their rank orders. The use of ranks omits some of the issues associated with using absolute distance (e.g., sensitivity to transformation), and as a result is much more flexible technique that accepts a variety of types of data. (It’s also where the “non-metric” part of the name comes from).</p>
+<p>A wonderful tutorial is presented in this link: <a href="https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/" class="uri">https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/</a></p>
+<div id="install-required-libraries-6" class="section level3 hasAnchor" number="11.0.1">
+<h3><span class="header-section-number">11.0.1</span> Install required libraries<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#install-required-libraries-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb49"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb49-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb49-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb49-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-3"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb49-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-4"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb49-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-5"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb49-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-6"></a><span class="fu">library</span>(scico)</span>
+<span id="cb49-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-7"></a><span class="fu">library</span>(psych)</span>
+<span id="cb49-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-8"></a><span class="fu">library</span>(ecodist)</span>
+<span id="cb49-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-9"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb49-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-10"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb49-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-11"></a><span class="fu">library</span>(ggalt)</span>
+<span id="cb49-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-12"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb49-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-13"></a><span class="fu">library</span>(sjPlot)</span>
+<span id="cb49-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-14"></a></span>
+<span id="cb49-15"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-15"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb49-16"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb49-16"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+</div>
+<div id="load-the-necessary-data-for-nmds-calculations-1" class="section level3 hasAnchor" number="11.0.2">
+<h3><span class="header-section-number">11.0.2</span> Load the necessary data for NMDS calculations<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#load-the-necessary-data-for-nmds-calculations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb50"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb50-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-1"></a><span class="co"># We load the subset data</span></span>
+<span id="cb50-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-2"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/datSubset.csv&quot;</span>)</span>
+<span id="cb50-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-3"></a></span>
+<span id="cb50-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-4"></a><span class="co"># Load species-trait data to essentially check for associations by habitat type</span></span>
+<span id="cb50-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-5"></a>trait_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span>
+<span id="cb50-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-6"></a></span>
+<span id="cb50-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-7"></a><span class="co"># Site-summary (Number of detections across all sites)</span></span>
+<span id="cb50-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-8"></a>datSummary <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
+<span id="cb50-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-9"></a>  <span class="fu">group_by</span>(Site, Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb50-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-10"></a>  <span class="fu">transform</span>() <span class="sc">%&gt;%</span> <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-11"></a>  <span class="fu">summarise_at</span>(<span class="at">.vars =</span> <span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="at">.funs =</span> sum)</span>
+<span id="cb50-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-12"></a></span>
+<span id="cb50-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-13"></a><span class="co"># richness across sites (converting detections to 1)</span></span>
+<span id="cb50-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-14"></a>richness <span class="ot">&lt;-</span> datSummary <span class="sc">%&gt;%</span> </span>
+<span id="cb50-15"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-15"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="sc">~</span> <span class="fu">replace</span>(., . <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb50-16"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-16"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb50-17"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-17"></a>  <span class="fu">mutate</span>(<span class="at">richness =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>(IP<span class="sc">:</span>HSWP))) <span class="sc">%&gt;%</span></span>
+<span id="cb50-18"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb50-18"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Restoration.type, richness)</span></code></pre></div>
+</div>
+<div id="preparing-dataframe-of-traits-and-species-to-be-used-for-nmds-later-on" class="section level3 hasAnchor" number="11.0.3">
+<h3><span class="header-section-number">11.0.3</span> Preparing dataframe of traits and species to be used for NMDS later on<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#preparing-dataframe-of-traits-and-species-to-be-used-for-nmds-later-on" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb51"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb51-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-1"></a><span class="co"># Calculate the overall number of detections for each site. Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. </span></span>
+<span id="cb51-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-2"></a></span>
+<span id="cb51-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-3"></a>nDetections_site_date <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
+<span id="cb51-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-4"></a>  <span class="fu">group_by</span>(Site, Restoration.type, Date) <span class="sc">%&gt;%</span></span>
+<span id="cb51-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-5"></a>  <span class="fu">transform</span>() <span class="sc">%&gt;%</span> <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb51-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-6"></a>  <span class="fu">summarise_at</span>(<span class="at">.vars =</span> <span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="at">.funs =</span> sum)</span>
+<span id="cb51-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-7"></a></span>
+<span id="cb51-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-8"></a><span class="co"># Combine the nDetections and trait based data to obtain a dataframe for further analysis</span></span>
+<span id="cb51-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-9"></a></span>
+<span id="cb51-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-10"></a>nDetections_trait <span class="ot">&lt;-</span> nDetections_site_date <span class="sc">%&gt;%</span></span>
+<span id="cb51-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-11"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span>IP<span class="sc">:</span>HSWP, <span class="at">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb51-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-12"></a>  <span class="fu">left_join</span>(.,trait_dat, <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Species_Code&quot;</span><span class="ot">=</span><span class="st">&quot;species_annotation_codes&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb51-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-13"></a>  <span class="fu">mutate</span>(<span class="at">forRichness =</span> <span class="fu">case_when</span>(count<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,count<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb51-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb51-14"></a>  <span class="fu">rename</span>(., <span class="at">nDetections =</span> count)</span></code></pre></div>
+</div>
+<div id="preparing-a-dataframe-of-detections-to-run-ordinations" class="section level3 hasAnchor" number="11.0.4">
+<h3><span class="header-section-number">11.0.4</span> Preparing a dataframe of detections to run ordinations<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#preparing-a-dataframe-of-detections-to-run-ordinations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb52"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb52-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-1"></a><span class="co"># We will prepare a community matrix data that can be used to run dissimilarity indices</span></span>
+<span id="cb52-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-2"></a></span>
+<span id="cb52-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-3"></a>nmdsDat <span class="ot">&lt;-</span> nDetections_trait <span class="sc">%&gt;%</span> </span>
+<span id="cb52-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-4"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Species_Code, nDetections, Restoration.type) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-5"></a>  <span class="fu">group_by</span>(Species_Code, Site, Restoration.type) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-6"></a>  <span class="fu">summarise</span> (<span class="at">totDetections =</span> <span class="fu">sum</span>(nDetections)) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-7"></a>  <span class="fu">arrange</span>(Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb52-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-8"></a>  <span class="fu">pivot_wider</span> (<span class="at">names_from =</span> Species_Code, <span class="at">values_from =</span> totDetections, <span class="at">values_fill =</span> <span class="fu">list</span>(<span class="at">totDetections=</span><span class="dv">0</span>))</span>
+<span id="cb52-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-9"></a></span>
+<span id="cb52-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-10"></a><span class="co"># Convert to matrix form</span></span>
+<span id="cb52-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb52-11"></a>nmdsDatMatrix <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(nmdsDat[, <span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(nmdsDat)])</span></code></pre></div>
+</div>
+<div id="bray-curtis-dissimilarity-index" class="section level3 hasAnchor" number="11.0.5">
+<h3><span class="header-section-number">11.0.5</span> Bray-Curtis dissimilarity index<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#bray-curtis-dissimilarity-index" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Run a bray-curtis dissimilarity index and identify least stressed configuration for the ordinations. Bray-curtis is a statistic used to quantify the compositional dissimilarity between two different sites, based on counts at each site. Ecologists use the Bray-Curtis dissimilarity calculation, which has a number of ideal properties:
+1. It is invariant to changes in units.
+2. It is unaffected by additions/removals of species that are not present in two communities.
+3. It is unaffected by the addition of a new community.
+4. It can recognize differences in total abundances when relative abundances are the same.</p>
+<p>Please note that this link provides more information on NMDS: <a href="http://strata.uga.edu/8370/lecturenotes/multidimensionalScaling.html" class="uri">http://strata.uga.edu/8370/lecturenotes/multidimensionalScaling.html</a></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb53-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-1"></a><span class="co"># Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations</span></span>
+<span id="cb53-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-2"></a></span>
+<span id="cb53-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-3"></a>disBrayCurtis <span class="ot">&lt;-</span> <span class="fu">vegdist</span>(nmdsDatMatrix, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb53-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-4"></a></span>
+<span id="cb53-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-5"></a>nmdsBrayCurtis <span class="ot">&lt;-</span> <span class="fu">vegdist</span> (nmdsDatMatrix, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb53-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-6"></a>  <span class="fu">metaMDS</span> (nmdsBrayCurtis, <span class="at">k=</span><span class="dv">6</span>)</span>
+<span id="cb53-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-7"></a></span>
+<span id="cb53-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-8"></a><span class="co"># extract nmds scores</span></span>
+<span id="cb53-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-9"></a>nmdsScores <span class="ot">&lt;-</span> <span class="fu">as.tibble</span>(<span class="fu">scores</span>(nmdsBrayCurtis, <span class="at">display =</span> <span class="st">&quot;site&quot;</span>))</span>
+<span id="cb53-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-10"></a></span>
+<span id="cb53-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-11"></a><span class="co"># Write the scores to a separate .csv</span></span>
+<span id="cb53-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-12"></a><span class="fu">write.csv</span>(nmdsScores, <span class="st">&quot;data/nmdsBrayCurtis-bird-detections.csv&quot;</span>, <span class="at">row.names =</span> F)</span>
+<span id="cb53-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-13"></a></span>
+<span id="cb53-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb53-14"></a><span class="co"># With the above analysis, we note the stress is 0.001537865. However, if stress is high, we should reposition the points in 2 dimensions in the direction of decreasing stress, and repeat until stress is below some threshold.**A good rule of thumb: stress &lt; 0.05 provides an excellent representation in reduced dimensions, &lt; 0.1 is great, &lt; 0.2 is good/ok, and stress &lt; 0.3 provides a poor representation.** To reiterate: high stress is bad, low stress is good!</span></span></code></pre></div>
+</div>
+<div id="plotting-the-nmds-scores-1" class="section level3 hasAnchor" number="11.0.6">
+<h3><span class="header-section-number">11.0.6</span> Plotting the NMDS scores<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#plotting-the-nmds-scores-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb54"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb54-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-1"></a><span class="co"># First let&#39;s add the treatment type back to the nmds scores</span></span>
+<span id="cb54-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-2"></a>nmdsScores<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> nmdsDat<span class="sc">$</span>Restoration.type</span>
+<span id="cb54-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-3"></a></span>
+<span id="cb54-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-4"></a><span class="co"># Add a custom set of colors</span></span>
+<span id="cb54-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-5"></a>mycolors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>), <span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>))</span>
+<span id="cb54-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-6"></a></span>
+<span id="cb54-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-7"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb54-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-8"></a>nmdsScores<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(nmdsScores<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb54-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-9"></a></span>
+<span id="cb54-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-10"></a>fig_nmds <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>nmdsScores) <span class="sc">+</span> </span>
+<span id="cb54-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-11"></a>  <span class="fu">stat_ellipse</span>(<span class="fu">aes</span>(<span class="at">x=</span>NMDS1,<span class="at">y=</span>NMDS2,<span class="at">colour=</span>Restoration.type),<span class="at">level =</span> <span class="fl">0.50</span>) <span class="sc">+</span></span>
+<span id="cb54-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-12"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>NMDS1,<span class="at">y=</span>NMDS2,<span class="at">shape=</span>Restoration.type,<span class="at">colour=</span>Restoration.type),<span class="at">size=</span><span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb54-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-13"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb54-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-14"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name=</span><span class="st">&quot;NMDS 1&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb54-15"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-15"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name=</span><span class="st">&quot;NMDS 2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb54-16"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-16"></a>  <span class="fu">scale_shape_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(nmdsScores<span class="sc">$</span>Restoration.type)), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span></span>
+<span id="cb54-17"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-17"></a>  <span class="fu">scale_color_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span> </span>
+<span id="cb54-18"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-18"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb54-19"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-19"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb54-20"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-20"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb54-21"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-21"></a>                                    <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb54-22"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-22"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb54-23"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-23"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb54-24"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-24"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb54-25"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-25"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb54-26"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-26"></a>   <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">max</span>(nmdsScores<span class="sc">$</span>NMDS1), <span class="at">y =</span> <span class="fu">max</span>(nmdsScores<span class="sc">$</span>NMDS2),  <span class="at">label =</span> <span class="st">&quot;Stress = 0.001&quot;</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size=</span><span class="dv">5</span>)</span>
+<span id="cb54-27"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-27"></a></span>
+<span id="cb54-28"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb54-28"></a><span class="fu">ggsave</span>(fig_nmds, <span class="at">filename =</span> <span class="st">&quot;figs/fig_nmds_birdDetections.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,<span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
+<div class="figure">
+<img src="figs/fig_nmds_birdDetections.png" alt="" />
+<p class="caption">AR sites are transitioning toward BM sites</p>
+</div>
+</div>
+<div id="main-text-figure-5" class="section level3 hasAnchor" number="11.0.7">
+<h3><span class="header-section-number">11.0.7</span> Main text Figure 5<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#main-text-figure-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb55"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb55-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-1"></a><span class="co"># reload previous figures to create part A and B for the main text Fig. 4</span></span>
+<span id="cb55-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-2"></a></span>
+<span id="cb55-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-3"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb55-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-4"></a></span>
+<span id="cb55-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-5"></a>fig_prop_ordinations <span class="ot">&lt;-</span></span>
+<span id="cb55-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-6"></a>  <span class="fu">wrap_plots</span>(fig_propRF, fig_propOC, fig_nmds,</span>
+<span id="cb55-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-7"></a>    <span class="at">design =</span> <span class="st">&#39;AB</span></span>
+<span id="cb55-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-8"></a><span class="st">              CC&#39;</span></span>
+<span id="cb55-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-9"></a>  ) <span class="sc">+</span></span>
+<span id="cb55-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-10"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb55-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-11"></a>    <span class="at">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</span>
+<span id="cb55-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-12"></a>    <span class="at">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</span>
+<span id="cb55-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-13"></a>    <span class="at">tag_suffix =</span> <span class="st">&quot;)&quot;</span></span>
+<span id="cb55-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-14"></a>  )</span>
+<span id="cb55-15"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-15"></a></span>
+<span id="cb55-16"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-16"></a><span class="co"># Expand the width to avoid compression</span></span>
+<span id="cb55-17"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb55-17"></a><span class="fu">ggsave</span>(fig_prop_ordinations, <span class="at">filename =</span> <span class="st">&quot;figs/fig05.png&quot;</span>, <span class="at">width=</span><span class="dv">15</span>, <span class="at">height=</span><span class="dv">12</span>,<span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
+<div class="figure">
+<img src="figs/fig05.png" alt="" />
+<p class="caption"><strong>Proportion of acoustic detections of rainforest and open-country bird species and NMDS ordination results of bird species detections</strong>
+(a) We observed significant differences in the proportion of rainforest bird species detections across each of the three treatment types (Tukey HSD test, P &lt; 0.05). BM sites had the highest proportion of rainforest bird species detections (mean ± SD: 0.97 ± 0.04), followed by AR sites (mean ± SD: 0.81 ± 0.12), and NR sites (mean ± SD: 0.71 ± 0.17). (b) We observed significant differences in the proportion of open-country bird species detections across each of the three treatment type (Tukey HSD test, P &lt; 0.05). NR sites had the highest proportion of open-country bird species detections (mean ± SD: 0.28 ± 0.17), followed by AR sites (mean ± SD: 0.18 ± 0.12), and BM sites (mean ± SD: 0.02 ± 0.04). (b) The ordination analysis of bird detections data (stress = 0.001) revealed distinct clusters of BM sites, but relatively loose clusters for AR and NR sites. However, AR sites occupied an intermediate position between BM and NR sites, indicating a direction of change in bird community composition toward BM sites. In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.</p>
+</div>
+</div>
+<div id="testing-multivariate-homogeneity-of-group-dispersions-1" class="section level3 hasAnchor" number="11.0.8">
+<h3><span class="header-section-number">11.0.8</span> Testing multivariate homogeneity of group dispersions<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#testing-multivariate-homogeneity-of-group-dispersions-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One measure of multivariate dispersion (variance) for a group of samples is to calculate the average distance of group members to the group centroid or spatial median in multivariate space. To test if the dispersions (variances) of one or more groups are different, the distances of group members to the group centroid are subject to ANOVA.</p>
+<p>Betadisper tests whether two or more groups (for example, restored and unrestored sites) are homogeneously dispersed in relation to their species in studied samples. This test can be done to see if one group has more compositional variance than another. Moreover, homogeneity of dispersion among groups is very advisable to have if you want to test if two or more groups have different compositions, which is tested by adonis.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb56-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-1"></a>nmdsVariance <span class="ot">&lt;-</span> <span class="fu">betadisper</span>(disBrayCurtis, <span class="at">group =</span> nmdsDat<span class="sc">$</span>Restoration.type)</span>
+<span id="cb56-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-2"></a>nmdsVariance</span>
+<span id="cb56-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-3"></a></span>
+<span id="cb56-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-4"></a><span class="fu">anova</span>(nmdsVariance)</span>
+<span id="cb56-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-5"></a><span class="fu">permutest</span>(nmdsVariance, <span class="at">pairwise =</span> <span class="cn">TRUE</span>, <span class="at">permutations =</span> <span class="dv">999</span>)</span>
+<span id="cb56-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-6"></a><span class="fu">TukeyHSD</span>(nmdsVariance)</span>
+<span id="cb56-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-7"></a></span>
+<span id="cb56-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb56-8"></a><span class="co"># These results suggest that there is no difference in within-group variance between one group and another</span></span></code></pre></div>
+</div>
+<div id="visualizing-the-multivariate-homogeneity-of-group-dispersions-1" class="section level3 hasAnchor" number="11.0.9">
+<h3><span class="header-section-number">11.0.9</span> Visualizing the multivariate homogeneity of group dispersions<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#visualizing-the-multivariate-homogeneity-of-group-dispersions-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The below lines of code have been adapted from: <a href="https://chrischizinski.github.io/rstats/adonis/" class="uri">https://chrischizinski.github.io/rstats/adonis/</a></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb57-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-1"></a><span class="co"># extract the centroids and the site points in multivariate space.  </span></span>
+<span id="cb57-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-2"></a>centroids <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">grps=</span><span class="fu">rownames</span>(nmdsVariance<span class="sc">$</span>centroids),</span>
+<span id="cb57-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-3"></a>                       <span class="fu">data.frame</span>(nmdsVariance<span class="sc">$</span>centroids))</span>
+<span id="cb57-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-4"></a>vectors <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">group=</span>nmdsVariance<span class="sc">$</span>group,</span>
+<span id="cb57-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-5"></a>                      <span class="fu">data.frame</span>(nmdsVariance<span class="sc">$</span>vectors))</span>
+<span id="cb57-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-6"></a></span>
+<span id="cb57-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-7"></a><span class="co"># to create the lines from the centroids to each point we will put it in a format that ggplot can handle</span></span>
+<span id="cb57-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-8"></a>seg.data<span class="ot">&lt;-</span><span class="fu">cbind</span>(vectors[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>],centroids[<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(centroids),<span class="fu">as.data.frame</span>(<span class="fu">table</span>(vectors<span class="sc">$</span>group))<span class="sc">$</span>Freq),<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb57-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-9"></a><span class="fu">names</span>(seg.data)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;group&quot;</span>,<span class="st">&quot;v.PCoA1&quot;</span>,<span class="st">&quot;v.PCoA2&quot;</span>,<span class="st">&quot;PCoA1&quot;</span>,<span class="st">&quot;PCoA2&quot;</span>)</span>
+<span id="cb57-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-10"></a></span>
+<span id="cb57-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-11"></a><span class="co"># create the convex hulls of the outermost points</span></span>
+<span id="cb57-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-12"></a>grp1.hull <span class="ot">&lt;-</span> seg.data[seg.data<span class="sc">$</span>group<span class="sc">==</span><span class="st">&quot;Active&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>][<span class="fu">chull</span>(seg.data[seg.data<span class="sc">$</span>group<span class="sc">==</span><span class="st">&quot;Active&quot;</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]),]</span>
+<span id="cb57-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-13"></a>grp2.hull <span class="ot">&lt;-</span> seg.data[seg.data<span class="sc">$</span>group<span class="sc">==</span><span class="st">&quot;Benchmark&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>][<span class="fu">chull</span>(seg.data[seg.data<span class="sc">$</span>group<span class="sc">==</span><span class="st">&quot;Benchmark&quot;</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]),]</span>
+<span id="cb57-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-14"></a>grp3.hull <span class="ot">&lt;-</span> seg.data[seg.data<span class="sc">$</span>group<span class="sc">==</span><span class="st">&quot;Passive&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>][<span class="fu">chull</span>(seg.data[seg.data<span class="sc">$</span>group<span class="sc">==</span><span class="st">&quot;Passive&quot;</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]),]</span>
+<span id="cb57-15"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-15"></a>all.hull <span class="ot">&lt;-</span> <span class="fu">rbind</span>(grp1.hull,grp2.hull,grp3.hull)</span>
+<span id="cb57-16"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-16"></a></span>
+<span id="cb57-17"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-17"></a><span class="co"># plot the panel and convex hulls</span></span>
+<span id="cb57-18"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-18"></a>fig_hull <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb57-19"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-19"></a>  <span class="fu">geom_polygon</span>(<span class="at">data=</span> all.hull,<span class="fu">aes</span>(<span class="at">x=</span>v.PCoA1,<span class="at">y=</span>v.PCoA2),<span class="at">colour=</span><span class="st">&quot;black&quot;</span>,<span class="at">alpha=</span><span class="dv">0</span>,<span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-20"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-20"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>seg.data,<span class="fu">aes</span>(<span class="at">x=</span>v.PCoA1,<span class="at">xend=</span>PCoA1,<span class="at">y=</span>v.PCoA2,<span class="at">yend=</span>PCoA2),<span class="at">alpha=</span><span class="fl">0.30</span>) <span class="sc">+</span> </span>
+<span id="cb57-21"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-21"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>centroids[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="fu">aes</span>(<span class="at">x=</span>PCoA1,<span class="at">y=</span>PCoA2,<span class="at">shape=</span>grps),<span class="at">size=</span><span class="dv">4</span>,<span class="at">colour=</span><span class="st">&quot;red&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb57-22"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-22"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>seg.data, <span class="fu">aes</span>(<span class="at">x=</span>v.PCoA1,<span class="at">y=</span>v.PCoA2,<span class="at">shape=</span>group),<span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb57-23"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-23"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;All&quot;</span>,<span class="at">x=</span><span class="st">&quot;&quot;</span>,<span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-24"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-24"></a>  <span class="co">#coord_cartesian(xlim = c(-0.2,0.2), ylim = c(-0.25,0.2)) +</span></span>
+<span id="cb57-25"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-25"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb57-26"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb57-26"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+</div>
+<div id="testing-compositional-dissimilarity-between-groups" class="section level3 hasAnchor" number="11.0.10">
+<h3><span class="header-section-number">11.0.10</span> Testing compositional dissimilarity between groups<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#testing-compositional-dissimilarity-between-groups" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will do this by using the vegan::adonis() function which allows you to run permutational multivariate analysis of variance using distance matrices. In the above figure, the NMDS confidence ellipses suggest that there is a significant difference between benchmark and passive-active sites, but no difference between active and passive sites. Adonis works by first finding the centroids for each group and then calculates the squared deviations of each of site to that centroid. Then significance tests are performed using F-tests based on sequential sums of squares from permutations of the raw data. Please note that adonis analyzes and partitions sums of squares using distance matrices. It can be thought of as an ANOVA using distance matrices (analogous to MANOVA - multivariate analysis of variance). Therefore, it is used to test if two or more groups have similar compositions.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb58-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb58-1"></a><span class="co"># We will use the NMDS scores for axis 1 and axis 2 to test for compositional dissimilarity</span></span>
+<span id="cb58-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb58-2"></a>groups <span class="ot">&lt;-</span> nmdsScores<span class="sc">$</span>Restoration.type</span>
+<span id="cb58-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb58-3"></a></span>
+<span id="cb58-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb58-4"></a>adonisNMDS <span class="ot">&lt;-</span> <span class="fu">adonis2</span>(nmdsDatMatrix <span class="sc">~</span> groups, <span class="at">method=</span><span class="st">&quot;bray&quot;</span>,<span class="at">perm=</span><span class="dv">999</span>)</span>
+<span id="cb58-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb58-5"></a>adonisNMDS</span>
+<span id="cb58-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb58-6"></a></span>
+<span id="cb58-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb58-7"></a><span class="co"># The results suggest that there are significant compositional differences between groups.</span></span></code></pre></div>
+</div>
+<div id="separate-analysis-instead-of-using-bird-detections-using-richness-to-run-nmds-ordinations" class="section level3 hasAnchor" number="11.0.11">
+<h3><span class="header-section-number">11.0.11</span> Separate analysis: Instead of using bird detections, using richness to run nmds ordinations<a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#separate-analysis-instead-of-using-bird-detections-using-richness-to-run-nmds-ordinations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb59"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb59-1"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-1"></a>nmdsDatRichness <span class="ot">&lt;-</span> datSummary <span class="sc">%&gt;%</span> </span>
+<span id="cb59-2"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-2"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="sc">~</span> <span class="fu">replace</span>(., . <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb59-3"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-3"></a></span>
+<span id="cb59-4"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-4"></a><span class="co"># Convert to matrix form</span></span>
+<span id="cb59-5"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-5"></a>nmdsDatMatrixRichness <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(nmdsDatRichness[, <span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(nmdsDatRichness)])</span>
+<span id="cb59-6"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-6"></a></span>
+<span id="cb59-7"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-7"></a><span class="co"># Run a bray-curtis dissimilarity index and use metaMDS function from vegan to run ordinations</span></span>
+<span id="cb59-8"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-8"></a></span>
+<span id="cb59-9"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-9"></a>disBrayCurtisRichness <span class="ot">&lt;-</span> <span class="fu">vegdist</span>(nmdsDatMatrixRichness, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb59-10"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-10"></a></span>
+<span id="cb59-11"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-11"></a>nmdsBrayCurtisRichness <span class="ot">&lt;-</span> <span class="fu">vegdist</span>(nmdsDatMatrixRichness, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>) <span class="sc">%&gt;%</span>   <span class="fu">metaMDS</span> (nmdsBrayCurtisRichness, <span class="at">k=</span><span class="dv">6</span>)</span>
+<span id="cb59-12"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-12"></a></span>
+<span id="cb59-13"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-13"></a><span class="co"># extract nmds scores</span></span>
+<span id="cb59-14"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-14"></a>nmdsScoresRichness <span class="ot">&lt;-</span> <span class="fu">as.tibble</span>(<span class="fu">scores</span>(nmdsBrayCurtisRichness))</span>
+<span id="cb59-15"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-15"></a></span>
+<span id="cb59-16"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-16"></a><span class="co"># plot the data</span></span>
+<span id="cb59-17"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-17"></a><span class="co"># First let&#39;s add the treatment type back to the nmds scores</span></span>
+<span id="cb59-18"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-18"></a>nmdsScoresRichness<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> nmdsDatRichness<span class="sc">$</span>Restoration.type</span>
+<span id="cb59-19"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-19"></a></span>
+<span id="cb59-20"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-20"></a><span class="co"># Add a custom set of colors</span></span>
+<span id="cb59-21"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-21"></a>mycolors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>), <span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>))</span>
+<span id="cb59-22"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-22"></a></span>
+<span id="cb59-23"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-23"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb59-24"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-24"></a>nmdsScoresRichness<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(nmdsScoresRichness<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb59-25"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-25"></a></span>
+<span id="cb59-26"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-26"></a>fig_nmds_richness <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>nmdsScoresRichness) <span class="sc">+</span> </span>
+<span id="cb59-27"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-27"></a>  <span class="fu">stat_ellipse</span>(<span class="fu">aes</span>(<span class="at">x=</span>NMDS1,<span class="at">y=</span>NMDS2,<span class="at">colour=</span>Restoration.type),<span class="at">level =</span> <span class="fl">0.50</span>) <span class="sc">+</span></span>
+<span id="cb59-28"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-28"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>NMDS1,<span class="at">y=</span>NMDS2,<span class="at">shape=</span>Restoration.type,<span class="at">colour=</span>Restoration.type),<span class="at">size=</span><span class="dv">4</span>) <span class="sc">+</span> </span>
+<span id="cb59-29"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-29"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb59-30"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-30"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name=</span><span class="st">&quot;NMDS 1&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb59-31"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-31"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name=</span><span class="st">&quot;NMDS 2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb59-32"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-32"></a>  <span class="fu">scale_shape_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(nmdsScoresRichness<span class="sc">$</span>Restoration.type)), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span></span>
+<span id="cb59-33"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-33"></a>  <span class="fu">scale_color_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span> </span>
+<span id="cb59-34"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-34"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb59-35"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-35"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb59-36"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-36"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb59-37"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-37"></a>                                    <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb59-38"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-38"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb59-39"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-39"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb59-40"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-40"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb59-41"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-41"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb59-42"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-42"></a>   <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">max</span>(nmdsScoresRichness<span class="sc">$</span>NMDS1), <span class="at">y =</span> <span class="fu">max</span>(nmdsScoresRichness<span class="sc">$</span>NMDS2),  <span class="at">label =</span> <span class="st">&quot;Stress = 0.1&quot;</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size=</span><span class="dv">5</span>)</span>
+<span id="cb59-43"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-43"></a></span>
+<span id="cb59-44"><a href="non-metric-multidimensional-scaling-of-bird-species-detections.html#cb59-44"></a><span class="fu">ggsave</span>(fig_nmds_richness, <span class="at">filename =</span> <span class="st">&quot;figs/fig_nmds_birdRichness.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,<span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
+<div class="figure">
+<img src="figs/fig_nmds_birdRichness.png" alt="" />
+<p class="caption">Similar results as that of bird species detections were observed.</p>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="species-proportions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="jackknife-estimates.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/10_nmds-bird-detections.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
