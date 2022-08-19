@@ -3,12 +3,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Processing vegetation data 
+## Processing vegetation data 
 
 In this script, we process vegetation data and examine differences in vegetation structure and composition across treatment types. Note: this analysis is provided as supporting information to showcase differences between AR, NR, and BM sites. In addition, we save results of principal component analyses for future statistical models. 
 
-## Install required libraries
-
+### Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -22,8 +21,7 @@ library(psych)
 source("code/01_internal-functions.R")
 ```
 
-## Load the vegetation data
-
+### Load the vegetation data
 ```{r}
 # load the .csv containing different vegetation variables (data collected by the Nature Conservation Foundation)
 
@@ -42,7 +40,7 @@ veg$Site_type[veg$Site_type=="Unrestored"] <- "Passive"
 veg$Site_type[veg$Site_type=="Restored"] <- "Active"
 ```
 
-## Process habitat structure variables
+### Process habitat structure variables
 
 Carrying out exploratory analysis and preparing a dataframe for further steps
 ```{r}
@@ -94,7 +92,7 @@ allVeg <- basal_area %>%
 write.csv(allVeg, "data/summaryVeg.csv", row.names = F)
 ```
 
-## Principal component analysis of vegetation data
+### Principal component analysis of vegetation data
 
 ```{r}
 # Check for correlations among vegetation predictors
@@ -133,8 +131,7 @@ fig_pca <- ggplot(PCAvalues, aes(x = PC1, y = PC2, colour = Site_type)) +
     theme_bw() +
      scale_x_continuous(name="PC1 (54.67%)") + 
      scale_y_continuous(name="PC2 (18.74%)") +
-     scale_color_manual("Treatment type",values = mycolors, labels=c("BM","AR","NR")) + 
-     scale_shape_manual("Treatment type", values= 1:length(unique(PCAvalues$Site_type)), labels=c("BM","AR","NR"))+
+     scale_color_manual("Treatment type",values = mycolors, labels=c("BM","AR","NR")) +     scale_shape_manual("Treatment type", values= 1:length(unique(PCAvalues$Site_type)), labels=c("BM","AR","NR"))+
      theme(axis.title = element_text(family="Century Gothic",
                                     size = 14, face = "bold"),
         axis.text = element_text(family="Century Gothic",
@@ -147,4 +144,4 @@ fig_pca <- ggplot(PCAvalues, aes(x = PC1, y = PC2, colour = Site_type)) +
 ggsave(fig_pca, filename = "figs/fig_pca.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
-![](figs/fig_pca.png)
+![Principal component analysis of vegetation data shows that AR sites were situated between BM and NR sites. Please see Hariharan and Raman 2021 and Osuri et al. 2019 for more analysis using vegetation data.](figs/fig_pca.png)
