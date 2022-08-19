@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Site selection  
+# Site selection  
 
 In this script, we plot the elevation, distance to the nearest road, and distance between sites to show that the sites selected are comparable (we also followed site selection criteria outlined by Osuri et al., (2019) and Hariharan and Raman (2021) to ensure that sites are similar in terms of physiognomy and climate). 
 

@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Generalized linear mixed modeling (species proportions, vegetation data and planting year)
+# Generalized linear mixed modeling (species proportions, vegetation data and planting year)
 
 In this script, we run generalized linear mixed models to test the association between bird species proportions (rainforest and open-country species) and restoration type. In addition, we run generalized linear mixed models to test associations between species proportions and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects. Lastly, we assess associations between year since restoration began and bird species proportions.  
 

@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Splitting large .wav files
+# Splitting large .wav files
 
 Here, we will first split the raw data which was collected for 24 hours at a site, for 7 days at a stretch. This is being done for the sake of manual annotation of bird species. The deployment schedule of the AudioMoths was set to record for 4-minutes and was switched off for 1-min. For the sake of analysis, data was split into 10s chunks and annotated manually using Raven Pro. 
 

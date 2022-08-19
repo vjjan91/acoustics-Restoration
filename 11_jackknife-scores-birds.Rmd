@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Jackknife estimates
+# Jackknife estimates
 
 In this script, we will extract jackknife scores, which essentially extrapolates species richness for a given species pool. This calculation is based on the number of sites and the number of visits to each site and the number of singletons/doubletons (detecting a species only once/site and twice/site respectively).
 

@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Species proportions
+# Species proportions
 
 In this script, we will calculate the proportion of rainforest and open-country bird species that was detected across the three treatment types for a given period of time. Species richness may only give us a broader understanding of the overall levels of diversity, but getting at a measure of abundance (where we calculate the proportion of rainforest and open-country birds that were vocal in a given habitat type for a given period of time) may provide insights on the use of a particular habitat - an important question that needs to be answered, given that we would like to understand if fauna are using actively restored habitats.  
 

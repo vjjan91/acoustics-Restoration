@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Generalized linear mixed modeling (acoustic space use and vegetation data)
+# Generalized linear mixed modeling (acoustic space use and vegetation data)
 
 In this script, we run generalized linear models to test the association between acoustic space use values and restoration type. In addition, we run generalized linear mixed models to test associations between acoustic space use and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects.  
 

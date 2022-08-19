@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Bird Species Richness
+# Bird Species Richness
 
 In this script, we will calculate:
 

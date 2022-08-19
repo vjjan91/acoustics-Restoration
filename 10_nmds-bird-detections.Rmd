@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Non-metric multidimensional scaling of bird species detections
+# Non-metric multidimensional scaling of bird species detections
 
 Here, we are interested not only in comparing univariate descriptors of communities, like diversity, but also in how the constituent species — or the composition — changes from one community to the next.
 

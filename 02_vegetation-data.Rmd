@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Processing vegetation data 
+# Processing vegetation data 
 
 In this script, we process vegetation data and examine differences in vegetation structure and composition across treatment types. Note: this analysis is provided as supporting information to showcase differences between AR, NR, and BM sites. In addition, we save results of principal component analyses for future statistical models. 
 

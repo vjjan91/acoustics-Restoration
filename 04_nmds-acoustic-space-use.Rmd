@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Non-metric multidimensional scaling of acoustic space use data
+# Non-metric multidimensional scaling of acoustic space use data
 
 Here, we will use ordinations as a method of analyzing how acoustic space use (defined in terms of frequency and time, across 24 hours in a day) varies between treatment types.  
 

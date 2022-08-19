@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Acoustic Detections
+# Acoustic Detections
 
 In this script, we will calculate:
 

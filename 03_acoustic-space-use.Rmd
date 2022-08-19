@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Acoustic space use
+# Acoustic space use
 
 In this study, acoustic space use reflects the amount and pattern of vocalizations within each frequency bin for a given time period.  
 

@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Generalized linear modeling (acoustic space use and proportion of bird species detections and time since restoration)
+# Generalized linear modeling (acoustic space use and proportion of bird species detections and time since restoration)
 
 In this script, we run generalized linear models to test the association between acoustic space use values and species richness, and time since restoration. 
 
