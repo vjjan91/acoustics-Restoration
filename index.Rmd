@@ -1,6 +1,6 @@
 --- 
 knit: "bookdown::render_book"
-title: "Source code and supporting information for _Using passive acoustic monitoring to examine the impacts of active restoration on vocalizing biodiversity in the Western Ghats_"
+title: "Source code and supporting information for _Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats_"
 author:
     - Vijay Ramesh
     - Priyanka Hariharan
@@ -26,7 +26,7 @@ github-repo: vjjan91/acoustics-Restoration
 
 ## Introduction
 
-This is the readable version that showcases analyses carried out to test the impacts of forest restoration on vocalizing biodiversity in the Anamalai hills of the Western Ghats biodiversity hotspot. 
+This is the readable version that showcases analyses carried out to test the impacts of rainforest restoration on vocalizing biodiversity in the Anamalai hills of the Western Ghats biodiversity hotspot. 
 
 ### Attribution
 
@@ -37,7 +37,7 @@ Please contact the following in case of interest in the project.
 
 ### Data access
 
-The data used in this work will be archived and made public upon publication.
+The data used in this work is archived on Zenodo.  
 
 ### Data processing
 
@@ -51,4 +51,4 @@ The above figure showcases a gradient of forest regeneration across the Valparai
 ### Main Text Figure 2
 
 ![**Ecological restoration across the Valparai plateau of the Anamalai hills.** 
-(a) Images of an actively restored forest fragment (Selaliparai) were taken in 2007 and in 2021. Habitat and vegetation structure has responded positively to active restoration (Osuri et al. 2019) (Photo credit: T R Shankar Raman). (b) AudioMoth audio recorders were deployed across naturally regenerating, actively restored, and benchmark (not shown in picture) sites across the Valparai plateau (Photo credit: Vijay Ramesh).](figs/fig02.png)  
+(a) Images of an actively restored forest fragment (Selaliparai) were taken in 2007 and in 2021. Habitat and vegetation structure has responded positively to active restoration (Osuri et al. 2019) (Photo credit: T R Shankar Raman). (b) AudioMoth audio recorders were deployed across naturally regenerating, actively restored, and benchmark (not shown in picture) sites across the Valparai plateau (Photo credit: Vijay Ramesh).](figs/fig02.png) 
