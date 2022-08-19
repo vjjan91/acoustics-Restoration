@@ -43,9 +43,55 @@ We describe what each script (`.Rmd`) of this repository is intended to achieve 
 
 - _14_glmms-acoustic-space-use-birdDetections-plantingYear.Rmd_: Running generalized linear mixed models to test for associations between acoustic space use and bird species detections as well as year since restoration began.    
 
-## Data 
+### Data 
 
 The `data/` folder contains the following datasets required to reproduce the above scripts.   
+
+- `species-trait-dat.csv`: Contains a list of species detected in our study, along with habitat affiliations (RF = Rainforest birds and OC = Open-country birds)   
+
+- `list-of-sites.csv`: Contains the list of sites across which audio recorders were deployed along with ancillary information, including latitude, longitude.  
+
+- `2020-vegetation-data.csv`: Contains habitat structural variables recorded across each site in 2020. This data was collected by scientists and research assistants at the Nature Conservation Foundation (Western Ghats Team). For more information regarding the same, please see Hariharan and Raman (2021) and Osuri et al. (2019).  
+
+### Results
+
+This folder contains outputs that were obtained by running the above scripts. Here, the files are described in alphabetical order and not in the order in which they were obtained after running the above scripts.    
+
+- `acoustic-detections-across-visits.csv`: The proportion of rainforest and open-country bird species detections at the point count level.  
+
+- `acoustic-detections.csv`: The proportion of rainforest and open-country bird species detections across all 10-s clips analyzed.  
+
+- `datSubset.csv`: This file contains a list of species detected for every 10-s audio clip analyzed. In total, we analyzed ~69 hours of data. If you would like to use this dataset for your analysis, please write to the lead author of the study.  
+
+- `jackAll.csv`: First-order jacknife estimates for all species at each site.  
+
+- `jackOpencountry.csv`: First-order jacknife estimates for open-country species at each site.   
+
+- `jackRainforest.csv`: First-order jacknife estimates for rainforest species at each site.   
+
+- `nmds-acousticSpaceUse-diurnal.csv`: NMDS ordination scores of diurnal acoustic space use across sites (times chosen: 6AM to 6PM).  
+
+- `nmds-acousticSpaceUse-nocturnal.csv`: NMDS ordination scores of nocturnal acoustic space use across sites (times chosen: 6PM to 6AM).  
+
+- `nmds-acousticSpaceUse.csv`: NMDS ordination scores of overall acoustic space use across sites (times chosen: midnight to midnight).   
+
+- `nmdsBrayCurtis-bird-detections.csv`: NMDS ordination scores of bird species detections.  
+
+- `pcaLoadings.csv`: PCA loadings of the habitat structural variables.  
+
+- `pcaVeg.csv`: PCA scores of the habitat structural variables.  
+
+- `pcaLoadings.csv`: PCA loadings of the habitat structural variables.  
+
+- `summaryVeg.csv`: A summary sheet of the vegetation data.  
+
+- `site-by-day.csv` and `site_date_asu.rdata`: Acoustic space use values for each site and day.  
+
+- `site-wise-asu.csv` and `site_asu.rdata`: Acoustic space use values (averaged) at the site level.  
+
+### Figures  
+
+The `figs\` folder contains figures accompanying the main text, as well as supplementary material figures. The main text figures are suffixed with numbers (example:`fig01`).  
 
 ### Attribution
 
