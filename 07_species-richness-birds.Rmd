@@ -109,8 +109,6 @@ datSubset <- rename(datSubset, Restoration.type = Restoration.Type..Benchmark.Ac
 
 # Save this data as a .csv for future analysis (later scripts)
 write.csv(datSubset,"results/datSubset.csv", row.names = F)
-
-# Please write to the lead author if you would like to access this dataset (Vijay Ramesh; vr2352@columbia.edu)
 ```
 
 ### Total number of detections
