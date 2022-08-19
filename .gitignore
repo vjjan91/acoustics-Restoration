@@ -50,3 +50,6 @@ data/spatial/elevation
 
 # ignore shapefiles
 data/spatial/roadsShapefiles
+
+# ignore extracted waypoints
+data/extracted-waypoints.csv 
