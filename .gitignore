@@ -52,4 +52,4 @@ data/spatial/elevation
 data/spatial/roadsShapefiles
 
 # ignore extracted waypoints
-data/extracted-waypoints.csv 
+data/waypoint-data/
