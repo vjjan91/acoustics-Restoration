@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Species proportions
+## Species proportions
 
 In this script, we will calculate the proportion of rainforest and open-country bird species that was detected across the three treatment types for a given period of time. Species richness may only give us a broader understanding of the overall levels of diversity, but getting at a measure of abundance (where we calculate the proportion of rainforest and open-country birds that were vocal in a given habitat type for a given period of time) may provide insights on the use of a particular habitat - an important question that needs to be answered, given that we would like to understand if fauna are using actively restored habitats.  
 
@@ -121,6 +121,9 @@ fig_propOC <- ggplot(prop, aes(x=Restoration.type, y=propOC, fill=Restoration.ty
 ggsave(fig_propOC, filename = "figs/fig_acousticDetections_propOC.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 ```
 
+![We observed significant differences in the proportion of rainforest bird species detections across treatment types.](figs/fig_acousticDetections_propRF.png)
+![We observed significant differences in the proportion of open-country bird species detections across treatment types.](figs/fig_acousticDetections_propOC.png)
+
 ### Proportion of detections across acoustic point counts
 
 Here, we repeat the above analysis with a different sampling unit, where the total number of detections of a species was estimated for each point count rather than across 10-s chunks. In other words, if a species was detected thrice vocally, it was marked as a single detection in that point count. 
@@ -149,7 +152,6 @@ write.csv(propVisit, "results/acoustic-detections-across-visits.csv", row.names 
 ```
 
 ### Testing for differences in rainforest and open-country species detections across acoustic point counts
-
 ```{r}
 # Test if there are significant differences in the proportion of rainforest species across treatment types
 anovaRF <- aov(propRF~Restoration.type, data = propVisit)
@@ -192,3 +194,6 @@ fig_OC <- ggplot(propVisit, aes(x=Restoration.type, y=propOC, fill=Restoration.t
 
 ggsave(fig_OC, filename = "figs/fig_acousticPointCount_propOC.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 ```
+
+![We observed significant differences in the proportion of rainforest bird species detections across treatment types, even when we aggregated data at the level of point count.](figs/fig_acousticPointCount_propRF.png)
+![We observed significant differences in the proportion of open-country bird species detections across treatment types, even when we aggregated data at the level of point count.](figs/fig_acousticPointCount_propOC.png)
