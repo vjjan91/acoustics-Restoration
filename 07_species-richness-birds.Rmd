@@ -3,14 +3,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Bird Species Richness
+## Bird Species Richness
 
 In this script, we will calculate:
 
 a) Site-wise species richness to understand if species composition across treatment types are distinctly different. 
 b) Repeat the above calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.  
 
-## Install required libraries
+### Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -25,7 +25,7 @@ library(extrafont)
 source("code/01_internal-functions.R")
 ```
 
-## Load manual annotations data
+### Load manual annotations data
 
 To start with, we will compute species richness from 3 non-consecutive visits for each site for each season. Across two seasons, a total of 6 non-consecutive visits are chosen for each site. 
 
@@ -35,13 +35,16 @@ We will use an excel sheet of manual annotations, which contains 10s-clips from 
 summer_data <- read.csv("data/2020-summer-annotation-working-document.csv")
 winter_data <- read.csv("data/2020-winter-annotation-working-document.csv")
 
+## Please write to the lead author if you would like to access this data (Vijay Ramesh; vr2352@columbia.edu)
+
 # combine the datasets for a single dataframe for the present analysis
 data <- bind_rows(summer_data,winter_data)
 names(data)
 
 # reorder columns
 data <- data %>%
-  relocate(c("BFO","SBEO", "JN", "AK", "HSWP"),  .after = "CR")                                                                     
+  relocate(c("BFO","SBEO", "JN", "AK", "HSWP"),  .after = "CR") # certain species codes are mentioned here and these can be found in the supplementary data.
+
 # Site-wise sorting of the 16-min of data
 
 # Split the file names into 4 columns : Site, Date, Time and Splits  
@@ -52,7 +55,7 @@ data
 trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
 
-## Subset data
+### Subset data
 
 How many visits (counted as number of unique days) to a site has been annotated? Please note that some sites have more than 6 visits to a site, and hence we ensure that we choose only 6 non-consecutive visits to a given site.  
 
@@ -106,9 +109,11 @@ datSubset <- rename(datSubset, Restoration.type = Restoration.Type..Benchmark.Ac
 
 # Save this data as a .csv for future analysis (later scripts)
 write.csv(datSubset,"results/datSubset.csv", row.names = F)
+
+# Please write to the lead author if you would like to access this dataset (Vijay Ramesh; vr2352@columbia.edu)
 ```
 
-## Total number of detections
+### Total number of detections
 
 Now group the data by site and restoration type and sum the number of detections across sites. We will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness below.
 ```{r}
@@ -123,7 +128,7 @@ nDetections_Site <- datSubset %>%
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum) 
 ```
 
-## Calculate species richness
+### Calculate species richness
 
 Convert the detections to 1, since we are interested in calculating richness per site by converting values >1 to 1 for multiple visits to a site. In other words, we want to establish overall species richness for a 16-min to 48-min window.
 ```{r}
@@ -165,8 +170,8 @@ ggsave(fig_richness, filename = "figs/fig_richness.png", width=12, height=7,
 # We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches (But these differences are not significant)
 ```
 
-![](figs/fig_richness.png)
-## Species richness by trait
+![When we examined the overall species richness across treatment types, we did not observe any significant differences.](figs/fig_richness.png)
+### Species richness by trait
 
 Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist. To do so: Add an additional column of species-trait data and group data based on the same.
 ```{r}
@@ -224,4 +229,4 @@ fig_richness_trait <- ggplot(richness_trait, aes(x=Restoration.type, y=richness,
 ggsave(fig_richness_trait, filename = "figs/fig_richness_trait.png", width=12, height=7, device =png(), units="in", dpi = 300); dev.off()
 ```
 
-![](figs/fig_richness_trait.png)
+![No significant differences were observed for rainforest species across treatment types, but we noticed a significant difference between BM-NR and BM-AR for open-country birds.](figs/fig_richness_trait.png)
