@@ -17,7 +17,7 @@ output:
   bookdown::pdf_document2:
     documentclass: scrreprt
     toc-depth: 1
-    secnumdepth: 2
+    secnumdepth: 3
     geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
 biblio-style: apalike
 link-citations: yes
