@@ -1,4 +1,4 @@
-## Source code for _Using passive acoustic monitoring to examine the impacts of active restoration on vocalizing biodiversity in the Western Ghats_
+## Source code for _Using passive acoustic monitoring to examine the impacts of ecological restoration on faunal biodiversity in the Western Ghats_
 
 <!-- badges: start -->
   [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -6,16 +6,15 @@
 
 This repository contains code and analysis for a manuscript that uses acoustic data to examine the impacts of active forest restoration on vocalizing biodiversity in the Western Ghats biodiversity hotspot.  
 
-## ** IN CONSTRUCTION BELOW **
+This manuscript is currently in _review_. Please reach out to the lead author if you have questions.  
 
 ### [Readable version](https://vjjan91.github.io/acoustics-Restoration/)
 
 A readable version of this analysis is available in bookdown format by clicking on the heading above.
 
-## Source code for the analyses
+### Source code for the analyses
 
 We describe what each script (`.Rmd`) of this repository is intended to achieve below.  
-
 - _01_site-selection.Rmd:_. Here, we carry out exploratory data analyses to show that the sites across treatment types (naturally regenerating (NR), actively restored (AR) and benchmark (BM)) are comparable. We examined elevation, distance to the nearest road, and distance between AR-NR site pairs. We also followed site selection criteria outlined by Osuri et al., (2019) and Hariharan and Raman (2021) to ensure that sites are similar in terms of physiognomy and climate.  
 
 - _02_vegetation-data.Rmd:_. Here, we process vegetation data and examine differences in vegetation (habitat) structure and composition across treatment types.  
@@ -30,15 +29,19 @@ We describe what each script (`.Rmd`) of this repository is intended to achieve 
 
 - _07_species-richness-birds.Rmd:_. Species richness was estimated across all treatment types by considering all bird species, rainforest specialists and open-country generalist species. 
 
-- _08_acoustic-detections-birds.Rmd:_. Here, we calculated the total number of detections of each bird species across multiple temporal durations (10s, 30s, 1min, 2min and 4min).  
+- _08_cumulative-acoustic-detections-birds.Rmd:_. Here, we calculated the total number of detections of each bird species across multiple temporal durations (10s, 30s, 1min, 2min and 4min).  
 
-- _09_jackknife-scores-birds.Rmd:_. First-order jackknife scores are extrapolated based on species richness estimates at each site and treatment type.   
+- _09_proportion-acoustic-detections-birds.Rmd:_. Here, we calculated the proportion of acoustic detections of rainforest and open-country bird species at each site.  
 
-- _10_nmds-bird-detections.Rmd:_. Non-metric multidimensional scaling of bird species detections.  
+- _10_nmds-bird-detections.Rmd:_. Non-metric multidimensional scaling of bird species detections.   
 
-- _11_glmms-jackknifeScore-vegPCA-plantingYear.Rmd:_. Running generalized linear mixed models to test for associations between first order jackknife scores, vegetation measurements and planting year.    
+- _11_jackknife-scores-birds.Rmd:_. First-order jackknife scores are extrapolated based on species richness estimates at each site and treatment type.   
 
-- _12_glmms-acoustic-space-use-birdRichness-plantingYear.Rmd_: Running generalized linear mixed models to test for associations between acoustic space use and bird species richness as well as year since restoration began.    
+- _12_glmms-jackknifeScore-vegPCA-plantingYear.Rmd:_. Running generalized linear mixed models to test for associations between first order jackknife scores, vegetation measurements and planting year.    
+
+- _13_glmms-acousticDetections-vegPCA-plantingYear.Rmd_: Running generalized linear mixed models to test for associations between bird species proportions (rainforest and open-country species) and restoration type. In addition, we run generalized linear mixed models to test associations between species proportions and habitat (vegetation structure) as well as the effect of planting year.    
+
+- _14_glmms-acoustic-space-use-birdDetections-plantingYear.Rmd_: Running generalized linear mixed models to test for associations between acoustic space use and bird species detections as well as year since restoration began.    
 
 ## Data 
 
