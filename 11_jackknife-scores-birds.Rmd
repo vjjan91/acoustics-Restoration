@@ -3,11 +3,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Jackknife estimates
+## Jackknife estimates
 
 In this script, we will extract jackknife scores, which essentially extrapolates species richness for a given species pool. This calculation is based on the number of sites and the number of visits to each site and the number of singletons/doubletons (detecting a species only once/site and twice/site respectively).
 
-## Install required libraries
+### Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -21,7 +21,7 @@ library(psych)
 source("code/01_internal-functions.R")
 ```
 
-## Load the necessary data to calculate Jackknife scores
+### Load the necessary data to calculate Jackknife scores
 ```{r}
 # We load the subset data
 datSubset <- read.csv("results/datSubset.csv")
@@ -37,7 +37,7 @@ datSummary <- datSubset %>%
 ```
 
 
-## Preparing dataframe to extract jacknife scores
+### Preparing dataframe to extract jacknife scores
 ```{r}
 # Calculate the overall number of detections for each site across 6 days of data (translates to ~96-min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the extrapolation of species richness when jackknife estimates are extracted. 
 
@@ -82,7 +82,7 @@ jacknife_openCountry <- nDetections_trait %>%
   pivot_wider(names_from = Species_Code, values_from = totDetections, values_fill = list(totDetections=0))
 ```
 
-## Save scores locally
+### Save scores locally
 ```{r}
 jackAllScore <- specpool(jacknifeAll[,4:ncol(jacknifeAll)],
                        pool = jacknifeAll$Site) %>%
@@ -111,13 +111,13 @@ jack_openCountryScore <-specpool(jacknife_openCountry[,4:ncol(jacknife_openCount
 write.csv(jack_openCountryScore, "data/jackOpencountry.csv", row.names = F)
 ```
 
-## Looking at correlations between jacknife scores and bootstrap estimates
+### Looking at correlations between jacknife scores and bootstrap estimates
 ```{r}
 # This plot suggests an almost 1:1 correlation between jacknife estimates and bootstrap scores
 plot(jackAllScore$jack1, jackAllScore$boot)
 ```
 
-## Testing for differences between treatment types
+### Testing for differences between treatment types
 
 Plotting jacknife estimates and testing for any significant differences between treatment types
 ```{r}
@@ -151,8 +151,8 @@ ggsave(fig_jackAll, filename = "figs/fig_jackAll.png", width=12, height=7,
        device = png(), units="in", dpi = 300); dev.off()
 ```
 
-![](figs/fig_jackAll.png)
-## Jacknife scores by species traits
+![No significant differences across treatment types were observed.](figs/fig_jackAll.png)
+### Jacknife scores by species traits
 
 Let's test for significant differences in jacknife estimates as a function of species trait
 ```{r}
@@ -194,4 +194,4 @@ ggsave(fig_jackTrait, filename = "figs/fig_jackTrait.png", width=12, height=7,de
 # Please note that this figure is required to create the Fig 4a in the next script.
 ```
 
-![](figs/fig_jackTrait.png)
+![No significant differences were observed for rainforest bird species across treatment types but the jacknife estimates of open-country bird species varied between BM-NR and BM-AR site pairs.](figs/fig_jackTrait.png)
