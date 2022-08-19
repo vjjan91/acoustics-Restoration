@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we process vegetation data and examine differences in vegetation structure and composition across treatment types. Note: this analysis is provided as supporting information to showcase differences between AR, NR, and BM sites. In addition, we save results of principal component analyses for future statistical models. 
 
-### Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -21,7 +21,7 @@ library(psych)
 source("code/01_internal-functions.R")
 ```
 
-### Load the vegetation data
+## Load the vegetation data
 ```{r}
 # load the .csv containing different vegetation variables (data collected by the Nature Conservation Foundation)
 
@@ -40,7 +40,7 @@ veg$Site_type[veg$Site_type=="Unrestored"] <- "Passive"
 veg$Site_type[veg$Site_type=="Restored"] <- "Active"
 ```
 
-### Process habitat structure variables
+## Process habitat structure variables
 
 Carrying out exploratory analysis and preparing a dataframe for further steps
 ```{r}
@@ -92,7 +92,7 @@ allVeg <- basal_area %>%
 write.csv(allVeg, "data/summaryVeg.csv", row.names = F)
 ```
 
-### Principal component analysis of vegetation data
+## Principal component analysis of vegetation data
 
 ```{r}
 # Check for correlations among vegetation predictors

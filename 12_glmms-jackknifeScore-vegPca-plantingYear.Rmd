@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we run generalized linear mixed models to test the association between first order jacknife scores and restoration type. In addition, we run generalized linear mixed models to test associations between species richness and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects. Lastly, we assess associations between year since restoration began and first order jackknife scores of birds.  
 
-### Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -26,7 +26,7 @@ source("code/01_internal-functions.R")
 ```
 
 
-### Load the necessary data for statistical modeling
+## Load the necessary data for statistical modeling
 ```{r}
 # We load the subset data
 datSubset <- read.csv("results/datSubset.csv")
@@ -70,7 +70,7 @@ jackOpencountry <- read.csv("results/jackOpencountry.csv")
 ```
 
 
-### Getting data ready in a format for generalized linear modeling
+## Getting data ready in a format for generalized linear modeling
 ```{r}
 # All birds
 modelDataAll <- vegPcaScores %>%  
@@ -106,7 +106,7 @@ modelData_openCountry <- vegPcaScores %>%
   mutate ("roundjk" = round(jacknife))
 ```
 
-### Getting data ready for generalized linear mixed modeling with richness data as well as visits. 
+## Getting data ready for generalized linear mixed modeling with richness data as well as visits. 
 ```{r}
 # data for the GLMM (overall richness)
 glmmAll <- richnessPerVisit[,-2] %>%
@@ -180,7 +180,7 @@ glmmUnderStory <- nDetectionsTrait %>%
   full_join(modelDataAll[,-8], by = c("Site","siteCode","Restoration.type"))
 ```
 
-### Running the generalized linear mixed models
+## Running the generalized linear mixed models
 
 We now run generalized linear mixed models (GLMM) assuming Poisson errors and using log link functions to examine the effects of restoration type (benchmark, actively restored and passively restored) on the jackknife estimates of bird species richness (for all, rainforest, and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
 ```{r}
@@ -213,7 +213,7 @@ cld(tukey_glmmOpenCountryJack)
 ```
 
 
-### Testing the role of habitat
+## Testing the role of habitat
 
 Testing the role of habitat (vegetation structure) and foraging habit on species richness within a generalized linear modeling framework
 ```{r}
@@ -264,7 +264,7 @@ glmm_Understory <- glmer(richness ~ PC1 + PC2 + (1|siteCode) + (1|visit), data =
 summary(glmm_Understory)
 ```
 
-### Effect of planting year
+## Effect of planting year
 
 Lastly, running a generalized linear model to test the effect of year since restoration on jacknife estimates of species richness
 ```{r}

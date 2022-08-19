@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we will calculate the proportion of rainforest and open-country bird species that was detected across the three treatment types for a given period of time. Species richness may only give us a broader understanding of the overall levels of diversity, but getting at a measure of abundance (where we calculate the proportion of rainforest and open-country birds that were vocal in a given habitat type for a given period of time) may provide insights on the use of a particular habitat - an important question that needs to be answered, given that we would like to understand if fauna are using actively restored habitats.  
 
-### Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -22,7 +22,7 @@ library(extrafont)
 source("code/01_internal-functions.R")
 ```
 
-### Load the necessary data to calculate proportions
+## Load the necessary data to calculate proportions
 ```{r}
 # We load the subset data
 datSubset <- read.csv("results/datSubset.csv")
@@ -37,7 +37,7 @@ datSummary <- datSubset %>%
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
 ```
 
-### Proportion of acoustic detections across all 10-s chunks for every site-date combination
+## Proportion of acoustic detections across all 10-s chunks for every site-date combination
 ```{r}
 # Calculate the overall number of detections for each site across 6 days of data (translates to ~96-min of data per site; each detection corresponding to a temporal unit of 10 seconds). Here, we include dates, since each visit can explain the detections/proportion of detections for future modeling.   
 
@@ -75,7 +75,7 @@ prop <- left_join(totRainDetections, totOpenDetections,
 write.csv(prop, "results/acoustic-detections.csv", row.names = F)
 ```
 
-### Testing for differences in species acoustic detections across treatment types
+## Testing for differences in species acoustic detections across treatment types
 
 Plotting proportion of rainforest and open -country species detections and testing for any significant differences between treatment types
 ```{r}
@@ -124,7 +124,7 @@ ggsave(fig_propOC, filename = "figs/fig_acousticDetections_propOC.png", width=12
 ![We observed significant differences in the proportion of rainforest bird species detections across treatment types.](figs/fig_acousticDetections_propRF.png)
 ![We observed significant differences in the proportion of open-country bird species detections across treatment types.](figs/fig_acousticDetections_propOC.png)
 
-### Proportion of detections across acoustic point counts
+## Proportion of detections across acoustic point counts
 
 Here, we repeat the above analysis with a different sampling unit, where the total number of detections of a species was estimated for each point count rather than across 10-s chunks. In other words, if a species was detected thrice vocally, it was marked as a single detection in that point count. 
 ```{r}
@@ -151,7 +151,7 @@ propVisit <- left_join(totRainVisits, totOpenVisits,
 write.csv(propVisit, "results/acoustic-detections-across-visits.csv", row.names = F)
 ```
 
-### Testing for differences in rainforest and open-country species detections across acoustic point counts
+## Testing for differences in rainforest and open-country species detections across acoustic point counts
 ```{r}
 # Test if there are significant differences in the proportion of rainforest species across treatment types
 anovaRF <- aov(propRF~Restoration.type, data = propVisit)

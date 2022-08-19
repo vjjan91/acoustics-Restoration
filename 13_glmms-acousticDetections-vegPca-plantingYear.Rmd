@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we run generalized linear mixed models to test the association between bird species proportions (rainforest and open-country species) and restoration type. In addition, we run generalized linear mixed models to test associations between species proportions and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects. Lastly, we assess associations between year since restoration began and bird species proportions.  
 
-### Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -25,7 +25,7 @@ library(sjPlot)
 source("code/01_internal-functions.R")
 ```
 
-### Load the necessary data for statistical modeling
+## Load the necessary data for statistical modeling
 ```{r}
 # Load data from previous scripts
 vegData <-  read.csv("results/summaryVeg.csv") %>%
@@ -35,7 +35,7 @@ vegPcaScores <- read.csv("results/pcaVeg.csv") %>%
 propVisit <- read.csv("results/acoustic-detections-across-visits.csv")
 ```
 
-### Getting data ready in a format for generalized linear mixed modeling
+## Getting data ready in a format for generalized linear mixed modeling
 ```{r}
 # prep veg data
 prepVegData <- vegPcaScores %>%  
@@ -59,13 +59,13 @@ modelData <- prepBirdData %>%
   full_join(prepVegData, by=c("Site","siteCode","Restoration.type"))
 ```
 
-### Running the generalized linear mixed models
+## Running the generalized linear mixed models
 
 We now run generalized linear mixed models (GLMM) assuming gaussian errors to examine the effects of restoration type (benchmark, actively restored and passively restored) on the proportion of bird species detections (for rainforest and open-country species), followed by TukeyHSD multiple comparisons tests of means. 
 
-### Examining effect of restoration type on proportion of rainforest and open-country species detections
+## Examining effect of restoration type on proportion of rainforest and open-country species detections
 
-#### Rainforest bird species
+Rainforest bird species
 ```{r}
 glmm_rainForestProp <- glmer(propRF ~ Restoration.type + +(1|siteCode) + (1|visit), data = modelData, family = gaussian(link="identity"))
 summary(glmm_rainForestProp)
@@ -80,7 +80,7 @@ report::report(glmm_rainForestProp)
 #  - The effect of Restoration type [Passive] is statistically significant and negative (beta = -0.05, 95% CI [-0.07, -0.02], t(251) = -3.19, p = 0.002; Std. beta = -0.36, 95% CI [-0.58, -0.14])
 ```
 
-#### Open-country species
+Open-country species
 ```{r}
 glmm_openCountryProp <- glmer(propOC ~ Restoration.type + +(1|siteCode) + (1|visit), data = modelData, family = gaussian(link="identity"))
 summary(glmm_openCountryProp)
@@ -95,7 +95,7 @@ report::report(glmm_openCountryProp)
 #  - The effect of Restoration type [Passive] is statistically significant and positive (beta = 0.05, 95% CI [0.02, 0.07], t(251) = 3.19, p = 0.002; Std. beta = 0.36, 95% CI [0.14, 0.58])
 ```
 
-### Testing the role of habitat
+## Testing the role of habitat
 
 Testing the role of habitat (vegetation structure) and on species proportions within a generalized linear modeling framework
 ```{r}
@@ -124,7 +124,7 @@ report::report(glmm_openCountry)
 #  - The effect of PC2 is statistically non-significant and negative (beta = -0.01, 95% CI [-0.03, 2.25e-03], t(251) = -1.67, p = 0.096; Std. beta = -0.11, 95% CI [-0.24, 0.02])
 ```
 
-### Effect of planting year
+## Effect of planting year
 
 Lastly, running a generalized linear model to test the effect of year since restoration on bird species proportions
 ```{r}

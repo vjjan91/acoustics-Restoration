@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we run generalized linear models to test the association between acoustic space use values and restoration type. In addition, we run generalized linear mixed models to test associations between acoustic space use and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects.  
 
-### Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -28,7 +28,7 @@ library(extrafont)
 source("code/01_internal-functions.R")
 ```
 
-### Load necessary data for statistical modeling
+## Load necessary data for statistical modeling
 ```{r}
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>% 
@@ -116,7 +116,7 @@ vegPcaScores <- read.csv("results/pcaVeg.csv") %>%
   filter(!str_detect(Site_ID, 'OLCAP5B'))
 ```
 
-### Getting data ready in a format for linear modeling
+## Getting data ready in a format for linear modeling
 ```{r}
 # overall space use
 modelDataAll <- vegPcaScores %>% 
@@ -143,7 +143,7 @@ modelDataNocturnal <- vegPcaScores %>%
   mutate("roundSpaceuse" = round(totSpaceuse))
 ```
 
-### Running the generalized linear mixed models
+## Running the generalized linear mixed models
 
 We now run generalized linear mixed models (GLMM) assuming gaussian errors to examine the effects of restoration type (benchmark, actively restored and passively restored) on acoustic space use, followed by TukeyHSD multiple comparisons tests of means. 
 ```{r}
@@ -234,7 +234,7 @@ ggsave(fig_glmm_nocturnalRest, filename = "figs/fig_glmm_nocturnalAcousticSpaceU
 Analysis of ~4,128 hours of acoustic data across treatment types (for the 43 sites) revealed significant differences in ASU across BM-AR and BM-NR sites, with the highest estimate in BM sites (mean ± SD: 413 ± 103), followed by AR sites (mean ± SD: 188 ± 78) and NR sites (mean ± SD: 182 ± 66). In the above figure, BM = undisturbed benchmark rainforest sites, AR = Actively restored forest sites and NR = Naturally regenerating forest sites.](figs/fig_glmm_overallAcousticSpace.png)  
 
 
-### We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.  
+## We now run generalized linear mixed models (GLMM) assuming gaussian errors and using log link functions to examine the effects of habitat (vegetation structure) on acoustic space use.  
 ```{r}
 # overall space use
 glmm_allVeg<- glmer(roundSpaceuse ~ PC1 + PC2 + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))

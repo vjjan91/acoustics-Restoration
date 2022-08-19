@@ -7,7 +7,7 @@ editor_options:
 
 In this script, we run generalized linear models to test the association between acoustic space use values and species richness, and time since restoration. 
 
-### Install required libraries
+## Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -26,7 +26,7 @@ library(sjPlot)
 source("code/01_internal-functions.R")
 ```
 
-### Load necessary data for statistical modeling
+## Load necessary data for statistical modeling
 ```{r}
 # load list of sites
 sites <- read.csv("data/list-of-sites.csv") %>% 
@@ -86,7 +86,7 @@ totSpaceUse <- sitebyDayAsu %>%
 ```
 
 
-### Getting data ready in a format for linear modeling
+## Getting data ready in a format for linear modeling
 ```{r}
 # overall space use and bird species detections
 modelDataAll <- vegPcaScores %>% 
@@ -99,7 +99,7 @@ modelDataAll <- vegPcaScores %>%
   distinct(.)
 ```
 
-### Acoustic space use and proportion of bird species detections
+## Acoustic space use and proportion of bird species detections
 ```{r}
 # rainforest bird species detections
 glmm_detectionsRF_space <- glmer(roundSpaceuse ~ propRF + (1|siteCode) + (1|visit), data = modelDataAll, family = gaussian(link="identity"))
@@ -128,7 +128,7 @@ report::report(glmm_detectionsOC_space)
 # Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. 
 ```
 
-### Year since restoration
+## Year since restoration
 
 Let's look at year since restoration and its effect on acoustic space use and the proportion of rainforest and open country bird species detections
 ```{r}
