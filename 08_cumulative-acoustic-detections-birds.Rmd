@@ -3,14 +3,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Acoustic Detections
+## Acoustic Detections
 
 In this script, we will calculate:
 
 a) Total Number of detections across sites (reported for varying time intervals 10s, 30s, 1-min, 2-min, 4-min).
 b) Repeat the above calculations, but using species traits - If a species is a rainforest specialist or an open-country generalist.
 
-## Install required libraries
+### Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -21,7 +21,7 @@ library(scico)
 library(extrafont)
 ```
 
-## Load data
+### Load data
 
 We will use the data that was subset previously for further analysis.
 ```{r}
@@ -32,13 +32,11 @@ datSubset <- read.csv("results/datSubset.csv")
 trait_dat <- read.csv("data/species-trait-dat.csv")
 ```
 
-## Overall number of detections
+### Overall number of detections
 
 Given the data annotated so far, we will calculate the overall number of detections across different temporal periods, starting from 10s to 30-s, 1-min, 2-min and 4-min. We will first calculate the overall number of detections for the shortest possible temporal duration which could be annotated confidently - 10s. 
 
 Other durations are chosen to confirm if the number of detections vary as a function of the temporal duration. 
-
-Please note that: the data at the moment is imbalanced in terms of nVisits
 ```{r}
 # Calculate the overall number of detections for each site where each temporal duration chosen is a 10s clip
 
@@ -117,7 +115,7 @@ nDetections_4min <- nDetections_4min %>%
   summarise_at(.vars = vars(c("IP":"HSWP")),.funs = sum)
 ```
 
-## Detections by treatment type
+### Detections by treatment type
 
 How does the number of detections vary as a function of restoration type? (tested across different temporal durations)?
 ```{r}
@@ -179,9 +177,9 @@ fig_sumDetections10s <- ggplot(sum_Detections10s, aes(x=Restoration.type, y=sumD
 ggsave(fig_sumDetections10s, filename = "figs/fig_sumDetections10s.png", width=12, height=7, device = png(), units="in", dpi = 300); dev.off()
 ```
 
-![](figs/fig_sumDetections10s.png)
+![No significant difference in overall number of detections across treatment types.](figs/fig_sumDetections10s.png)
 
-## Detections by species traits
+### Detections by species traits
 
 How does the cumulative number of detections vary by treatment type, as a function of whether a species is a rainforest specialist or an open country generalist? (These calculations are repeated for different temporal durations to assess differences, if any)
 ```{r}
@@ -278,4 +276,4 @@ fig_detections_trait10s <- ggplot(detections_trait10s, aes(x=Restoration.type, y
 ggsave(fig_detections_trait10s, filename = "figs/fig_detections_trait10s.png", width=12, height=7,device = png(), units="in", dpi = 300); dev.off()
 ```
 
-![](figs/fig_detections_trait10s.png)
+![Overall number of rainforest bird species detections differed between BM and AR and BM and NR sites. For open-country bird species detections, we observed significant differences across every pair of treatment types.](figs/fig_detections_trait10s.png)
