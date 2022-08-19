@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Generalized linear mixed modeling (species proportions, vegetation data and planting year)
+## Generalized linear mixed modeling (species proportions, vegetation data and planting year)
 
 In this script, we run generalized linear mixed models to test the association between bird species proportions (rainforest and open-country species) and restoration type. In addition, we run generalized linear mixed models to test associations between species proportions and habitat (vegetation structure) using site-pair name (actively restored and naturally regenerating were specified to be paired) and repeat visits as random effects. Lastly, we assess associations between year since restoration began and bird species proportions.  
 
@@ -65,7 +65,7 @@ We now run generalized linear mixed models (GLMM) assuming gaussian errors to ex
 
 ### Examining effect of restoration type on proportion of rainforest and open-country species detections
 
-### Rainforest bird species
+#### Rainforest bird species
 ```{r}
 glmm_rainForestProp <- glmer(propRF ~ Restoration.type + +(1|siteCode) + (1|visit), data = modelData, family = gaussian(link="identity"))
 summary(glmm_rainForestProp)
@@ -80,7 +80,7 @@ report::report(glmm_rainForestProp)
 #  - The effect of Restoration type [Passive] is statistically significant and negative (beta = -0.05, 95% CI [-0.07, -0.02], t(251) = -3.19, p = 0.002; Std. beta = -0.36, 95% CI [-0.58, -0.14])
 ```
 
-### Open-country species
+#### Open-country species
 ```{r}
 glmm_openCountryProp <- glmer(propOC ~ Restoration.type + +(1|siteCode) + (1|visit), data = modelData, family = gaussian(link="identity"))
 summary(glmm_openCountryProp)
