@@ -24,22 +24,22 @@ link-citations: yes
 github-repo: vjjan91/acoustics-Restoration
 ---
 
-# Introduction
+## Introduction
 
 This is the readable version that showcases analyses carried out to test the impacts of forest restoration on vocalizing biodiversity in the Anamalai hills of the Western Ghats biodiversity hotspot. 
 
-## Attribution
+### Attribution
 
 Please contact the following in case of interest in the project.
 
 - Vijay Ramesh (lead author)
     - PhD student, Columbia University
 
-## Data access
+### Data access
 
 The data used in this work will be archived and made public upon publication.
 
-## Data processing
+### Data processing
 
 The data processing for this project is described in the following sections. Navigate through them using the links in the sidebar.
 
