@@ -299,205 +299,205 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <div id="install-required-libraries-3" class="section level3 hasAnchor" number="8.0.1">
 <h3><span class="header-section-number">8.0.1</span> Install required libraries<a href="bird-species-richness.html#install-required-libraries-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb32-1"><a href="bird-species-richness.html#cb32-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb32-2"><a href="bird-species-richness.html#cb32-2"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb32-3"><a href="bird-species-richness.html#cb32-3"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb32-4"><a href="bird-species-richness.html#cb32-4"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb32-5"><a href="bird-species-richness.html#cb32-5"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb32-6"><a href="bird-species-richness.html#cb32-6"></a><span class="fu">library</span>(scico)</span>
-<span id="cb32-7"><a href="bird-species-richness.html#cb32-7"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb32-8"><a href="bird-species-richness.html#cb32-8"></a><span class="fu">library</span>(extrafont)</span>
-<span id="cb32-9"><a href="bird-species-richness.html#cb32-9"></a></span>
-<span id="cb32-10"><a href="bird-species-richness.html#cb32-10"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
-<span id="cb32-11"><a href="bird-species-richness.html#cb32-11"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="bird-species-richness.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb32-2"><a href="bird-species-richness.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb32-3"><a href="bird-species-richness.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb32-4"><a href="bird-species-richness.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb32-5"><a href="bird-species-richness.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb32-6"><a href="bird-species-richness.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb32-7"><a href="bird-species-richness.html#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb32-8"><a href="bird-species-richness.html#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb32-9"><a href="bird-species-richness.html#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="bird-species-richness.html#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb32-11"><a href="bird-species-richness.html#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
 </div>
 <div id="load-manual-annotations-data" class="section level3 hasAnchor" number="8.0.2">
 <h3><span class="header-section-number">8.0.2</span> Load manual annotations data<a href="bird-species-richness.html#load-manual-annotations-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To start with, we will compute species richness from 3 non-consecutive visits for each site for each season. Across two seasons, a total of 6 non-consecutive visits are chosen for each site.</p>
 <p>We will use an excel sheet of manual annotations, which contains 10s-clips from each site (A random 16-min was chosen between 6am and 10am and divided into 10s chunks for the ease of annotations).</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb33-1"><a href="bird-species-richness.html#cb33-1"></a><span class="co"># Attach the annotation data for summer and winter</span></span>
-<span id="cb33-2"><a href="bird-species-richness.html#cb33-2"></a>summer_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/2020-summer-annotation-working-document.csv&quot;</span>)</span>
-<span id="cb33-3"><a href="bird-species-richness.html#cb33-3"></a>winter_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/2020-winter-annotation-working-document.csv&quot;</span>)</span>
-<span id="cb33-4"><a href="bird-species-richness.html#cb33-4"></a></span>
-<span id="cb33-5"><a href="bird-species-richness.html#cb33-5"></a><span class="do">## Please write to the lead author if you would like to access this data (Vijay Ramesh; vr2352@columbia.edu)</span></span>
-<span id="cb33-6"><a href="bird-species-richness.html#cb33-6"></a></span>
-<span id="cb33-7"><a href="bird-species-richness.html#cb33-7"></a><span class="co"># combine the datasets for a single dataframe for the present analysis</span></span>
-<span id="cb33-8"><a href="bird-species-richness.html#cb33-8"></a>data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(summer_data,winter_data)</span>
-<span id="cb33-9"><a href="bird-species-richness.html#cb33-9"></a><span class="fu">names</span>(data)</span>
-<span id="cb33-10"><a href="bird-species-richness.html#cb33-10"></a></span>
-<span id="cb33-11"><a href="bird-species-richness.html#cb33-11"></a><span class="co"># reorder columns</span></span>
-<span id="cb33-12"><a href="bird-species-richness.html#cb33-12"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb33-13"><a href="bird-species-richness.html#cb33-13"></a>  <span class="fu">relocate</span>(<span class="fu">c</span>(<span class="st">&quot;BFO&quot;</span>,<span class="st">&quot;SBEO&quot;</span>, <span class="st">&quot;JN&quot;</span>, <span class="st">&quot;AK&quot;</span>, <span class="st">&quot;HSWP&quot;</span>),  <span class="at">.after =</span> <span class="st">&quot;CR&quot;</span>) <span class="co"># certain species codes are mentioned here and these can be found in the supplementary data.</span></span>
-<span id="cb33-14"><a href="bird-species-richness.html#cb33-14"></a></span>
-<span id="cb33-15"><a href="bird-species-richness.html#cb33-15"></a><span class="co"># Site-wise sorting of the 16-min of data</span></span>
-<span id="cb33-16"><a href="bird-species-richness.html#cb33-16"></a></span>
-<span id="cb33-17"><a href="bird-species-richness.html#cb33-17"></a><span class="co"># Split the file names into 4 columns : Site, Date, Time and Splits  </span></span>
-<span id="cb33-18"><a href="bird-species-richness.html#cb33-18"></a>data <span class="ot">&lt;-</span> <span class="fu">separate</span>(data, <span class="at">col =</span> Filename, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;Site&quot;</span>, <span class="st">&quot;Date&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Splits&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>)</span>
-<span id="cb33-19"><a href="bird-species-richness.html#cb33-19"></a>data</span>
-<span id="cb33-20"><a href="bird-species-richness.html#cb33-20"></a></span>
-<span id="cb33-21"><a href="bird-species-richness.html#cb33-21"></a><span class="co"># Load the species-trait-data</span></span>
-<span id="cb33-22"><a href="bird-species-richness.html#cb33-22"></a>trait_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="bird-species-richness.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Attach the annotation data for summer and winter</span></span>
+<span id="cb33-2"><a href="bird-species-richness.html#cb33-2" aria-hidden="true" tabindex="-1"></a>summer_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/2020-summer-annotation-working-document.csv&quot;</span>)</span>
+<span id="cb33-3"><a href="bird-species-richness.html#cb33-3" aria-hidden="true" tabindex="-1"></a>winter_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/2020-winter-annotation-working-document.csv&quot;</span>)</span>
+<span id="cb33-4"><a href="bird-species-richness.html#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="bird-species-richness.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Please write to the lead author if you would like to access this data (Vijay Ramesh; vr2352@columbia.edu)</span></span>
+<span id="cb33-6"><a href="bird-species-richness.html#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="bird-species-richness.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># combine the datasets for a single dataframe for the present analysis</span></span>
+<span id="cb33-8"><a href="bird-species-richness.html#cb33-8" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(summer_data,winter_data)</span>
+<span id="cb33-9"><a href="bird-species-richness.html#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data)</span>
+<span id="cb33-10"><a href="bird-species-richness.html#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="bird-species-richness.html#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co"># reorder columns</span></span>
+<span id="cb33-12"><a href="bird-species-richness.html#cb33-12" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb33-13"><a href="bird-species-richness.html#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="fu">c</span>(<span class="st">&quot;BFO&quot;</span>,<span class="st">&quot;SBEO&quot;</span>, <span class="st">&quot;JN&quot;</span>, <span class="st">&quot;AK&quot;</span>, <span class="st">&quot;HSWP&quot;</span>),  <span class="at">.after =</span> <span class="st">&quot;CR&quot;</span>) <span class="co"># certain species codes are mentioned here and these can be found in the supplementary data.</span></span>
+<span id="cb33-14"><a href="bird-species-richness.html#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="bird-species-richness.html#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Site-wise sorting of the 16-min of data</span></span>
+<span id="cb33-16"><a href="bird-species-richness.html#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-17"><a href="bird-species-richness.html#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the file names into 4 columns : Site, Date, Time and Splits  </span></span>
+<span id="cb33-18"><a href="bird-species-richness.html#cb33-18" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">separate</span>(data, <span class="at">col =</span> Filename, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;Site&quot;</span>, <span class="st">&quot;Date&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Splits&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>)</span>
+<span id="cb33-19"><a href="bird-species-richness.html#cb33-19" aria-hidden="true" tabindex="-1"></a>data</span>
+<span id="cb33-20"><a href="bird-species-richness.html#cb33-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-21"><a href="bird-species-richness.html#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the species-trait-data</span></span>
+<span id="cb33-22"><a href="bird-species-richness.html#cb33-22" aria-hidden="true" tabindex="-1"></a>trait_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="subset-data" class="section level3 hasAnchor" number="8.0.3">
 <h3><span class="header-section-number">8.0.3</span> Subset data<a href="bird-species-richness.html#subset-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>How many visits (counted as number of unique days) to a site has been annotated? Please note that some sites have more than 6 visits to a site, and hence we ensure that we choose only 6 non-consecutive visits to a given site.</p>
 <p>NOTE: You need to run this only once and if you have already run it, move to the next chunk of code and load datSubset.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb34-1"><a href="bird-species-richness.html#cb34-1"></a><span class="co"># First we remove OLCAP5B - a site for which only 3 visits were made in summer and not sampled as a result of logistic reasons in winter</span></span>
-<span id="cb34-2"><a href="bird-species-richness.html#cb34-2"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="bird-species-richness.html#cb34-3"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Site, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
-<span id="cb34-4"><a href="bird-species-richness.html#cb34-4"></a></span>
-<span id="cb34-5"><a href="bird-species-richness.html#cb34-5"></a><span class="co"># Number of visits to a particular site</span></span>
-<span id="cb34-6"><a href="bird-species-richness.html#cb34-6"></a><span class="co"># Only INBS04U has 5 visits because another visit was not possible due to rain</span></span>
-<span id="cb34-7"><a href="bird-species-richness.html#cb34-7"></a>nSites_Days <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb34-8"><a href="bird-species-richness.html#cb34-8"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Date)<span class="sc">%&gt;%</span></span>
-<span id="cb34-9"><a href="bird-species-richness.html#cb34-9"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(Site) <span class="sc">%&gt;%</span> <span class="fu">count</span>(Site)</span>
-<span id="cb34-10"><a href="bird-species-richness.html#cb34-10"></a></span>
-<span id="cb34-11"><a href="bird-species-richness.html#cb34-11"></a><span class="co"># Unique date site combination to give you a sense of sampling</span></span>
-<span id="cb34-12"><a href="bird-species-richness.html#cb34-12"></a>uniqueSiteDate <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb34-13"><a href="bird-species-richness.html#cb34-13"></a>  <span class="fu">group_by</span>(Site) <span class="sc">%&gt;%</span></span>
-<span id="cb34-14"><a href="bird-species-richness.html#cb34-14"></a>  <span class="fu">distinct</span>(Date)</span>
-<span id="cb34-15"><a href="bird-species-richness.html#cb34-15"></a></span>
-<span id="cb34-16"><a href="bird-species-richness.html#cb34-16"></a><span class="co"># Convert date column to YMD format using lubridate::ymd()</span></span>
-<span id="cb34-17"><a href="bird-species-richness.html#cb34-17"></a>uniqueSiteDate<span class="sc">$</span>Date <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(uniqueSiteDate<span class="sc">$</span>Date)</span>
-<span id="cb34-18"><a href="bird-species-richness.html#cb34-18"></a></span>
-<span id="cb34-19"><a href="bird-species-richness.html#cb34-19"></a><span class="co"># The below lines of code were written following a query on stackOverflow to select six non-consecutive visits to any site</span></span>
-<span id="cb34-20"><a href="bird-species-richness.html#cb34-20"></a><span class="co"># Link: https://stackoverflow.com/questions/67212152/select-non-consecutive-dates-for-every-grouped-element-in-r</span></span>
-<span id="cb34-21"><a href="bird-species-richness.html#cb34-21"></a></span>
-<span id="cb34-22"><a href="bird-species-richness.html#cb34-22"></a>nonConVisits <span class="ot">&lt;-</span> uniqueSiteDate<span class="sc">%&gt;%</span> </span>
-<span id="cb34-23"><a href="bird-species-richness.html#cb34-23"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb34-24"><a href="bird-species-richness.html#cb34-24"></a>  <span class="fu">group_split</span>(Site) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-25"><a href="bird-species-richness.html#cb34-25"></a>  <span class="fu">map_df</span>(., <span class="sc">~</span> .x <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb34-26"><a href="bird-species-richness.html#cb34-26"></a>           <span class="fu">arrange</span>(Date) <span class="sc">%&gt;%</span></span>
-<span id="cb34-27"><a href="bird-species-richness.html#cb34-27"></a>           <span class="fu">mutate</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb34-28"><a href="bird-species-richness.html#cb34-28"></a>           <span class="fu">complete</span>(<span class="at">Date =</span> <span class="fu">seq.Date</span>(<span class="fu">first</span>(Date), <span class="fu">last</span>(Date), <span class="at">by =</span> <span class="st">&#39;days&#39;</span>))<span class="sc">%&gt;%</span></span>
-<span id="cb34-29"><a href="bird-species-richness.html#cb34-29"></a>           <span class="fu">group_by</span>(<span class="at">n =</span> <span class="fu">cumsum</span>(<span class="fu">is.na</span>(n))) <span class="sc">%&gt;%</span></span>
-<span id="cb34-30"><a href="bird-species-richness.html#cb34-30"></a>           <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Site)) <span class="sc">%&gt;%</span></span>
-<span id="cb34-31"><a href="bird-species-richness.html#cb34-31"></a>           <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb34-32"><a href="bird-species-richness.html#cb34-32"></a>           <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb34-33"><a href="bird-species-richness.html#cb34-33"></a>           <span class="fu">sample_n</span>(<span class="fu">min</span>(<span class="fu">n</span>(), <span class="dv">6</span>))</span>
-<span id="cb34-34"><a href="bird-species-richness.html#cb34-34"></a>         ) <span class="sc">%&gt;%</span></span>
-<span id="cb34-35"><a href="bird-species-richness.html#cb34-35"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>n)</span>
-<span id="cb34-36"><a href="bird-species-richness.html#cb34-36"></a></span>
-<span id="cb34-37"><a href="bird-species-richness.html#cb34-37"></a><span class="co"># Change the structure of the date column back to character for using one of the join functions</span></span>
-<span id="cb34-38"><a href="bird-species-richness.html#cb34-38"></a>nonConVisits<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(<span class="fu">as.character</span>(nonConVisits<span class="sc">$</span>Date),<span class="st">&quot;-&quot;</span>)</span>
-<span id="cb34-39"><a href="bird-species-richness.html#cb34-39"></a></span>
-<span id="cb34-40"><a href="bird-species-richness.html#cb34-40"></a><span class="co"># Left-join with the original dataframe to subset the data for analysis</span></span>
-<span id="cb34-41"><a href="bird-species-richness.html#cb34-41"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">left_join</span>(nonConVisits,data)</span>
-<span id="cb34-42"><a href="bird-species-richness.html#cb34-42"></a><span class="fu">names</span>(datSubset)</span>
-<span id="cb34-43"><a href="bird-species-richness.html#cb34-43"></a></span>
-<span id="cb34-44"><a href="bird-species-richness.html#cb34-44"></a><span class="co"># renaming columns</span></span>
-<span id="cb34-45"><a href="bird-species-richness.html#cb34-45"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">rename</span>(datSubset, <span class="at">Restoration.type =</span> Restoration.Type..Benchmark.Active.Passive.)</span>
-<span id="cb34-46"><a href="bird-species-richness.html#cb34-46"></a></span>
-<span id="cb34-47"><a href="bird-species-richness.html#cb34-47"></a><span class="co"># Save this data as a .csv for future analysis (later scripts)</span></span>
-<span id="cb34-48"><a href="bird-species-richness.html#cb34-48"></a><span class="fu">write.csv</span>(datSubset,<span class="st">&quot;results/datSubset.csv&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="bird-species-richness.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First we remove OLCAP5B - a site for which only 3 visits were made in summer and not sampled as a result of logistic reasons in winter</span></span>
+<span id="cb34-2"><a href="bird-species-richness.html#cb34-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb34-3"><a href="bird-species-richness.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Site, <span class="st">&#39;OLCAP5B&#39;</span>))</span>
+<span id="cb34-4"><a href="bird-species-richness.html#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="bird-species-richness.html#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of visits to a particular site</span></span>
+<span id="cb34-6"><a href="bird-species-richness.html#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Only INBS04U has 5 visits because another visit was not possible due to rain</span></span>
+<span id="cb34-7"><a href="bird-species-richness.html#cb34-7" aria-hidden="true" tabindex="-1"></a>nSites_Days <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb34-8"><a href="bird-species-richness.html#cb34-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Date)<span class="sc">%&gt;%</span></span>
+<span id="cb34-9"><a href="bird-species-richness.html#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(Site) <span class="sc">%&gt;%</span> <span class="fu">count</span>(Site)</span>
+<span id="cb34-10"><a href="bird-species-richness.html#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="bird-species-richness.html#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Unique date site combination to give you a sense of sampling</span></span>
+<span id="cb34-12"><a href="bird-species-richness.html#cb34-12" aria-hidden="true" tabindex="-1"></a>uniqueSiteDate <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb34-13"><a href="bird-species-richness.html#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Site) <span class="sc">%&gt;%</span></span>
+<span id="cb34-14"><a href="bird-species-richness.html#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(Date)</span>
+<span id="cb34-15"><a href="bird-species-richness.html#cb34-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-16"><a href="bird-species-richness.html#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert date column to YMD format using lubridate::ymd()</span></span>
+<span id="cb34-17"><a href="bird-species-richness.html#cb34-17" aria-hidden="true" tabindex="-1"></a>uniqueSiteDate<span class="sc">$</span>Date <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(uniqueSiteDate<span class="sc">$</span>Date)</span>
+<span id="cb34-18"><a href="bird-species-richness.html#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="bird-species-richness.html#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="co"># The below lines of code were written following a query on stackOverflow to select six non-consecutive visits to any site</span></span>
+<span id="cb34-20"><a href="bird-species-richness.html#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Link: https://stackoverflow.com/questions/67212152/select-non-consecutive-dates-for-every-grouped-element-in-r</span></span>
+<span id="cb34-21"><a href="bird-species-richness.html#cb34-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-22"><a href="bird-species-richness.html#cb34-22" aria-hidden="true" tabindex="-1"></a>nonConVisits <span class="ot">&lt;-</span> uniqueSiteDate<span class="sc">%&gt;%</span> </span>
+<span id="cb34-23"><a href="bird-species-richness.html#cb34-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb34-24"><a href="bird-species-richness.html#cb34-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_split</span>(Site) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-25"><a href="bird-species-richness.html#cb34-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_df</span>(., <span class="sc">~</span> .x <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb34-26"><a href="bird-species-richness.html#cb34-26" aria-hidden="true" tabindex="-1"></a>           <span class="fu">arrange</span>(Date) <span class="sc">%&gt;%</span></span>
+<span id="cb34-27"><a href="bird-species-richness.html#cb34-27" aria-hidden="true" tabindex="-1"></a>           <span class="fu">mutate</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-28"><a href="bird-species-richness.html#cb34-28" aria-hidden="true" tabindex="-1"></a>           <span class="fu">complete</span>(<span class="at">Date =</span> <span class="fu">seq.Date</span>(<span class="fu">first</span>(Date), <span class="fu">last</span>(Date), <span class="at">by =</span> <span class="st">&#39;days&#39;</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb34-29"><a href="bird-species-richness.html#cb34-29" aria-hidden="true" tabindex="-1"></a>           <span class="fu">group_by</span>(<span class="at">n =</span> <span class="fu">cumsum</span>(<span class="fu">is.na</span>(n))) <span class="sc">%&gt;%</span></span>
+<span id="cb34-30"><a href="bird-species-richness.html#cb34-30" aria-hidden="true" tabindex="-1"></a>           <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Site)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-31"><a href="bird-species-richness.html#cb34-31" aria-hidden="true" tabindex="-1"></a>           <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-32"><a href="bird-species-richness.html#cb34-32" aria-hidden="true" tabindex="-1"></a>           <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb34-33"><a href="bird-species-richness.html#cb34-33" aria-hidden="true" tabindex="-1"></a>           <span class="fu">sample_n</span>(<span class="fu">min</span>(<span class="fu">n</span>(), <span class="dv">6</span>))</span>
+<span id="cb34-34"><a href="bird-species-richness.html#cb34-34" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span></span>
+<span id="cb34-35"><a href="bird-species-richness.html#cb34-35" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>n)</span>
+<span id="cb34-36"><a href="bird-species-richness.html#cb34-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-37"><a href="bird-species-richness.html#cb34-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the structure of the date column back to character for using one of the join functions</span></span>
+<span id="cb34-38"><a href="bird-species-richness.html#cb34-38" aria-hidden="true" tabindex="-1"></a>nonConVisits<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(<span class="fu">as.character</span>(nonConVisits<span class="sc">$</span>Date),<span class="st">&quot;-&quot;</span>)</span>
+<span id="cb34-39"><a href="bird-species-richness.html#cb34-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-40"><a href="bird-species-richness.html#cb34-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Left-join with the original dataframe to subset the data for analysis</span></span>
+<span id="cb34-41"><a href="bird-species-richness.html#cb34-41" aria-hidden="true" tabindex="-1"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">left_join</span>(nonConVisits,data)</span>
+<span id="cb34-42"><a href="bird-species-richness.html#cb34-42" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(datSubset)</span>
+<span id="cb34-43"><a href="bird-species-richness.html#cb34-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-44"><a href="bird-species-richness.html#cb34-44" aria-hidden="true" tabindex="-1"></a><span class="co"># renaming columns</span></span>
+<span id="cb34-45"><a href="bird-species-richness.html#cb34-45" aria-hidden="true" tabindex="-1"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">rename</span>(datSubset, <span class="at">Restoration.type =</span> Restoration.Type..Benchmark.Active.Passive.)</span>
+<span id="cb34-46"><a href="bird-species-richness.html#cb34-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-47"><a href="bird-species-richness.html#cb34-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Save this data as a .csv for future analysis (later scripts)</span></span>
+<span id="cb34-48"><a href="bird-species-richness.html#cb34-48" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(datSubset,<span class="st">&quot;results/datSubset.csv&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
 </div>
 <div id="total-number-of-detections" class="section level3 hasAnchor" number="8.0.4">
 <h3><span class="header-section-number">8.0.4</span> Total number of detections<a href="bird-species-richness.html#total-number-of-detections" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Now group the data by site and restoration type and sum the number of detections across sites. We will calculate the overall number of detections for each 10s clip, which will be used to estimate species richness below.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb35-1"><a href="bird-species-richness.html#cb35-1"></a><span class="co"># If you have already processed subsetting of data, read it in directly</span></span>
-<span id="cb35-2"><a href="bird-species-richness.html#cb35-2"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/datSubset.csv&quot;</span>)</span>
-<span id="cb35-3"><a href="bird-species-richness.html#cb35-3"></a></span>
-<span id="cb35-4"><a href="bird-species-richness.html#cb35-4"></a><span class="co"># Calculate the overall number of detections for each site across 6 days of data (translates to ~ 96 min of data per site)</span></span>
-<span id="cb35-5"><a href="bird-species-richness.html#cb35-5"></a></span>
-<span id="cb35-6"><a href="bird-species-richness.html#cb35-6"></a>nDetections_Site <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
-<span id="cb35-7"><a href="bird-species-richness.html#cb35-7"></a>  <span class="fu">group_by</span>(Site, Restoration.type) <span class="sc">%&gt;%</span></span>
-<span id="cb35-8"><a href="bird-species-richness.html#cb35-8"></a>  <span class="fu">transform</span>() <span class="sc">%&gt;%</span> <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb35-9"><a href="bird-species-richness.html#cb35-9"></a>  <span class="fu">summarise_at</span>(<span class="at">.vars =</span> <span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="at">.funs =</span> sum) </span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="bird-species-richness.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you have already processed subsetting of data, read it in directly</span></span>
+<span id="cb35-2"><a href="bird-species-richness.html#cb35-2" aria-hidden="true" tabindex="-1"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/datSubset.csv&quot;</span>)</span>
+<span id="cb35-3"><a href="bird-species-richness.html#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="bird-species-richness.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the overall number of detections for each site across 6 days of data (translates to ~ 96 min of data per site)</span></span>
+<span id="cb35-5"><a href="bird-species-richness.html#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="bird-species-richness.html#cb35-6" aria-hidden="true" tabindex="-1"></a>nDetections_Site <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
+<span id="cb35-7"><a href="bird-species-richness.html#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Site, Restoration.type) <span class="sc">%&gt;%</span></span>
+<span id="cb35-8"><a href="bird-species-richness.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>() <span class="sc">%&gt;%</span> <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-9"><a href="bird-species-richness.html#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_at</span>(<span class="at">.vars =</span> <span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="at">.funs =</span> sum) </span></code></pre></div>
 </div>
 <div id="calculate-species-richness" class="section level3 hasAnchor" number="8.0.5">
 <h3><span class="header-section-number">8.0.5</span> Calculate species richness<a href="bird-species-richness.html#calculate-species-richness" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Convert the detections to 1, since we are interested in calculating richness per site by converting values &gt;1 to 1 for multiple visits to a site. In other words, we want to establish overall species richness for a 16-min to 48-min window.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb36-1"><a href="bird-species-richness.html#cb36-1"></a>richness <span class="ot">&lt;-</span> nDetections_Site  <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2"><a href="bird-species-richness.html#cb36-2"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="sc">~</span> <span class="fu">replace</span>(., . <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb36-3"><a href="bird-species-richness.html#cb36-3"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb36-4"><a href="bird-species-richness.html#cb36-4"></a>  <span class="fu">mutate</span>(<span class="at">richness =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>(IP<span class="sc">:</span>HSWP))) <span class="sc">%&gt;%</span></span>
-<span id="cb36-5"><a href="bird-species-richness.html#cb36-5"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Restoration.type, richness)</span>
-<span id="cb36-6"><a href="bird-species-richness.html#cb36-6"></a></span>
-<span id="cb36-7"><a href="bird-species-richness.html#cb36-7"></a><span class="co"># Test if there are significant differences in richness across treatment types</span></span>
-<span id="cb36-8"><a href="bird-species-richness.html#cb36-8"></a>anovaAll <span class="ot">&lt;-</span> <span class="fu">aov</span>(richness<span class="sc">~</span>Restoration.type, <span class="at">data =</span> richness)</span>
-<span id="cb36-9"><a href="bird-species-richness.html#cb36-9"></a></span>
-<span id="cb36-10"><a href="bird-species-richness.html#cb36-10"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types</span></span>
-<span id="cb36-11"><a href="bird-species-richness.html#cb36-11"></a>tukeyAll <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaAll)</span>
-<span id="cb36-12"><a href="bird-species-richness.html#cb36-12"></a></span>
-<span id="cb36-13"><a href="bird-species-richness.html#cb36-13"></a><span class="co"># The above result suggests that there are no differences in overall species richness across treatment types</span></span>
-<span id="cb36-14"><a href="bird-species-richness.html#cb36-14"></a></span>
-<span id="cb36-15"><a href="bird-species-richness.html#cb36-15"></a><span class="co"># Create a boxplot of species richness by Restoration Type</span></span>
-<span id="cb36-16"><a href="bird-species-richness.html#cb36-16"></a></span>
-<span id="cb36-17"><a href="bird-species-richness.html#cb36-17"></a><span class="co"># reordering factors for plotting</span></span>
-<span id="cb36-18"><a href="bird-species-richness.html#cb36-18"></a>richness<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(richness<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
-<span id="cb36-19"><a href="bird-species-richness.html#cb36-19"></a><span class="co"># Add a custom set of colors</span></span>
-<span id="cb36-20"><a href="bird-species-richness.html#cb36-20"></a>mycolors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>), <span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>))</span>
-<span id="cb36-21"><a href="bird-species-richness.html#cb36-21"></a></span>
-<span id="cb36-22"><a href="bird-species-richness.html#cb36-22"></a>fig_richness <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(richness, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>richness, <span class="at">fill=</span>Restoration.type)) <span class="sc">+</span>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
-<span id="cb36-23"><a href="bird-species-richness.html#cb36-23"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>)) <span class="sc">+</span> </span>
-<span id="cb36-24"><a href="bird-species-richness.html#cb36-24"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb36-25"><a href="bird-species-richness.html#cb36-25"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
-<span id="cb36-26"><a href="bird-species-richness.html#cb36-26"></a>       <span class="at">y=</span><span class="st">&quot;Species Richness</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
-<span id="cb36-27"><a href="bird-species-richness.html#cb36-27"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
-<span id="cb36-28"><a href="bird-species-richness.html#cb36-28"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb36-29"><a href="bird-species-richness.html#cb36-29"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb36-30"><a href="bird-species-richness.html#cb36-30"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb36-31"><a href="bird-species-richness.html#cb36-31"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb36-32"><a href="bird-species-richness.html#cb36-32"></a></span>
-<span id="cb36-33"><a href="bird-species-richness.html#cb36-33"></a><span class="fu">ggsave</span>(fig_richness, <span class="at">filename =</span> <span class="st">&quot;figs/fig_richness.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,</span>
-<span id="cb36-34"><a href="bird-species-richness.html#cb36-34"></a>       <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>);<span class="fu">dev.off</span>()</span>
-<span id="cb36-35"><a href="bird-species-richness.html#cb36-35"></a></span>
-<span id="cb36-36"><a href="bird-species-richness.html#cb36-36"></a><span class="co"># We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches (But these differences are not significant)</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="bird-species-richness.html#cb36-1" aria-hidden="true" tabindex="-1"></a>richness <span class="ot">&lt;-</span> nDetections_Site  <span class="sc">%&gt;%</span> </span>
+<span id="cb36-2"><a href="bird-species-richness.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;IP&quot;</span><span class="sc">:</span><span class="st">&quot;HSWP&quot;</span>)),<span class="sc">~</span> <span class="fu">replace</span>(., . <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="bird-species-richness.html#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb36-4"><a href="bird-species-richness.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">richness =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>(IP<span class="sc">:</span>HSWP))) <span class="sc">%&gt;%</span></span>
+<span id="cb36-5"><a href="bird-species-richness.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Restoration.type, richness)</span>
+<span id="cb36-6"><a href="bird-species-richness.html#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="bird-species-richness.html#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Test if there are significant differences in richness across treatment types</span></span>
+<span id="cb36-8"><a href="bird-species-richness.html#cb36-8" aria-hidden="true" tabindex="-1"></a>anovaAll <span class="ot">&lt;-</span> <span class="fu">aov</span>(richness<span class="sc">~</span>Restoration.type, <span class="at">data =</span> richness)</span>
+<span id="cb36-9"><a href="bird-species-richness.html#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="bird-species-richness.html#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types</span></span>
+<span id="cb36-11"><a href="bird-species-richness.html#cb36-11" aria-hidden="true" tabindex="-1"></a>tukeyAll <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaAll)</span>
+<span id="cb36-12"><a href="bird-species-richness.html#cb36-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-13"><a href="bird-species-richness.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co"># The above result suggests that there are no differences in overall species richness across treatment types</span></span>
+<span id="cb36-14"><a href="bird-species-richness.html#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="bird-species-richness.html#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a boxplot of species richness by Restoration Type</span></span>
+<span id="cb36-16"><a href="bird-species-richness.html#cb36-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-17"><a href="bird-species-richness.html#cb36-17" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb36-18"><a href="bird-species-richness.html#cb36-18" aria-hidden="true" tabindex="-1"></a>richness<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(richness<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb36-19"><a href="bird-species-richness.html#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a custom set of colors</span></span>
+<span id="cb36-20"><a href="bird-species-richness.html#cb36-20" aria-hidden="true" tabindex="-1"></a>mycolors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>), <span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>))</span>
+<span id="cb36-21"><a href="bird-species-richness.html#cb36-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-22"><a href="bird-species-richness.html#cb36-22" aria-hidden="true" tabindex="-1"></a>fig_richness <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(richness, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>richness, <span class="at">fill=</span>Restoration.type)) <span class="sc">+</span>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb36-23"><a href="bird-species-richness.html#cb36-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb36-24"><a href="bird-species-richness.html#cb36-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb36-25"><a href="bird-species-richness.html#cb36-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb36-26"><a href="bird-species-richness.html#cb36-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Species Richness</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-27"><a href="bird-species-richness.html#cb36-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb36-28"><a href="bird-species-richness.html#cb36-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb36-29"><a href="bird-species-richness.html#cb36-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb36-30"><a href="bird-species-richness.html#cb36-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb36-31"><a href="bird-species-richness.html#cb36-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb36-32"><a href="bird-species-richness.html#cb36-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-33"><a href="bird-species-richness.html#cb36-33" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(fig_richness, <span class="at">filename =</span> <span class="st">&quot;figs/fig_richness.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,</span>
+<span id="cb36-34"><a href="bird-species-richness.html#cb36-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>);<span class="fu">dev.off</span>()</span>
+<span id="cb36-35"><a href="bird-species-richness.html#cb36-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-36"><a href="bird-species-richness.html#cb36-36" aria-hidden="true" tabindex="-1"></a><span class="co"># We observe that the overall species richness is relatively higher in passively restored forest patches, followed by benchmark (protected area) forest patches and actively restored forest patches (But these differences are not significant)</span></span></code></pre></div>
 <p><img src="figs/fig_richness.png" alt="When we examined the overall species richness across treatment types, we did not observe any significant differences." />
 ### Species richness by trait</p>
 <p>Using species trait data to check if species richness varies by treatment type as a function of whether a species is a rainforest specialist vs. open-country specialist. To do so: Add an additional column of species-trait data and group data based on the same.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb37-1"><a href="bird-species-richness.html#cb37-1"></a><span class="co"># First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections&gt;0 as 1 else they are 0</span></span>
-<span id="cb37-2"><a href="bird-species-richness.html#cb37-2"></a></span>
-<span id="cb37-3"><a href="bird-species-richness.html#cb37-3"></a>richness_trait <span class="ot">&lt;-</span> nDetections_Site <span class="sc">%&gt;%</span></span>
-<span id="cb37-4"><a href="bird-species-richness.html#cb37-4"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span>IP<span class="sc">:</span>HSWP, <span class="at">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-5"><a href="bird-species-richness.html#cb37-5"></a>  <span class="fu">left_join</span>(.,trait_dat, <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Species_Code&quot;</span><span class="ot">=</span><span class="st">&quot;species_annotation_codes&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-6"><a href="bird-species-richness.html#cb37-6"></a>  <span class="fu">mutate</span>(<span class="at">forRichness =</span> <span class="fu">case_when</span>(count<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb37-7"><a href="bird-species-richness.html#cb37-7"></a>                                 count<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">0</span>))</span>
-<span id="cb37-8"><a href="bird-species-richness.html#cb37-8"></a></span>
-<span id="cb37-9"><a href="bird-species-richness.html#cb37-9"></a><span class="co"># Calculate overall richness for each site as a function of rainforest species and open-country species</span></span>
-<span id="cb37-10"><a href="bird-species-richness.html#cb37-10"></a></span>
-<span id="cb37-11"><a href="bird-species-richness.html#cb37-11"></a>richness_trait <span class="ot">&lt;-</span>  richness_trait <span class="sc">%&gt;%</span></span>
-<span id="cb37-12"><a href="bird-species-richness.html#cb37-12"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Restoration.type, Species_Code, habitat, forRichness)<span class="sc">%&gt;%</span></span>
-<span id="cb37-13"><a href="bird-species-richness.html#cb37-13"></a>  <span class="fu">group_by</span>(Site, Restoration.type, habitat) <span class="sc">%&gt;%</span></span>
-<span id="cb37-14"><a href="bird-species-richness.html#cb37-14"></a>  <span class="fu">summarise</span>(<span class="at">richness =</span> <span class="fu">sum</span>(forRichness)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-15"><a href="bird-species-richness.html#cb37-15"></a>  <span class="fu">drop_na</span>()</span>
-<span id="cb37-16"><a href="bird-species-richness.html#cb37-16"></a></span>
-<span id="cb37-17"><a href="bird-species-richness.html#cb37-17"></a><span class="co"># Let&#39;s subset data for richness as a function of rainforest specialists and open-country generalists and test for significant differences (if any)</span></span>
-<span id="cb37-18"><a href="bird-species-richness.html#cb37-18"></a>richness_rainforest <span class="ot">&lt;-</span> richness_trait <span class="sc">%&gt;%</span></span>
-<span id="cb37-19"><a href="bird-species-richness.html#cb37-19"></a>  <span class="fu">filter</span>(habitat<span class="sc">==</span><span class="st">&quot;RF&quot;</span>)</span>
-<span id="cb37-20"><a href="bird-species-richness.html#cb37-20"></a>richness_opencountry <span class="ot">&lt;-</span> richness_trait <span class="sc">%&gt;%</span></span>
-<span id="cb37-21"><a href="bird-species-richness.html#cb37-21"></a>  <span class="fu">filter</span>(habitat<span class="sc">==</span><span class="st">&quot;OC&quot;</span>)</span>
-<span id="cb37-22"><a href="bird-species-richness.html#cb37-22"></a></span>
-<span id="cb37-23"><a href="bird-species-richness.html#cb37-23"></a><span class="co"># Test if there are significant differences in richness across treatment types as a function of species trait</span></span>
-<span id="cb37-24"><a href="bird-species-richness.html#cb37-24"></a>anova_rainforest <span class="ot">&lt;-</span> <span class="fu">aov</span>(richness<span class="sc">~</span>Restoration.type, <span class="at">data =</span> richness_rainforest)</span>
-<span id="cb37-25"><a href="bird-species-richness.html#cb37-25"></a>anova_opencountry <span class="ot">&lt;-</span> <span class="fu">aov</span>(richness<span class="sc">~</span>Restoration.type, <span class="at">data =</span> richness_opencountry)</span>
-<span id="cb37-26"><a href="bird-species-richness.html#cb37-26"></a></span>
-<span id="cb37-27"><a href="bird-species-richness.html#cb37-27"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types for rainforest birds, but a significant difference between benchmark-active and benchmark-passive sites for open country birds</span></span>
-<span id="cb37-28"><a href="bird-species-richness.html#cb37-28"></a></span>
-<span id="cb37-29"><a href="bird-species-richness.html#cb37-29"></a>tukey_rainforest <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anova_rainforest)</span>
-<span id="cb37-30"><a href="bird-species-richness.html#cb37-30"></a>tukey_opencountry <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anova_opencountry)</span>
-<span id="cb37-31"><a href="bird-species-richness.html#cb37-31"></a></span>
-<span id="cb37-32"><a href="bird-species-richness.html#cb37-32"></a><span class="co"># reordering factors for plotting</span></span>
-<span id="cb37-33"><a href="bird-species-richness.html#cb37-33"></a>richness_trait<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(richness_trait<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
-<span id="cb37-34"><a href="bird-species-richness.html#cb37-34"></a></span>
-<span id="cb37-35"><a href="bird-species-richness.html#cb37-35"></a><span class="co"># Plot the above result</span></span>
-<span id="cb37-36"><a href="bird-species-richness.html#cb37-36"></a>fig_richness_trait <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(richness_trait, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>richness, <span class="at">fill=</span>habitat)) <span class="sc">+</span></span>
-<span id="cb37-37"><a href="bird-species-richness.html#cb37-37"></a>    <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb37-38"><a href="bird-species-richness.html#cb37-38"></a>  <span class="fu">scale_fill_scico_d</span>(<span class="at">palette =</span> <span class="st">&quot;roma&quot;</span>,</span>
-<span id="cb37-39"><a href="bird-species-richness.html#cb37-39"></a>                     <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Open country&quot;</span>,<span class="st">&quot;Rainforest&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb37-40"><a href="bird-species-richness.html#cb37-40"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb37-41"><a href="bird-species-richness.html#cb37-41"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
-<span id="cb37-42"><a href="bird-species-richness.html#cb37-42"></a>       <span class="at">y=</span><span class="st">&quot;Species Richness</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
-<span id="cb37-43"><a href="bird-species-richness.html#cb37-43"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
-<span id="cb37-44"><a href="bird-species-richness.html#cb37-44"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb37-45"><a href="bird-species-richness.html#cb37-45"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
-<span id="cb37-46"><a href="bird-species-richness.html#cb37-46"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb37-47"><a href="bird-species-richness.html#cb37-47"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb37-48"><a href="bird-species-richness.html#cb37-48"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb37-49"><a href="bird-species-richness.html#cb37-49"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
-<span id="cb37-50"><a href="bird-species-richness.html#cb37-50"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>))</span>
-<span id="cb37-51"><a href="bird-species-richness.html#cb37-51"></a></span>
-<span id="cb37-52"><a href="bird-species-richness.html#cb37-52"></a><span class="fu">ggsave</span>(fig_richness_trait, <span class="at">filename =</span> <span class="st">&quot;figs/fig_richness_trait.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>, <span class="at">device =</span><span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="bird-species-richness.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, we pivot the species-codes and then match the codes with trait_data and reformat the data to keep all detections&gt;0 as 1 else they are 0</span></span>
+<span id="cb37-2"><a href="bird-species-richness.html#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="bird-species-richness.html#cb37-3" aria-hidden="true" tabindex="-1"></a>richness_trait <span class="ot">&lt;-</span> nDetections_Site <span class="sc">%&gt;%</span></span>
+<span id="cb37-4"><a href="bird-species-richness.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span>IP<span class="sc">:</span>HSWP, <span class="at">names_to=</span><span class="st">&quot;Species_Code&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;count&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-5"><a href="bird-species-richness.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(.,trait_dat, <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Species_Code&quot;</span><span class="ot">=</span><span class="st">&quot;species_annotation_codes&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-6"><a href="bird-species-richness.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">forRichness =</span> <span class="fu">case_when</span>(count<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb37-7"><a href="bird-species-richness.html#cb37-7" aria-hidden="true" tabindex="-1"></a>                                 count<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="dv">0</span>))</span>
+<span id="cb37-8"><a href="bird-species-richness.html#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="bird-species-richness.html#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate overall richness for each site as a function of rainforest species and open-country species</span></span>
+<span id="cb37-10"><a href="bird-species-richness.html#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="bird-species-richness.html#cb37-11" aria-hidden="true" tabindex="-1"></a>richness_trait <span class="ot">&lt;-</span>  richness_trait <span class="sc">%&gt;%</span></span>
+<span id="cb37-12"><a href="bird-species-richness.html#cb37-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Site, Restoration.type, Species_Code, habitat, forRichness)<span class="sc">%&gt;%</span></span>
+<span id="cb37-13"><a href="bird-species-richness.html#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Site, Restoration.type, habitat) <span class="sc">%&gt;%</span></span>
+<span id="cb37-14"><a href="bird-species-richness.html#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">richness =</span> <span class="fu">sum</span>(forRichness)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-15"><a href="bird-species-richness.html#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb37-16"><a href="bird-species-richness.html#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="bird-species-richness.html#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s subset data for richness as a function of rainforest specialists and open-country generalists and test for significant differences (if any)</span></span>
+<span id="cb37-18"><a href="bird-species-richness.html#cb37-18" aria-hidden="true" tabindex="-1"></a>richness_rainforest <span class="ot">&lt;-</span> richness_trait <span class="sc">%&gt;%</span></span>
+<span id="cb37-19"><a href="bird-species-richness.html#cb37-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(habitat<span class="sc">==</span><span class="st">&quot;RF&quot;</span>)</span>
+<span id="cb37-20"><a href="bird-species-richness.html#cb37-20" aria-hidden="true" tabindex="-1"></a>richness_opencountry <span class="ot">&lt;-</span> richness_trait <span class="sc">%&gt;%</span></span>
+<span id="cb37-21"><a href="bird-species-richness.html#cb37-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(habitat<span class="sc">==</span><span class="st">&quot;OC&quot;</span>)</span>
+<span id="cb37-22"><a href="bird-species-richness.html#cb37-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-23"><a href="bird-species-richness.html#cb37-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Test if there are significant differences in richness across treatment types as a function of species trait</span></span>
+<span id="cb37-24"><a href="bird-species-richness.html#cb37-24" aria-hidden="true" tabindex="-1"></a>anova_rainforest <span class="ot">&lt;-</span> <span class="fu">aov</span>(richness<span class="sc">~</span>Restoration.type, <span class="at">data =</span> richness_rainforest)</span>
+<span id="cb37-25"><a href="bird-species-richness.html#cb37-25" aria-hidden="true" tabindex="-1"></a>anova_opencountry <span class="ot">&lt;-</span> <span class="fu">aov</span>(richness<span class="sc">~</span>Restoration.type, <span class="at">data =</span> richness_opencountry)</span>
+<span id="cb37-26"><a href="bird-species-richness.html#cb37-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-27"><a href="bird-species-richness.html#cb37-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Tukey test to study each pair of treatment - reveals no signficant difference across treatment types for rainforest birds, but a significant difference between benchmark-active and benchmark-passive sites for open country birds</span></span>
+<span id="cb37-28"><a href="bird-species-richness.html#cb37-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-29"><a href="bird-species-richness.html#cb37-29" aria-hidden="true" tabindex="-1"></a>tukey_rainforest <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anova_rainforest)</span>
+<span id="cb37-30"><a href="bird-species-richness.html#cb37-30" aria-hidden="true" tabindex="-1"></a>tukey_opencountry <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anova_opencountry)</span>
+<span id="cb37-31"><a href="bird-species-richness.html#cb37-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-32"><a href="bird-species-richness.html#cb37-32" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb37-33"><a href="bird-species-richness.html#cb37-33" aria-hidden="true" tabindex="-1"></a>richness_trait<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(richness_trait<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb37-34"><a href="bird-species-richness.html#cb37-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-35"><a href="bird-species-richness.html#cb37-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the above result</span></span>
+<span id="cb37-36"><a href="bird-species-richness.html#cb37-36" aria-hidden="true" tabindex="-1"></a>fig_richness_trait <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(richness_trait, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>richness, <span class="at">fill=</span>habitat)) <span class="sc">+</span></span>
+<span id="cb37-37"><a href="bird-species-richness.html#cb37-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb37-38"><a href="bird-species-richness.html#cb37-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_scico_d</span>(<span class="at">palette =</span> <span class="st">&quot;roma&quot;</span>,</span>
+<span id="cb37-39"><a href="bird-species-richness.html#cb37-39" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Open country&quot;</span>,<span class="st">&quot;Rainforest&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb37-40"><a href="bird-species-richness.html#cb37-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb37-41"><a href="bird-species-richness.html#cb37-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb37-42"><a href="bird-species-richness.html#cb37-42" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Species Richness</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-43"><a href="bird-species-richness.html#cb37-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb37-44"><a href="bird-species-richness.html#cb37-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb37-45"><a href="bird-species-richness.html#cb37-45" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>), </span>
+<span id="cb37-46"><a href="bird-species-richness.html#cb37-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb37-47"><a href="bird-species-richness.html#cb37-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb37-48"><a href="bird-species-richness.html#cb37-48" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb37-49"><a href="bird-species-richness.html#cb37-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="dv">1</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb37-50"><a href="bird-species-richness.html#cb37-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>))</span>
+<span id="cb37-51"><a href="bird-species-richness.html#cb37-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-52"><a href="bird-species-richness.html#cb37-52" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(fig_richness_trait, <span class="at">filename =</span> <span class="st">&quot;figs/fig_richness_trait.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>, <span class="at">device =</span><span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
 <div class="figure">
 <img src="figs/fig_richness_trait.png" alt="" />
 <p class="caption">No significant differences were observed for rainforest species across treatment types, but we noticed a significant difference between BM-NR and BM-AR for open-country birds.</p>
@@ -532,7 +532,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/07_species-richness-birds.Rmd",
+"link": "https://github.com/vjjan91/acoustics-Restoration/edit/master/07_species-richness-birds.Rmd",
 "text": "Edit"
 },
 "history": {

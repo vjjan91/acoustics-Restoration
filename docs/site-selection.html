@@ -295,78 +295,78 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this script, we plot the elevation, distance to the nearest road, and distance between sites to show that the sites selected are comparable (we also followed site selection criteria outlined by Osuri et al., (2019) and Hariharan and Raman (2021) to ensure that sites are similar in terms of physiognomy and climate).</p>
 <div id="install-required-libraries" class="section level3 hasAnchor" number="2.0.1">
 <h3><span class="header-section-number">2.0.1</span> Install required libraries<a href="site-selection.html#install-required-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb1-1"><a href="site-selection.html#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="site-selection.html#cb1-2"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="site-selection.html#cb1-3"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-4"><a href="site-selection.html#cb1-4"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb1-5"><a href="site-selection.html#cb1-5"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-6"><a href="site-selection.html#cb1-6"></a><span class="fu">library</span>(scico)</span>
-<span id="cb1-7"><a href="site-selection.html#cb1-7"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-8"><a href="site-selection.html#cb1-8"></a><span class="fu">library</span>(extrafont)</span>
-<span id="cb1-9"><a href="site-selection.html#cb1-9"></a><span class="fu">library</span>(sf)</span>
-<span id="cb1-10"><a href="site-selection.html#cb1-10"></a><span class="fu">library</span>(raster)</span>
-<span id="cb1-11"><a href="site-selection.html#cb1-11"></a></span>
-<span id="cb1-12"><a href="site-selection.html#cb1-12"></a><span class="co"># for plotting</span></span>
-<span id="cb1-13"><a href="site-selection.html#cb1-13"></a><span class="fu">library</span>(scales)</span>
-<span id="cb1-14"><a href="site-selection.html#cb1-14"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-15"><a href="site-selection.html#cb1-15"></a><span class="fu">library</span>(ggspatial)</span>
-<span id="cb1-16"><a href="site-selection.html#cb1-16"></a><span class="fu">library</span>(colorspace)</span>
-<span id="cb1-17"><a href="site-selection.html#cb1-17"></a></span>
-<span id="cb1-18"><a href="site-selection.html#cb1-18"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
-<span id="cb1-19"><a href="site-selection.html#cb1-19"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="site-selection.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="site-selection.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="site-selection.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-4"><a href="site-selection.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb1-5"><a href="site-selection.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="site-selection.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb1-7"><a href="site-selection.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-8"><a href="site-selection.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb1-9"><a href="site-selection.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-10"><a href="site-selection.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-11"><a href="site-selection.html#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="site-selection.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># for plotting</span></span>
+<span id="cb1-13"><a href="site-selection.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-14"><a href="site-selection.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-15"><a href="site-selection.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
+<span id="cb1-16"><a href="site-selection.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb1-17"><a href="site-selection.html#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="site-selection.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb1-19"><a href="site-selection.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
 </div>
 <div id="load-list-of-sites" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Load list of sites<a href="site-selection.html#load-list-of-sites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb2-1"><a href="site-selection.html#cb2-1"></a><span class="co"># read from local file</span></span>
-<span id="cb2-2"><a href="site-selection.html#cb2-2"></a>sites <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/list-of-sites.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="site-selection.html#cb2-3"></a>  <span class="fu">filter</span>(Site.code <span class="sc">!=</span> <span class="st">&quot;OLCAP5B&quot;</span>) <span class="co"># removed this site as it was sampled in only one season and not across multiple seasons</span></span>
-<span id="cb2-4"><a href="site-selection.html#cb2-4"></a></span>
-<span id="cb2-5"><a href="site-selection.html#cb2-5"></a><span class="co"># load a shapefile of the Western Ghats (here, I will use the boundary of the Nilgiris, Anamalais and Palanis)</span></span>
-<span id="cb2-6"><a href="site-selection.html#cb2-6"></a><span class="co"># this file can be used for plotting (if necessary)</span></span>
-<span id="cb2-7"><a href="site-selection.html#cb2-7"></a><span class="co"># hills &lt;- st_read(&quot;data/spatial/hillsShapefile/Nil_Ana_Pal.shp&quot;)</span></span>
-<span id="cb2-8"><a href="site-selection.html#cb2-8"></a><span class="co"># hills &lt;- st_transform(hills, 32643)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="site-selection.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read from local file</span></span>
+<span id="cb2-2"><a href="site-selection.html#cb2-2" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/list-of-sites.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="site-selection.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Site.code <span class="sc">!=</span> <span class="st">&quot;OLCAP5B&quot;</span>) <span class="co"># removed this site as it was sampled in only one season and not across multiple seasons</span></span>
+<span id="cb2-4"><a href="site-selection.html#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="site-selection.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load a shapefile of the Western Ghats (here, I will use the boundary of the Nilgiris, Anamalais and Palanis)</span></span>
+<span id="cb2-6"><a href="site-selection.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this file can be used for plotting (if necessary)</span></span>
+<span id="cb2-7"><a href="site-selection.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># hills &lt;- st_read(&quot;data/spatial/hillsShapefile/Nil_Ana_Pal.shp&quot;)</span></span>
+<span id="cb2-8"><a href="site-selection.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># hills &lt;- st_transform(hills, 32643)</span></span></code></pre></div>
 <div id="extract-elevation" class="section level3 hasAnchor" number="2.1.1">
 <h3><span class="header-section-number">2.1.1</span> Extract elevation<a href="site-selection.html#extract-elevation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Extract elevation at each site and examine differences in elevation across treatment types</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb3-1"><a href="site-selection.html#cb3-1"></a><span class="co"># convert to sf object and transform</span></span>
-<span id="cb3-2"><a href="site-selection.html#cb3-2"></a>sites <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(sites, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="site-selection.html#cb3-3"></a>  <span class="st">`</span><span class="at">st_crs&lt;-</span><span class="st">`</span>(<span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href="site-selection.html#cb3-4"></a>  <span class="fu">st_transform</span>(<span class="dv">32643</span>)</span>
-<span id="cb3-5"><a href="site-selection.html#cb3-5"></a></span>
-<span id="cb3-6"><a href="site-selection.html#cb3-6"></a><span class="co"># add elevation raster</span></span>
-<span id="cb3-7"><a href="site-selection.html#cb3-7"></a>alt <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">&quot;data/spatial/elevation/alt&quot;</span>) <span class="co"># this layer is not added to github as a result of its large size and can be downloaded from SRTM (Farr et al. (2007))</span></span>
-<span id="cb3-8"><a href="site-selection.html#cb3-8"></a></span>
-<span id="cb3-9"><a href="site-selection.html#cb3-9"></a><span class="co"># extract values from that raster (note: transformation of coordinate system)</span></span>
-<span id="cb3-10"><a href="site-selection.html#cb3-10"></a>elev <span class="ot">&lt;-</span> <span class="fu">extract</span>(alt, sites)</span>
-<span id="cb3-11"><a href="site-selection.html#cb3-11"></a>sites <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sites, elev)</span>
-<span id="cb3-12"><a href="site-selection.html#cb3-12"></a></span>
-<span id="cb3-13"><a href="site-selection.html#cb3-13"></a><span class="co"># Test if there are significant differences in elevation across treatment types</span></span>
-<span id="cb3-14"><a href="site-selection.html#cb3-14"></a>anovaElevAll <span class="ot">&lt;-</span> <span class="fu">aov</span>(elev<span class="sc">~</span>Restoration.type, <span class="at">data =</span> sites)</span>
-<span id="cb3-15"><a href="site-selection.html#cb3-15"></a></span>
-<span id="cb3-16"><a href="site-selection.html#cb3-16"></a><span class="co"># Tukey test to study each pair of treatment - reveals no significant difference across treatment types</span></span>
-<span id="cb3-17"><a href="site-selection.html#cb3-17"></a>tukeyElevAll <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaElevAll)</span>
-<span id="cb3-18"><a href="site-selection.html#cb3-18"></a></span>
-<span id="cb3-19"><a href="site-selection.html#cb3-19"></a><span class="co"># Create a boxplot of elevation estimates by group (Here: group refers to Restoration Type)</span></span>
-<span id="cb3-20"><a href="site-selection.html#cb3-20"></a></span>
-<span id="cb3-21"><a href="site-selection.html#cb3-21"></a><span class="co"># reordering factors for plotting</span></span>
-<span id="cb3-22"><a href="site-selection.html#cb3-22"></a>sites<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(sites<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
-<span id="cb3-23"><a href="site-selection.html#cb3-23"></a><span class="co"># Add a custom set of colors</span></span>
-<span id="cb3-24"><a href="site-selection.html#cb3-24"></a>mycolors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>), <span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>))</span>
-<span id="cb3-25"><a href="site-selection.html#cb3-25"></a></span>
-<span id="cb3-26"><a href="site-selection.html#cb3-26"></a>fig_elevAll <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sites, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>elev, <span class="at">fill=</span>Restoration.type)) <span class="sc">+</span>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
-<span id="cb3-27"><a href="site-selection.html#cb3-27"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span> </span>
-<span id="cb3-28"><a href="site-selection.html#cb3-28"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb3-29"><a href="site-selection.html#cb3-29"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
-<span id="cb3-30"><a href="site-selection.html#cb3-30"></a>       <span class="at">y=</span><span class="st">&quot;Elevation (in meters)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
-<span id="cb3-31"><a href="site-selection.html#cb3-31"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
-<span id="cb3-32"><a href="site-selection.html#cb3-32"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb3-33"><a href="site-selection.html#cb3-33"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb3-34"><a href="site-selection.html#cb3-34"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb3-35"><a href="site-selection.html#cb3-35"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb3-36"><a href="site-selection.html#cb3-36"></a></span>
-<span id="cb3-37"><a href="site-selection.html#cb3-37"></a><span class="co"># plot and save elevation</span></span>
-<span id="cb3-38"><a href="site-selection.html#cb3-38"></a><span class="fu">ggsave</span>(fig_elevAll, <span class="at">filename =</span> <span class="st">&quot;figs/fig_elev.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,</span>
-<span id="cb3-39"><a href="site-selection.html#cb3-39"></a>       <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="site-selection.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to sf object and transform</span></span>
+<span id="cb3-2"><a href="site-selection.html#cb3-2" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(sites, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="site-selection.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">st_crs&lt;-</span><span class="st">`</span>(<span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="site-selection.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">32643</span>)</span>
+<span id="cb3-5"><a href="site-selection.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="site-selection.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># add elevation raster</span></span>
+<span id="cb3-7"><a href="site-selection.html#cb3-7" aria-hidden="true" tabindex="-1"></a>alt <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">&quot;data/spatial/elevation/alt&quot;</span>) <span class="co"># this layer is not added to github as a result of its large size and can be downloaded from SRTM (Farr et al. (2007))</span></span>
+<span id="cb3-8"><a href="site-selection.html#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="site-selection.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># extract values from that raster (note: transformation of coordinate system)</span></span>
+<span id="cb3-10"><a href="site-selection.html#cb3-10" aria-hidden="true" tabindex="-1"></a>elev <span class="ot">&lt;-</span> <span class="fu">extract</span>(alt, sites)</span>
+<span id="cb3-11"><a href="site-selection.html#cb3-11" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sites, elev)</span>
+<span id="cb3-12"><a href="site-selection.html#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="site-selection.html#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Test if there are significant differences in elevation across treatment types</span></span>
+<span id="cb3-14"><a href="site-selection.html#cb3-14" aria-hidden="true" tabindex="-1"></a>anovaElevAll <span class="ot">&lt;-</span> <span class="fu">aov</span>(elev<span class="sc">~</span>Restoration.type, <span class="at">data =</span> sites)</span>
+<span id="cb3-15"><a href="site-selection.html#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="site-selection.html#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Tukey test to study each pair of treatment - reveals no significant difference across treatment types</span></span>
+<span id="cb3-17"><a href="site-selection.html#cb3-17" aria-hidden="true" tabindex="-1"></a>tukeyElevAll <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaElevAll)</span>
+<span id="cb3-18"><a href="site-selection.html#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="site-selection.html#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a boxplot of elevation estimates by group (Here: group refers to Restoration Type)</span></span>
+<span id="cb3-20"><a href="site-selection.html#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="site-selection.html#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb3-22"><a href="site-selection.html#cb3-22" aria-hidden="true" tabindex="-1"></a>sites<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(sites<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb3-23"><a href="site-selection.html#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a custom set of colors</span></span>
+<span id="cb3-24"><a href="site-selection.html#cb3-24" aria-hidden="true" tabindex="-1"></a>mycolors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Dark2&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>), <span class="fu">brewer.pal</span>(<span class="at">name=</span><span class="st">&quot;Paired&quot;</span>, <span class="at">n =</span> <span class="dv">3</span>))</span>
+<span id="cb3-25"><a href="site-selection.html#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="site-selection.html#cb3-26" aria-hidden="true" tabindex="-1"></a>fig_elevAll <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sites, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>elev, <span class="at">fill=</span>Restoration.type)) <span class="sc">+</span>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb3-27"><a href="site-selection.html#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span> </span>
+<span id="cb3-28"><a href="site-selection.html#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb3-29"><a href="site-selection.html#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb3-30"><a href="site-selection.html#cb3-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Elevation (in meters)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-31"><a href="site-selection.html#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb3-32"><a href="site-selection.html#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb3-33"><a href="site-selection.html#cb3-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb3-34"><a href="site-selection.html#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb3-35"><a href="site-selection.html#cb3-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb3-36"><a href="site-selection.html#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="site-selection.html#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co"># plot and save elevation</span></span>
+<span id="cb3-38"><a href="site-selection.html#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(fig_elevAll, <span class="at">filename =</span> <span class="st">&quot;figs/fig_elev.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,</span>
+<span id="cb3-39"><a href="site-selection.html#cb3-39" aria-hidden="true" tabindex="-1"></a>       <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
 <div class="figure">
 <img src="figs/fig_elev.png" alt="" />
 <p class="caption">We did not observe any significant difference in elevation across treatment types (Tukey HSD P &gt; 0.05)</p>
@@ -375,44 +375,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="distance-to-nearest-road" class="section level3 hasAnchor" number="2.1.2">
 <h3><span class="header-section-number">2.1.2</span> Distance to nearest road<a href="site-selection.html#distance-to-nearest-road" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Calculate distance to nearest road for each site and examine differences across treatment types.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb4-1"><a href="site-selection.html#cb4-1"></a><span class="co"># add roads data</span></span>
-<span id="cb4-2"><a href="site-selection.html#cb4-2"></a><span class="co"># Note: This shapefile was downloaded from Open Street Map at http://download.geofabrik.de/asia/india/southern-zone.html </span></span>
-<span id="cb4-3"><a href="site-selection.html#cb4-3"></a><span class="co"># This file is not uploaded to GitHub as it is extremely large and can be obtained from the link above</span></span>
-<span id="cb4-4"><a href="site-selection.html#cb4-4"></a>roads <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/roadsShapefiles/osm_roads_southIndia.shp&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="site-selection.html#cb4-5"></a>  <span class="fu">st_transform</span>(<span class="dv">32643</span>)</span>
-<span id="cb4-6"><a href="site-selection.html#cb4-6"></a></span>
-<span id="cb4-7"><a href="site-selection.html#cb4-7"></a><span class="co"># get index of the nearest road to a particular site</span></span>
-<span id="cb4-8"><a href="site-selection.html#cb4-8"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(sites, roads)</span>
-<span id="cb4-9"><a href="site-selection.html#cb4-9"></a></span>
-<span id="cb4-10"><a href="site-selection.html#cb4-10"></a><span class="co"># calculate distance between each site and the nearest road</span></span>
-<span id="cb4-11"><a href="site-selection.html#cb4-11"></a>distToRoad <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">st_distance</span>(sites, roads[index,], <span class="at">by_element=</span><span class="cn">TRUE</span>))</span>
-<span id="cb4-12"><a href="site-selection.html#cb4-12"></a>sites <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sites, distToRoad)</span>
-<span id="cb4-13"><a href="site-selection.html#cb4-13"></a></span>
-<span id="cb4-14"><a href="site-selection.html#cb4-14"></a><span class="co"># Test if there are significant differences in distance to roads across treatment types</span></span>
-<span id="cb4-15"><a href="site-selection.html#cb4-15"></a>anovaDistAll <span class="ot">&lt;-</span> <span class="fu">aov</span>(distToRoad<span class="sc">~</span>Restoration.type, <span class="at">data =</span> sites)</span>
-<span id="cb4-16"><a href="site-selection.html#cb4-16"></a></span>
-<span id="cb4-17"><a href="site-selection.html#cb4-17"></a><span class="co"># Tukey test to study each pair of treatment - no significant difference between AR-NR sites but a significant difference in distance to road between AR-BM and NR-BM sites</span></span>
-<span id="cb4-18"><a href="site-selection.html#cb4-18"></a>tukeyDistAll <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaDistAll)</span>
-<span id="cb4-19"><a href="site-selection.html#cb4-19"></a></span>
-<span id="cb4-20"><a href="site-selection.html#cb4-20"></a><span class="co"># Create a boxplot of distance to road estimates by group (Here: group refers to Restoration Type)</span></span>
-<span id="cb4-21"><a href="site-selection.html#cb4-21"></a></span>
-<span id="cb4-22"><a href="site-selection.html#cb4-22"></a><span class="co"># reordering factors for plotting</span></span>
-<span id="cb4-23"><a href="site-selection.html#cb4-23"></a>sites<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(sites<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
-<span id="cb4-24"><a href="site-selection.html#cb4-24"></a></span>
-<span id="cb4-25"><a href="site-selection.html#cb4-25"></a>fig_distRoad <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sites, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>distToRoad, <span class="at">fill=</span>Restoration.type)) <span class="sc">+</span>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
-<span id="cb4-26"><a href="site-selection.html#cb4-26"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span></span>
-<span id="cb4-27"><a href="site-selection.html#cb4-27"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb4-28"><a href="site-selection.html#cb4-28"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
-<span id="cb4-29"><a href="site-selection.html#cb4-29"></a>       <span class="at">y=</span><span class="st">&quot;Distance to nearest road (in meters)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-30"><a href="site-selection.html#cb4-30"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
-<span id="cb4-31"><a href="site-selection.html#cb4-31"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb4-32"><a href="site-selection.html#cb4-32"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb4-33"><a href="site-selection.html#cb4-33"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb4-34"><a href="site-selection.html#cb4-34"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb4-35"><a href="site-selection.html#cb4-35"></a></span>
-<span id="cb4-36"><a href="site-selection.html#cb4-36"></a><span class="co"># plot and save above figure</span></span>
-<span id="cb4-37"><a href="site-selection.html#cb4-37"></a><span class="fu">ggsave</span>(fig_distRoad, <span class="at">filename =</span> <span class="st">&quot;figs/fig_distRoad.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,</span>
-<span id="cb4-38"><a href="site-selection.html#cb4-38"></a>       <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="site-selection.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add roads data</span></span>
+<span id="cb4-2"><a href="site-selection.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: This shapefile was downloaded from Open Street Map at http://download.geofabrik.de/asia/india/southern-zone.html </span></span>
+<span id="cb4-3"><a href="site-selection.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This file is not uploaded to GitHub as it is extremely large and can be obtained from the link above</span></span>
+<span id="cb4-4"><a href="site-selection.html#cb4-4" aria-hidden="true" tabindex="-1"></a>roads <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/roadsShapefiles/osm_roads_southIndia.shp&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="site-selection.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">32643</span>)</span>
+<span id="cb4-6"><a href="site-selection.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="site-selection.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get index of the nearest road to a particular site</span></span>
+<span id="cb4-8"><a href="site-selection.html#cb4-8" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(sites, roads)</span>
+<span id="cb4-9"><a href="site-selection.html#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="site-selection.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate distance between each site and the nearest road</span></span>
+<span id="cb4-11"><a href="site-selection.html#cb4-11" aria-hidden="true" tabindex="-1"></a>distToRoad <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">st_distance</span>(sites, roads[index,], <span class="at">by_element=</span><span class="cn">TRUE</span>))</span>
+<span id="cb4-12"><a href="site-selection.html#cb4-12" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sites, distToRoad)</span>
+<span id="cb4-13"><a href="site-selection.html#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="site-selection.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Test if there are significant differences in distance to roads across treatment types</span></span>
+<span id="cb4-15"><a href="site-selection.html#cb4-15" aria-hidden="true" tabindex="-1"></a>anovaDistAll <span class="ot">&lt;-</span> <span class="fu">aov</span>(distToRoad<span class="sc">~</span>Restoration.type, <span class="at">data =</span> sites)</span>
+<span id="cb4-16"><a href="site-selection.html#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="site-selection.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Tukey test to study each pair of treatment - no significant difference between AR-NR sites but a significant difference in distance to road between AR-BM and NR-BM sites</span></span>
+<span id="cb4-18"><a href="site-selection.html#cb4-18" aria-hidden="true" tabindex="-1"></a>tukeyDistAll <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(anovaDistAll)</span>
+<span id="cb4-19"><a href="site-selection.html#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="site-selection.html#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a boxplot of distance to road estimates by group (Here: group refers to Restoration Type)</span></span>
+<span id="cb4-21"><a href="site-selection.html#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="site-selection.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering factors for plotting</span></span>
+<span id="cb4-23"><a href="site-selection.html#cb4-23" aria-hidden="true" tabindex="-1"></a>sites<span class="sc">$</span>Restoration.type <span class="ot">&lt;-</span> <span class="fu">factor</span>(sites<span class="sc">$</span>Restoration.type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Benchmark&quot;</span>, <span class="st">&quot;Active&quot;</span>, <span class="st">&quot;Passive&quot;</span>))</span>
+<span id="cb4-24"><a href="site-selection.html#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="site-selection.html#cb4-25" aria-hidden="true" tabindex="-1"></a>fig_distRoad <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sites, <span class="fu">aes</span>(<span class="at">x=</span>Restoration.type, <span class="at">y=</span>distToRoad, <span class="at">fill=</span>Restoration.type)) <span class="sc">+</span>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb4-26"><a href="site-selection.html#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Treatment type&quot;</span>,<span class="at">values=</span>mycolors, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;BM&quot;</span>,<span class="st">&quot;AR&quot;</span>,<span class="st">&quot;NR&quot;</span>))<span class="sc">+</span></span>
+<span id="cb4-27"><a href="site-selection.html#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-28"><a href="site-selection.html#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Treatment Type&quot;</span>, </span>
+<span id="cb4-29"><a href="site-selection.html#cb4-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Distance to nearest road (in meters)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-30"><a href="site-selection.html#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;BM&#39;</span>,<span class="st">&#39;AR&#39;</span>,<span class="st">&#39;NR&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb4-31"><a href="site-selection.html#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb4-32"><a href="site-selection.html#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb4-33"><a href="site-selection.html#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family=</span><span class="st">&quot;Century Gothic&quot;</span>,<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb4-34"><a href="site-selection.html#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb4-35"><a href="site-selection.html#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="site-selection.html#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co"># plot and save above figure</span></span>
+<span id="cb4-37"><a href="site-selection.html#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(fig_distRoad, <span class="at">filename =</span> <span class="st">&quot;figs/fig_distRoad.png&quot;</span>, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">7</span>,</span>
+<span id="cb4-38"><a href="site-selection.html#cb4-38" aria-hidden="true" tabindex="-1"></a>       <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units=</span><span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>); <span class="fu">dev.off</span>()</span></code></pre></div>
 <div class="figure">
 <img src="figs/fig_distRoad.png" alt="" />
 <p class="caption">We did not observe any significant difference in distance to nearest road between AR and NR sites. However, the distance to nearest road for BM sites were significantly different from both AR and NR sites (Tukey HSD P &lt;0.05)</p>
@@ -421,22 +421,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="distance-between-ar-nr-site-pairs" class="section level3 hasAnchor" number="2.1.3">
 <h3><span class="header-section-number">2.1.3</span> Distance between AR-NR site pairs<a href="site-selection.html#distance-between-ar-nr-site-pairs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Calculate distances between actively restored and naturally regenerating sites that are paired.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb5-1"><a href="site-selection.html#cb5-1"></a><span class="co"># Please note that there are only 12 site pairs as two AR sites and one NR site did not have a site-pair because they were too close to another AR/NR site in terms of their acoustic radius. </span></span>
-<span id="cb5-2"><a href="site-selection.html#cb5-2"></a></span>
-<span id="cb5-3"><a href="site-selection.html#cb5-3"></a>sitePairs <span class="ot">&lt;-</span> sites <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="site-selection.html#cb5-4"></a>  <span class="fu">rename</span>(<span class="at">Site_ID =</span> Site.code) <span class="sc">%&gt;%</span></span>
-<span id="cb5-5"><a href="site-selection.html#cb5-5"></a>  <span class="fu">mutate</span>(<span class="at">Site.code =</span> <span class="fu">str_extract</span>(Site_ID, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">w+</span><span class="sc">\\</span><span class="st">d+&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-6"><a href="site-selection.html#cb5-6"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Restoration.type <span class="sc">==</span> <span class="st">&quot;Benchmark&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-7"><a href="site-selection.html#cb5-7"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Site.code <span class="sc">==</span> <span class="st">&quot;THEN10&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-8"><a href="site-selection.html#cb5-8"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Site.code <span class="sc">==</span><span class="st">&quot;VAR210&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-9"><a href="site-selection.html#cb5-9"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Site.code <span class="sc">==</span> <span class="st">&quot;INOA03&quot;</span>)</span>
-<span id="cb5-10"><a href="site-selection.html#cb5-10"></a></span>
-<span id="cb5-11"><a href="site-selection.html#cb5-11"></a>AR <span class="ot">&lt;-</span> sitePairs[sitePairs<span class="sc">$</span>Restoration.type<span class="sc">==</span><span class="st">&quot;Active&quot;</span>,]</span>
-<span id="cb5-12"><a href="site-selection.html#cb5-12"></a>NR <span class="ot">&lt;-</span> sitePairs[sitePairs<span class="sc">$</span>Restoration.type<span class="sc">==</span><span class="st">&quot;Passive&quot;</span>,]</span>
-<span id="cb5-13"><a href="site-selection.html#cb5-13"></a></span>
-<span id="cb5-14"><a href="site-selection.html#cb5-14"></a>sitePairDist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(AR<span class="sc">$</span>geometry, NR<span class="sc">$</span>geometry, <span class="at">by_element =</span> T)</span>
-<span id="cb5-15"><a href="site-selection.html#cb5-15"></a></span>
-<span id="cb5-16"><a href="site-selection.html#cb5-16"></a><span class="co"># The 12 site-pairs were at a minimum distance of 162 m to a maximum distance of 1.1 km.</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="site-selection.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Please note that there are only 12 site pairs as two AR sites and one NR site did not have a site-pair because they were too close to another AR/NR site in terms of their acoustic radius. </span></span>
+<span id="cb5-2"><a href="site-selection.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="site-selection.html#cb5-3" aria-hidden="true" tabindex="-1"></a>sitePairs <span class="ot">&lt;-</span> sites <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="site-selection.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Site_ID =</span> Site.code) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="site-selection.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Site.code =</span> <span class="fu">str_extract</span>(Site_ID, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">w+</span><span class="sc">\\</span><span class="st">d+&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="site-selection.html#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Restoration.type <span class="sc">==</span> <span class="st">&quot;Benchmark&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="site-selection.html#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Site.code <span class="sc">==</span> <span class="st">&quot;THEN10&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="site-selection.html#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Site.code <span class="sc">==</span><span class="st">&quot;VAR210&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="site-selection.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Site.code <span class="sc">==</span> <span class="st">&quot;INOA03&quot;</span>)</span>
+<span id="cb5-10"><a href="site-selection.html#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="site-selection.html#cb5-11" aria-hidden="true" tabindex="-1"></a>AR <span class="ot">&lt;-</span> sitePairs[sitePairs<span class="sc">$</span>Restoration.type<span class="sc">==</span><span class="st">&quot;Active&quot;</span>,]</span>
+<span id="cb5-12"><a href="site-selection.html#cb5-12" aria-hidden="true" tabindex="-1"></a>NR <span class="ot">&lt;-</span> sitePairs[sitePairs<span class="sc">$</span>Restoration.type<span class="sc">==</span><span class="st">&quot;Passive&quot;</span>,]</span>
+<span id="cb5-13"><a href="site-selection.html#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="site-selection.html#cb5-14" aria-hidden="true" tabindex="-1"></a>sitePairDist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(AR<span class="sc">$</span>geometry, NR<span class="sc">$</span>geometry, <span class="at">by_element =</span> T)</span>
+<span id="cb5-15"><a href="site-selection.html#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="site-selection.html#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># The 12 site-pairs were at a minimum distance of 162 m to a maximum distance of 1.1 km.</span></span></code></pre></div>
 
 </div>
 </div>
@@ -468,7 +468,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/vjjan91/acoustics-westernGhats/edit/master/01_site_selection.Rmd",
+"link": "https://github.com/vjjan91/acoustics-Restoration/edit/master/01_site_selection.Rmd",
 "text": "Edit"
 },
 "history": {
