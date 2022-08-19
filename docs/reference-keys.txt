@@ -92,8 +92,6 @@ load-the-necessary-data-for-statistical-modeling-1
 getting-data-ready-in-a-format-for-generalized-linear-mixed-modeling
 running-the-generalized-linear-mixed-models-2
 examining-effect-of-restoration-type-on-proportion-of-rainforest-and-open-country-species-detections
-rainforest-bird-species
-open-country-species
 testing-the-role-of-habitat-1
 effect-of-planting-year-1
 generalized-linear-modeling-acoustic-space-use-and-proportion-of-bird-species-detections-and-time-since-restoration
