@@ -1,4 +1,4 @@
-book_filename: "acoustics_westernGhats_main_text"
+book_filename: "acoustics_Restoration_main_text"
 output: 
   html_document: 
     fig_caption: yes
@@ -9,4 +9,4 @@ before_chapter_script: "common.R"
 output_dir: "docs"
 language:
   ui:
-    chapter_name: "Section "
+    chapter_name: "Section "  
