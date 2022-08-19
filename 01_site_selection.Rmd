@@ -3,12 +3,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Site selection  
+## Site selection  
 
 In this script, we plot the elevation, distance to the nearest road, and distance between sites to show that the sites selected are comparable (we also followed site selection criteria outlined by Osuri et al., (2019) and Hariharan and Raman (2021) to ensure that sites are similar in terms of physiognomy and climate). 
 
-## Install required libraries
-
+### Install required libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -44,7 +43,7 @@ sites <- read.csv("data/list-of-sites.csv") %>%
 # hills <- st_transform(hills, 32643)
 ```
 
-## Extract elevation
+### Extract elevation
 
 Extract elevation at each site and examine differences in elevation across treatment types
 ```{r}
@@ -91,7 +90,7 @@ ggsave(fig_elevAll, filename = "figs/fig_elev.png", width=12, height=7,
 
 ![We did not observe any significant difference in elevation across treatment types (Tukey HSD P > 0.05)](figs/fig_elev.png)
 
-## Distance to nearest road
+### Distance to nearest road
 
 Calculate distance to nearest road for each site and examine differences across treatment types. 
 ```{r distance_to_road}
@@ -137,7 +136,7 @@ ggsave(fig_distRoad, filename = "figs/fig_distRoad.png", width=12, height=7,
 
 ![We did not observe any significant difference in distance to nearest road between AR and NR sites. However, the distance to nearest road for BM sites were significantly different from both AR and NR sites (Tukey HSD P <0.05)](figs/fig_distRoad.png)
 
-## Distance between AR-NR site pairs
+### Distance between AR-NR site pairs
 
 Calculate distances between actively restored and naturally regenerating sites that are paired. 
 ```{r}
