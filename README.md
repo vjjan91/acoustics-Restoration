@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
   [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+  [![DOI](https://zenodo.org/badge/298559834.svg)](https://zenodo.org/badge/latestdoi/298559834)
 <!-- badges: end -->
 
 This repository contains code and analysis for a manuscript that uses acoustic data to examine the impacts of active forest restoration on vocalizing biodiversity in the Western Ghats biodiversity hotspot.  
